@@ -146,8 +146,6 @@ camera
 #include "fchg_g.inc"
 
 
-
-
 #include "medal_g.inc"
 #include "bs_g.inc"
 #include "pc_g.inc"
@@ -187,10 +185,10 @@ object { P_r15 texture { T_r_is_gr } }
 object { P_r16 texture { T_r_is_sr } }
 object { P_r17 texture { T_r_is_br } }
 object { P_r18 texture { T_r_loc } } 
-object { P_r19 texture { T_r_los } }
-object { P_r20 texture { T_r_moc_boc } }
-object { P_r21 texture { T_r_cob } }
-object { P_r22 texture { T_r_ov_19e } }   
+object { P_r19 texture { T_r_los_cs } }
+object { P_r24 texture { T_r_moc_boc } }
+object { P_r25 texture { T_r_cob } }
+object { P_r26 texture { T_r_ov_19e } }   
  
                 
    

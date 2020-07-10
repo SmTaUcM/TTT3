@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -33,7 +36,8 @@
     <normaloff>:/icons/ttt3.png</normaloff>:/icons/ttt3.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(163, 163, 163);</string>
+   <string notr="true">background-color: rgb(163, 163, 163);
+</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="label">
@@ -394,7 +398,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
      <widget class="QLabel" name="lbl_pic_python">
       <property name="geometry">
        <rect>
-        <x>98</x>
+        <x>109</x>
         <y>221</y>
         <width>81</width>
         <height>81</height>
@@ -422,7 +426,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
      <widget class="QLabel" name="lbl_pic_povray">
       <property name="geometry">
        <rect>
-        <x>302</x>
+        <x>313</x>
         <y>221</y>
         <width>101</width>
         <height>81</height>
@@ -450,7 +454,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
      <widget class="QLabel" name="lbl_python">
       <property name="geometry">
        <rect>
-        <x>92</x>
+        <x>103</x>
         <y>306</y>
         <width>101</width>
         <height>16</height>
@@ -477,7 +481,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
      <widget class="QLabel" name="lbl_povray">
       <property name="geometry">
        <rect>
-        <x>282</x>
+        <x>293</x>
         <y>299</y>
         <width>141</width>
         <height>31</height>
@@ -510,7 +514,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
      <widget class="QLabel" name="lbl_pic_qt">
       <property name="geometry">
        <rect>
-        <x>198</x>
+        <x>209</x>
         <y>221</y>
         <width>81</width>
         <height>81</height>
@@ -819,6 +823,100 @@ margin-top: 2px; /* make non-selected tabs look smaller */
       </property>
      </widget>
     </widget>
+   </widget>
+   <widget class="QPushButton" name="btn_dress">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>86</y>
+      <width>91</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton
+{
+    color: #b1b1b1;
+    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:0.4375 rgba(6, 22, 125, 255));
+    border-width: 1px;
+    border-color: #1e1e1e;
+    border-style: solid;
+    border-radius: 6;
+    padding: 3px;
+    font-size: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+QPushButton:pressed
+{
+    background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:0, y2:1, stop:0 rgba(0, 0, 0, 255), stop:0.4375 rgba(6, 22, 125, 255));
+}
+
+QPushButton:hover
+{
+    border: 2px solid rgb(208, 208, 208);
+}
+
+QPushButton:!enabled
+{
+     color: gray;
+	background-color: darkgray;
+}</string>
+    </property>
+    <property name="text">
+     <string>Dress Uniform</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_exit">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>560</x>
+      <y>400</y>
+      <width>91</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton
+{
+    color: #b1b1b1;
+    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:0.4375 rgba(6, 22, 125, 255));
+    border-width: 1px;
+    border-color: #1e1e1e;
+    border-style: solid;
+    border-radius: 6;
+    padding: 3px;
+    font-size: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+QPushButton:pressed
+{
+    background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:0, y2:1, stop:0 rgba(0, 0, 0, 255), stop:0.4375 rgba(6, 22, 125, 255));
+}
+
+QPushButton:hover
+{
+    border: 2px solid rgb(208, 208, 208);
+}
+
+QPushButton:!enabled
+{
+     color: gray;
+	background-color: darkgray;
+}</string>
+    </property>
+    <property name="text">
+     <string>Exit</string>
+    </property>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

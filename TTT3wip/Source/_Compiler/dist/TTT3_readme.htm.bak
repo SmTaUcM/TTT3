@@ -214,7 +214,7 @@ BS/PCx2/ISMx3/IS-1GW-2SW-10BW-2GR-1SR-4BR/LoC-Rx4/LoS-CSx9/MoC-2boc/CoB/OV-19E<b
                 TTT3 uses the Persistence of Vision raytracer (in short POV-Ray)
                 to create the uniform pictures. POV-Ray is freeware and can be
                 downloaded from <a href="http://www.povray.org/" target="_blank">http://www.povray.org/</a>.
-                You can install it to any directory, TTT3 <i>should</i> be able
+                You can install it to any directory, TTT2 <i>should</i> be able
                 to find it via the registry. If that fails, please open TTT3's
                 configuration dialog and set the path to your POV-Ray
                 installation manually.<br>
@@ -228,10 +228,10 @@ BS/PCx2/ISMx3/IS-1GW-2SW-10BW-2GR-1SR-4BR/LoC-Rx4/LoS-CSx9/MoC-2boc/CoB/OV-19E<b
                 card isn't that important. The most important thing is a fast
                 CPU... or even more than one, because the next version of
                 POV-Ray will support multiple cores. :P<br>
-                Running TTT3 with anything below 2 GHz will probably not be much
+                Running TTT2 with anything below 2 GHz will probably not be much
                 fun.<br>
                 <br>
-                TTT3 has been deveoped and tested under and for Windows XP. It
+                TTT2 has been deveoped and tested under and for Windows XP. It
                 seems to work fine under Windows 98, too. No clue about Vista,
                 but I'd be very, <i>very</i> suprised if it worked. Try it at
                 your own risk.
@@ -281,7 +281,7 @@ BS/PCx2/ISMx3/IS-1GW-2SW-10BW-2GR-1SR-4BR/LoC-Rx4/LoS-CSx9/MoC-2boc/CoB/OV-19E<b
                 resolution).<br>
                 To get a grip on that unpleasant affect, there are four versions
                 of the cloth texture in different resolutions. With "Cloth
-                detail" to "automatic", TTT3 will attempt to choose the best one
+                detail" to "automatic", TTT2 will attempt to choose the best one
                 based on two factors; output image width, and the distance
                 between camera lens and uniform surface. Wow, you are really
                 reading the readme, aren't you? You deserve a reward. If you are
@@ -307,7 +307,7 @@ BS/PCx2/ISMx3/IS-1GW-2SW-10BW-2GR-1SR-4BR/LoC-Rx4/LoS-CSx9/MoC-2boc/CoB/OV-19E<b
                 <h2>5. Tips from the author</h2>
                 Just a few things which I thought you might find useful.<br>
                 <br>
-                <u>Profiles</u>: In TTT3 you can save profiles from the main
+                <u>Profiles</u>: In TTT2 you can save profiles from the main
                 windows as well as from each preview window. This might seem
                 confusing at first, but serves a purpose, which is keeping the
                 uniform data and the <i>displaying</i> of the uniform data
@@ -334,7 +334,7 @@ BS/PCx2/ISMx3/IS-1GW-2SW-10BW-2GR-1SR-4BR/LoC-Rx4/LoS-CSx9/MoC-2boc/CoB/OV-19E<b
                 0, 1: Just show quick colors. Use full ambient lighting only.
                 Quick colors are used only at 5 or below<br>
                 <br>
-                <u>Image formats</u>: TTT3 lets you save the generated image in
+                <u>Image formats</u>: TTT2 lets you save the generated image in
                 JPG, PNG or BMP format. If possible you shouldn't go for JPG
                 since that algo kinda sucks (one thing that <i>hasn't</i>
                 changed from the old TTT). If you want a JPG image and have a
@@ -351,18 +351,18 @@ BS/PCx2/ISMx3/IS-1GW-2SW-10BW-2GR-1SR-4BR/LoC-Rx4/LoS-CSx9/MoC-2boc/CoB/OV-19E<b
                 In order for a squadron patch to be displayed on the uniform, it
                 must be in BMP or PNG format, it must be in the <i>data/squads</i>
                 directory and it must be named after the squadron (same spelling
-                that it has in TTT3).<br>
+                that it has in TTT2).<br>
                 A size of 256 x 256 pixels is recommended, but not enforced.
                 Just make sure it is square because otherwise it will appear
                 distorted.<br>
                 You can define transparent areas by alpha channel (PNG format
                 only), by using pure green (RGB 0, 255, 0) or the pixel colour
                 of the leftmost uppermost (0, 0) pixel.<br>
-                TTT3 will auto-generate a b/w mask from it and store it in the
+                TTT2 will auto-generate a b/w mask from it and store it in the
                 same directory under <i>originalname</i>_mask.gif. You don't
                 have to care about it, but if you ever modify an existing patch,
                 delete the GIF mask file that belongs to it, because as long as
-                a mask file is in place TTT3 won't generate a new one.
+                a mask file is in place TTT2 won't generate a new one.
                 <br>
                 <br>
                 <br>
@@ -380,12 +380,12 @@ BS/PCx2/ISMx3/IS-1GW-2SW-10BW-2GR-1SR-4BR/LoC-Rx4/LoS-CSx9/MoC-2boc/CoB/OV-19E<b
                 Now with the new uniform system, that tradition seems to be
                 doomed, or at least restricted to people who have expensive 3D
                 modeling software and know how to use it. That is only partly
-                true, though. As I mentioned several times already, TTT3 uses
+                true, though. As I mentioned several times already, TTT2 uses
                 POV-Ray for output - and that is freeware. So what you can do
-                is, after TTT3 has generated your uniform, look into the <i>data</i>
+                is, after TTT2 has generated your uniform, look into the <i>data</i>
                 directory, find the .pov file, save it under a new name (you
                 should always do that because otherwise your changes will be
-                overwritten next time TTT3 creates another uniform), and edit
+                overwritten next time TTT2 creates another uniform), and edit
                 away. Sure, you might want to learn POV-Ray's scene description
                 language first. But it comes with a good help file so I'm sure
                 you'll be able to make small changes pretty quickly... and with
@@ -400,8 +400,8 @@ BS/PCx2/ISMx3/IS-1GW-2SW-10BW-2GR-1SR-4BR/LoC-Rx4/LoS-CSx9/MoC-2boc/CoB/OV-19E<b
                   <hr></a><br>
                 <br>
                 <h2>8. Project status</h2>
-                TTT3 is finished apart from the medal case - and fixing bugs
-                which will doubtlessly appear during the testing phase. TTT3
+                TTT2 is finished apart from the medal case - and fixing bugs
+                which will doubtlessly appear during the testing phase. TTT2
                 therefore still has beta status.
                 <br>
                 <br>
@@ -420,7 +420,7 @@ BS/PCx2/ISMx3/IS-1GW-2SW-10BW-2GR-1SR-4BR/LoC-Rx4/LoS-CSx9/MoC-2boc/CoB/OV-19E<b
                   <hr></a><br>
                 <br>
                 <h2>10. Known issues</h2>
-                The following bugs and/or problems of the TTT3 software are
+                The following bugs and/or problems of the TTT2 software are
                 known, but not getting fixed anytime soon for some reason or
                 another.<br>
                 <br>
@@ -442,7 +442,7 @@ BS/PCx2/ISMx3/IS-1GW-2SW-10BW-2GR-1SR-4BR/LoC-Rx4/LoS-CSx9/MoC-2boc/CoB/OV-19E<b
                 <br>
                 <h2>11. Bug reports</h2>
                 The first rule of programming is still Murphy's.<br>
-                Which is why I don't expect TTT3 to be free of bugs. There are
+                Which is why I don't expect TTT2 to be free of bugs. There are
                 just too many uniform configurations in which they can hide.<br>
                 <br>
                 If you encounter one, please save the uniform profiles and send

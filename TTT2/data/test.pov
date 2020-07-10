@@ -178,17 +178,8 @@ object { pldn }
 object { P_bs_3_1 }
 object { P_pc_3_2 }
 object { P_ism_3_3 }
-object { P_r12 texture { T_r_is_gw } }
-object { P_r13 texture { T_r_is_sw } }
-object { P_r14 texture { T_r_is_bw } }
-object { P_r15 texture { T_r_is_gr } }
-object { P_r16 texture { T_r_is_sr } }
-object { P_r17 texture { T_r_is_br } }
-object { P_r18 texture { T_r_loc } } 
-object { P_r19 texture { T_r_los_cs } }
-object { P_r24 texture { T_r_moc_boc } }
-object { P_r25 texture { T_r_cob } }
-object { P_r26 texture { T_r_ov_19e } }   
+object { P_r25 texture { T_r_los } }
+  
  
                 
    
