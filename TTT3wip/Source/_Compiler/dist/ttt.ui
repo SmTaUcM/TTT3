@@ -289,7 +289,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <rect>
         <x>10</x>
         <y>86</y>
-        <width>101</width>
+        <width>121</width>
         <height>20</height>
        </rect>
       </property>
@@ -300,13 +300,13 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        </font>
       </property>
       <property name="text">
-       <string>Created 2020 by</string>
+       <string>Created 2020-20 by</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_10">
       <property name="geometry">
        <rect>
-        <x>109</x>
+        <x>127</x>
         <y>86</y>
         <width>101</width>
         <height>20</height>
@@ -321,13 +321,13 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        </font>
       </property>
       <property name="text">
-       <string>CM SykShadow</string>
+       <string>CM SkyShadow</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_11">
       <property name="geometry">
        <rect>
-        <x>208</x>
+        <x>226</x>
         <y>86</y>
         <width>16</width>
         <height>20</height>
@@ -605,7 +605,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <rect>
         <x>10</x>
         <y>160</y>
-        <width>371</width>
+        <width>331</width>
         <height>20</height>
        </rect>
       </property>
@@ -616,7 +616,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        </font>
       </property>
       <property name="text">
-       <string>For questions or problems concerning this program please read</string>
+       <string>For information about the EH TC uniform system visit the</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_23">
@@ -688,7 +688,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <rect>
         <x>379</x>
         <y>115</y>
-        <width>101</width>
+        <width>111</width>
         <height>20</height>
        </rect>
       </property>
@@ -706,13 +706,13 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <string notr="true">color: rgb(6, 22, 125);</string>
       </property>
       <property name="text">
-       <string>TTT3 readme.htm</string>
+       <string>TTT3_readme.htm</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_27">
       <property name="geometry">
        <rect>
-        <x>481</x>
+        <x>483</x>
         <y>116</y>
         <width>16</width>
         <height>20</height>
@@ -728,12 +728,12 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <string>.</string>
       </property>
      </widget>
-     <widget class="QLabel" name="lbl_wiki">
+     <widget class="QLabel" name="lbl_tcpm">
       <property name="geometry">
        <rect>
-        <x>379</x>
+        <x>341</x>
         <y>160</y>
-        <width>51</width>
+        <width>141</width>
         <height>20</height>
        </rect>
       </property>
@@ -751,13 +751,13 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <string notr="true">color: rgb(6, 22, 125);</string>
       </property>
       <property name="text">
-       <string>EH Wiki</string>
+       <string>TIE Corps Pilot Manual</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_29">
       <property name="geometry">
        <rect>
-        <x>427</x>
+        <x>474</x>
         <y>160</y>
         <width>16</width>
         <height>20</height>
@@ -824,6 +824,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources>
+  <include location="resource.qrc"/>
   <include location="resource.qrc"/>
  </resources>
  <connections/>

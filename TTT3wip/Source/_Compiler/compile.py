@@ -12,7 +12,7 @@ setup(
               [
                {
                 "script": "C:\\Users\\smtau\\Dropbox\\EH TIE Corps Share\\TTT3\\TTT3wip\\Source\\TTT3.py",
-                "icon_resources" : [(0, "C:\\Users\\smtau\\Dropbox\\EH TIE Corps Share\\TTT3\TTT3wip\\Source\\Resource\\ttt3.ico")]
+                "icon_resources" : [(0, "C:\\Users\\smtau\\Dropbox\\EH TIE Corps Share\\TTT3\TTT3wip\\Source\\_Resource\\ttt3.ico")]
                }
               ],
       )
