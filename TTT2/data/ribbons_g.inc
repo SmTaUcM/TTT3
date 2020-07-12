@@ -512,5 +512,85 @@ texture
 }
 texture { T_unilayer scale 2}     
 
+#declare T_r_ov_20e = 
+texture
+{
+  pigment { image_map { gif ".\ribbons\ov-20e.gif" } }
+  finish  { fin_T_uni } 
+}
+texture { T_unilayer scale 2}   
+
+#declare T_r_ov_21e = 
+texture
+{
+  pigment { image_map { gif ".\ribbons\ov-21e.gif" } }
+  finish  { fin_T_uni } 
+}
+texture { T_unilayer scale 2}   
+
+#declare T_r_ov_22e = 
+texture
+{
+  pigment { image_map { gif ".\ribbons\ov-22e.gif" } }
+  finish  { fin_T_uni } 
+}
+texture { T_unilayer scale 2}   
+
+#declare T_r_ov_23e = 
+texture
+{
+  pigment { image_map { gif ".\ribbons\ov-23e.gif" } }
+  finish  { fin_T_uni } 
+}
+texture { T_unilayer scale 2}   
+
+#declare T_r_ov_24e = 
+texture
+{
+  pigment { image_map { gif ".\ribbons\ov-24e.gif" } }
+  finish  { fin_T_uni } 
+}
+texture { T_unilayer scale 2}   
+
+#declare T_r_ov_25e = 
+texture
+{
+  pigment { image_map { gif ".\ribbons\ov-25e.gif" } }
+  finish  { fin_T_uni } 
+}
+texture { T_unilayer scale 2}   
+
+#declare T_r_ov_26e = 
+texture
+{
+  pigment { image_map { gif ".\ribbons\ov-26e.gif" } }
+  finish  { fin_T_uni } 
+}
+texture { T_unilayer scale 2}   
+
+#declare T_r_ov_27e = 
+texture
+{
+  pigment { image_map { gif ".\ribbons\ov-27e.gif" } }
+  finish  { fin_T_uni } 
+}
+texture { T_unilayer scale 2}   
+
+#declare T_r_ov_28e = 
+texture
+{
+  pigment { image_map { gif ".\ribbons\ov-28e.gif" } }
+  finish  { fin_T_uni } 
+}
+texture { T_unilayer scale 2}   
+
+#declare T_r_ov_29e = 
+texture
+{
+  pigment { image_map { gif ".\ribbons\ov-29e.gif" } }
+  finish  { fin_T_uni } 
+}
+texture { T_unilayer scale 2}   
+
 
  
