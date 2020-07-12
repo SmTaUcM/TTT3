@@ -592,5 +592,53 @@ texture
 }
 texture { T_unilayer scale 2}   
 
+#declare T_r_ov_30e = 
+texture
+{
+  pigment { image_map { gif ".\ribbons\ov-30e.gif" } }
+  finish  { fin_T_uni } 
+}
+texture { T_unilayer scale 2}   
+
+#declare T_r_ov_31e = 
+texture
+{
+  pigment { image_map { gif ".\ribbons\ov-31e.gif" } }
+  finish  { fin_T_uni } 
+}
+texture { T_unilayer scale 2}   
+
+#declare T_r_ov_32e = 
+texture
+{
+  pigment { image_map { gif ".\ribbons\ov-32e.gif" } }
+  finish  { fin_T_uni } 
+}
+texture { T_unilayer scale 2}   
+
+#declare T_r_ov_33e = 
+texture
+{
+  pigment { image_map { gif ".\ribbons\ov-33e.gif" } }
+  finish  { fin_T_uni } 
+}
+texture { T_unilayer scale 2}   
+
+#declare T_r_ov_34e = 
+texture
+{
+  pigment { image_map { gif ".\ribbons\ov-34e.gif" } }
+  finish  { fin_T_uni } 
+}
+texture { T_unilayer scale 2}   
+
+#declare T_r_ov_35e = 
+texture
+{
+  pigment { image_map { gif ".\ribbons\ov-35e.gif" } }
+  finish  { fin_T_uni } 
+}
+texture { T_unilayer scale 2}   
+
 
  
