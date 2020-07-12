@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ConfigWindow</class>
+ <widget class="QMainWindow" name="ConfigWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>530</width>
+    <height>320</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>530</width>
+    <height>320</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>530</width>
+    <height>320</height>
+   </size>
+  </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::NoContextMenu</enum>
+  </property>
+  <property name="windowTitle">
+   <string>TTT3 Configuration</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>:/icons/ttt3.png</normaloff>:/icons/ttt3.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(163, 163, 163);
+</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="btn_ok">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>164</x>
+      <y>277</y>
+      <width>91</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton
+{
+    color: #b1b1b1;
+    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:0.4375 rgba(6, 22, 125, 255));
+    border-width: 1px;
+    border-color: #1e1e1e;
+    border-style: solid;
+    border-radius: 6;
+    padding: 3px;
+    font-size: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+QPushButton:pressed
+{
+    background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:0, y2:1, stop:0 rgba(0, 0, 0, 255), stop:0.4375 rgba(6, 22, 125, 255));
+}
+
+QPushButton:hover
+{
+    border: 2px solid rgb(208, 208, 208);
+}
+
+QPushButton:!enabled
+{
+     color: gray;
+	background-color: darkgray;
+}</string>
+    </property>
+    <property name="text">
+     <string>OK</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_close">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>274</x>
+      <y>277</y>
+      <width>91</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton
+{
+    color: #b1b1b1;
+    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:0.4375 rgba(6, 22, 125, 255));
+    border-width: 1px;
+    border-color: #1e1e1e;
+    border-style: solid;
+    border-radius: 6;
+    padding: 3px;
+    font-size: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+QPushButton:pressed
+{
+    background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:0, y2:1, stop:0 rgba(0, 0, 0, 255), stop:0.4375 rgba(6, 22, 125, 255));
+}
+
+QPushButton:hover
+{
+    border: 2px solid rgb(208, 208, 208);
+}
+
+QPushButton:!enabled
+{
+     color: gray;
+	background-color: darkgray;
+}</string>
+    </property>
+    <property name="text">
+     <string>Close</string>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>8</y>
+      <width>511</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>9</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+      <underline>false</underline>
+     </font>
+    </property>
+    <property name="title">
+     <string>Persistence of Vision Raytracer</string>
+    </property>
+    <widget class="QRadioButton" name="rb_reg">
+     <property name="geometry">
+      <rect>
+       <x>6</x>
+       <y>20</y>
+       <width>351</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Try to retrieve POV-Ray's loaction from the Windows Registry:</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="rb_specific">
+     <property name="geometry">
+      <rect>
+       <x>6</x>
+       <y>93</y>
+       <width>191</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Specify POV-Ray's location directly:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>25</x>
+       <y>41</y>
+       <width>80</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Registry path:</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="cb_reg">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>106</x>
+       <y>40</y>
+       <width>161</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QComboBox
+{
+    background-color: rgb(255, 255, 252);
+}
+
+QComboBox:!enabled
+{
+	background-color: darkgray;
+}</string>
+     </property>
+     <item>
+      <property name="text">
+       <string>HKEY_CURRENT_USER</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>HKEY_LOCAL_MACHINE</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QLineEdit" name="le_regPath">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>276</x>
+       <y>40</y>
+       <width>231</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit
+{
+    background-color: rgb(255, 255, 252);
+}
+
+QLineEdit:!enabled
+{
+	background-color: darkgray;
+}</string>
+     </property>
+     <property name="text">
+      <string>Software\POV-Ray\CurrentVersion\Windows</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_7">
+     <property name="geometry">
+      <rect>
+       <x>25</x>
+       <y>68</y>
+       <width>31</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Key:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="le_key">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>105</x>
+       <y>67</y>
+       <width>161</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit
+{
+    background-color: rgb(255, 255, 252);
+}
+
+QLineEdit:!enabled
+{
+	background-color: darkgray;
+}</string>
+     </property>
+     <property name="text">
+      <string>Home</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_8">
+     <property name="geometry">
+      <rect>
+       <x>276</x>
+       <y>68</y>
+       <width>121</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Add to extracted path:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="le_executable">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>396</x>
+       <y>67</y>
+       <width>111</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit
+{
+    background-color: rgb(255, 255, 252);
+}
+
+QLineEdit:!enabled
+{
+	background-color: darkgray;
+}</string>
+     </property>
+     <property name="text">
+      <string>bin\pvengine.exe</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="le_specPath">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>25</x>
+       <y>112</y>
+       <width>451</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit
+{
+    background-color: rgb(255, 255, 252);
+}
+
+QLineEdit:!enabled
+{
+	background-color: darkgray;
+}</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_browse">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>476</x>
+       <y>110</y>
+       <width>23</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton
+{
+    color: #b1b1b1;
+    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:0.4375 rgba(6, 22, 125, 255));
+    border-width: 1px;
+    border-color: #1e1e1e;
+    border-style: solid;
+    border-radius: 6;
+    padding: 3px;
+    font-size: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+QPushButton:pressed
+{
+    background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:0, y2:1, stop:0 rgba(0, 0, 0, 255), stop:0.4375 rgba(6, 22, 125, 255));
+}
+
+QPushButton:hover
+{
+    border: 2px solid rgb(208, 208, 208);
+}
+
+QPushButton:!enabled
+{
+     color: gray;
+	background-color: darkgray;
+}</string>
+     </property>
+     <property name="text">
+      <string>...</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_2">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>162</y>
+      <width>511</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>9</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+      <underline>false</underline>
+     </font>
+    </property>
+    <property name="title">
+     <string>TIE Corps database</string>
+    </property>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>23</y>
+       <width>81</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>XML backend:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="le_backend">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>23</y>
+       <width>381</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit
+{
+    background-color: rgb(255, 255, 252);
+}
+
+QLineEdit:!enabled
+{
+	background-color: darkgray;
+}</string>
+     </property>
+     <property name="text">
+      <string>http://tc.emperorshammer.org/TTT2backend.php?pin=</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_9">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>49</y>
+       <width>81</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Fleet roster:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="le_roster">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>49</y>
+       <width>381</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit
+{
+    background-color: rgb(255, 255, 252);
+}
+
+QLineEdit:!enabled
+{
+	background-color: darkgray;
+}</string>
+     </property>
+     <property name="text">
+      <string>http://tc.emperorshammer.org/roster.php</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="le_search">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>75</y>
+       <width>380</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit
+{
+    background-color: rgb(255, 255, 252);
+}
+
+QLineEdit:!enabled
+{
+	background-color: darkgray;
+}</string>
+     </property>
+     <property name="text">
+      <string>http://tc.emperorshammer.org/search.php</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_10">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>75</y>
+       <width>101</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Personnel search:</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

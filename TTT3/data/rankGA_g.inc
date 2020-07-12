@@ -1,0 +1,39 @@
+ ////////////////////////////////////////////////////
+//                                                 //
+//  TIE Corps Dress Uniform                        //
+//  Grand Admiral's rank badge                     //
+//                                                 //
+//  Settings in this file are not affected by TTT  //
+//                                                 //
+////////////////////////////////////////////////////
+
+
+// GA
+
+
+#include "rank26_o.inc";
+
+#declare P_GA =
+union
+{
+  object { P_panel }
+  object { P_box11 texture { T_rankblue } translate <0,10,0> }
+  object { P_box12 texture { T_rankblue } translate <0,10,0> }
+  object { P_box13 texture { T_rankblue } translate <0,10,0> }
+  object { P_box14 texture { T_rankblue } translate <0,10,0> }
+  object { P_box15 texture { T_rankblue } translate <0,10,0> }
+  object { P_box16 texture { T_rankblue } translate <0,10,0> }
+  object { P_box21 texture { T_rankred } translate <0,10,0> }
+  object { P_box22 texture { T_rankred } translate <0,10,0> }
+  object { P_box23 texture { T_rankyellow } translate <0,10,0> }
+  object { P_box24 texture { T_rankyellow } translate <0,10,0> }
+  object { P_box25 texture { T_rankyellow } translate <0,10,0> }
+  object { P_box26 texture { T_rankyellow } translate <0,10,0> }  
+  scale 0.05175
+}
+
+object { P_GA rotate rankrotate translate ranktranslate }   
+
+
+
+

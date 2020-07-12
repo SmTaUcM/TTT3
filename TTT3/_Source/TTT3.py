@@ -15,6 +15,8 @@
 import resource
 import sys
 import os
+import ctypes
+from _winreg import *
 from PyQt4 import QtGui, QtCore, uic
 
 
@@ -38,7 +40,7 @@ class TTT3(QtGui.QMainWindow):
 
         # Initialise an instance of a QT Main Window and load our GUI file ttt.ui.
         QtGui.QMainWindow.__init__(self)
-        self.gui = uic.loadUi('ttt.ui')
+        self.gui = uic.loadUi(r"data\uis\ttt.ui")
         self.gui.show()
 
         # 'Info' Tab Hyperlinks.
@@ -54,25 +56,45 @@ class TTT3(QtGui.QMainWindow):
         self.gui.lbl_povray.mouseReleaseEvent = self.povrayLink
 
         # Button Connections.
+        self.connect(self.gui.btn_dress, QtCore.SIGNAL("clicked()"), self.btn_dressMethod)
+        self.connect(self.gui.btn_config, QtCore.SIGNAL("clicked()"), self.btn_configMethod)
         self.connect(self.gui.btn_exit, QtCore.SIGNAL("clicked()"), self.exit)
 
         # Radio Button Connections.
             # Positions.
-        self.connect(self.gui.rb_pos_trn,    QtCore.SIGNAL("clicked()"), self.posRankRBLogic)
-        self.connect(self.gui.rb_pos_fm,     QtCore.SIGNAL("clicked()"), self.posRankRBLogic)
-        self.connect(self.gui.rb_pos_fl,     QtCore.SIGNAL("clicked()"), self.posRankRBLogic)
-        self.connect(self.gui.rb_pos_cmdr,   QtCore.SIGNAL("clicked()"), self.posRankRBLogic)
-        self.connect(self.gui.rb_pos_wc,     QtCore.SIGNAL("clicked()"), self.posRankRBLogic)
-        self.connect(self.gui.rb_pos_com,    QtCore.SIGNAL("clicked()"), self.posRankRBLogic)
-        self.connect(self.gui.rb_pos_bgcom,  QtCore.SIGNAL("clicked()"), self.posRankRBLogic)
-        self.connect(self.gui.rb_pos_ia,     QtCore.SIGNAL("clicked()"), self.posRankRBLogic)
-        self.connect(self.gui.rb_pos_ca,     QtCore.SIGNAL("clicked()"), self.posRankRBLogic)
-        self.connect(self.gui.rb_pos_sgcom,  QtCore.SIGNAL("clicked()"), self.posRankRBLogic)
-        self.connect(self.gui.rb_pos_cs,     QtCore.SIGNAL("clicked()"), self.posRankRBLogic)
-        self.connect(self.gui.rb_pos_xo,     QtCore.SIGNAL("clicked()"), self.posRankRBLogic)
-        self.connect(self.gui.rb_pos_fc,     QtCore.SIGNAL("clicked()"), self.posRankRBLogic)
-        self.connect(self.gui.rb_pos_lr,     QtCore.SIGNAL("clicked()"), self.posRankRBLogic)
-        self.connect(self.gui.rb_pos_fr,     QtCore.SIGNAL("clicked()"), self.posRankRBLogic)
+        self.connect(self.gui.rb_pos_trn,    QtCore.SIGNAL("clicked()"), self.posRBLogic)
+        self.connect(self.gui.rb_pos_fm,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
+        self.connect(self.gui.rb_pos_fl,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
+        self.connect(self.gui.rb_pos_cmdr,   QtCore.SIGNAL("clicked()"), self.posRBLogic)
+        self.connect(self.gui.rb_pos_wc,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
+        self.connect(self.gui.rb_pos_com,    QtCore.SIGNAL("clicked()"), self.posRBLogic)
+        self.connect(self.gui.rb_pos_bgcom,  QtCore.SIGNAL("clicked()"), self.posRBLogic)
+        self.connect(self.gui.rb_pos_ia,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
+        self.connect(self.gui.rb_pos_ca,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
+        self.connect(self.gui.rb_pos_sgcom,  QtCore.SIGNAL("clicked()"), self.posRBLogic)
+        self.connect(self.gui.rb_pos_cs,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
+        self.connect(self.gui.rb_pos_xo,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
+        self.connect(self.gui.rb_pos_fc,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
+        self.connect(self.gui.rb_pos_lr,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
+        self.connect(self.gui.rb_pos_fr,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
+            # Ranks.
+        self.connect(self.gui.rb_rank_ct,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
+        self.connect(self.gui.rb_rank_sl,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
+        self.connect(self.gui.rb_rank_lt,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
+        self.connect(self.gui.rb_rank_lcm,   QtCore.SIGNAL("clicked()"), self.rankRBLogic)
+        self.connect(self.gui.rb_rank_cm,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
+        self.connect(self.gui.rb_rank_cpt,   QtCore.SIGNAL("clicked()"), self.rankRBLogic)
+        self.connect(self.gui.rb_rank_maj,   QtCore.SIGNAL("clicked()"), self.rankRBLogic)
+        self.connect(self.gui.rb_rank_lc,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
+        self.connect(self.gui.rb_rank_col,   QtCore.SIGNAL("clicked()"), self.rankRBLogic)
+        self.connect(self.gui.rb_rank_gn,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
+        self.connect(self.gui.rb_rank_ra,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
+        self.connect(self.gui.rb_rank_va,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
+        self.connect(self.gui.rb_rank_ad,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
+        self.connect(self.gui.rb_rank_fa,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
+        self.connect(self.gui.rb_rank_ha,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
+        self.connect(self.gui.rb_rank_sa,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
+        self.connect(self.gui.rb_rank_ga,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
 
         # Initialise instance variables.
         self.rankRadioButtons = [self.gui.rb_rank_ct, self.gui.rb_rank_sl, self.gui.rb_rank_lt, self.gui.rb_rank_lcm, self.gui.rb_rank_cm,
@@ -83,6 +105,13 @@ class TTT3(QtGui.QMainWindow):
         self.positionRadioButtons = [self.gui.rb_pos_trn, self.gui.rb_pos_fm, self.gui.rb_pos_fl, self.gui.rb_pos_cmdr, self.gui.rb_pos_wc,
                                      self.gui.rb_pos_com, self.gui.rb_pos_bgcom, self.gui.rb_pos_ia, self.gui.rb_pos_ca, self.gui.rb_pos_sgcom,
                                      self.gui.rb_pos_cs, self.gui.rb_pos_xo, self.gui.rb_pos_fc, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
+
+        # Initialise PovRay Template variables.
+        self.position = None
+        self.rank = None
+        self.ship = None
+        self.wing = None
+        self.sqn = None
 
         # Application logic.
         self.initialGUISetup()
@@ -152,11 +181,24 @@ class TTT3(QtGui.QMainWindow):
         # Hide all ranks for initial use.
         for rank in self.rankRadioButtons:
             rank.hide()
+
+        # ToDo Disabled Helmet UTFN.
+        self.gui.btn_helmet.setEnabled(False)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
-    def posRankRBLogic(self):
-        '''Method that controls the Position / Rank Radio Button Logic - Showing or hiding the required rank options'''
+    def posRBLogic(self):
+        '''Method that controls the Position Radio Button Logic - Showing or hiding the required rank options'''
+
+        # Disnable the Dress and Duty Uniform buttons.
+        self.gui.btn_dress.setEnabled(False)
+        self.gui.btn_duty.setEnabled(False)
+
+        # Deselect any previous rank selection.
+        for radioButton in self.rankRadioButtons:
+            radioButton.setAutoExclusive(False)
+            radioButton.setChecked(False)
+            radioButton.setAutoExclusive(True)
 
         # Initialise method constants.
         # Ranks:
@@ -190,64 +232,100 @@ class TTT3(QtGui.QMainWindow):
                 # Show the correct rank radio buttons for the selected position.
                 if radioButton == self.gui.rb_pos_trn:
                     self.showRanks(CT, CT)
+                    self.position = "TRN"
                     break
 
                 elif radioButton == self.gui.rb_pos_fm:
                     self.showRanks(SL, GN)
+                    self.position = "FM"
                     break
 
                 elif radioButton == self.gui.rb_pos_fl:
                     self.showRanks(LT, GN)
+                    self.position = "FL"
                     break
 
                 elif radioButton == self.gui.rb_pos_cmdr:
                     self.showRanks(CM, GN)
+                    self.position = "CMDR"
                     break
 
                 elif radioButton == self.gui.rb_pos_wc:
                     self.showRanks(MAJ, GN)
+                    self.position = "WC"
                     break
 
                 elif radioButton == self.gui.rb_pos_com:
                     self.showRanks(RA, HA)
+                    self.position = "COM"
                     break
 
                 elif radioButton == self.gui.rb_pos_bgcom:
                     self.showRanks(RA, HA)
+                    self.position = "BGCOM"
                     break
 
                 elif radioButton == self.gui.rb_pos_ia:
                     self.showRanks(RA, HA)
+                    self.position = "IA"
                     break
 
                 elif radioButton == self.gui.rb_pos_ca:
                     self.showRanks(RA, HA)
+                    self.position = "CA"
                     break
 
                 elif radioButton == self.gui.rb_pos_sgcom:
                     self.showRanks(RA, GA)
+                    self.position = "SGCOM"
                     break
 
                 elif radioButton == self.gui.rb_pos_cs:
                     self.showRanks(RA, GA)
+                    self.position = "CS"
                     break
 
                 elif radioButton == self.gui.rb_pos_xo:
                     self.showRanks(RA, GA)
+                    self.position = "XO"
                     break
 
                 elif radioButton == self.gui.rb_pos_fc:
                     self.showRanks(GA, GA)
+                    self.position = "FC"
                     self.gui.rb_rank_ga.setChecked(True)
+                    self.rankRBLogic()
                     break
 
                 elif radioButton == self.gui.rb_pos_lr:
                     self.showRanks(CT, GN)
+                    self.position = "NUL"
                     break
 
                 elif radioButton == self.gui.rb_pos_fr:
                     self.showRanks(RA, GA)
+                    self.position = "NUL"
                     break
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def rankRBLogic(self):
+        '''Method that controls the Rank Radio Button Logic - Showing the 'Dress and Duty Uniform' buttons.'''
+
+        # Determine which rank radio button has been selected.
+        for radioButton in self.rankRadioButtons:
+            if radioButton.isChecked():
+
+                # Set the correct rank for the selected rank.
+                if radioButton == self.gui.rb_rank_ct:
+                    self.rank = "CT"
+                    break
+                # ToDo Finish!
+
+        # Enable the Dress and Duty Uniform buttons.
+        self.gui.btn_dress.setEnabled(True)
+        # TODO Disabled Duty Uniform UTFN.
+##        self.gui.btn_duty.setEnabled(True)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -256,6 +334,8 @@ class TTT3(QtGui.QMainWindow):
 
         for rankRadioButton in self.rankRadioButtons:
             rankRadioButton.hide()
+
+        self.rank = None
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -265,7 +345,80 @@ class TTT3(QtGui.QMainWindow):
 
         for rankRadioButton in self.rankRadioButtons[rankMin : rankMax + 1]: # + 1 because Python doesn't include the last item when indexing.
             rankRadioButton.show()
-    #--------------------------------------------------------------------------------------------------------------------------------------------#
+        #----------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def btn_dressMethod(self):
+        '''Method that is triggered when the 'Dress Uniform' button is clicked.
+           This method will check that the correct selectiosn have been made within TTT3 which as Ship and Squadron and then
+           directly call up PovRay to render the unirom.'''
+
+        # Check to see if the user has made the correct selections for their position and rank.
+        if self.position in ["FM", "FL", "CMDR", "WC"]:
+            if not self.ship or not self.wing:
+                msg = "Error: As a pilot you need to specify at least a ship and wing before a dress uniform can be created."
+                return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
+
+        elif self.position in ["COM"]:
+            if not self.ship:
+                msg = "Error: As a COM you need to specify a ship before a dress uniform can be created."
+                return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
+
+        # Run PovRay to render a uniform.
+            # ToDo Dynamic PovRay .bat
+        else:
+
+            # ToDo Move to Config.
+            # Detect the installation path of POV-Ray from the Windows registry.
+            try:
+                aReg = ConnectRegistry(None, HKEY_CURRENT_USER)
+                aKey = r"Software\POV-Ray\CurrentVersion\Windows"
+                values = OpenKey(aReg, aKey)
+                path = QueryValueEx(values, "Home")[0]
+
+            except WindowsError:
+                msg = "Cannot find valid installion of POV-Ray."
+                return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
+                path = "NULL"
+
+            # Dynamically write the data\povray.bat file.
+            template = r'&PATH&&ADD& /RENDER "&APPPATH&\data\&TYPE&.pov" +w640 +h853 +q9 /EXIT'
+            template = template.replace("&APPPATH&", os.getcwd())
+            template = template.replace("&PATH&", path)
+            template = template.replace("&ADD&", r"bin\pvengine64.exe")
+            template = template.replace("&TYPE&", "dress")
+            print template
+            with open(r"data\batch\povray.bat", "w") as dataFile:
+                dataFile.write(template)
+
+            # Dynamically write the data\invisible.vbs file.
+            input = []
+            output = []
+            with open(r"data\batch\invisible.vbs", "r") as dataFile:
+                input = dataFile.readlines()
+                for line in input:
+                    if "&PATH&" in line:
+                        newLine = line.replace("&PATH&", os.getcwd())
+                        output.append(newLine)
+                    else:
+                        output.append(line)
+
+            with open(r"data\batch\invisible.vbs", "w") as dataFile:
+                dataFile.writelines(output)
+
+            os.system(r"data\batch\invisible.vbs")
+
+            with open(r"data\batch\invisible.vbs", "w") as dataFile:
+                dataFile.writelines(input)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def btn_configMethod(self):
+        '''Method that opens and handles control of the 'Configuration' window.'''
+
+        self.config_gui = uic.loadUi(r"data\uis\config.ui")
+        self.config_gui.show()
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
