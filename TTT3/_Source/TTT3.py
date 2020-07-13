@@ -454,7 +454,13 @@ class TTT3(QtGui.QMainWindow):
             # Set the correct paths based on where TTT3 is located and the TTT3.ini settings file.
         template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\&TYPE&.pov" +w640 +h853 +q9 /EXIT'
         template = template.replace("&TTTPATH&", os.getcwd())
-        template = template.replace("&POVPATH&", self.getPathFromRegistry())
+
+        # Apply the path depending on what the user has selected from within the Configuratrion window.
+        if self.config.get("POV", "mode") == "registry":
+            template = template.replace("&POVPATH&", self.getPathFromRegistry())
+        else:
+            template = template.replace("&POVPATH&", self.config.get("POV", "path"))
+
         template = template.replace("&TYPE&", uniform)
 
             # Write the 'data\batch\povray.bat' file.
@@ -484,8 +490,12 @@ class TTT3(QtGui.QMainWindow):
 
         # Wait for POV-Ray to close.
         self.povrayMonitor()
+
         # Open the newly generated uniform.png file.
-        os.system(r"data\{uniformType}.png".format(uniformType=uniform))
+        if "3.6" in self.config.get("POV", "path"):
+            os.system(r"data\{uniformType}.bmp".format(uniformType=uniform))
+        else:
+            os.system(r"data\{uniformType}.png".format(uniformType=uniform))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -615,17 +625,35 @@ class TTT3(QtGui.QMainWindow):
     def config_btn_ok_method(self):
         '''Method that handles the functionality when the 'OK' button is pressed within  the 'Configuration' screen.'''
 
+        # ----- All other values -----
+        self.config.set("POV", "fromregistry", self.config_gui.cb_reg.currentIndex())
+        self.config.set("POV", "regpath", str(self.config_gui.le_regPath.text()))
+        self.config.set("POV", "key", str(self.config_gui.le_key.text()))
+        self.config.set("POV", "add", str(self.config_gui.le_executable.text()))
+        self.config.set("TCDB", "xml", str(self.config_gui.le_backend.text()))
+        self.config.set("TCDB", "roster", str(self.config_gui.le_roster.text()))
+        self.config.set("TCDB", "search", str(self.config_gui.le_search.text()))
+
+        # ----- POV-Ray Path ------
         if self.config.get("POV", "mode") == "registry":
             # Save the full path to our config.
-            self.config.set("POV", "path", self.getPathFromRegistry())
+            path = self.getPathFromRegistry()
+            if path != 1: # The path will be 1 if the getPathFromRegistry() method encounters an error.
+                self.config.set("POV", "path", path)
 
         elif self.config.get("POV", "mode") == "specific":
             self.config.set("POV", "path", self.config_gui.le_specPath.text())
-            self.saveSettings()
 
         else:
             pass
 
+        # Test to ensure that the POV-Ray exceutable is present.
+        if not os.path.exists(self.config.get("POV", "path")):
+            msg = "Cannot find valid installion of POV-Ray at:\n%s\nTry changing the 'Add to extracted path:' option.\n\nValid options are usually:\nbin\pvengine64.exe\nbin\pvengine.exe"%str(self.config.get("POV", "path"))
+            return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
+
+        # Save and close.
+        self.saveSettings()
         self.config_gui.close()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -635,10 +663,10 @@ class TTT3(QtGui.QMainWindow):
 
         try:
             # Determine which registry we are connecting to.
-            if self.config.get("POV", "fromregistry") == "0":
+            if self.config.get("POV", "fromregistry") == 0:
                 aReg = ConnectRegistry(None, HKEY_CURRENT_USER)
 
-            elif self.config.get("POV", "fromregistry") == "1":
+            elif self.config.get("POV", "fromregistry") == 1:
                 aReg = ConnectRegistry(None, HKEY_LOCAL_MACHINE)
 
             else:

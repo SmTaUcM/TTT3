@@ -243,11 +243,6 @@ QComboBox:!enabled
        <string>HKEY_CURRENT_USER</string>
       </property>
      </item>
-     <item>
-      <property name="text">
-       <string>HKEY_LOCAL_MACHINE</string>
-      </property>
-     </item>
     </widget>
     <widget class="QLineEdit" name="le_regPath">
      <property name="enabled">
