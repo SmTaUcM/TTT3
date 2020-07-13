@@ -1,18 +1,28 @@
+@echo off
+
 rem Delete the old build of TTT3.
-rmdir "C:\Users\smtau\Dropbox\EH TIE Corps Share\TTT3\TTT3\_Source\_Compiler\dist" /S /Q
+rmdir "dist" /S /Q
 
 rem Compile the new version of TTT3.
 python compile.py py2exe --includes sip
 
 rem Copy key files that are not included automatiically by running compile.py.
-copy "C:\Users\smtau\Dropbox\EH TIE Corps Share\TTT3\TTT3\_Source\TTT3_readme.htm" "C:\Users\smtau\Dropbox\EH TIE Corps Share\TTT3\TTT3\_Source\_Compiler\dist\"
+copy ..\TTT3_readme.htm dist\
+copy ..\resource.pyc dist\
 
 rem Create and copy over additional data folders.
-mkdir "C:\Users\smtau\Dropbox\EH TIE Corps Share\TTT3\TTT3\_Source\_Compiler\dist\data"
-xcopy "C:\Users\smtau\Dropbox\EH TIE Corps Share\TTT3\TTT3\_Source\data" "C:\Users\smtau\Dropbox\EH TIE Corps Share\TTT3\TTT3\_Source\_Compiler\dist\data\" /S /Q
+rem data folder
+mkdir dist\data
+xcopy ..\data dist\data\ /S /Q
+rem settings folder.
+mkdir dist\settings
+xcopy ..\settings dist\settings\" /S /Q
 
 rem Delete the un-needed Build folder.
-rmdir "C:\Users\smtau\Dropbox\EH TIE Corps Share\TTT3\TTT3wip\Source\_Compiler\build" /S /Q
+rmdir build /S /Q
 
-echo "----COMPLETE----"
+echo.
+echo ----COMPLETE----
+echo.
+echo --- IMPORTANT! --- Please move '..\resource.pyc' into dist\library.zip
 pause

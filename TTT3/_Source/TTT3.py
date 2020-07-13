@@ -38,7 +38,7 @@ class TTT3(QtGui.QMainWindow):
     def __init__(self):
         '''Class constructor.'''
 
-        # Initialise an instance of a QT Main Window and load our GUI file ttt.ui.
+        # Initialise an instance of a QT Main Window and load our GUI file data\uis\ttt.ui.
         QtGui.QMainWindow.__init__(self)
         self.gui = uic.loadUi(r"data\uis\ttt.ui")
         self.gui.show()
@@ -182,8 +182,12 @@ class TTT3(QtGui.QMainWindow):
         for rank in self.rankRadioButtons:
             rank.hide()
 
-        # ToDo Disabled Helmet UTFN.
+        # ToDo Disabled Helmet & Profiles UTFN.
         self.gui.btn_helmet.setEnabled(False)
+
+        self.gui.btn_newProf.setEnabled(False)
+        self.gui.btn_openProf.setEnabled(False)
+        self.gui.btn_saveProf.setEnabled(False)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -392,32 +396,34 @@ class TTT3(QtGui.QMainWindow):
                 dataFile.write(template)
 
             # Dynamically write the data\invisible.vbs file.
-            input = []
+            template = [r'Set WshShell = CreateObject("WScript.Shell")' + "\n",
+                         r'WshShell.Run chr(34) & "&PATH&\data\batch\povray.bat" & Chr(34), 0' + "\n",
+                         r'Set WshShell = Nothing']
             output = []
-            with open(r"data\batch\invisible.vbs", "r") as dataFile:
-                input = dataFile.readlines()
-                for line in input:
-                    if "&PATH&" in line:
-                        newLine = line.replace("&PATH&", os.getcwd())
-                        output.append(newLine)
-                    else:
-                        output.append(line)
+
+            for line in template:
+                if "&PATH&" in line:
+                    newLine = line.replace("&PATH&", os.getcwd())
+                    output.append(newLine)
+                else:
+                    output.append(line)
 
             with open(r"data\batch\invisible.vbs", "w") as dataFile:
                 dataFile.writelines(output)
 
             os.system(r"data\batch\invisible.vbs")
-
-            with open(r"data\batch\invisible.vbs", "w") as dataFile:
-                dataFile.writelines(input)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
     def btn_configMethod(self):
         '''Method that opens and handles control of the 'Configuration' window.'''
 
+        # Load our GUI file data\uis\config.ui.
         self.config_gui = uic.loadUi(r"data\uis\config.ui")
         self.config_gui.show()
+
+        # Button Connections.
+        self.connect(self.config_gui.btn_config_close, QtCore.SIGNAL("clicked()"), self.config_gui.close)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
