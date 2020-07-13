@@ -196,133 +196,34 @@ QPushButton:!enabled
       <string>Specify POV-Ray's location directly:</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_6">
+    <widget class="QLabel" name="lbl_regPathTitle">
      <property name="geometry">
       <rect>
-       <x>25</x>
+       <x>27</x>
        <y>41</y>
-       <width>80</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial</family>
-       <pointsize>9</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Registry path:</string>
-     </property>
-    </widget>
-    <widget class="QComboBox" name="cb_reg">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>105</x>
-       <y>40</y>
-       <width>161</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QComboBox
-{
-    background-color: rgb(255, 255, 252);
-}
-
-QComboBox:!enabled
-{
-	background-color: darkgray;
-}</string>
-     </property>
-     <item>
-      <property name="text">
-       <string>HKEY_CURRENT_USER</string>
-      </property>
-     </item>
-    </widget>
-    <widget class="QLineEdit" name="le_regPath">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>276</x>
-       <y>40</y>
-       <width>231</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QLineEdit
-{
-    background-color: rgb(255, 255, 252);
-}
-
-QLineEdit:!enabled
-{
-	background-color: darkgray;
-}</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_7">
-     <property name="geometry">
-      <rect>
-       <x>25</x>
-       <y>67</y>
-       <width>31</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Arial</family>
-       <pointsize>9</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Key:</string>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="le_key">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>105</x>
-       <y>67</y>
        <width>161</width>
        <height>20</height>
       </rect>
      </property>
-     <property name="styleSheet">
-      <string notr="true">QLineEdit
-{
-    background-color: rgb(255, 255, 252);
-}
-
-QLineEdit:!enabled
-{
-	background-color: darkgray;
-}</string>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>9</pointsize>
+      </font>
      </property>
      <property name="text">
-      <string/>
+      <string>Found POV-Ray installed at:</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_8">
+    <widget class="QLabel" name="lbl_regPath">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="geometry">
       <rect>
-       <x>276</x>
-       <y>68</y>
-       <width>121</width>
+       <x>30</x>
+       <y>60</y>
+       <width>471</width>
        <height>20</height>
       </rect>
      </property>
@@ -333,34 +234,10 @@ QLineEdit:!enabled
       </font>
      </property>
      <property name="text">
-      <string>Add to extracted path:</string>
+      <string>POV-Ray Installation Not Found</string>
      </property>
-    </widget>
-    <widget class="QLineEdit" name="le_executable">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="geometry">
-      <rect>
-       <x>396</x>
-       <y>67</y>
-       <width>111</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QLineEdit
-{
-    background-color: rgb(255, 255, 252);
-}
-
-QLineEdit:!enabled
-{
-	background-color: darkgray;
-}</string>
-     </property>
-     <property name="text">
-      <string/>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
     <widget class="QLineEdit" name="le_specPath">

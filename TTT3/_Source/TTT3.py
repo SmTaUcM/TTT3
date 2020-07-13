@@ -493,8 +493,13 @@ class TTT3(QtGui.QMainWindow):
         self.povrayMonitor()
 
         # Open the newly generated uniform.png file.
-        if "3.6" in self.config.get("POV", "path"):
-            self.convertImage(uniform)
+        if self.config.get("POV", "mode") == "registry":
+            if "3.6" in self.config.get("POV", "regpath"):
+                self.convertImage(uniform)
+
+        elif self.config.get("POV", "mode") == "specific":
+            if "3.6" in self.config.get("POV", "path"):
+                self.convertImage(uniform)
 
         os.system(r"data\{uniformType}.png".format(uniformType=uniform))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -561,10 +566,7 @@ class TTT3(QtGui.QMainWindow):
             return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
 
         # ----- All other values -----
-        self.config_gui.cb_reg.setCurrentIndex(self.config.getint("POV", "fromregistry"))
-        self.config_gui.le_regPath.setText(self.config.get("POV", "regpath"))
-        self.config_gui.le_key.setText(self.config.get("POV", "key"))
-        self.config_gui.le_executable.setText(self.config.get("POV", "add"))
+        self.config_gui.lbl_regPath.setText(self.config.get("POV", "regpath"))
         self.config_gui.le_specPath.setText(self.config.get("POV", "path"))
         self.config_gui.le_backend.setText(self.config.get("TCDB", "xml"))
         self.config_gui.le_roster.setText(self.config.get("TCDB", "roster"))
@@ -603,10 +605,9 @@ class TTT3(QtGui.QMainWindow):
         '''Method that controls what happens within the 'Configuration' window if a 'POV' radio button is clicked.'''
 
         # Enable the registry path options.
-        self.config_gui.cb_reg.setEnabled(True)
-        self.config_gui.le_regPath.setEnabled(True)
-        self.config_gui.le_key.setEnabled(True)
-        self.config_gui.le_executable.setEnabled(True)
+        self.config_gui.lbl_regPathTitle.setEnabled(True)
+        self.config_gui.lbl_regPath.setEnabled(True)
+        self.config_gui.lbl_regPath.setText(self.getPathFromRegistry())
 
         # Disable the specific path options.
         self.config_gui.le_specPath.setEnabled(False)
@@ -625,10 +626,8 @@ class TTT3(QtGui.QMainWindow):
         self.config_gui.btn_config_browse.setEnabled(True)
 
         # Disable the registry path options.
-        self.config_gui.cb_reg.setEnabled(False)
-        self.config_gui.le_regPath.setEnabled(False)
-        self.config_gui.le_key.setEnabled(False)
-        self.config_gui.le_executable.setEnabled(False)
+        self.config_gui.lbl_regPathTitle.setEnabled(False)
+        self.config_gui.lbl_regPath.setEnabled(False)
 
         # Save our setting.
         self.config.set("POV", "mode", "specific")
@@ -638,32 +637,27 @@ class TTT3(QtGui.QMainWindow):
     def config_btn_ok_method(self):
         '''Method that handles the functionality when the 'OK' button is pressed within  the 'Configuration' screen.'''
 
-        # ----- All other values -----
-        self.config.set("POV", "fromregistry", self.config_gui.cb_reg.currentIndex())
-        self.config.set("POV", "regpath", str(self.config_gui.le_regPath.text()))
-        self.config.set("POV", "key", str(self.config_gui.le_key.text()))
-        self.config.set("POV", "add", str(self.config_gui.le_executable.text()))
+        # Test to ensure that the direct POV-Ray exceutable is present.
+        if self.config.get("POV", "mode") == "specific":
+
+            if not os.path.exists(self.config_gui.le_specPath.text()):
+                msg = "Cannot find valid installion of POV-Ray at:\n\n%s"%str(self.config_gui.le_specPath.text())
+                return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
+
+            else:
+                # Save the direct path.
+                self.config.set("POV", "path", self.config_gui.le_specPath.text())
+
+        else:
+            # Seve the detected registry path.
+            self.config.set("POV", "regpath", self.config_gui.lbl_regPath.text())
+
+        # All other settings.
         self.config.set("TCDB", "xml", str(self.config_gui.le_backend.text()))
         self.config.set("TCDB", "roster", str(self.config_gui.le_roster.text()))
         self.config.set("TCDB", "search", str(self.config_gui.le_search.text()))
 
-        # ----- POV-Ray Path ------
-        if self.config.get("POV", "mode") == "registry":
-            # Save the full path to our config.
-            path = self.getPathFromRegistry()
-            if path != 1: # The path will be 1 if the getPathFromRegistry() method encounters an error.
-                self.config.set("POV", "path", path)
 
-        elif self.config.get("POV", "mode") == "specific":
-            self.config.set("POV", "path", self.config_gui.le_specPath.text())
-
-        else:
-            pass
-
-        # Test to ensure that the POV-Ray exceutable is present.
-        if not os.path.exists(self.config.get("POV", "path")):
-            msg = "Cannot find valid installion of POV-Ray at:\n%s\nTry changing the 'Add to extracted path:' option.\n\nValid options are usually:\nbin\pvengine64.exe\nbin\pvengine.exe"%str(self.config.get("POV", "path"))
-            return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
 
         # Save and close.
         self.saveSettings()
@@ -674,32 +668,46 @@ class TTT3(QtGui.QMainWindow):
     def getPathFromRegistry(self):
         '''Method to detect the installation path of POV-Ray from the Windows registry using the provided options..'''
 
-        try:
-            # Determine which registry we are connecting to.
-            if self.config.getint("POV", "fromregistry") == 0:
-                aReg = ConnectRegistry(None, HKEY_CURRENT_USER)
+        # Determin the highest version of POV-Ray from the version setting in 'TTT3.ini'.
+        path = False
+        version = float(self.config.get("POV", "version"))
 
-            elif self.config.getint("POV", "fromregistry") == 1:
-                aReg = ConnectRegistry(None, HKEY_LOCAL_MACHINE)
+        while not path:
+            try:
+                # Obtain the path to POV-Ray.
+                aKey = "Software\\POV-Ray\\v" + str(version) + "\\Windows\\"
+                values = OpenKey(HKEY_CURRENT_USER, aKey)
+                path = QueryValueEx(values, "Home")[0]
 
-            else:
-                msg = "Error: Invalid setting for 'fromregistry' in TTT3.ini."
-                return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
+            except WindowsError:
+                version -= 0.1
 
-            # Obtain the path to POV-Ray.
-            aKey = self.config.get("POV", "regpath")
-            values = OpenKey(aReg, aKey)
-            path = QueryValueEx(values, "Home")[0]
+                # Fall back to CurrentVerison if all else fails.
+                if version < 3.6:
+                    aKey = "Software\\POV-Ray\\CurrentVersion\\Windows\\"
+                    values = OpenKey(HKEY_CURRENT_USER, aKey)
+                    path = QueryValueEx(values, "Home")[0]
 
-            # Save the detected path and return the value.
-            self.config.set("POV", "path", path + self.config.get("POV", "add"))
-            self.saveSettings()
-            return path + self.config.get("POV", "add")
+        # Add a backslash if required to the path.
+        if path[-1] != "\\":
+            path += "\\"
 
-        # Raise an error if we can't find POV-Ray in the Windows Registry.
-        except WindowsError:
+        # Detect weather the 32bit or 64bit version of POV-Ray is installed.
+        if os.path.exists(path + "\\bin\\pvengine64.exe"):
+            path += "bin\\pvengine64.exe"
+
+        elif os.path.exists(path + "\\bin\\pvengine.exe"):
+            path += "bin\\pvengine.exe"
+
+        else:
+            # Raise an error if we can't find POV-Ray in the Windows Registry.
             msg = "Cannot find valid installion of POV-Ray in the Windows Registry."
             return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
+
+        # Save the detected path and return the value.
+        self.config.set("POV", "regpath", path)
+        self.saveSettings()
+        return path
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -709,7 +717,7 @@ class TTT3(QtGui.QMainWindow):
         fileDialog = QtGui.QFileDialog()
         fileDialog.setFileMode(QtGui.QFileDialog.AnyFile)
         fileDialog.setDirectory(r"C:\Program Files\POV-Ray")
-        fileDialog.setFilter("pvengine.exe;;pvengine64.exe")
+        fileDialog.setFilter("pvengine64.exe;;pvengine.exe")
         fileDialog.show()
         if fileDialog.exec_():
             target = fileDialog.selectedFiles()
