@@ -16,7 +16,7 @@ mkdir dist\data
 xcopy ..\data dist\data\ /S /Q
 rem settings folder.
 mkdir dist\settings
-xcopy ..\settings dist\settings\" /S /Q
+xcopy ..\settings dist\settings\ /S /Q
 
 rem Delete the un-needed Build folder.
 rmdir build /S /Q
