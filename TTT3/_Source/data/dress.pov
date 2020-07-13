@@ -120,8 +120,8 @@ camera
 
 
 #declare cloth = 0;
-#declare position = "CMDR";
-#declare rank = "CM";
+#declare position = "NUL";
+#declare rank = "CT";
 #declare rankrotate = <-18.8939990997314,0.351000010967255,7.92899990081787>;
 #declare ranktranslate = <51.1030006408691,-130.444000244141,217.598007202148>;
 

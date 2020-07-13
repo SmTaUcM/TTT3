@@ -16,6 +16,7 @@ import resource
 import sys
 import os
 import ctypes
+import ConfigParser
 from _winreg import *
 from PyQt4 import QtGui, QtCore, uic
 
@@ -32,17 +33,19 @@ class NullDevice():
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
+
 class TTT3(QtGui.QMainWindow):
-    '''Main object class represting the TTT3 application.'''
+    '''Main object class representing the TTT3 application.'''
 
     def __init__(self):
         '''Class constructor.'''
 
-        # Initialise an instance of a QT Main Window and load our GUI file data\uis\ttt.ui.
+        # Initialise an instance of a QT Main Window and load our GUI file 'data\uis\ttt.ui'.
         QtGui.QMainWindow.__init__(self)
         self.gui = uic.loadUi(r"data\uis\ttt.ui")
         self.gui.show()
 
+        # ---------- Initialise instance variables. ----------
         # 'Info' Tab Hyperlinks.
         self.gui.lbl_readme.mouseReleaseEvent = self.readmeLink
         self.gui.lbl_email.mouseReleaseEvent = self.emailLink
@@ -96,7 +99,7 @@ class TTT3(QtGui.QMainWindow):
         self.connect(self.gui.rb_rank_sa,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
         self.connect(self.gui.rb_rank_ga,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
 
-        # Initialise instance variables.
+        # Radio Button lists.
         self.rankRadioButtons = [self.gui.rb_rank_ct, self.gui.rb_rank_sl, self.gui.rb_rank_lt, self.gui.rb_rank_lcm, self.gui.rb_rank_cm,
                                  self.gui.rb_rank_cpt, self.gui.rb_rank_maj, self.gui.rb_rank_lc, self.gui.rb_rank_col, self.gui.rb_rank_gn,
                                  self.gui.rb_rank_ra, self.gui.rb_rank_va, self.gui.rb_rank_ad, self.gui.rb_rank_fa, self.gui.rb_rank_ha,
@@ -106,14 +109,18 @@ class TTT3(QtGui.QMainWindow):
                                      self.gui.rb_pos_com, self.gui.rb_pos_bgcom, self.gui.rb_pos_ia, self.gui.rb_pos_ca, self.gui.rb_pos_sgcom,
                                      self.gui.rb_pos_cs, self.gui.rb_pos_xo, self.gui.rb_pos_fc, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
 
-        # Initialise PovRay Template variables.
+        # PovRay Template variables.
         self.position = None
         self.rank = None
         self.ship = None
         self.wing = None
         self.sqn = None
 
-        # Application logic.
+        # Configuration variables.
+        self.config = None
+
+        # ---------- Application logic. ----------
+        self.loadSettings()
         self.initialGUISetup()
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -192,7 +199,7 @@ class TTT3(QtGui.QMainWindow):
 
 
     def posRBLogic(self):
-        '''Method that controls the Position Radio Button Logic - Showing or hiding the required rank options'''
+        '''Method that controls the Position Radio Button Logic - Showing or hiding the required rank options.'''
 
         # Disnable the Dress and Duty Uniform buttons.
         self.gui.btn_dress.setEnabled(False)
@@ -324,7 +331,70 @@ class TTT3(QtGui.QMainWindow):
                 if radioButton == self.gui.rb_rank_ct:
                     self.rank = "CT"
                     break
-                # ToDo Finish!
+
+                elif radioButton == self.gui.rb_rank_sl:
+                    self.rank = "SL"
+                    break
+
+                elif radioButton == self.gui.rb_rank_lt:
+                    self.rank = "LT"
+                    break
+
+                elif radioButton == self.gui.rb_rank_lcm:
+                    self.rank = "LCM"
+                    break
+
+                elif radioButton == self.gui.rb_rank_cm:
+                    self.rank = "CM"
+                    break
+
+                elif radioButton == self.gui.rb_rank_cpt:
+                    self.rank = "CPT"
+                    break
+
+                elif radioButton == self.gui.rb_rank_maj:
+                    self.rank = "MAJ"
+                    break
+
+                elif radioButton == self.gui.rb_rank_lc:
+                    self.rank = "LC"
+                    break
+
+                elif radioButton == self.gui.rb_rank_col:
+                    self.rank = "COL"
+                    break
+
+                elif radioButton == self.gui.rb_rank_gn:
+                    self.rank = "GN"
+                    break
+
+                elif radioButton == self.gui.rb_rank_ra:
+                    self.rank = "RA"
+                    break
+
+                elif radioButton == self.gui.rb_rank_va:
+                    self.rank = "VA"
+                    break
+
+                elif radioButton == self.gui.rb_rank_ad:
+                    self.rank = "AD"
+                    break
+
+                elif radioButton == self.gui.rb_rank_fa:
+                    self.rank = "FA"
+                    break
+
+                elif radioButton == self.gui.rb_rank_ha:
+                    self.rank = "HA"
+                    break
+
+                elif radioButton == self.gui.rb_rank_sa:
+                    self.rank = "SA"
+                    break
+
+                elif radioButton == self.gui.rb_rank_ga:
+                    self.rank = "GA"
+                    break
 
         # Enable the Dress and Duty Uniform buttons.
         self.gui.btn_dress.setEnabled(True)
@@ -354,8 +424,8 @@ class TTT3(QtGui.QMainWindow):
 
     def btn_dressMethod(self):
         '''Method that is triggered when the 'Dress Uniform' button is clicked.
-           This method will check that the correct selectiosn have been made within TTT3 which as Ship and Squadron and then
-           directly call up PovRay to render the unirom.'''
+           This method will check that the correct selections has been made within TTT3 such as Ship and Squadron and then
+           directly call 'launchPOVRay' to open up PovRay and render the unirom.'''
 
         # Check to see if the user has made the correct selections for their position and rank.
         if self.position in ["FM", "FL", "CMDR", "WC"]:
@@ -369,62 +439,210 @@ class TTT3(QtGui.QMainWindow):
                 return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
 
         # Run PovRay to render a uniform.
-            # ToDo Dynamic PovRay .bat
         else:
+            self.launchPOVRay("dress")
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-            # ToDo Move to Config.
-            # Detect the installation path of POV-Ray from the Windows registry.
-            try:
-                aReg = ConnectRegistry(None, HKEY_CURRENT_USER)
-                aKey = r"Software\POV-Ray\CurrentVersion\Windows"
-                values = OpenKey(aReg, aKey)
-                path = QueryValueEx(values, "Home")[0]
 
-            except WindowsError:
-                msg = "Cannot find valid installion of POV-Ray."
-                return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
-                path = "NULL"
+    def launchPOVRay(self, uniform):
+        '''Method that dynamically writes data\batch\povray.bat and invisible.vbs to silently loanch POV-Ray with the correct paths.
+           The "uniform" agrument takes "dress", "duty or "helmet which is dependant on which button has been pressed."'''
 
-            # Dynamically write the data\povray.bat file.
-            template = r'&PATH&&ADD& /RENDER "&APPPATH&\data\&TYPE&.pov" +w640 +h853 +q9 /EXIT'
-            template = template.replace("&APPPATH&", os.getcwd())
-            template = template.replace("&PATH&", path)
-            template = template.replace("&ADD&", r"bin\pvengine64.exe")
-            template = template.replace("&TYPE&", "dress")
-            print template
-            with open(r"data\batch\povray.bat", "w") as dataFile:
-                dataFile.write(template)
+        # Dynamically write the 'data\batch\povray.bat' file.
+            # Set the correct paths based on where TTT3 is located and the TTT3.ini settings file.
+        template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\&TYPE&.pov" +w640 +h853 +q9 /EXIT'
+        template = template.replace("&TTTPATH&", os.getcwd())
+        template = template.replace("&POVPATH&", self.config.get("POV", "path"))
+        template = template.replace("&TYPE&", uniform)
 
-            # Dynamically write the data\invisible.vbs file.
-            template = [r'Set WshShell = CreateObject("WScript.Shell")' + "\n",
-                         r'WshShell.Run chr(34) & "&PATH&\data\batch\povray.bat" & Chr(34), 0' + "\n",
-                         r'Set WshShell = Nothing']
-            output = []
+            # Write the 'data\batch\povray.bat' file.
+        with open(r"data\batch\povray.bat", "w") as dataFile:
+            dataFile.write(template)
 
-            for line in template:
-                if "&PATH&" in line:
-                    newLine = line.replace("&PATH&", os.getcwd())
-                    output.append(newLine)
-                else:
-                    output.append(line)
+        # Dynamically write the 'data\batch\invisible.vbs' file.
+            # Set the correct paths based on where TTT3 is located.
+        template = [r'Set WshShell = CreateObject("WScript.Shell")' + "\n",
+                     r'WshShell.Run chr(34) & "&PATH&\data\batch\povray.bat" & Chr(34), 0' + "\n",
+                     r'Set WshShell = Nothing']
+        output = []
 
-            with open(r"data\batch\invisible.vbs", "w") as dataFile:
-                dataFile.writelines(output)
+        for line in template:
+            if "&PATH&" in line:
+                newLine = line.replace("&PATH&", os.getcwd())
+                output.append(newLine)
+            else:
+                output.append(line)
 
-            os.system(r"data\batch\invisible.vbs")
+            # Write the 'data\batch\invisible.vbs' file.
+        with open(r"data\batch\invisible.vbs", "w") as dataFile:
+            dataFile.writelines(output)
+
+        # Launch POV-Ray using 'invisible.vbs' which then silently runs 'povray.bat' which then opens POV-Ray and auto renders the uniform.
+        os.system(r"data\batch\invisible.vbs")
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def loadSettings(self):
+        '''Method that reads in 'settings\TT3.ini' and stores the data as a ConfigParser object.'''
+
+        self.config = ConfigParser.ConfigParser()
+        self.config.read("settings\TTT3.ini")
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def applySettings(self):
+        '''Method that applies the settings to the 'Configuration' window.'''
+
+        # ----- Mode. -----
+        if self.config.get("POV", "mode") == "registry":
+            self.config_gui.rb_reg.setChecked(True)
+
+        elif self.config.get("POV", "mode") == "specific":
+            self.config_gui.rb_specific.setChecked(True)
+
+        else:
+            msg = "Error: Invalid setting for 'mode' in TTT3.ini."
+            return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
+
+
+        # ----- All other values -----
+        self.config_gui.cb_reg.setCurrentIndex(self.config.getint("POV", "fromregistry"))
+        self.config_gui.le_regPath.setText(self.config.get("POV", "regpath"))
+        self.config_gui.le_key.setText(self.config.get("POV", "key"))
+        self.config_gui.le_executable.setText(self.config.get("POV", "add"))
+        self.config_gui.le_specPath.setText(self.config.get("POV", "path"))
+        self.config_gui.le_backend.setText(self.config.get("TCDB", "xml"))
+        self.config_gui.le_roster.setText(self.config.get("TCDB", "roster"))
+        self.config_gui.le_search.setText(self.config.get("TCDB", "search"))
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def saveSettings(self):
+        '''Method that saves the user's settings to 'settings\TT3.ini'.'''
+
+        with open(r"settings\TTT3.ini", "w") as settingsFile:
+            self.config.write(settingsFile)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
     def btn_configMethod(self):
         '''Method that opens and handles control of the 'Configuration' window.'''
 
-        # Load our GUI file data\uis\config.ui.
+        # Load our GUI file 'data\uis\config.ui'.
         self.config_gui = uic.loadUi(r"data\uis\config.ui")
         self.config_gui.show()
 
-        # Button Connections.
+        # GUI Connections.
         self.connect(self.config_gui.btn_config_close, QtCore.SIGNAL("clicked()"), self.config_gui.close)
+        self.connect(self.config_gui.btn_config_ok, QtCore.SIGNAL("clicked()"), self.config_btn_ok_method)
+        self.connect(self.config_gui.rb_reg, QtCore.SIGNAL("toggled(bool)"), self.config_rb_reg_logic)
+        self.connect(self.config_gui.rb_specific, QtCore.SIGNAL("toggled(bool)"), self.config_rb_specific_logic)
+        self.connect(self.config_gui.btn_config_browse, QtCore.SIGNAL("clicked()"), self.config_browse)
+
+        # Set the values displayed to the values in our config / setting from 'settings\TTT3.ini'.
+        self.applySettings()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def config_rb_reg_logic(self, value=None):
+        '''Method that controls what happens within the 'Configuration' window if a 'POV' radio button is clicked.'''
+
+        # Enable the registry path options.
+        self.config_gui.cb_reg.setEnabled(True)
+        self.config_gui.le_regPath.setEnabled(True)
+        self.config_gui.le_key.setEnabled(True)
+        self.config_gui.le_executable.setEnabled(True)
+
+        # Disable the specific path options.
+        self.config_gui.le_specPath.setEnabled(False)
+        self.config_gui.btn_config_browse.setEnabled(False)
+
+        # Save our setting.
+        self.config.set("POV", "mode", "registry")
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def config_rb_specific_logic(self, value=None):
+        '''Method that controls what happens within the 'Configuration' window if a 'POV' radio button is clicked.'''
+
+        # Enable the specific path options.
+        self.config_gui.le_specPath.setEnabled(True)
+        self.config_gui.btn_config_browse.setEnabled(True)
+
+        # Disable the registry path options.
+        self.config_gui.cb_reg.setEnabled(False)
+        self.config_gui.le_regPath.setEnabled(False)
+        self.config_gui.le_key.setEnabled(False)
+        self.config_gui.le_executable.setEnabled(False)
+
+        # Save our setting.
+        self.config.set("POV", "mode", "specific")
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def config_btn_ok_method(self):
+        '''Method that handles the functionality when the 'OK' button is pressed within  the 'Configuration' screen.'''
+
+        if self.config.get("POV", "mode") == "registry":
+            self.getPathFromRegistry()
+
+        elif self.config.get("POV", "mode") == "specific":
+            self.config.set("POV", "path", self.config_gui.le_specPath.text())
+            self.saveSettings()
+            self.config_gui.close()
+
+        else:
+            self.config_gui.close()
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def getPathFromRegistry(self):
+        '''Method to detect the installation path of POV-Ray from the Windows registry using the provided options..'''
+
+        try:
+            # Determine which registry we are connecting to.
+            if self.config.get("POV", "fromregistry") == "0":
+                aReg = ConnectRegistry(None, HKEY_CURRENT_USER)
+
+            elif self.config.get("POV", "fromregistry") == "1":
+                aReg = ConnectRegistry(None, HKEY_LOCAL_MACHINE)
+
+            else:
+                msg = "Error: Invalid setting for 'fromregistry' in TTT3.ini."
+                return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
+
+            # Obtain the path to POV-Ray.
+            aKey = self.config.get("POV", "regpath")
+            values = OpenKey(aReg, aKey)
+            path = QueryValueEx(values, "Home")[0]
+
+            # Save the full path to our config.
+            self.config.set("POV", "path", path + self.config.get("POV", "add"))
+
+            # Close the 'Configuration' window.
+            self.saveSettings()
+            self.config_gui.close()
+
+        # Raise an error if we can't find POV-Ray in the Windows Registry.
+        except WindowsError:
+            msg = "Cannot find valid installion of POV-Ray in the Windows Registry."
+            return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def config_browse(self):
+        '''Method that allows the user to select an executable file from a file picker.'''
+
+        fileDialog = QtGui.QFileDialog()
+        fileDialog.setFileMode(QtGui.QFileDialog.AnyFile)
+        fileDialog.setDirectory(r"C:\Program Files\POV-Ray")
+        fileDialog.setFilter("pvengine.exe;;pvengine64.exe")
+        fileDialog.show()
+        if fileDialog.exec_():
+            target = fileDialog.selectedFiles()
+            target = target[0].replace(r"/", "\\")
+            self.config_gui.le_specPath.setText(target)
+    #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 

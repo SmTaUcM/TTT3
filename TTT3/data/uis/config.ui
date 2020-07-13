@@ -40,7 +40,7 @@
 </string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="btn_ok">
+   <widget class="QPushButton" name="btn_config_ok">
     <property name="enabled">
      <bool>true</bool>
     </property>
@@ -87,7 +87,7 @@ QPushButton:!enabled
      <string>OK</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_close">
+   <widget class="QPushButton" name="btn_config_close">
     <property name="enabled">
      <bool>true</bool>
     </property>
@@ -182,9 +182,15 @@ QPushButton:!enabled
       <rect>
        <x>6</x>
        <y>93</y>
-       <width>191</width>
+       <width>211</width>
        <height>17</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>9</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>Specify POV-Ray's location directly:</string>
@@ -215,7 +221,7 @@ QPushButton:!enabled
      </property>
      <property name="geometry">
       <rect>
-       <x>106</x>
+       <x>105</x>
        <y>40</y>
        <width>161</width>
        <height>22</height>
@@ -267,14 +273,14 @@ QLineEdit:!enabled
 }</string>
      </property>
      <property name="text">
-      <string>Software\POV-Ray\CurrentVersion\Windows</string>
+      <string/>
      </property>
     </widget>
     <widget class="QLabel" name="label_7">
      <property name="geometry">
       <rect>
        <x>25</x>
-       <y>68</y>
+       <y>67</y>
        <width>31</width>
        <height>20</height>
       </rect>
@@ -313,7 +319,7 @@ QLineEdit:!enabled
 }</string>
      </property>
      <property name="text">
-      <string>Home</string>
+      <string/>
      </property>
     </widget>
     <widget class="QLabel" name="label_8">
@@ -359,7 +365,7 @@ QLineEdit:!enabled
 }</string>
      </property>
      <property name="text">
-      <string>bin\pvengine.exe</string>
+      <string/>
      </property>
     </widget>
     <widget class="QLineEdit" name="le_specPath">
@@ -383,10 +389,13 @@ QLineEdit:!enabled
 QLineEdit:!enabled
 {
 	background-color: darkgray;
-}</string>
+}
+
+
+</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_browse">
+    <widget class="QPushButton" name="btn_config_browse">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -425,7 +434,7 @@ QPushButton:hover
 
 QPushButton:!enabled
 {
-     color: gray;
+    color: gray;
 	background-color: darkgray;
 }</string>
      </property>
@@ -498,7 +507,7 @@ QLineEdit:!enabled
 }</string>
      </property>
      <property name="text">
-      <string>http://tc.emperorshammer.org/TTT2backend.php?pin=</string>
+      <string/>
      </property>
     </widget>
     <widget class="QLabel" name="label_9">
@@ -544,7 +553,7 @@ QLineEdit:!enabled
 }</string>
      </property>
      <property name="text">
-      <string>http://tc.emperorshammer.org/roster.php</string>
+      <string/>
      </property>
     </widget>
     <widget class="QLineEdit" name="le_search">
@@ -571,7 +580,7 @@ QLineEdit:!enabled
 }</string>
      </property>
      <property name="text">
-      <string>http://tc.emperorshammer.org/search.php</string>
+      <string/>
      </property>
     </widget>
     <widget class="QLabel" name="label_10">
