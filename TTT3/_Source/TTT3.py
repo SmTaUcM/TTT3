@@ -17,6 +17,8 @@ import sys
 import os
 import ctypes
 import ConfigParser
+import psutil
+import time
 from _winreg import *
 from PyQt4 import QtGui, QtCore, uic
 
@@ -479,6 +481,38 @@ class TTT3(QtGui.QMainWindow):
 
         # Launch POV-Ray using 'invisible.vbs' which then silently runs 'povray.bat' which then opens POV-Ray and auto renders the uniform.
         os.system(r"data\batch\invisible.vbs")
+
+        # Wait for POV-Ray to close.
+        self.povrayMonitor()
+
+        # Open the newly generated uniform.png file.
+        os.system(r"data\{uniformType}.png".format(uniformType=uniform))
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def povrayMonitor(self):
+        '''Monitors for povray running in the background and signals when it has closed.'''
+
+        time.sleep(1) # Allow one second for POV-Ray to open.
+
+        povRunning = True
+
+        while povRunning:
+            povRunning = False
+
+            # Get a list of all running processes
+            list = psutil.pids()
+
+            # Go though list and check each processes executeable name for 'pvengine.exe'
+            for i in range(0, len(list)):
+                try:
+                    p = psutil.Process(list[i])
+                    if p.cmdline()[0].find("pvengine64.exe") != -1 or p.cmdline()[0].find("pvengine.exe") != -1:
+                        povRunning = True
+                        break;
+                except:
+                    pass
+            time.sleep(1)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 

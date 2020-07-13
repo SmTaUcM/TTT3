@@ -1260,8 +1260,8 @@ margin-top: 2px; /* make non-selected tabs look smaller */
      <widget class="QLabel" name="lbl_qt">
       <property name="geometry">
        <rect>
-        <x>217</x>
-        <y>299</y>
+        <x>229</x>
+        <y>306</y>
         <width>41</width>
         <height>16</height>
        </rect>
