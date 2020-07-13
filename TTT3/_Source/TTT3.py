@@ -663,10 +663,10 @@ class TTT3(QtGui.QMainWindow):
 
         try:
             # Determine which registry we are connecting to.
-            if self.config.get("POV", "fromregistry") == 0:
+            if self.config.getint("POV", "fromregistry") == 0:
                 aReg = ConnectRegistry(None, HKEY_CURRENT_USER)
 
-            elif self.config.get("POV", "fromregistry") == 1:
+            elif self.config.getint("POV", "fromregistry") == 1:
                 aReg = ConnectRegistry(None, HKEY_LOCAL_MACHINE)
 
             else:
