@@ -21,6 +21,7 @@ import psutil
 import time
 from _winreg import *
 from PyQt4 import QtGui, QtCore, uic
+from PIL import Image
 
 
 
@@ -493,9 +494,9 @@ class TTT3(QtGui.QMainWindow):
 
         # Open the newly generated uniform.png file.
         if "3.6" in self.config.get("POV", "path"):
-            os.system(r"data\{uniformType}.bmp".format(uniformType=uniform))
-        else:
-            os.system(r"data\{uniformType}.png".format(uniformType=uniform))
+            self.convertImage(uniform)
+
+        os.system(r"data\{uniformType}.png".format(uniformType=uniform))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -522,6 +523,18 @@ class TTT3(QtGui.QMainWindow):
                 except:
                     pass
             time.sleep(1)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def convertImage(self, uniform):
+        '''Comnverts a given .bpf file into .jpg, .gif or .png'''
+
+        path = r"data\%s"%uniform
+        img = Image.open(path + ".bmp")
+        new_img = img.resize( (640, 853) )
+        new_img.save( path + ".png", 'png')
+##        new_img.save( path + ".jpg", 'jpeg')
+##        new_img.save( path + ".gif", 'gif')
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -702,7 +715,7 @@ class TTT3(QtGui.QMainWindow):
             target = fileDialog.selectedFiles()
             target = target[0].replace(r"/", "\\")
             self.config_gui.le_specPath.setText(target)
-    #--------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
