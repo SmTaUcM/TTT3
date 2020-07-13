@@ -454,7 +454,7 @@ class TTT3(QtGui.QMainWindow):
             # Set the correct paths based on where TTT3 is located and the TTT3.ini settings file.
         template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\&TYPE&.pov" +w640 +h853 +q9 /EXIT'
         template = template.replace("&TTTPATH&", os.getcwd())
-        template = template.replace("&POVPATH&", self.config.get("POV", "path"))
+        template = template.replace("&POVPATH&", self.getPathFromRegistry())
         template = template.replace("&TYPE&", uniform)
 
             # Write the 'data\batch\povray.bat' file.
@@ -484,7 +484,6 @@ class TTT3(QtGui.QMainWindow):
 
         # Wait for POV-Ray to close.
         self.povrayMonitor()
-
         # Open the newly generated uniform.png file.
         os.system(r"data\{uniformType}.png".format(uniformType=uniform))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -537,7 +536,6 @@ class TTT3(QtGui.QMainWindow):
         else:
             msg = "Error: Invalid setting for 'mode' in TTT3.ini."
             return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
-
 
         # ----- All other values -----
         self.config_gui.cb_reg.setCurrentIndex(self.config.getint("POV", "fromregistry"))
@@ -618,15 +616,17 @@ class TTT3(QtGui.QMainWindow):
         '''Method that handles the functionality when the 'OK' button is pressed within  the 'Configuration' screen.'''
 
         if self.config.get("POV", "mode") == "registry":
-            self.getPathFromRegistry()
+            # Save the full path to our config.
+            self.config.set("POV", "path", self.getPathFromRegistry())
 
         elif self.config.get("POV", "mode") == "specific":
             self.config.set("POV", "path", self.config_gui.le_specPath.text())
             self.saveSettings()
-            self.config_gui.close()
 
         else:
-            self.config_gui.close()
+            pass
+
+        self.config_gui.close()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -650,12 +650,10 @@ class TTT3(QtGui.QMainWindow):
             values = OpenKey(aReg, aKey)
             path = QueryValueEx(values, "Home")[0]
 
-            # Save the full path to our config.
+            # Save the detected path and return the value.
             self.config.set("POV", "path", path + self.config.get("POV", "add"))
-
-            # Close the 'Configuration' window.
             self.saveSettings()
-            self.config_gui.close()
+            return path + self.config.get("POV", "add")
 
         # Raise an error if we can't find POV-Ray in the Windows Registry.
         except WindowsError:
