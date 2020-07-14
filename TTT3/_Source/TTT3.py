@@ -123,6 +123,22 @@ class TTT3(QtGui.QMainWindow):
         self.wing = None
         self.sqn = None
 
+        # PovRay Template Constants.
+        self.RANK_04_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787", # Rotate
+                                "51.3199996948242,-131.973007202148,213.126998901367"]  # Translate
+
+        self.RANK_06_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787",
+                                "51.1030006408691,-130.444000244141,217.598007202148"]
+
+        self.RANK_08_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787",
+                                "51.3199996948242,-131.973007202148,213.126998901367"]
+
+        self.RANK_10_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787",
+                                "51.3199996948242,-131.973007202148,213.126998901367"]
+
+        self.RANK_12_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787",
+                                "51.3199996948242,-131.973007202148,213.126998901367"]
+
         # Configuration variables.
         self.config = None
 
@@ -337,14 +353,14 @@ class TTT3(QtGui.QMainWindow):
                 # Set the correct rank for the selected rank.
                 if radioButton == self.gui.rb_rank_ct:
                     self.rank = "CT"
-                    self.rankRotate = "-18.8939990997314,0.351000010967255,7.92899990081787"
-                    self.rankTranslate = "51.3199996948242,-131.973007202148,213.126998901367"
+                    self.rankRotate = self.RANK_04_SQUARES[0]
+                    self.rankTranslate = self.RANK_04_SQUARES[1]
                     break
 
                 elif radioButton == self.gui.rb_rank_sl:
                     self.rank = "SL"
-                    self.rankRotate = "-18.8939990997314,0.351000010967255,7.92899990081787"
-                    self.rankTranslate = "51.3199996948242,-131.973007202148,213.126998901367"
+                    self.rankRotate = self.RANK_04_SQUARES[0]
+                    self.rankTranslate = self.RANK_04_SQUARES[1]
                     break
 
                 elif radioButton == self.gui.rb_rank_lt:
@@ -353,60 +369,86 @@ class TTT3(QtGui.QMainWindow):
 
                 elif radioButton == self.gui.rb_rank_lcm:
                     self.rank = "LCM"
+                    self.rankRotate = self.RANK_04_SQUARES[0]
+                    self.rankTranslate = self.RANK_04_SQUARES[1]
                     break
 
                 elif radioButton == self.gui.rb_rank_cm:
                     self.rank = "CM"
-                    self.rankRotate = "-18.8939990997314,0.351000010967255,7.92899990081787"
-                    self.rankTranslate = "51.1030006408691,-130.444000244141,217.598007202148"
+                    self.rankRotate = self.RANK_06_SQUARES[0]
+                    self.rankTranslate = self.RANK_06_SQUARES[1]
                     break
 
                 elif radioButton == self.gui.rb_rank_cpt:
                     self.rank = "CPT"
+                    self.rankRotate = self.RANK_06_SQUARES[0]
+                    self.rankTranslate = self.RANK_06_SQUARES[1]
                     break
 
                 elif radioButton == self.gui.rb_rank_maj:
                     self.rank = "MAJ"
+                    self.rankRotate = self.RANK_08_SQUARES[0]
+                    self.rankTranslate = self.RANK_08_SQUARES[1]
                     break
 
                 elif radioButton == self.gui.rb_rank_lc:
                     self.rank = "LC"
+                    self.rankRotate = self.RANK_08_SQUARES[0]
+                    self.rankTranslate = self.RANK_08_SQUARES[1]
                     break
 
                 elif radioButton == self.gui.rb_rank_col:
                     self.rank = "COL"
+                    self.rankRotate = self.RANK_08_SQUARES[0]
+                    self.rankTranslate = self.RANK_08_SQUARES[1]
                     break
 
                 elif radioButton == self.gui.rb_rank_gn:
                     self.rank = "GN"
+                    self.rankRotate = self.RANK_08_SQUARES[0]
+                    self.rankTranslate = self.RANK_08_SQUARES[1]
                     break
 
                 elif radioButton == self.gui.rb_rank_ra:
                     self.rank = "RA"
+                    self.rankRotate = self.RANK_10_SQUARES[0]
+                    self.rankTranslate = self.RANK_10_SQUARES[1]
                     break
 
                 elif radioButton == self.gui.rb_rank_va:
                     self.rank = "VA"
+                    self.rankRotate = self.RANK_10_SQUARES[0]
+                    self.rankTranslate = self.RANK_10_SQUARES[1]
                     break
 
                 elif radioButton == self.gui.rb_rank_ad:
                     self.rank = "AD"
+                    self.rankRotate = self.RANK_10_SQUARES[0]
+                    self.rankTranslate = self.RANK_10_SQUARES[1]
                     break
 
                 elif radioButton == self.gui.rb_rank_fa:
                     self.rank = "FA"
+                    self.rankRotate = self.RANK_12_SQUARES[0]
+                    self.rankTranslate = self.RANK_12_SQUARES[1]
                     break
 
                 elif radioButton == self.gui.rb_rank_ha:
                     self.rank = "HA"
+                    self.rankRotate = self.RANK_12_SQUARES[0]
+                    self.rankTranslate = self.RANK_12_SQUARES[1]
                     break
 
                 elif radioButton == self.gui.rb_rank_sa:
                     self.rank = "SA"
+                    self.rankRotate = self.RANK_12_SQUARES[0]
+                    self.rankTranslate = self.RANK_12_SQUARES[1]
                     break
 
                 elif radioButton == self.gui.rb_rank_ga:
                     self.rank = "GA"
+                    self.rankRotate = self.RANK_12_SQUARES[0]
+                    self.rankTranslate = self.RANK_12_SQUARES[1]
                     break
 
         # Enable the Dress and Duty Uniform buttons.
@@ -745,7 +787,13 @@ class TTT3(QtGui.QMainWindow):
             template = tptFile.readlines()
 
         # Header text.
-        posRankName = self.position + "/" + self.rank + " " + self.name
+        position = ""
+        if self.position == "NUL":
+            position = "    "
+        else:
+            position = self.position + "/"
+
+        posRankName = position + self.rank + " " + self.name
         padding = (37 - len(posRankName)) * " "
         posRankName += padding
 
@@ -930,7 +978,7 @@ class TTT3(QtGui.QMainWindow):
                 povData.append(line)
 
         # Write the parsed data to '\data\dress.pov'.
-        with open(r"data\DRESS_TEST.pov", "w") as povFile:
+        with open(r"data\dress.pov", "w") as povFile:
             povFile.writelines(povData)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
