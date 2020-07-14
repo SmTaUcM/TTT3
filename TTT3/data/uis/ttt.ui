@@ -467,7 +467,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <property name="font">
         <font>
          <family>Arial</family>
-         <pointsize>12</pointsize>
+         <pointsize>10</pointsize>
          <weight>75</weight>
          <bold>true</bold>
          <underline>true</underline>
@@ -549,7 +549,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <property name="font">
         <font>
          <family>Arial</family>
-         <pointsize>12</pointsize>
+         <pointsize>10</pointsize>
          <weight>75</weight>
          <bold>true</bold>
          <underline>true</underline>
@@ -888,16 +888,691 @@ margin-top: 2px; /* make non-selected tabs look smaller */
      <attribute name="title">
       <string>Wing and Squadron</string>
      </attribute>
+     <widget class="QLabel" name="label_17">
+      <property name="geometry">
+       <rect>
+        <x>23</x>
+        <y>18</y>
+        <width>131</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+        <underline>true</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>Ship</string>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="lw_ship">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>23</x>
+        <y>43</y>
+        <width>131</width>
+        <height>211</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QListWidget
+{
+	background-color: rgb(211, 211, 211);
+}
+
+QListWidget:!enabled
+{
+	background-color: darkgray;
+}</string>
+      </property>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_3">
+      <property name="geometry">
+       <rect>
+        <x>7</x>
+        <y>275</y>
+        <width>521</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string/>
+      </property>
+      <widget class="QCheckBox" name="cb_eliteSqn">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>205</x>
+         <y>17</y>
+         <width>111</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Elite Squadron</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QListWidget" name="lw_wing">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>43</y>
+        <width>131</width>
+        <height>211</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QListWidget
+{
+	background-color: rgb(211, 211, 211);
+}
+
+QListWidget:!enabled
+{
+	background-color: darkgray;
+}</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_18">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>18</y>
+        <width>131</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+        <underline>true</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>Wing</string>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="lw_squad">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>377</x>
+        <y>43</y>
+        <width>131</width>
+        <height>211</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QListWidget
+{
+	background-color: rgb(211, 211, 211);
+}
+
+QListWidget:!enabled
+{
+	background-color: darkgray;
+}</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_19">
+      <property name="geometry">
+       <rect>
+        <x>377</x>
+        <y>18</y>
+        <width>131</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+        <underline>true</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>Squadron</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tabMRF">
      <attribute name="title">
       <string>Medals, Ribbons and FCHG</string>
      </attribute>
+     <widget class="QGroupBox" name="groupBox_4">
+      <property name="geometry">
+       <rect>
+        <x>7</x>
+        <y>275</y>
+        <width>521</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string/>
+      </property>
+      <widget class="QLabel" name="label_26">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>17</y>
+         <width>81</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+         <underline>true</underline>
+        </font>
+       </property>
+       <property name="text">
+        <string>FCHG Rank:</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="cbFCHG">
+       <property name="geometry">
+        <rect>
+         <x>97</x>
+         <y>14</y>
+         <width>160</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>None (0 Pts)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Grenadier (10 Pts)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Lancer (25 Pts)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Hussar (50 Pts)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Fusilier (75 Pts)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Dragoon (100 Pts)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Cavalier (150 Pts)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Gallant (200 Pts)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Knight (250 Pts)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Paladin (300 Pts)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Legionnaire (400 Pts)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Aquilifer (500 Pts)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Decurion (750 Pts)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Tesserarius (1,000 Pts)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Optio (1,250 Pts)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Centurion (1,500 Pts)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Executor (2,000 Pts)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Gladiator (2,500 Pts)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Archon (3,000 Pts)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Templar (3,500 Pts)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Imperator (4,000 Pts)</string>
+        </property>
+       </item>
+      </widget>
+     </widget>
+     <widget class="QLabel" name="label_24">
+      <property name="geometry">
+       <rect>
+        <x>12</x>
+        <y>12</y>
+        <width>131</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+        <underline>true</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>Medals</string>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="lw_medals">
+      <property name="geometry">
+       <rect>
+        <x>12</x>
+        <y>35</y>
+        <width>251</width>
+        <height>231</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(211, 211, 211);</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>Medal of Honour (MoH)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Imperial Cross (IC)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Order of the Renegade (OoR)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Grand Order of the Emperor (GOE)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Gold Star of the Empire (GS)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Silver Star of the Empire (SS)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Bronze Star of the Empire (BS)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Palpatine Cresent (PC)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Imperial Security Medal (ISM)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Medal of Instruction (MoI)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Medal of Tactics (MoT)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Iron Star (IS)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Legion of Combat (LoC)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Legion of Skirmish (LoS)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Distinguished Flying Cross (DFC)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Medal of Communicaton (MoC)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Commendation of... (CoX)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Order of the Vanguard (OV)</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QGroupBox" name="gb_medals">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>10</y>
+        <width>256</width>
+        <height>256</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>9</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="title">
+       <string>Medal</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tabImport">
      <attribute name="title">
       <string>Import</string>
      </attribute>
+     <widget class="QLabel" name="label_28">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>12</y>
+        <width>50</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+        <underline>true</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>Import</string>
+      </property>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_6">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>40</y>
+        <width>161</width>
+        <height>111</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string/>
+      </property>
+      <widget class="QPushButton" name="btn_browseRoster">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>23</y>
+         <width>121</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+       <property name="text">
+        <string>Browse Fleet Roster</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_search">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>63</y>
+         <width>121</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+       <property name="text">
+        <string>Personnel Search</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_7">
+      <property name="geometry">
+       <rect>
+        <x>203</x>
+        <y>40</y>
+        <width>130</width>
+        <height>111</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string/>
+      </property>
+      <widget class="QLabel" name="label_30">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>23</y>
+         <width>31</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+         <underline>true</underline>
+        </font>
+       </property>
+       <property name="text">
+        <string>PIN:</string>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="sbPin">
+       <property name="geometry">
+        <rect>
+         <x>43</x>
+         <y>23</y>
+         <width>71</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+       <property name="maximum">
+        <number>999999999</number>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btn_import">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>64</y>
+         <width>111</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+       <property name="text">
+        <string>Import</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QListWidget" name="lw_presets">
+      <property name="geometry">
+       <rect>
+        <x>355</x>
+        <y>40</y>
+        <width>161</width>
+        <height>111</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(211, 211, 211);</string>
+      </property>
+     </widget>
+     <widget class="QTextEdit" name="textEdit">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>163</y>
+        <width>497</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(211, 211, 211);</string>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+      <property name="acceptRichText">
+       <bool>false</bool>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tabInfo">
      <attribute name="title">
@@ -1116,7 +1791,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
      <widget class="QLabel" name="lbl_pic_python">
       <property name="geometry">
        <rect>
-        <x>109</x>
+        <x>95</x>
         <y>221</y>
         <width>81</width>
         <height>81</height>
@@ -1144,7 +1819,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
      <widget class="QLabel" name="lbl_pic_povray">
       <property name="geometry">
        <rect>
-        <x>313</x>
+        <x>362</x>
         <y>221</y>
         <width>101</width>
         <height>81</height>
@@ -1172,7 +1847,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
      <widget class="QLabel" name="lbl_python">
       <property name="geometry">
        <rect>
-        <x>103</x>
+        <x>89</x>
         <y>306</y>
         <width>101</width>
         <height>16</height>
@@ -1199,7 +1874,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
      <widget class="QLabel" name="lbl_povray">
       <property name="geometry">
        <rect>
-        <x>293</x>
+        <x>342</x>
         <y>299</y>
         <width>141</width>
         <height>31</height>
@@ -1232,7 +1907,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
      <widget class="QLabel" name="lbl_pic_qt">
       <property name="geometry">
        <rect>
-        <x>209</x>
+        <x>226</x>
         <y>221</y>
         <width>81</width>
         <height>81</height>
@@ -1260,7 +1935,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
      <widget class="QLabel" name="lbl_qt">
       <property name="geometry">
        <rect>
-        <x>229</x>
+        <x>246</x>
         <y>306</y>
         <width>41</width>
         <height>16</height>

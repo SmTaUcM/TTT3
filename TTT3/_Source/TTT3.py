@@ -49,26 +49,21 @@ class TTT3(QtGui.QMainWindow):
         self.gui = uic.loadUi(r"data\uis\ttt.ui")
         self.gui.show()
 
-        # ---------- Initialise instance variables. ----------
-        # 'Info' Tab Hyperlinks.
-        self.gui.lbl_readme.mouseReleaseEvent = self.readmeLink
-        self.gui.lbl_email.mouseReleaseEvent = self.emailLink
-        self.gui.lbl_tcpm.mouseReleaseEvent = self.tcpmLink
-        self.gui.lbl_uniforms.mouseReleaseEvent = self.uniformsLink
-        self.gui.lbl_pic_python.mouseReleaseEvent = self.pythonLink
-        self.gui.lbl_python.mouseReleaseEvent = self.pythonLink
-        self.gui.lbl_pic_qt.mouseReleaseEvent = self.qtLink
-        self.gui.lbl_qt.mouseReleaseEvent = self.qtLink
-        self.gui.lbl_pic_povray.mouseReleaseEvent = self.povrayLink
-        self.gui.lbl_povray.mouseReleaseEvent = self.povrayLink
+        # ---------- Initialise instance variables and connections. ----------
 
-        # Button Connections.
+            # ----- Main Graphical User Interface. -----
+
+                # Button Connections.
         self.connect(self.gui.btn_dress, QtCore.SIGNAL("clicked()"), self.btn_dressMethod)
         self.connect(self.gui.btn_config, QtCore.SIGNAL("clicked()"), self.btn_configMethod)
         self.connect(self.gui.btn_exit, QtCore.SIGNAL("clicked()"), self.exit)
 
-        # Radio Button Connections.
-            # Positions.
+
+            # ----- 'Position and Rank' Tab. -----
+
+                # Radio Button Connections.
+
+                    # Positions.
         self.connect(self.gui.rb_pos_trn,    QtCore.SIGNAL("clicked()"), self.posRBLogic)
         self.connect(self.gui.rb_pos_fm,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
         self.connect(self.gui.rb_pos_fl,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
@@ -84,7 +79,8 @@ class TTT3(QtGui.QMainWindow):
         self.connect(self.gui.rb_pos_fc,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
         self.connect(self.gui.rb_pos_lr,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
         self.connect(self.gui.rb_pos_fr,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
-            # Ranks.
+
+                    # Ranks.
         self.connect(self.gui.rb_rank_ct,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
         self.connect(self.gui.rb_rank_sl,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
         self.connect(self.gui.rb_rank_lt,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
@@ -103,7 +99,7 @@ class TTT3(QtGui.QMainWindow):
         self.connect(self.gui.rb_rank_sa,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
         self.connect(self.gui.rb_rank_ga,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
 
-        # Radio Button lists.
+                    # Radio Button lists.
         self.rankRadioButtons = [self.gui.rb_rank_ct, self.gui.rb_rank_sl, self.gui.rb_rank_lt, self.gui.rb_rank_lcm, self.gui.rb_rank_cm,
                                  self.gui.rb_rank_cpt, self.gui.rb_rank_maj, self.gui.rb_rank_lc, self.gui.rb_rank_col, self.gui.rb_rank_gn,
                                  self.gui.rb_rank_ra, self.gui.rb_rank_va, self.gui.rb_rank_ad, self.gui.rb_rank_fa, self.gui.rb_rank_ha,
@@ -112,6 +108,34 @@ class TTT3(QtGui.QMainWindow):
         self.positionRadioButtons = [self.gui.rb_pos_trn, self.gui.rb_pos_fm, self.gui.rb_pos_fl, self.gui.rb_pos_cmdr, self.gui.rb_pos_wc,
                                      self.gui.rb_pos_com, self.gui.rb_pos_bgcom, self.gui.rb_pos_ia, self.gui.rb_pos_ca, self.gui.rb_pos_sgcom,
                                      self.gui.rb_pos_cs, self.gui.rb_pos_xo, self.gui.rb_pos_fc, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
+
+
+            # ----- Info Tab. -----
+
+                # 'Info' Tab Hyperlinks.
+        self.gui.lbl_readme.mouseReleaseEvent = self.readmeLink
+        self.gui.lbl_email.mouseReleaseEvent = self.emailLink
+        self.gui.lbl_tcpm.mouseReleaseEvent = self.tcpmLink
+        self.gui.lbl_uniforms.mouseReleaseEvent = self.uniformsLink
+        self.gui.lbl_pic_python.mouseReleaseEvent = self.pythonLink
+        self.gui.lbl_python.mouseReleaseEvent = self.pythonLink
+        self.gui.lbl_pic_qt.mouseReleaseEvent = self.qtLink
+        self.gui.lbl_qt.mouseReleaseEvent = self.qtLink
+        self.gui.lbl_pic_povray.mouseReleaseEvent = self.povrayLink
+        self.gui.lbl_povray.mouseReleaseEvent = self.povrayLink
+
+
+            # ----- 'Wing and Squadron' Tab. -----
+
+                # List Widget Connections.
+        self.connect(self.gui.lw_ship,  QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.shipSelectionLogic)
+        self.connect(self.gui.lw_wing,  QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.wingSelectionLogic)
+        self.connect(self.gui.lw_squad, QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.squadSelectionLogic)
+                # CheckBox.
+        self.connect(self.gui.cb_eliteSqn, QtCore.SIGNAL("stateChanged(int)"), self.eliteSqnSelectionLogic)
+
+
+        # ----- POV-Ray Variables. -----
 
         # PovRay Template variables.
         self.position = None
@@ -139,10 +163,13 @@ class TTT3(QtGui.QMainWindow):
         self.RANK_12_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787",
                                 "51.3199996948242,-131.973007202148,213.126998901367"]
 
-        # Configuration variables.
-        self.config = None
 
-        # ---------- Application logic. ----------
+        # ----- Configuration variables. -----
+        self.config = None
+        self.fleetConfig = None
+
+
+        # ----- Application logic. -----
         self.loadSettings()
         self.initialGUISetup()
     #------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -212,9 +239,20 @@ class TTT3(QtGui.QMainWindow):
         for rank in self.rankRadioButtons:
             rank.hide()
 
+        # Load 'Wing and Squadron' tab items from 'settings\fleet.ini'.
+        self.fleetConfig = ConfigParser.ConfigParser()
+        self.fleetConfig.read("settings\\fleet.ini")
+
+        # Add the Ships to the Ships list view.
+        for ship in self.fleetConfig.options("fleet"):
+            if ship != "count":
+                self.gui.lw_ship.addItem(self.fleetConfig.get("fleet", ship))
+
+        # Hide 'Medals, Ribbons and FCHG' items.
+        self.gui.gb_medals.hide()
+
         # ToDo Disabled Helmet & Profiles UTFN.
         self.gui.btn_helmet.setEnabled(False)
-
         self.gui.btn_newProf.setEnabled(False)
         self.gui.btn_openProf.setEnabled(False)
         self.gui.btn_saveProf.setEnabled(False)
@@ -223,6 +261,9 @@ class TTT3(QtGui.QMainWindow):
 
     def posRBLogic(self):
         '''Method that controls the Position Radio Button Logic - Showing or hiding the required rank options.'''
+
+        # Reset the user's position value.
+        self.position = "NUL"
 
         # Disable the Dress and Duty Uniform buttons.
         self.gui.btn_dress.setEnabled(False)
@@ -276,8 +317,14 @@ class TTT3(QtGui.QMainWindow):
 
                     # Set the options available to the user in the 'Wing and Squadron' tab.
                     self.gui.lw_ship.setEnabled(False)
+                    self.gui.lw_ship.clear()
+                    self.ship = ""
                     self.gui.lw_wing.setEnabled(False)
+                    self.gui.lw_wing.clear()
+                    self.wing = ""
                     self.gui.lw_squad.setEnabled(False)
+                    self.gui.lw_squad.clear()
+                    self.sqn = ""
                     self.gui.cb_eliteSqn.setEnabled(False)
                     break
 
@@ -306,6 +353,8 @@ class TTT3(QtGui.QMainWindow):
 
                     # Set the options available to the user in the 'Wing and Squadron' tab.
                     self.gui.lw_squad.setEnabled(False)
+                    self.gui.lw_squad.clear()
+                    self.sqn = ""
                     self.gui.cb_eliteSqn.setEnabled(False)
                     break
 
@@ -316,7 +365,11 @@ class TTT3(QtGui.QMainWindow):
 
                     # Set the options available to the user in the 'Wing and Squadron' tab.
                     self.gui.lw_wing.setEnabled(False)
+                    self.gui.lw_wing.clear()
+                    self.wing = ""
                     self.gui.lw_squad.setEnabled(False)
+                    self.gui.lw_squad.clear()
+                    self.sqn = ""
                     self.gui.cb_eliteSqn.setEnabled(False)
                     break
 
@@ -327,8 +380,14 @@ class TTT3(QtGui.QMainWindow):
 
                     # Set the options available to the user in the 'Wing and Squadron' tab.
                     self.gui.lw_ship.setEnabled(False)
+                    self.gui.lw_ship.clear()
+                    self.ship = ""
                     self.gui.lw_wing.setEnabled(False)
+                    self.gui.lw_wing.clear()
+                    self.wing = ""
                     self.gui.lw_squad.setEnabled(False)
+                    self.gui.lw_squad.clear()
+                    self.sqn = ""
                     self.gui.cb_eliteSqn.setEnabled(False)
                     break
 
@@ -339,8 +398,14 @@ class TTT3(QtGui.QMainWindow):
 
                     # Set the options available to the user in the 'Wing and Squadron' tab.
                     self.gui.lw_ship.setEnabled(False)
+                    self.gui.lw_ship.clear()
+                    self.ship = ""
                     self.gui.lw_wing.setEnabled(False)
+                    self.gui.lw_wing.clear()
+                    self.wing = ""
                     self.gui.lw_squad.setEnabled(False)
+                    self.gui.lw_squad.clear()
+                    self.sqn = ""
                     self.gui.cb_eliteSqn.setEnabled(False)
                     break
 
@@ -351,8 +416,14 @@ class TTT3(QtGui.QMainWindow):
 
                     # Set the options available to the user in the 'Wing and Squadron' tab.
                     self.gui.lw_ship.setEnabled(False)
+                    self.gui.lw_ship.clear()
+                    self.ship = ""
                     self.gui.lw_wing.setEnabled(False)
+                    self.gui.lw_wing.clear()
+                    self.wing = ""
                     self.gui.lw_squad.setEnabled(False)
+                    self.gui.lw_squad.clear()
+                    self.sqn = ""
                     self.gui.cb_eliteSqn.setEnabled(False)
                     break
 
@@ -363,8 +434,14 @@ class TTT3(QtGui.QMainWindow):
 
                     # Set the options available to the user in the 'Wing and Squadron' tab.
                     self.gui.lw_ship.setEnabled(False)
+                    self.gui.lw_ship.clear()
+                    self.ship = ""
                     self.gui.lw_wing.setEnabled(False)
+                    self.gui.lw_wing.clear()
+                    self.wing = ""
                     self.gui.lw_squad.setEnabled(False)
+                    self.gui.lw_squad.clear()
+                    self.sqn = ""
                     self.gui.cb_eliteSqn.setEnabled(False)
                     break
 
@@ -375,8 +452,14 @@ class TTT3(QtGui.QMainWindow):
 
                     # Set the options available to the user in the 'Wing and Squadron' tab.
                     self.gui.lw_ship.setEnabled(False)
+                    self.gui.lw_ship.clear()
+                    self.ship = ""
                     self.gui.lw_wing.setEnabled(False)
+                    self.gui.lw_wing.clear()
+                    self.wing = ""
                     self.gui.lw_squad.setEnabled(False)
+                    self.gui.lw_squad.clear()
+                    self.sqn = ""
                     self.gui.cb_eliteSqn.setEnabled(False)
                     break
 
@@ -387,8 +470,14 @@ class TTT3(QtGui.QMainWindow):
 
                     # Set the options available to the user in the 'Wing and Squadron' tab.
                     self.gui.lw_ship.setEnabled(False)
+                    self.gui.lw_ship.clear()
+                    self.ship = ""
                     self.gui.lw_wing.setEnabled(False)
+                    self.gui.lw_wing.clear()
+                    self.wing = ""
                     self.gui.lw_squad.setEnabled(False)
+                    self.gui.lw_squad.clear()
+                    self.sqn = ""
                     self.gui.cb_eliteSqn.setEnabled(False)
                     break
 
@@ -401,32 +490,50 @@ class TTT3(QtGui.QMainWindow):
 
                     # Set the options available to the user in the 'Wing and Squadron' tab.
                     self.gui.lw_ship.setEnabled(False)
+                    self.gui.lw_ship.clear()
+                    self.ship = ""
                     self.gui.lw_wing.setEnabled(False)
+                    self.gui.lw_wing.clear()
+                    self.wing = ""
                     self.gui.lw_squad.setEnabled(False)
+                    self.gui.lw_squad.clear()
+                    self.sqn = ""
                     self.gui.cb_eliteSqn.setEnabled(False)
                     break
 
                 # Line Ranks.
                 elif radioButton == self.gui.rb_pos_lr:
                     self.showRanks(CT, GN)
-                    self.position = "NUL"
+                    self.position = ""
 
                     # Set the options available to the user in the 'Wing and Squadron' tab.
                     self.gui.lw_ship.setEnabled(False)
+                    self.gui.lw_ship.clear()
+                    self.ship = ""
                     self.gui.lw_wing.setEnabled(False)
+                    self.gui.lw_wing.clear()
+                    self.wing = ""
                     self.gui.lw_squad.setEnabled(False)
+                    self.gui.lw_squad.clear()
+                    self.sqn = ""
                     self.gui.cb_eliteSqn.setEnabled(False)
                     break
 
                 # Flag Ranks.
                 elif radioButton == self.gui.rb_pos_fr:
                     self.showRanks(RA, GA)
-                    self.position = "NUL"
+                    self.position = ""
 
                     # Set the options available to the user in the 'Wing and Squadron' tab.
                     self.gui.lw_ship.setEnabled(False)
+                    self.gui.lw_ship.clear()
+                    self.ship = ""
                     self.gui.lw_wing.setEnabled(False)
+                    self.gui.lw_wing.clear()
+                    self.wing = ""
                     self.gui.lw_squad.setEnabled(False)
+                    self.gui.lw_squad.clear()
+                    self.sqn = ""
                     self.gui.cb_eliteSqn.setEnabled(False)
                     break
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -439,6 +546,30 @@ class TTT3(QtGui.QMainWindow):
         self.gui.lw_squad.setEnabled(True)
         self.gui.cb_eliteSqn.setEnabled(True)
 
+        # Add the Ships to the Ships list view.
+        if self.gui.lw_ship.count() == 0:
+            self.gui.lw_ship.clear()
+            for ship in self.fleetConfig.options("fleet"):
+                if ship != "count":
+                    self.gui.lw_ship.addItem(self.fleetConfig.get("fleet", ship))
+
+        # Populate the 'Wing' List Widget with the Wings for the selected Ship.
+        try:
+            if self.gui.lw_wing.count() == 0:
+                # Populate the 'Wing' List Widget with the Wings for the selected Ship.
+                for wing in self.fleetConfig.options(str(self.gui.lw_ship.currentItem().text())):
+                    self.gui.lw_wing.addItem(self.fleetConfig.get(str(self.gui.lw_ship.currentItem().text()), wing))
+        except AttributeError:
+            pass
+
+        # Populate the 'Squadron' List Widget with the Squadrons for the selected Wing.
+        try:
+            if self.gui.lw_squad.count() == 0:
+                # Populate the 'Wing' List Widget with the Wings for the selected Ship.
+                for squadron in self.fleetConfig.options(str(self.gui.lw_wing.currentItem().text())):
+                    self.gui.lw_squad.addItem(self.fleetConfig.get(str(self.gui.lw_wing.currentItem().text()), squadron))
+        except AttributeError:
+            pass
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def rankRBLogic(self):
@@ -585,11 +716,17 @@ class TTT3(QtGui.QMainWindow):
             if not self.ship or not self.wing:
                 msg = "Error: As a pilot you need to specify at least a ship and wing before a dress uniform can be created."
                 return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
+            else:
+                self.createDressPov()
+                self.launchPOVRay("dress")
 
         elif self.position in ["COM"]:
             if not self.ship:
                 msg = "Error: As a COM you need to specify a ship before a dress uniform can be created."
                 return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
+            else:
+                self.createDressPov()
+                self.launchPOVRay("dress")
 
         # Run PovRay to render a uniform.
         else:
@@ -604,7 +741,8 @@ class TTT3(QtGui.QMainWindow):
 
         # Dynamically write the 'data\batch\povray.bat' file.
             # Set the correct paths based on where TTT3 is located and the TTT3.ini settings file.
-        template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\&TYPE&.pov" +w640 +h853 +q9 /EXIT'
+        template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\&TYPE&.pov" +W640 +H853 +Q9 +AM2 +A0.1 +D +F +GA +J1.0 /EXIT'
+##        template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\&TYPE&.pov" +W640 +H853 +Q2 /EXIT' # TODO High Quality
         template = template.replace("&TTTPATH&", os.getcwd())
 
         # Apply the path depending on what the user has selected from within the Configuratrion window.
@@ -979,19 +1117,41 @@ class TTT3(QtGui.QMainWindow):
 
             # ----- Assignment. -----
             elif "&CATEGORY&" in line:
-                povData.append(line.replace("&CATEGORY&", "line")) # TODO
+
+                if self.position == "NUL":
+                    povData.append(line.replace("&CATEGORY&", "reserve"))
+
+                elif self.rank in ["CT", "SL", "LT", "LCM", "CM", "CPT", "MAJ", "LC", "COL", "GN"]:
+                    povData.append(line.replace("&CATEGORY&", "line"))
+
+                else:
+                    povData.append(line.replace("&CATEGORY&", "flag"))
+
 
             elif "&SHIP&" in line:
-                povData.append(line.replace("&SHIP&", "ISD Hammer")) # TODO
+                povData.append(line.replace("&SHIP&", self.ship))
 
             elif "&WING&" in line:
-                povData.append(line.replace("&WING&", "Wing I")) # TODO
+                povData.append(line.replace("&WING&", self.wing))
 
             elif "&SQUAD&" in line:
-                povData.append(line.replace("&SQUAD&", "Epsilon")) # TODO
+                povData.append(line.replace("&SQUAD&", self.sqn))
 
             elif "&TRIMCOLOUR&" in line:
-                povData.append(line.replace("&TRIMCOLOUR&", "black")) # TODO
+                if self.position in ["COM", "BGCOM", "IA", "CA", "SGCOM", "CS", "XO", "FC"]:
+                    povData.append(line.replace("&TRIMCOLOUR&", "gold"))
+
+                elif self.wing == "Wing I":
+                    povData.append(line.replace("&TRIMCOLOUR&", "black"))
+
+                elif self.wing == "Wing II":
+                    povData.append(line.replace("&TRIMCOLOUR&", "red"))
+
+                elif self.wing == "Wing X":
+                    povData.append(line.replace("&TRIMCOLOUR&", "blue"))
+
+                else:
+                    povData.append(line.replace("&TRIMCOLOUR&", "black")) # TODO
 
 
             # ----- Medals. -----
@@ -1014,7 +1174,15 @@ class TTT3(QtGui.QMainWindow):
             # ----- Other. -----
 
             elif "&PADINCLUDE&" in line:
-                povData.append(line.replace("&PADINCLUDE&", '#include "pad_g.inc"')) # TODO
+                if self.position in ["CS", "XO", "FC"]:
+                    povData.append(line.replace("&PADINCLUDE&", '#include "pad_braids_g.inc"'))
+
+                elif self.position in ["IA", "CA", "SGCOM"]:
+                    povData.append(line.replace("&PADINCLUDE&", '#include "pad_braid_g.inc"'))
+
+                else:
+                    povData.append(line.replace("&PADINCLUDE&", '#include "pad_g.inc"')) # TODO
+
 
             elif "&FCHGINCLUDE&" in line:
                 povData.append(line.replace("&FCHGINCLUDE&", '#include "fchg_g.inc"')) # TODO
@@ -1078,6 +1246,103 @@ class TTT3(QtGui.QMainWindow):
         # Write the parsed data to '\data\dress.pov'.
         with open(r"data\dress.pov", "w") as povFile:
             povFile.writelines(povData)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def shipSelectionLogic(self, value):
+        '''Method that handles the actions once a ship is selected from the 'Ship' section in the 'Wing and Squadron' tab.'''
+
+        # Clear the 'Wing' ListWidget.
+        self.gui.lw_wing.clear()
+
+        try:
+            # Save the selected option.
+            self.ship = self.gui.lw_ship.currentItem().text()
+
+            if self.position not in ["TRN", "COM", "BGCOM", "IA", "CA", "SGCOM", "CS", "XO", "FC"]: # Stops Wings and Squadrons showing for COMs and above.
+
+                # Populate the 'Wing' List Widget with the Wings for the selected Ship.
+                for wing in self.fleetConfig.options(str(self.gui.lw_ship.currentItem().text())):
+                    self.gui.lw_wing.addItem(self.fleetConfig.get(str(self.gui.lw_ship.currentItem().text()), wing))
+
+            else:
+                if self.position not in ["COM"]: # Stops Ship List Widget from being cleared.
+                    self.gui.lw_ship.clear()
+                self.gui.lw_wing.clear()
+
+        except AttributeError:
+            pass # Prevents the application throwing an error when the 'Ship' List Widget is clears and tries to populate wings from a 'blank' ship.
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def wingSelectionLogic(self, value):
+        '''Method that handles the actions once a Wing is selected from the 'Wing' section in the 'Wing and Squadron' tab.'''
+
+        # Clear the 'Squadron' ListWidget.
+        self.gui.lw_squad.clear()
+
+        try:
+            # Save the selected option.
+            self.wing = self.gui.lw_wing.currentItem().text()
+
+            if self.position not in ["WC"]: # Stops Squadrons showing for WCs.
+
+                # Populate the 'Squadron' List Widget with the Squadrons for the selected Wing.
+                for squadron in self.fleetConfig.options(str(self.gui.lw_wing.currentItem().text())):
+                    self.gui.lw_squad.addItem(self.fleetConfig.get(str(self.gui.lw_wing.currentItem().text()), squadron))
+
+            else:
+                self.gui.lw_squad.clear()
+
+        except AttributeError:
+            pass # Prevents the application throwing an error when the 'Wing' List Widget is clears and tries to populate squadrons from a 'blank' wing.
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def squadSelectionLogic(self, value):
+        '''Method that handles the actions once a Wing is selected from the 'Wing' section in the 'Wing and Squadron' tab.'''
+
+        try:
+            # Save the selected option.
+            self.sqn = self.gui.lw_squad.currentItem().text()
+
+        except AttributeError:
+            pass # Prevents the application throwing an error when the 'Wing' List Widget is clears and tries to populate squadrons from a 'blank' wing.
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def eliteSqnSelectionLogic(self, value):
+        '''Method that handles the actions once the 'Elite Squadron' CheckBox is selected.
+
+           0 = Unckecked, 2 = Checked.'''
+
+        if value == 0:
+
+            # Load and enable the Ship and Wing List Widgets.
+            self.gui.lw_ship.setEnabled(True)
+            self.gui.lw_wing.setEnabled(True)
+            self.gui.lw_squad.clear()
+
+            # Add the Ships to the Ships list view.
+            for ship in self.fleetConfig.options("fleet"):
+                if ship != "count":
+                    self.gui.lw_ship.addItem(self.fleetConfig.get("fleet", ship))
+
+        elif value == 2:
+
+            # Clear and disable the Ship and Wing List Widgets.
+            self.gui.lw_ship.clear()
+            self.gui.lw_ship.setEnabled(False)
+            self.gui.lw_wing.clear()
+            self.gui.lw_wing.setEnabled(False)
+
+            # Remove any prior saved Ship or Wing.
+            self.ship = "NUL"
+            self.wing = "NUL"
+
+            # Populate the 'Squadron' List Widget with the Squadrons for the selected Wing.
+            for squadron in self.fleetConfig.options("elites"):
+                self.gui.lw_squad.addItem(self.fleetConfig.get("elites", squadron))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
