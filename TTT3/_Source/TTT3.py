@@ -224,7 +224,7 @@ class TTT3(QtGui.QMainWindow):
     def posRBLogic(self):
         '''Method that controls the Position Radio Button Logic - Showing or hiding the required rank options.'''
 
-        # Disnable the Dress and Duty Uniform buttons.
+        # Disable the Dress and Duty Uniform buttons.
         self.gui.btn_dress.setEnabled(False)
         self.gui.btn_duty.setEnabled(False)
 
@@ -233,6 +233,9 @@ class TTT3(QtGui.QMainWindow):
             radioButton.setAutoExclusive(False)
             radioButton.setChecked(False)
             radioButton.setAutoExclusive(True)
+
+        # Enable all options from the 'Wing and Squadron' Tab.
+        self.enableWingAndSqnTab()
 
         # Initialise method constants.
         # Ranks:
@@ -264,84 +267,179 @@ class TTT3(QtGui.QMainWindow):
             if radioButton.isChecked():
 
                 # Show the correct rank radio buttons for the selected position.
+                # Trainee.
                 if radioButton == self.gui.rb_pos_trn:
                     self.showRanks(CT, CT)
                     self.position = "TRN"
+                    self.gui.rb_rank_ct.setChecked(True)
+                    self.rankRBLogic()
+
+                    # Set the options available to the user in the 'Wing and Squadron' tab.
+                    self.gui.lw_ship.setEnabled(False)
+                    self.gui.lw_wing.setEnabled(False)
+                    self.gui.lw_squad.setEnabled(False)
+                    self.gui.cb_eliteSqn.setEnabled(False)
                     break
 
+                # Flight Member.
                 elif radioButton == self.gui.rb_pos_fm:
                     self.showRanks(SL, GN)
                     self.position = "FM"
                     break
 
+                # Flight Leader.
                 elif radioButton == self.gui.rb_pos_fl:
                     self.showRanks(LT, GN)
                     self.position = "FL"
                     break
 
+                # Squadron Commander.
                 elif radioButton == self.gui.rb_pos_cmdr:
                     self.showRanks(CM, GN)
                     self.position = "CMDR"
                     break
 
+                # Wing Commander.
                 elif radioButton == self.gui.rb_pos_wc:
                     self.showRanks(MAJ, GN)
                     self.position = "WC"
+
+                    # Set the options available to the user in the 'Wing and Squadron' tab.
+                    self.gui.lw_squad.setEnabled(False)
+                    self.gui.cb_eliteSqn.setEnabled(False)
                     break
 
+                # Commodore.
                 elif radioButton == self.gui.rb_pos_com:
                     self.showRanks(RA, HA)
                     self.position = "COM"
+
+                    # Set the options available to the user in the 'Wing and Squadron' tab.
+                    self.gui.lw_wing.setEnabled(False)
+                    self.gui.lw_squad.setEnabled(False)
+                    self.gui.cb_eliteSqn.setEnabled(False)
                     break
 
+                # Battlegroup Commander.
                 elif radioButton == self.gui.rb_pos_bgcom:
                     self.showRanks(RA, HA)
                     self.position = "BGCOM"
+
+                    # Set the options available to the user in the 'Wing and Squadron' tab.
+                    self.gui.lw_ship.setEnabled(False)
+                    self.gui.lw_wing.setEnabled(False)
+                    self.gui.lw_squad.setEnabled(False)
+                    self.gui.cb_eliteSqn.setEnabled(False)
                     break
 
+                # Imperial Advisor.
                 elif radioButton == self.gui.rb_pos_ia:
                     self.showRanks(RA, HA)
                     self.position = "IA"
+
+                    # Set the options available to the user in the 'Wing and Squadron' tab.
+                    self.gui.lw_ship.setEnabled(False)
+                    self.gui.lw_wing.setEnabled(False)
+                    self.gui.lw_squad.setEnabled(False)
+                    self.gui.cb_eliteSqn.setEnabled(False)
                     break
 
+                # Command Attache.
                 elif radioButton == self.gui.rb_pos_ca:
                     self.showRanks(RA, HA)
                     self.position = "CA"
+
+                    # Set the options available to the user in the 'Wing and Squadron' tab.
+                    self.gui.lw_ship.setEnabled(False)
+                    self.gui.lw_wing.setEnabled(False)
+                    self.gui.lw_squad.setEnabled(False)
+                    self.gui.cb_eliteSqn.setEnabled(False)
                     break
 
+                # Sub-Group Commander.
                 elif radioButton == self.gui.rb_pos_sgcom:
                     self.showRanks(RA, GA)
                     self.position = "SGCOM"
+
+                    # Set the options available to the user in the 'Wing and Squadron' tab.
+                    self.gui.lw_ship.setEnabled(False)
+                    self.gui.lw_wing.setEnabled(False)
+                    self.gui.lw_squad.setEnabled(False)
+                    self.gui.cb_eliteSqn.setEnabled(False)
                     break
 
+                # Command Staff.
                 elif radioButton == self.gui.rb_pos_cs:
                     self.showRanks(RA, GA)
                     self.position = "CS"
+
+                    # Set the options available to the user in the 'Wing and Squadron' tab.
+                    self.gui.lw_ship.setEnabled(False)
+                    self.gui.lw_wing.setEnabled(False)
+                    self.gui.lw_squad.setEnabled(False)
+                    self.gui.cb_eliteSqn.setEnabled(False)
                     break
 
+                # Executive Officer.
                 elif radioButton == self.gui.rb_pos_xo:
                     self.showRanks(RA, GA)
                     self.position = "XO"
+
+                    # Set the options available to the user in the 'Wing and Squadron' tab.
+                    self.gui.lw_ship.setEnabled(False)
+                    self.gui.lw_wing.setEnabled(False)
+                    self.gui.lw_squad.setEnabled(False)
+                    self.gui.cb_eliteSqn.setEnabled(False)
                     break
 
+                # Fleet Commander.
                 elif radioButton == self.gui.rb_pos_fc:
                     self.showRanks(GA, GA)
                     self.position = "FC"
                     self.gui.rb_rank_ga.setChecked(True)
                     self.rankRBLogic()
+
+                    # Set the options available to the user in the 'Wing and Squadron' tab.
+                    self.gui.lw_ship.setEnabled(False)
+                    self.gui.lw_wing.setEnabled(False)
+                    self.gui.lw_squad.setEnabled(False)
+                    self.gui.cb_eliteSqn.setEnabled(False)
                     break
 
+                # Line Ranks.
                 elif radioButton == self.gui.rb_pos_lr:
                     self.showRanks(CT, GN)
                     self.position = "NUL"
+
+                    # Set the options available to the user in the 'Wing and Squadron' tab.
+                    self.gui.lw_ship.setEnabled(False)
+                    self.gui.lw_wing.setEnabled(False)
+                    self.gui.lw_squad.setEnabled(False)
+                    self.gui.cb_eliteSqn.setEnabled(False)
                     break
 
+                # Flag Ranks.
                 elif radioButton == self.gui.rb_pos_fr:
                     self.showRanks(RA, GA)
                     self.position = "NUL"
+
+                    # Set the options available to the user in the 'Wing and Squadron' tab.
+                    self.gui.lw_ship.setEnabled(False)
+                    self.gui.lw_wing.setEnabled(False)
+                    self.gui.lw_squad.setEnabled(False)
+                    self.gui.cb_eliteSqn.setEnabled(False)
                     break
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
+    def enableWingAndSqnTab(self):
+        '''Method that enables all options in the 'Wing and Squadron' tab.'''
+
+        self.gui.lw_ship.setEnabled(True)
+        self.gui.lw_wing.setEnabled(True)
+        self.gui.lw_squad.setEnabled(True)
+        self.gui.cb_eliteSqn.setEnabled(True)
+
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def rankRBLogic(self):
         '''Method that controls the Rank Radio Button Logic - Showing the 'Dress and Duty Uniform' buttons.'''
