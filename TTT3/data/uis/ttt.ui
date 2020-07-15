@@ -468,8 +468,8 @@ margin-top: 2px; /* make non-selected tabs look smaller */
         <font>
          <family>Arial</family>
          <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
+         <weight>50</weight>
+         <bold>false</bold>
          <underline>true</underline>
         </font>
        </property>
@@ -550,8 +550,8 @@ margin-top: 2px; /* make non-selected tabs look smaller */
         <font>
          <family>Arial</family>
          <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
+         <weight>50</weight>
+         <bold>false</bold>
          <underline>true</underline>
         </font>
        </property>
@@ -901,8 +901,8 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
+        <weight>50</weight>
+        <bold>false</bold>
         <underline>true</underline>
        </font>
       </property>
@@ -1016,8 +1016,8 @@ QListWidget:!enabled
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
+        <weight>50</weight>
+        <bold>false</bold>
         <underline>true</underline>
        </font>
       </property>
@@ -1067,8 +1067,8 @@ QListWidget:!enabled
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
+        <weight>50</weight>
+        <bold>false</bold>
         <underline>true</underline>
        </font>
       </property>
@@ -1253,8 +1253,8 @@ QListWidget:!enabled
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
+        <weight>50</weight>
+        <bold>false</bold>
         <underline>true</underline>
        </font>
       </property>
@@ -1279,96 +1279,6 @@ QListWidget:!enabled
       <property name="styleSheet">
        <string notr="true">background-color: rgb(211, 211, 211);</string>
       </property>
-      <item>
-       <property name="text">
-        <string>Medal of Honour (MoH)</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Imperial Cross (IC)</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Order of the Renegade (OoR)</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Grand Order of the Emperor (GOE)</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Gold Star of the Empire (GS)</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Silver Star of the Empire (SS)</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Bronze Star of the Empire (BS)</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Palpatine Cresent (PC)</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Imperial Security Medal (ISM)</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Medal of Instruction (MoI)</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Medal of Tactics (MoT)</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Iron Star (IS)</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Legion of Combat (LoC)</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Legion of Skirmish (LoS)</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Distinguished Flying Cross (DFC)</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Medal of Communicaton (MoC)</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Commendation of... (CoX)</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Order of the Vanguard (OV)</string>
-       </property>
-      </item>
      </widget>
      <widget class="QGroupBox" name="gb_medals">
       <property name="geometry">
@@ -1383,13 +1293,170 @@ QListWidget:!enabled
        <font>
         <family>Arial</family>
         <pointsize>9</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
+        <weight>50</weight>
+        <bold>false</bold>
        </font>
       </property>
       <property name="title">
        <string>Medal</string>
       </property>
+      <widget class="QCheckBox" name="cb_singleMedal">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>25</x>
+         <y>31</y>
+         <width>111</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>MEDAL NAME</string>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="sb_multi_centerTop">
+       <property name="geometry">
+        <rect>
+         <x>106</x>
+         <y>53</y>
+         <width>40</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_multi_centerTop">
+       <property name="geometry">
+        <rect>
+         <x>6</x>
+         <y>29</y>
+         <width>241</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>medal middle row top</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_ranged">
+       <property name="geometry">
+        <rect>
+         <x>3</x>
+         <y>54</y>
+         <width>101</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>text    </string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="sb_multi_centerMiddle">
+       <property name="geometry">
+        <rect>
+         <x>106</x>
+         <y>121</y>
+         <width>40</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_multi_centerMiddle">
+       <property name="geometry">
+        <rect>
+         <x>6</x>
+         <y>97</y>
+         <width>241</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>medal middle row center</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_multi_centerBottom">
+       <property name="geometry">
+        <rect>
+         <x>6</x>
+         <y>165</y>
+         <width>241</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>medal middle row bottom</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="sb_multi_centerBottom">
+       <property name="geometry">
+        <rect>
+         <x>106</x>
+         <y>189</y>
+         <width>40</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+      </widget>
+      <zorder>lbl_multi_centerTop</zorder>
+      <zorder>cb_singleMedal</zorder>
+      <zorder>sb_multi_centerTop</zorder>
+      <zorder>lbl_ranged</zorder>
+      <zorder>sb_multi_centerMiddle</zorder>
+      <zorder>lbl_multi_centerMiddle</zorder>
+      <zorder>lbl_multi_centerBottom</zorder>
+      <zorder>sb_multi_centerBottom</zorder>
      </widget>
     </widget>
     <widget class="QWidget" name="tabImport">

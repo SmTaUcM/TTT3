@@ -110,6 +110,22 @@ class TTT3(QtGui.QMainWindow):
                                      self.gui.rb_pos_cs, self.gui.rb_pos_xo, self.gui.rb_pos_fc, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
 
 
+            # ----- 'Wing and Squadron' Tab. -----
+
+                # List Widget Connections.
+        self.connect(self.gui.lw_ship,  QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.shipSelectionLogic)
+        self.connect(self.gui.lw_wing,  QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.wingSelectionLogic)
+        self.connect(self.gui.lw_squad, QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.squadSelectionLogic)
+                # CheckBox.
+        self.connect(self.gui.cb_eliteSqn, QtCore.SIGNAL("stateChanged(int)"), self.eliteSqnSelectionLogic)
+
+
+        # ----- 'Medals, Ribbons and FCHG' Tab. -----
+
+                # List Widget Connections.
+        self.connect(self.gui.lw_medals,  QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.medalSelectionLogic)
+
+
             # ----- Info Tab. -----
 
                 # 'Info' Tab Hyperlinks.
@@ -125,16 +141,6 @@ class TTT3(QtGui.QMainWindow):
         self.gui.lbl_povray.mouseReleaseEvent = self.povrayLink
 
 
-            # ----- 'Wing and Squadron' Tab. -----
-
-                # List Widget Connections.
-        self.connect(self.gui.lw_ship,  QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.shipSelectionLogic)
-        self.connect(self.gui.lw_wing,  QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.wingSelectionLogic)
-        self.connect(self.gui.lw_squad, QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.squadSelectionLogic)
-                # CheckBox.
-        self.connect(self.gui.cb_eliteSqn, QtCore.SIGNAL("stateChanged(int)"), self.eliteSqnSelectionLogic)
-
-
         # ----- POV-Ray Variables. -----
 
         # PovRay Template variables.
@@ -146,6 +152,7 @@ class TTT3(QtGui.QMainWindow):
         self.ship = None
         self.wing = None
         self.sqn = None
+        self.ribbons = {}
 
         # PovRay Template Constants.
         self.RANK_04_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787", # Rotate
@@ -256,6 +263,7 @@ class TTT3(QtGui.QMainWindow):
 
         # Hide 'Medals, Ribbons and FCHG' items.
         self.gui.gb_medals.hide()
+        self.hideMedalOptions()
 
         # ToDo Disabled Helmet & Profiles UTFN.
         self.gui.btn_helmet.setEnabled(False)
@@ -1395,12 +1403,22 @@ class TTT3(QtGui.QMainWindow):
         # Parse 'settings\ribbons.ini'.
         for ribbon in self.ribbonConfig.sections():
 
+            name = self.ribbonConfig.get(ribbon, "name")
+
             # Add the ribbon name to the GUI.
-            self.gui.lw_medals.addItem(self.ribbonConfig.get(ribbon, "name"))
+            self.gui.lw_medals.addItem(name)
+
+            # Store the ribbon in the 'self.ribbons' dictionary.
+            self.ribbons[name] = {"type" : self.ribbonConfig.get(ribbon, "type")}
+
 
             # Ranged ribbons like the OV.
             if self.ribbonConfig.get(ribbon, "type") == "ranged":
 
+                # Store the ribbon data to the 'self.ribbons' dictionary.
+                self.ribbons[name][self.ribbonConfig.get(ribbon, "incrementName")] = 0
+
+                # Create the required inclide declarations for 'ribbons_g.inc'
                 rangeMin = int(self.ribbonConfig.get(ribbon, "rangeMin"))
                 rangeMax = int(self.ribbonConfig.get(ribbon, "rangeMax")) + 1 # +1 because Python doesn't include the last number in a range.
 
@@ -1409,17 +1427,27 @@ class TTT3(QtGui.QMainWindow):
                     filename = self.ribbonConfig.get(ribbon, "filename").replace("&RANGE&", str(i))
                     ribbons_g += self.addToRibbonIncludes(filename)
 
+
             # All other ribbons.
             else:
+                self.ribbons[name]["upgrades"] = []
+
                 for option in self.ribbonConfig.options(ribbon):
 
+                    # Store the ribbon data to the 'self.ribbons' dictionary.
+                    if "type" not in option and "name" not in option.lower():
+                        self.ribbons[name]["upgrades"].append([self.ribbonConfig.get(ribbon, option), 0])
+
+                    # Create the required inclide declarations for 'ribbons_g.inc'
                     if option != "name" and option != "type":
                         # Add the ribbon to ribbons_g.inc
                         if "filename" in option:
                             ribbons_g += self.addToRibbonIncludes(self.ribbonConfig.get(ribbon, option))
 
+
         with open("data\\ribbons_g.inc", "w") as ribbonFile:
             ribbonFile.write(ribbons_g)
+        print self.ribbons
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1437,6 +1465,30 @@ texture
 texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
 
         return includeTemplate
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def hideMedalOptions(self):
+        '''Method that hides all Medal Spin Boxes, checkboxes and Radio Buttons.'''
+
+        self.gui.cb_singleMedal.hide()
+        self.gui.lbl_multi_centerTop
+        self.gui.lbl_ranged.hide()
+        self.gui.lbl_multi_centerTop.hide()
+        self.gui.sb_multi_centerTop.hide()
+        self.gui.lbl_multi_centerMiddle.hide()
+        self.gui.sb_multi_centerMiddle.hide()
+        self.gui.lbl_multi_centerBottom.hide()
+        self.gui.sb_multi_centerBottom.hide()
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def medalSelectionLogic(self, item):
+        '''Method that handles the actions once a medal is selected from the 'Medals, Ribbons and FCHG tab.'''
+
+        # Show the Medals GroupBox and set it's title the the selected medal.
+        self.gui.gb_medals.show()
+        self.gui.gb_medals.setTitle(item.text().split(" (")[0])
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
