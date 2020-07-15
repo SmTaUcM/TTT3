@@ -167,6 +167,7 @@ class TTT3(QtGui.QMainWindow):
         # ----- Configuration variables. -----
         self.config = None
         self.fleetConfig = None
+        self.medalConfig = None
         self.ribbonConfig = None
 
 
@@ -250,6 +251,7 @@ class TTT3(QtGui.QMainWindow):
                 self.gui.lw_ship.addItem(self.fleetConfig.get("fleet", ship))
 
         # Load Medal and Ribbon data.
+        self.loadMedals()
         self.loadRibbons()
 
         # Hide 'Medals, Ribbons and FCHG' items.
@@ -1350,6 +1352,21 @@ class TTT3(QtGui.QMainWindow):
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
+    def loadMedals(self):
+        '''Method that reads in data from 'settings\medals.ini' adds the medals to the 'Medals, Ribbons and FCHG' tab.'''
+
+        # Read in the data from 'settings\ribbons.ini'.
+        self.medalConfig = ConfigParser.ConfigParser()
+        self.medalConfig.read(r"settings\medals.ini")
+
+        # Parse 'settings\medals.ini'.
+        for medal in self.medalConfig.sections():
+
+            # Add the medal name to the GUI.
+            self.gui.lw_medals.addItem(self.medalConfig.get(medal, "name"))
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
     def loadRibbons(self):
         '''Method that reads in data from 'settings\ribbons.ini' adds the ribbons to the 'Medals, Ribbons and FCHG' tab
            and then dynamically writes ribbons_g.inc ready for use.'''
@@ -1378,6 +1395,9 @@ class TTT3(QtGui.QMainWindow):
         # Parse 'settings\ribbons.ini'.
         for ribbon in self.ribbonConfig.sections():
 
+            # Add the ribbon name to the GUI.
+            self.gui.lw_medals.addItem(self.ribbonConfig.get(ribbon, "name"))
+
             # Ranged ribbons like the OV.
             if self.ribbonConfig.get(ribbon, "type") == "ranged":
 
@@ -1389,15 +1409,11 @@ class TTT3(QtGui.QMainWindow):
                     filename = self.ribbonConfig.get(ribbon, "filename").replace("&RANGE&", str(i))
                     ribbons_g += self.addToRibbonIncludes(filename)
 
-
             # All other ribbons.
             else:
                 for option in self.ribbonConfig.options(ribbon):
 
                     if option != "name" and option != "type":
-                        # Add the ribbon to the GUI?????
-                            # TODO
-
                         # Add the ribbon to ribbons_g.inc
                         if "filename" in option:
                             ribbons_g += self.addToRibbonIncludes(self.ribbonConfig.get(ribbon, option))
