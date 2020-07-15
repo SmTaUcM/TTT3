@@ -167,6 +167,7 @@ class TTT3(QtGui.QMainWindow):
         # ----- Configuration variables. -----
         self.config = None
         self.fleetConfig = None
+        self.ribbonConfig = None
 
 
         # ----- Application logic. -----
@@ -247,6 +248,9 @@ class TTT3(QtGui.QMainWindow):
         for ship in self.fleetConfig.options("fleet"):
             if ship != "count":
                 self.gui.lw_ship.addItem(self.fleetConfig.get("fleet", ship))
+
+        # Load Medal and Ribbon data.
+        self.loadRibbons()
 
         # Hide 'Medals, Ribbons and FCHG' items.
         self.gui.gb_medals.hide()
@@ -504,7 +508,7 @@ class TTT3(QtGui.QMainWindow):
                 # Line Ranks.
                 elif radioButton == self.gui.rb_pos_lr:
                     self.showRanks(CT, GN)
-                    self.position = ""
+                    self.position = "NUL"
 
                     # Set the options available to the user in the 'Wing and Squadron' tab.
                     self.gui.lw_ship.setEnabled(False)
@@ -522,7 +526,7 @@ class TTT3(QtGui.QMainWindow):
                 # Flag Ranks.
                 elif radioButton == self.gui.rb_pos_fr:
                     self.showRanks(RA, GA)
-                    self.position = ""
+                    self.position = "NUL"
 
                     # Set the options available to the user in the 'Wing and Squadron' tab.
                     self.gui.lw_ship.setEnabled(False)
@@ -1343,6 +1347,80 @@ class TTT3(QtGui.QMainWindow):
             # Populate the 'Squadron' List Widget with the Squadrons for the selected Wing.
             for squadron in self.fleetConfig.options("elites"):
                 self.gui.lw_squad.addItem(self.fleetConfig.get("elites", squadron))
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def loadRibbons(self):
+        '''Method that reads in data from 'settings\ribbons.ini' adds the ribbons to the 'Medals, Ribbons and FCHG' tab
+           and then dynamically writes ribbons_g.inc ready for use.'''
+
+        ribbons_g = """ ////////////////////////////////////////////////////
+//                                                 //
+//  TIE Corps Dress Uniform                        //
+//  Service Award Ribbons                          //
+//                                                 //
+//  Settings in this file are not affected by TTT  //
+//                                                 //
+////////////////////////////////////////////////////
+
+
+#include "ribbons_o.inc";
+
+
+// RIBBONS
+
+
+"""
+        # Read in the data from 'settings\ribbons.ini'.
+        self.ribbonConfig = ConfigParser.ConfigParser()
+        self.ribbonConfig.read(r"settings\ribbons.ini")
+
+        # Parse 'settings\ribbons.ini'.
+        for ribbon in self.ribbonConfig.sections():
+
+            # Ranged ribbons like the OV.
+            if self.ribbonConfig.get(ribbon, "type") == "ranged":
+
+                rangeMin = int(self.ribbonConfig.get(ribbon, "rangeMin"))
+                rangeMax = int(self.ribbonConfig.get(ribbon, "rangeMax")) + 1 # +1 because Python doesn't include the last number in a range.
+
+                for i in range(rangeMin, rangeMax):
+
+                    filename = self.ribbonConfig.get(ribbon, "filename").replace("&RANGE&", str(i))
+                    ribbons_g += self.addToRibbonIncludes(filename)
+
+
+            # All other ribbons.
+            else:
+                for option in self.ribbonConfig.options(ribbon):
+
+                    if option != "name" and option != "type":
+                        # Add the ribbon to the GUI?????
+                            # TODO
+
+                        # Add the ribbon to ribbons_g.inc
+                        if "filename" in option:
+                            ribbons_g += self.addToRibbonIncludes(self.ribbonConfig.get(ribbon, option))
+
+        with open("data\\ribbons_g.inc", "w") as ribbonFile:
+            ribbonFile.write(ribbons_g)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def addToRibbonIncludes(self, filename):
+        '''Method that creates the include data for a single ribbon. This include data goes on top build ribbons_g.inc'''
+
+        ribbonName = filename.replace("-", "_").replace(".gif", "")
+
+        includeTemplate = """#declare T_r_%s =
+texture
+{
+  pigment { image_map { gif ".\\ribbons\\%s" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
+
+        return includeTemplate
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
