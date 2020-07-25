@@ -1306,22 +1306,21 @@ class TTT3(QtGui.QMainWindow):
 
 
             elif "&MEDALS&" in line:
-
-##                medals = ["object { P_bs_3_1 }", "object { P_pc_3_2 }", "object { P_ism_3_3 }"]
                 medals = []
+##                medals = ["object { P_bs_3_1 }", "object { P_pc_3_2 }", "object { P_ism_3_3 }"]
 
                 for medal in medals:
                     povData.append(medal + "\n") # TODO
 
 
             elif "&RIBBONS&" in line:
+                ribbons = []
 ##                ribbons = ["object { P_r12 texture { T_r_is_gw } }", "object { P_r13 texture { T_r_is_sw } }",
 ##                           "object { P_r14 texture { T_r_is_bw } }", "object { P_r15 texture { T_r_is_gr } }",
 ##                           "object { P_r16 texture { T_r_is_sr } }", "object { P_r17 texture { T_r_is_br } }",
 ##                           "object { P_r18 texture { T_r_loc } }", "object { P_r19 texture { T_r_los_cs } }",
 ##                           "object { P_r24 texture { T_r_moc_boc } }", "object { P_r25 texture { T_r_cob } }",
 ##                           "object { P_r26 texture { T_r_ov_19e } }"]
-                ribbons = []
 
                 for ribbon in ribbons:
                     povData.append(ribbon + "\n") # TODO

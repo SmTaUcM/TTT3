@@ -54,6 +54,46 @@ texture
 }
 texture { T_unilayer scale 2}
 
+#declare T_r_mos_cr =
+texture
+{
+  pigment { image_map { gif ".\ribbons\mos-cr.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_mos_br =
+texture
+{
+  pigment { image_map { gif ".\ribbons\mos-br.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_mos_sr =
+texture
+{
+  pigment { image_map { gif ".\ribbons\mos-sr.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_mos_gr =
+texture
+{
+  pigment { image_map { gif ".\ribbons\mos-gr.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_mos_pr =
+texture
+{
+  pigment { image_map { gif ".\ribbons\mos-pr.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
 #declare T_r_mot_bh =
 texture
 {
