@@ -753,6 +753,12 @@ class TTT3(QtGui.QMainWindow):
         '''Method that dynamically writes data\batch\povray.bat and invisible.vbs to silently loanch POV-Ray with the correct paths.
            The "uniform" agrument takes "dress", "duty or "helmet which is dependant on which button has been pressed."'''
 
+        # Create the '..data\batch' direwctory if it doesn't already exist.
+        try:
+            os.mkdir("data\\batch")
+        except WindowsError:
+            pass # Direcory already exists.
+
         # Dynamically write the 'data\batch\povray.bat' file.
             # Set the correct paths based on where TTT3 is located and the TTT3.ini settings file.
         template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\&TYPE&.pov" +W640 +H853 +Q9 +AM2 +A0.1 +D +F +GA +J1.0 /EXIT'
