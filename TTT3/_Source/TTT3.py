@@ -756,7 +756,6 @@ class TTT3(QtGui.QMainWindow):
         # Dynamically write the 'data\batch\povray.bat' file.
             # Set the correct paths based on where TTT3 is located and the TTT3.ini settings file.
         template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\&TYPE&.pov" +W640 +H853 +Q9 +AM2 +A0.1 +D +F +GA +J1.0 /EXIT'
-##        template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\&TYPE&.pov" +W640 +H853 +Q2 /EXIT' # TODO High Quality
         template = template.replace("&TTTPATH&", os.getcwd())
 
         # Apply the path depending on what the user has selected from within the Configuratrion window.
@@ -1223,8 +1222,75 @@ class TTT3(QtGui.QMainWindow):
 
             # ----- Scene. -----
 
+            # Fleet Commander's Honour Guard. -------------------------------
             elif "&FCHG&" in line:
-                povData.append(line.replace("&FCHG&", "object { pldn }")) # TODO
+                if "None" in self.gui.cbFCHG.currentText():
+                    pass
+
+                elif "Grenadier" in self.gui.cbFCHG.currentText():
+                    povData.append(line.replace("&FCHG&", "object { gren }"))
+
+                elif "Lancer" in self.gui.cbFCHG.currentText():
+                    povData.append(line.replace("&FCHG&", "object { lanc }"))
+
+                elif "Hussar" in self.gui.cbFCHG.currentText():
+                    povData.append(line.replace("&FCHG&", "object { huss }"))
+
+                elif "Fusilier" in self.gui.cbFCHG.currentText():
+                    povData.append(line.replace("&FCHG&", "object { fusl }"))
+
+                elif "Dragoon" in self.gui.cbFCHG.currentText():
+                    povData.append(line.replace("&FCHG&", "object { drag }"))
+
+                elif "Cavalier" in self.gui.cbFCHG.currentText():
+                    povData.append(line.replace("&FCHG&", "object { cavl }"))
+
+                elif "Gallant" in self.gui.cbFCHG.currentText():
+                    povData.append(line.replace("&FCHG&", "object { gall }"))
+
+                elif "Knight" in self.gui.cbFCHG.currentText():
+                    povData.append(line.replace("&FCHG&", "object { kngt }"))
+
+                elif "Paladin" in self.gui.cbFCHG.currentText():
+                    povData.append(line.replace("&FCHG&", "object { pldn }"))
+
+                elif "Legionnaire" in self.gui.cbFCHG.currentText():
+                    povData.append(line.replace("&FCHG&", "object { lgnr }"))
+
+                elif "Aquilifer" in self.gui.cbFCHG.currentText():
+                    povData.append(line.replace("&FCHG&", "object { aqfr }"))
+
+                elif "Decurion" in self.gui.cbFCHG.currentText():
+                    povData.append(line.replace("&FCHG&", "object { dcrn }"))
+
+                elif "Tesserarius" in self.gui.cbFCHG.currentText():
+                    povData.append(line.replace("&FCHG&", "object { tsrs }"))
+
+                elif "Optio" in self.gui.cbFCHG.currentText():
+                    povData.append(line.replace("&FCHG&", "object { opti }"))
+
+                elif "Centurion" in self.gui.cbFCHG.currentText():
+                    povData.append(line.replace("&FCHG&", "object { cntr }"))
+
+                elif "Executor" in self.gui.cbFCHG.currentText():
+                    povData.append(line.replace("&FCHG&", "object { excr }"))
+
+                elif "Gladiator" in self.gui.cbFCHG.currentText():
+                    povData.append(line.replace("&FCHG&", "object { gldr }"))
+
+                elif "Archon" in self.gui.cbFCHG.currentText():
+                    povData.append(line.replace("&FCHG&", "object { arcn }"))
+
+                elif "Templar" in self.gui.cbFCHG.currentText():
+                    povData.append(line.replace("&FCHG&", "object { tmpr }"))
+
+                elif "Imperator" in self.gui.cbFCHG.currentText():
+                    povData.append(line.replace("&FCHG&", "object { impr }"))
+
+                else:
+                    pass
+                #------------------------------------------------------------
+
 
             elif "&SABER&" in line:
                 povData.append(line.replace("&SABER&", "")) # TODO
@@ -1235,19 +1301,21 @@ class TTT3(QtGui.QMainWindow):
 
             elif "&MEDALS&" in line:
 
-                medals = ["object { P_bs_3_1 }", "object { P_pc_3_2 }", "object { P_ism_3_3 }"]
+##                medals = ["object { P_bs_3_1 }", "object { P_pc_3_2 }", "object { P_ism_3_3 }"]
+                medals = []
 
                 for medal in medals:
                     povData.append(medal + "\n") # TODO
 
 
             elif "&RIBBONS&" in line:
-                ribbons = ["object { P_r12 texture { T_r_is_gw } }", "object { P_r13 texture { T_r_is_sw } }",
-                           "object { P_r14 texture { T_r_is_bw } }", "object { P_r15 texture { T_r_is_gr } }",
-                           "object { P_r16 texture { T_r_is_sr } }", "object { P_r17 texture { T_r_is_br } }",
-                           "object { P_r18 texture { T_r_loc } }", "object { P_r19 texture { T_r_los_cs } }",
-                           "object { P_r24 texture { T_r_moc_boc } }", "object { P_r25 texture { T_r_cob } }",
-                           "object { P_r26 texture { T_r_ov_19e } }"]
+##                ribbons = ["object { P_r12 texture { T_r_is_gw } }", "object { P_r13 texture { T_r_is_sw } }",
+##                           "object { P_r14 texture { T_r_is_bw } }", "object { P_r15 texture { T_r_is_gr } }",
+##                           "object { P_r16 texture { T_r_is_sr } }", "object { P_r17 texture { T_r_is_br } }",
+##                           "object { P_r18 texture { T_r_loc } }", "object { P_r19 texture { T_r_los_cs } }",
+##                           "object { P_r24 texture { T_r_moc_boc } }", "object { P_r25 texture { T_r_cob } }",
+##                           "object { P_r26 texture { T_r_ov_19e } }"]
+                ribbons = []
 
                 for ribbon in ribbons:
                     povData.append(ribbon + "\n") # TODO
@@ -1370,6 +1438,12 @@ class TTT3(QtGui.QMainWindow):
         # Parse 'settings\medals.ini'.
         for medal in self.medalConfig.sections():
 
+            name = self.medalConfig.get(medal, "name")
+
+            # Store the medal in the 'self.ribbons' dictionary.
+            self.ribbons[name] = {"type" : self.medalConfig.get(medal, "type")}
+            self.ribbons[name]["upgrades"] = [name, 0]
+
             # Add the medal name to the GUI.
             self.gui.lw_medals.addItem(self.medalConfig.get(medal, "name"))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -1416,7 +1490,7 @@ class TTT3(QtGui.QMainWindow):
             if self.ribbonConfig.get(ribbon, "type") == "ranged":
 
                 # Store the ribbon data to the 'self.ribbons' dictionary.
-                self.ribbons[name][self.ribbonConfig.get(ribbon, "incrementName")] = 0
+                self.ribbons[name]["upgrades"] = [self.ribbonConfig.get(ribbon, "incrementName"), 0]
 
                 # Create the required inclide declarations for 'ribbons_g.inc'
                 rangeMin = int(self.ribbonConfig.get(ribbon, "rangeMin"))
@@ -1436,7 +1510,7 @@ class TTT3(QtGui.QMainWindow):
 
                     # Store the ribbon data to the 'self.ribbons' dictionary.
                     if "type" not in option and "name" not in option.lower():
-                        self.ribbons[name]["upgrades"].append([self.ribbonConfig.get(ribbon, option), 0])
+                        self.ribbons[name]["upgrades"].append([self.ribbonConfig.get(ribbon, option), "WIDGET", 0])
 
                     # Create the required inclide declarations for 'ribbons_g.inc'
                     if option != "name" and option != "type":
@@ -1444,10 +1518,31 @@ class TTT3(QtGui.QMainWindow):
                         if "filename" in option:
                             ribbons_g += self.addToRibbonIncludes(self.ribbonConfig.get(ribbon, option))
 
+                # Assign a GUI widget to represent our ribbon.
+                self.assignRibbonGUIWidgets(name)
+
 
         with open("data\\ribbons_g.inc", "w") as ribbonFile:
             ribbonFile.write(ribbons_g)
-        print self.ribbons
+##        print self.ribbons
+        # TODO
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def assignRibbonGUIWidgets(self, ribbon):
+        '''Method that will detect the number of rubbons and type of award and assign GUI widgets to reprersent them.'''
+
+        if self.ribbons.get(ribbon).get("type") == "upgradeable":
+            # Medals with 3 or less options that will use the centre column of spinboxes.
+            upgrades = self.ribbons.get(ribbon).get("upgrades")
+
+            if len(upgrades) <= 3: # Center column.
+                guiElemens = []
+            else:
+                guiElements = [] # Outer columns:
+
+            for upgrade in upgrades:
+                print upgrade
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1489,6 +1584,9 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         # Show the Medals GroupBox and set it's title the the selected medal.
         self.gui.gb_medals.show()
         self.gui.gb_medals.setTitle(item.text().split(" (")[0])
+
+        # Show the correct GUI elements for the given medal.
+        # TODO
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
