@@ -1351,6 +1351,7 @@ class TTT3(QtGui.QMainWindow):
                 # Populate the 'Wing' List Widget with the Wings for the selected Ship.
                 for wing in self.fleetConfig.options(str(self.gui.lw_ship.currentItem().text())):
                     self.gui.lw_wing.addItem(self.fleetConfig.get(str(self.gui.lw_ship.currentItem().text()), wing))
+                self.wingSelectionLogic(None)
 
             else:
                 if self.position not in ["COM"]: # Stops Ship List Widget from being cleared.

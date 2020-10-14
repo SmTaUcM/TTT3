@@ -1,0 +1,1 @@
+"C:\Program Files\POV-Ray\v3.7\bin\pvengine64.exe" /RENDER "C:\Users\smtau\Dropbox\EH TIE Corps Share\TTT3\TTT3\data\dress.pov" +W640 +H853 +Q9 +AM2 +A0.1 +D +F +GA +J1.0 /EXIT
