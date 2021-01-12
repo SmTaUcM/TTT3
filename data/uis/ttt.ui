@@ -43,7 +43,7 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>28</x>
+      <x>46</x>
       <y>10</y>
       <width>521</width>
       <height>51</height>
@@ -68,7 +68,7 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>544</x>
+      <x>562</x>
       <y>11</y>
       <width>41</width>
       <height>60</height>
@@ -88,31 +88,6 @@
     </property>
     <property name="text">
      <string>3</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>580</x>
-      <y>50</y>
-      <width>51</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>11</pointsize>
-      <weight>50</weight>
-      <italic>true</italic>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: rgb(6, 22, 125);</string>
-    </property>
-    <property name="text">
-     <string>alpha1</string>
     </property>
    </widget>
    <widget class="QTabWidget" name="tabWidget">
@@ -1764,7 +1739,7 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>Created 2020-20 by</string>
+       <string>Created 2020-07 by</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_10">
@@ -1772,7 +1747,7 @@ QListWidget:!enabled
        <rect>
         <x>127</x>
         <y>86</y>
-        <width>101</width>
+        <width>241</width>
         <height>20</height>
        </rect>
       </property>
@@ -1785,26 +1760,7 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>CM SkyShadow</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_11">
-      <property name="geometry">
-       <rect>
-        <x>226</x>
-        <y>86</y>
-        <width>16</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>.</string>
+       <string>LCM SkyShadow</string>
       </property>
      </widget>
      <widget class="QLabel" name="lblVersion">
