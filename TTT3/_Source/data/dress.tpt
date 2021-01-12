@@ -145,8 +145,8 @@ object { P_buckle texture { T_buckle } }
 object { P_buttons texture { T_buttons } }
 object { P_cuffs texture { T_cuffs } } 
 object { P_acollar } 
-object { P_pad_left texture { T_pad_left } }
-object { P_pad }
+&PADTRIM&
+&PAD&
 object { P_trim texture { T_trim } } 
 object { P_patch texture { T_patch } no_shadow }
 &FCHG& 
