@@ -11,8 +11,8 @@ setup(
       windows=
               [
                {
-                "script": "C:\\Users\\smtau\\Dropbox\\EH TIE Corps Share\\TTT3\\TTT3\\_Source\TTT3.py",
-                "icon_resources" : [(0, "C:\\Users\\smtau\\Dropbox\\EH TIE Corps Share\\TTT3\\TTT3\\_Source\\_Resource\\ttt3.ico")],
+                "script": "D:\\Local Repositories\\TTT3\\TTT3\\_Source\TTT3.py",
+                "icon_resources" : [(0, "D:\\Local Repositories\\TTT3\\TTT3\\_Source\\_Resource\\ttt3.ico")],
                }
               ],
 
