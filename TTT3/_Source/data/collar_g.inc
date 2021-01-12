@@ -77,6 +77,17 @@ texture
 }
 texture { T_unilayer }
 
+#declare T_collardblue = 
+texture
+{
+  pigment
+  {
+    color rgb <0.0, 0.09, 0.6>
+  }
+  finish  { fin_T_uni } 
+}
+texture { T_unilayer }
+
 #declare T_wing_border = T_trim_gold;
 #declare T_com_border = T_trim_gold;
 
@@ -301,7 +312,7 @@ union
 #declare P_collar_wing10 =
 union
 {
-  object { P_wing texture { T_collarblue } no_shadow }
+  object { P_wing texture { T_collardblue } no_shadow }
   object { P_wing_border no_shadow }
   object { P_w10 }
 }

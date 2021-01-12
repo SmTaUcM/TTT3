@@ -30,8 +30,9 @@ texture
 {
   pigment
   {
-    #if (strcmp (rank, "GA")) color rgb <0.08, 0.08, 0.08>
-    #else color rgb 1
+    #if (defined (prae)) color rgb <0.03, 0.03, 0.03>
+    #elseif (!strcmp (rank, "GA")) color rgb 1
+    #else color rgb <0.08, 0.08, 0.08>
     #end
   }
   finish  { fin_T_uni } 
@@ -48,7 +49,9 @@ texture
 {
   pigment
   {
-    color rgb <0.84,0.62,0.33>
+	#if (defined (prae)) color rgb <0.6, 0.6, 0.6>
+  #else color rgb <0.84,0.62,0.33>
+	#end
   }
   finish  { fin_T_metal } 
 }
@@ -99,8 +102,8 @@ texture
         {
           [0.0 color rgb <0.96,0.7,0.256>]
           [1.0 color rgb <0.7,0.4,0.234>]
-        } 
-      }  
+        }
+      }
       finish { fin_T_cuffs }
       normal { norm_T_cuffs }
     }
@@ -177,14 +180,14 @@ color_map
 {
   [0.0 colour rgb <0.6625, 0.6625, 0.6625>]
   [1.0 colour rgb <0.8, 0.8, 0.8>]
-} 
+}
 
 #declare colour_gray =
 color_map
 {
   [0.0 colour rgb <0.16, 0.2, 0.2>]
   [1.0 colour rgb <0.36, 0.4, 0.4>]
-} 
+}
 
 #declare colour_dred =
 color_map
@@ -198,16 +201,17 @@ color_map
 {
   [0.0 colour rgb <0,0.09,0.6>]
   [1.0 colour rgb <0,0.09,0.6>]
-} 
+}
   
-#declare pcolour = colour_gray;
+#declare pcolour = colour_black;
 #if (!strcmp(wing,"Wing I")) #declare pcolour = colour_gray; #end
 #if (!strcmp(wing,"Wing II")) #declare pcolour = colour_dred; #end
 #if (!strcmp(wing,"Wing VI")) #declare pcolour = colour_red; #end
 #if (!strcmp(wing,"Wing X")) #declare pcolour = colour_dblue; #end
 #if (!strcmp(wing,"Wing XIX")) #declare pcolour = colour_purple; #end
 #if (!strcmp(wing,"Wing XXI")) #declare pcolour = colour_green; #end
-#if (!strcmp(category,"flag")) #declare pcolour = colour_gold #end
+#if (!strcmp(category,"flag")) #declare pcolour = colour_gold; #end
+#if (defined (prae)) #declare pcolour = colour_white; #end
 
 #declare T_trim_gold = 
 texture
@@ -259,11 +263,19 @@ texture
       {
         waves
         frequency 12
+		    #if (defined (prae)) 
         color_map
         {
+          [0.0 colour rgb <0.6625, 0.6625, 0.6625>]
+          [1.0 colour rgb <0.8, 0.8, 0.8>]
+        } 
+		    #else 
+		    color_map
+			  {
           [0.0 colour rgb <1,0.71,0.25>]
           [1.0 colour rgb <0.75,0.4,0.19>]
-        } 
+        }
+		    #end
       }  
       finish { fin_T_trim }
     }
