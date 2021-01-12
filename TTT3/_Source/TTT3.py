@@ -44,10 +44,17 @@ class TTT3(QtGui.QMainWindow):
     def __init__(self):
         '''Class constructor.'''
 
+        # Version info.
+        version = "3.00"
+        devVersion = "Alpha 2"
+
         # Initialise an instance of a QT Main Window and load our GUI file 'data\uis\ttt.ui'.
         QtGui.QMainWindow.__init__(self)
         self.gui = uic.loadUi(r"data\uis\ttt.ui")
         self.gui.show()
+
+        # Set the version number.
+        self.gui.lblVersion.setText("Version: {v} {a}".format(v=version, a=devVersion)) #TODO Version Number
 
         # ---------- Initialise instance variables and connections. ----------
 
