@@ -213,21 +213,21 @@ class TTT3(QtGui.QMainWindow):
 
 
     def pythonLink(self, event):
-        '''Method event for when 'TIE Corps Personnel Uniforms' is clicked on the 'Info' tab.'''
+        '''Method event for when 'Python' is clicked on the 'Info' tab.'''
 
         os.system("start https://www.python.org/about/")
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
     def qtLink(self, event):
-        '''Method event for when 'TIE Corps Personnel Uniforms' is clicked on the 'Info' tab.'''
+        '''Method event for when 'QT' is clicked on the 'Info' tab.'''
 
         os.system("start https://www.qt.io/")
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
     def povrayLink(self, event):
-        '''Method event for when 'TIE Corps Personnel Uniforms' is clicked on the 'Info' tab.'''
+        '''Method event for when 'POV-Ray' is clicked on the 'Info' tab.'''
 
         os.system("start http://www.povray.org/")
     #------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -265,8 +265,9 @@ class TTT3(QtGui.QMainWindow):
         self.gui.gb_medals.hide()
         self.hideMedalOptions()
 
-        # ToDo Disabled Helmet & Profiles UTFN.
+        # TODO Disabled Helmet UTFN.
         self.gui.btn_helmet.setEnabled(False)
+        # TODO Disabled Profiles UTFN.
         self.gui.btn_newProf.setEnabled(False)
         self.gui.btn_openProf.setEnabled(False)
         self.gui.btn_saveProf.setEnabled(False)
@@ -750,7 +751,8 @@ class TTT3(QtGui.QMainWindow):
 
 
     def launchPOVRay(self, uniform):
-        '''Method that dynamically writes data\batch\povray.bat and invisible.vbs to silently loanch POV-Ray with the correct paths.
+        '''Method that dynamically writes data\batch\povray.bat and invisible.vbs to silently launch POV-Ray with the correct paths.
+           data\batch\povray.bat and invisible.vbs are delete after POV-Ray is closed.
            The "uniform" agrument takes "dress", "duty or "helmet which is dependant on which button has been pressed."'''
 
         # Create the '..data\batch' direwctory if it doesn't already exist.
@@ -1090,33 +1092,33 @@ class TTT3(QtGui.QMainWindow):
 
             # ----- Global. -----
             if "&BGCOLOUR&" in line:
-                povData.append(line.replace("&BGCOLOUR&", "0, 0, 0")) # TODO
+                povData.append(line.replace("&BGCOLOUR&", "0, 0, 0")) # TODO createDressPov() BGCOLOUR
 
 
             # ----- Light. -----
 
             elif "&LIGHT&" in line:
-                povData.append(line.replace("&LIGHT&", "1518.5, -647.4, 1750.1")) # TODO
+                povData.append(line.replace("&LIGHT&", "1518.5, -647.4, 1750.1")) # TODO createDressPov() OpenGL BGCOLOUR
 
             elif "&SPOTLIGHTCOLOUR&" in line:
-                povData.append(line.replace("&SPOTLIGHTCOLOUR&", "1, 1, 1")) # TODO
+                povData.append(line.replace("&SPOTLIGHTCOLOUR&", "1, 1, 1")) # TODO createDressPov() OpenGL SPOTLIGHTCOLOUR
 
             elif "&SHADOWLESS&" in line:
-                povData.append(line.replace("&SHADOWLESS&", "")) # TODO
+                povData.append(line.replace("&SHADOWLESS&", "")) # TODO createDressPov() OpenGL SHADOWLESS
 
 
             # ----- Camera. -----
 
             elif "&CAMERA&" in line:
-                povData.append(line.replace("&CAMERA&", "-260.8, -1331.1, 209.0")) # TODO
+                povData.append(line.replace("&CAMERA&", "-260.8, -1331.1, 209.0")) # TODO createDressPov() OpenGL CAMERA
 
             elif "&TARGET&" in line:
-                povData.append(line.replace("&TARGET&", "0, -12.8, 2.8")) # TODO
+                povData.append(line.replace("&TARGET&", "0, -12.8, 2.8")) # TODO createDressPov() OpenGL TARGET
 
 
             # ----- Basic Info. -----
             elif "&CLOTH&" in line:
-                povData.append(line.replace("&CLOTH&", "0")) # TODO
+                povData.append(line.replace("&CLOTH&", "0")) # TODO createDressPov() OpenGL CLOTH
 
             elif "&POSITION&" in line:
                 if self.position == "TRN":
@@ -1128,10 +1130,10 @@ class TTT3(QtGui.QMainWindow):
                 povData.append(line.replace("&RANK&", self.rank))
 
             elif "&RANKROTATE&" in line:
-                povData.append(line.replace("&RANKROTATE&", self.rankRotate)) # TODO
+                povData.append(line.replace("&RANKROTATE&", self.rankRotate))
 
             elif "&RANKTRANSLATE&" in line:
-                povData.append(line.replace("&RANKTRANSLATE&", self.rankTranslate)) # TODO
+                povData.append(line.replace("&RANKTRANSLATE&", self.rankTranslate))
 
 
             # ----- Assignment. -----
@@ -1170,24 +1172,24 @@ class TTT3(QtGui.QMainWindow):
                     povData.append(line.replace("&TRIMCOLOUR&", "blue"))
 
                 else:
-                    povData.append(line.replace("&TRIMCOLOUR&", "black")) # TODO
+                    povData.append(line.replace("&TRIMCOLOUR&", "black")) # TODO Automate trim colouring so not hard coded.
 
 
             # ----- Medals. -----
             elif "&MABGS&" in line:
-                povData.append(line.replace("&MABGS&", "0")) # TODO
+                povData.append(line.replace("&MABGS&", "0")) # TODO Medal Bars for GS
 
             elif "&MABSS&" in line:
-                povData.append(line.replace("&MABSS&", "0")) # TODO
+                povData.append(line.replace("&MABSS&", "0")) # TODO Medal Bars for SS
 
             elif "&MABBS&" in line:
-                povData.append(line.replace("&MABBS&", "0")) # TODO
+                povData.append(line.replace("&MABBS&", "0")) # TODO Medal Bars for BS
 
             elif "&MABPC&" in line:
-                povData.append(line.replace("&MABPC&", "1")) # TODO
+                povData.append(line.replace("&MABPC&", "0")) # TODO Medal Bars for PC
 
             elif "&MABISM&" in line:
-                povData.append(line.replace("&MABISM&", "2")) # TODO
+                povData.append(line.replace("&MABISM&", "0")) # TODO Medal Bars for ISM
 
 
             # ----- Other. -----
@@ -1200,30 +1202,29 @@ class TTT3(QtGui.QMainWindow):
                     povData.append(line.replace("&PADINCLUDE&", '#include "pad_braid_g.inc"'))
 
                 else:
-                    povData.append(line.replace("&PADINCLUDE&", '#include "pad_g.inc"')) # TODO
-
+                    povData.append(line.replace("&PADINCLUDE&", '#include "pad_g.inc"'))
 
             elif "&FCHGINCLUDE&" in line:
-                povData.append(line.replace("&FCHGINCLUDE&", '#include "fchg_g.inc"')) # TODO
-
+                povData.append(line.replace("&FCHGINCLUDE&", '#include "fchg_g.inc"'))
+# TODO FCHGINCLUDE if FCHG is selected.
             elif "&SABERINCLUDE&" in line:
-                povData.append(line.replace("&SABERINCLUDE&", "")) # TODO
+                povData.append(line.replace("&SABERINCLUDE&", "")) # TODO SABERINCLUDE
 
             elif "&MOHINCLUDE&" in line:
-                povData.append(line.replace("&MOHINCLUDE&", "")) # TODO
+                povData.append(line.replace("&MOHINCLUDE&", "")) # TODO MOHINCLUDE
 
             elif "&OORINCLUDE&" in line:
-                povData.append(line.replace("&OORINCLUDE&", "")) # TODO
+                povData.append(line.replace("&OORINCLUDE&", "")) # TODO OORINCLUDE
 
             elif "&ICGOEINCLUDE&" in line:
-                povData.append(line.replace("&ICGOEINCLUDE&", "")) # TODO
+                povData.append(line.replace("&ICGOEINCLUDE&", "")) # TODO ICGOEINCLUDE
 
             elif "&MEDALSINCLUDE&" in line:
 
                 medalsInclude = ['#include "medal_g.inc"', '#include "bs_g.inc"', '#include "pc_g.inc"', '#include "ism_g.inc"']
 
                 for line in medalsInclude:
-                    povData.append(line + "\n") # TODO
+                    povData.append(line + "\n") # TODO MEDALSINCLUDE add includes as per the above medal selections.
 
 
             # ----- Scene. -----
@@ -1299,19 +1300,18 @@ class TTT3(QtGui.QMainWindow):
 
 
             elif "&SABER&" in line:
-                povData.append(line.replace("&SABER&", "")) # TODO
+                povData.append(line.replace("&SABER&", "")) # TODO SABER
 
             elif "&GOEDAGGER&" in line:
-                povData.append(line.replace("&GOEDAGGER&", "")) # TODO
+                povData.append(line.replace("&GOEDAGGER&", "")) # TODO GOEDAGGER
 
 
             elif "&MEDALS&" in line:
                 medals = []
-##                medals = ["object { P_bs_3_1 }", "object { P_pc_3_2 }", "object { P_ism_3_3 }"]
+##                medals = ["object { P_bs_3_1 }", "object { P_pc_3_2 }", "object { P_ism_3_3 }"] #--------------- DEBUG TEST CODE
 
                 for medal in medals:
-                    povData.append(medal + "\n") # TODO
-
+                    povData.append(medal + "\n") # TODO MEDALS
 
             elif "&RIBBONS&" in line:
                 ribbons = []
@@ -1320,10 +1320,10 @@ class TTT3(QtGui.QMainWindow):
 ##                           "object { P_r16 texture { T_r_is_sr } }", "object { P_r17 texture { T_r_is_br } }",
 ##                           "object { P_r18 texture { T_r_loc } }", "object { P_r19 texture { T_r_los_cs } }",
 ##                           "object { P_r24 texture { T_r_moc_boc } }", "object { P_r25 texture { T_r_cob } }",
-##                           "object { P_r26 texture { T_r_ov_19e } }"]
+##                           "object { P_r26 texture { T_r_ov_19e } }"] #----------------------------------------- DEBUG TEST CODE
 
                 for ribbon in ribbons:
-                    povData.append(ribbon + "\n") # TODO
+                    povData.append(ribbon + "\n") # TODO RIBBONS
 
 
             # ----- Non-Editable Data. -----
@@ -1531,12 +1531,12 @@ class TTT3(QtGui.QMainWindow):
         with open("data\\ribbons_g.inc", "w") as ribbonFile:
             ribbonFile.write(ribbons_g)
 ##        print self.ribbons
-        # TODO
+        # TODO Finish loadRibbons()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
     def assignRibbonGUIWidgets(self, ribbon):
-        '''Method that will detect the number of rubbons and type of award and assign GUI widgets to reprersent them.'''
+        '''Method that will detect the number of ribbons and type of award and assign GUI widgets to reprersent them.'''
 
         if self.ribbons.get(ribbon).get("type") == "upgradeable":
             # Medals with 3 or less options that will use the centre column of spinboxes.
@@ -1549,6 +1549,7 @@ class TTT3(QtGui.QMainWindow):
 
             for upgrade in upgrades:
                 print upgrade
+                # TODO Finish assignRibbonGUIWidgets()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1592,7 +1593,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         self.gui.gb_medals.setTitle(item.text().split(" (")[0])
 
         # Show the correct GUI elements for the given medal.
-        # TODO
+        # TODO medalSelectionLogic()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
