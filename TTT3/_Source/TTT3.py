@@ -47,6 +47,7 @@ class TTT3(QtGui.QMainWindow):
         # Version info.
         version = "3.00"
         devVersion = "Alpha 2"
+        date = "January 2021"
 
         # Initialise an instance of a QT Main Window and load our GUI file 'data\uis\ttt.ui'.
         QtGui.QMainWindow.__init__(self)
@@ -54,7 +55,8 @@ class TTT3(QtGui.QMainWindow):
         self.gui.show()
 
         # Set the version number.
-        self.gui.lblVersion.setText("Version: {v} {a}".format(v=version, a=devVersion)) #TODO Version Number
+        self.gui.lblVersion.setText("Version: {v} {a}".format(v=version, a=devVersion))
+        self.gui.lblDate.setText("Date:     " + date)
 
         # ---------- Initialise instance variables and connections. ----------
 

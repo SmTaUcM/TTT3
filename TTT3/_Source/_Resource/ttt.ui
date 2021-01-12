@@ -1831,7 +1831,7 @@ QListWidget:!enabled
        <string>Version: 3.00</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_13">
+     <widget class="QLabel" name="lblDate">
       <property name="geometry">
        <rect>
         <x>376</x>
