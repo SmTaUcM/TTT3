@@ -1309,6 +1309,17 @@ class TTT3(QtGui.QMainWindow):
             elif "&GOEDAGGER&" in line:
                 povData.append(line.replace("&GOEDAGGER&", "")) # TODO GOEDAGGER
 
+            elif "&PAD&" in line:
+                if self.rank == "CT":
+                    povData.append(line.replace("&PAD&", ""))
+                else:
+                    povData.append(line.replace("&PAD&", "object { P_pad }"))
+
+            elif "&PADTRIM&" in line:
+                if self.rank == "CT":
+                    povData.append(line.replace("&PADTRIM&", "object { P_shoulder_right }"))
+                else:
+                    povData.append(line.replace("&PADTRIM&", "object { P_pad_left texture { T_pad_left } }  "))
 
             elif "&MEDALS&" in line:
                 medals = []
