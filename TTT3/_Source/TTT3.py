@@ -802,6 +802,10 @@ class TTT3(QtGui.QMainWindow):
         # Wait for POV-Ray to close.
         self.povrayMonitor()
 
+        # Delete invisible.vbs and povray.bat.
+        os.remove(r"data\batch\invisible.vbs")
+        os.remove(r"data\batch\povray.bat")
+
         # Open the newly generated uniform.png file.
         if self.config.get("POV", "mode") == "registry":
             if "3.6" in self.config.get("POV", "regpath"):
