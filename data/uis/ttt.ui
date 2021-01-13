@@ -1747,7 +1747,7 @@ QListWidget:!enabled
        <rect>
         <x>127</x>
         <y>86</y>
-        <width>241</width>
+        <width>121</width>
         <height>20</height>
        </rect>
       </property>
@@ -1760,7 +1760,7 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>LCM SkyShadow</string>
+       <string>LCM SkyShadow, </string>
       </property>
      </widget>
      <widget class="QLabel" name="lblVersion">
@@ -1815,7 +1815,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>95</x>
-        <y>221</y>
+        <y>224</y>
         <width>81</width>
         <height>81</height>
        </rect>
@@ -1843,7 +1843,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>362</x>
-        <y>221</y>
+        <y>224</y>
         <width>101</width>
         <height>81</height>
        </rect>
@@ -1871,7 +1871,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>89</x>
-        <y>306</y>
+        <y>309</y>
         <width>101</width>
         <height>16</height>
        </rect>
@@ -1898,7 +1898,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>342</x>
-        <y>299</y>
+        <y>302</y>
         <width>141</width>
         <height>31</height>
        </rect>
@@ -1931,7 +1931,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>226</x>
-        <y>221</y>
+        <y>224</y>
         <width>81</width>
         <height>81</height>
        </rect>
@@ -1959,7 +1959,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>246</x>
-        <y>306</y>
+        <y>309</y>
         <width>41</width>
         <height>16</height>
        </rect>
@@ -1986,7 +1986,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>115</y>
+        <y>121</y>
         <width>371</width>
         <height>20</height>
        </rect>
@@ -2005,8 +2005,8 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>133</y>
-        <width>141</width>
+        <y>139</y>
+        <width>81</width>
         <height>20</height>
        </rect>
       </property>
@@ -2017,14 +2017,14 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>or contact the author at</string>
+       <string>or contact the</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_22">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>160</y>
+        <y>165</y>
         <width>331</width>
         <height>20</height>
        </rect>
@@ -2043,7 +2043,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>187</y>
+        <y>192</y>
         <width>221</width>
         <height>20</height>
        </rect>
@@ -2061,9 +2061,9 @@ QListWidget:!enabled
      <widget class="QLabel" name="lbl_email">
       <property name="geometry">
        <rect>
-        <x>149</x>
-        <y>133</y>
-        <width>151</width>
+        <x>94</x>
+        <y>139</y>
+        <width>81</width>
         <height>20</height>
        </rect>
       </property>
@@ -2081,15 +2081,15 @@ QListWidget:!enabled
        <string notr="true">color: rgb(6, 22, 125);</string>
       </property>
       <property name="text">
-       <string>SmTaUcM@Yahoo.co.uk</string>
+       <string>Internet Office</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_25">
       <property name="geometry">
        <rect>
-        <x>296</x>
-        <y>133</y>
-        <width>16</width>
+        <x>174</x>
+        <y>139</y>
+        <width>41</width>
         <height>20</height>
        </rect>
       </property>
@@ -2107,7 +2107,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>379</x>
-        <y>115</y>
+        <y>121</y>
         <width>111</width>
         <height>20</height>
        </rect>
@@ -2133,7 +2133,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>483</x>
-        <y>116</y>
+        <y>122</y>
         <width>16</width>
         <height>20</height>
        </rect>
@@ -2152,7 +2152,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>341</x>
-        <y>160</y>
+        <y>165</y>
         <width>141</width>
         <height>20</height>
        </rect>
@@ -2178,7 +2178,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>474</x>
-        <y>160</y>
+        <y>165</y>
         <width>16</width>
         <height>20</height>
        </rect>
@@ -2197,7 +2197,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>229</x>
-        <y>187</y>
+        <y>192</y>
         <width>181</width>
         <height>20</height>
        </rect>
@@ -2223,7 +2223,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>403</x>
-        <y>188</y>
+        <y>193</y>
         <width>16</width>
         <height>20</height>
        </rect>
@@ -2236,6 +2236,48 @@ QListWidget:!enabled
       </property>
       <property name="text">
        <string>.</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_11">
+      <property name="geometry">
+       <rect>
+        <x>242</x>
+        <y>86</y>
+        <width>131</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>AD Turtle Jerrar,</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_12">
+      <property name="geometry">
+       <rect>
+        <x>127</x>
+        <y>103</y>
+        <width>131</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>&amp; AD Jedi Eclipse.</string>
       </property>
      </widget>
     </widget>

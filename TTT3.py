@@ -139,7 +139,7 @@ class TTT3(QtGui.QMainWindow):
 
                 # 'Info' Tab Hyperlinks.
         self.gui.lbl_readme.mouseReleaseEvent = self.readmeLink
-        self.gui.lbl_email.mouseReleaseEvent = self.emailLink
+        self.gui.lbl_email.mouseReleaseEvent = self.ioLink
         self.gui.lbl_tcpm.mouseReleaseEvent = self.tcpmLink
         self.gui.lbl_uniforms.mouseReleaseEvent = self.uniformsLink
         self.gui.lbl_pic_python.mouseReleaseEvent = self.pythonLink
@@ -200,10 +200,10 @@ class TTT3(QtGui.QMainWindow):
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
-    def emailLink(self, event):
-        '''Method event for when 'SmTaUcM@Yahoo.co.uk' is clicked on the 'Info' tab.'''
+    def ioLink(self, event):
+        '''Method event for when 'Internet Office' is clicked on the 'Info' tab.'''
 
-        os.system("start mailto:SmTaUcM@Yahoo.co.uk")
+        os.system("start https://tc.emperorshammer.org/ehstaff.php")
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
