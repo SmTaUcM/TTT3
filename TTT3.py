@@ -148,6 +148,7 @@ class TTT3(QtGui.QMainWindow):
         self.gui.lbl_qt.mouseReleaseEvent = self.qtLink
         self.gui.lbl_pic_povray.mouseReleaseEvent = self.povrayLink
         self.gui.lbl_povray.mouseReleaseEvent = self.povrayLink
+        self.gui.label_11.mouseReleaseEvent = self.eeLink
 
 
         # ----- POV-Ray Variables. -----
@@ -185,6 +186,7 @@ class TTT3(QtGui.QMainWindow):
         self.fleetConfig = None
         self.medalConfig = None
         self.ribbonConfig = None
+        self.eeCount = 0
 
 
         # ----- Application logic. -----
@@ -239,6 +241,16 @@ class TTT3(QtGui.QMainWindow):
         '''Method event for when 'POV-Ray' is clicked on the 'Info' tab.'''
 
         os.system("start http://www.povray.org/")
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def eeLink(self, event):
+        '''Method event for ee.'''
+
+        self.eeCount += 1
+        if self.eeCount >= 3:
+            self.gui.label_11.setText("PRAETORIAN MODE")
+            self.gui.label_11.setStyleSheet("color: rgb(255, 0, 0);")
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1130,6 +1142,15 @@ class TTT3(QtGui.QMainWindow):
 
 
             # ----- Basic Info. -----
+            elif "&EE&" in line:
+                if self.eeCount >= 3:
+                    povData.append(line.replace("&EE&", "#declare prae = 1;"))
+                    self.eeCount = 0
+                    self.gui.label_11.setText("AD Turtle Jerrar,")
+                    self.gui.label_11.setStyleSheet("")
+                else:
+                    povData.append(line.replace("&EE&", ""))
+
             elif "&CLOTH&" in line:
                 povData.append(line.replace("&CLOTH&", "0")) # TODO createDressPov() OpenGL CLOTH
 

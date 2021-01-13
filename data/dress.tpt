@@ -97,6 +97,7 @@ camera
 // INCLUDES
 
 
+&EE&
 #declare cloth = &CLOTH&;
 #declare position = "&POSITION&";
 #declare rank = "&RANK&";
