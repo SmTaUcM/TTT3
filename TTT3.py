@@ -410,14 +410,14 @@ class TTT3(QtGui.QMainWindow):
 
                 # Imperial Advisor.
                 elif radioButton == self.gui.rb_pos_ia:
-                    self.showRanks(RA, HA)
+                    self.showRanks(RA, SA)
                     self.position = "IA"
                     self.enableWingAndSqnTab(False)
                     break
 
                 # Command Attache.
                 elif radioButton == self.gui.rb_pos_ca:
-                    self.showRanks(RA, HA)
+                    self.showRanks(RA, SA)
                     self.position = "CA"
                     self.enableWingAndSqnTab(False)
                     break
