@@ -1148,8 +1148,11 @@ class TTT3(QtGui.QMainWindow):
                     povData.append(line.replace("&PADINCLUDE&", '#include "pad_g.inc"'))
 
             elif "&FCHGINCLUDE&" in line:
-                povData.append(line.replace("&FCHGINCLUDE&", '#include "fchg_g.inc"'))
-# TODO FCHGINCLUDE if FCHG is selected.
+                if not self.gui.cbFCHG.currentText() == "None (0 Pts)":
+                    povData.append(line.replace("&FCHGINCLUDE&", '#include "fchg_g.inc"'))
+                else:
+                    povData.append(line.replace("&FCHGINCLUDE&", ""))
+
             elif "&SABERINCLUDE&" in line:
                 povData.append(line.replace("&SABERINCLUDE&", "")) # TODO SABERINCLUDE
 
@@ -1164,7 +1167,7 @@ class TTT3(QtGui.QMainWindow):
 
             elif "&MEDALSINCLUDE&" in line:
 
-                medalsInclude = ['#include "medal_g.inc"', '#include "bs_g.inc"', '#include "pc_g.inc"', '#include "ism_g.inc"']
+                medalsInclude = ['#include "medal_g.inc"', '#include "bs_g.inc"', '#include "pc_g.inc"', '#include "ism_g.inc"']# TODO include only needed medals. DEBUG TEST CODE for below??
 
                 for line in medalsInclude:
                     povData.append(line + "\n") # TODO MEDALSINCLUDE add includes as per the above medal selections.
@@ -1349,7 +1352,7 @@ class TTT3(QtGui.QMainWindow):
             self.sqn = self.gui.lw_squad.currentItem().text()
 
         except AttributeError:
-            pass # Prevents the application throwing an error when the 'Wing' List Widget is clears and tries to populate squadrons from a 'blank' wing.
+            pass # Prevents the application throwing an error when the 'Wing' List Widget clears and tries to populate squadrons from a 'blank' wing.
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1487,7 +1490,6 @@ class TTT3(QtGui.QMainWindow):
 
         with open("data\\ribbons_g.inc", "w") as ribbonFile:
             ribbonFile.write(ribbons_g)
-##        print self.ribbons
         # TODO Finish loadRibbons()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
