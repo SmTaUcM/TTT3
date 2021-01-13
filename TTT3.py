@@ -159,9 +159,9 @@ class TTT3(QtGui.QMainWindow):
         self.rankRotate = None
         self.rankTranslate = None
         self.name = "Unknown"
-        self.ship = None
-        self.wing = None
-        self.sqn = None
+        self.ship = ""
+        self.wing = ""
+        self.sqn = ""
         self.ribbons = {}
 
         # PovRay Template Constants.
@@ -311,9 +311,6 @@ class TTT3(QtGui.QMainWindow):
             radioButton.setChecked(False)
             radioButton.setAutoExclusive(True)
 
-        # Enable all options from the 'Wing and Squadron' Tab.
-        self.enableWingAndSqnTab()
-
         # Initialise method constants.
         # Ranks:
             # Line Ranks.
@@ -336,6 +333,10 @@ class TTT3(QtGui.QMainWindow):
         SA  = 15
         GA  = 16
 
+        # Enable all options from the 'Wing and Squadron' Tab.
+        if self.gui.cb_eliteSqn.isChecked() == False: # Stops the ship and wing tabs from repopulating if 'Elite Squadron' is checked.
+            self.enableWingAndSqnTab(True)
+
         # Clean up the ranks group box.
         self.hideAllRanks()
 
@@ -350,18 +351,7 @@ class TTT3(QtGui.QMainWindow):
                     self.position = "TRN"
                     self.gui.rb_rank_ct.setChecked(True)
                     self.rankRBLogic()
-
-                    # Set the options available to the user in the 'Wing and Squadron' tab.
-                    self.gui.lw_ship.setEnabled(False)
-                    self.gui.lw_ship.clear()
-                    self.ship = ""
-                    self.gui.lw_wing.setEnabled(False)
-                    self.gui.lw_wing.clear()
-                    self.wing = ""
-                    self.gui.lw_squad.setEnabled(False)
-                    self.gui.lw_squad.clear()
-                    self.sqn = ""
-                    self.gui.cb_eliteSqn.setEnabled(False)
+                    self.enableWingAndSqnTab(False)
                     break
 
                 # Flight Member.
@@ -388,10 +378,11 @@ class TTT3(QtGui.QMainWindow):
                     self.position = "WC"
 
                     # Set the options available to the user in the 'Wing and Squadron' tab.
+                    self.gui.cb_eliteSqn.setChecked(False)
+                    self.gui.cb_eliteSqn.setEnabled(False)
                     self.gui.lw_squad.setEnabled(False)
                     self.gui.lw_squad.clear()
                     self.sqn = ""
-                    self.gui.cb_eliteSqn.setEnabled(False)
                     break
 
                 # Commodore.
@@ -400,121 +391,56 @@ class TTT3(QtGui.QMainWindow):
                     self.position = "COM"
 
                     # Set the options available to the user in the 'Wing and Squadron' tab.
+                    self.gui.cb_eliteSqn.setChecked(False)
+                    self.gui.cb_eliteSqn.setEnabled(False)
                     self.gui.lw_wing.setEnabled(False)
                     self.gui.lw_wing.clear()
                     self.wing = ""
                     self.gui.lw_squad.setEnabled(False)
                     self.gui.lw_squad.clear()
                     self.sqn = ""
-                    self.gui.cb_eliteSqn.setEnabled(False)
                     break
 
                 # Battlegroup Commander.
                 elif radioButton == self.gui.rb_pos_bgcom:
                     self.showRanks(RA, HA)
                     self.position = "BGCOM"
-
-                    # Set the options available to the user in the 'Wing and Squadron' tab.
-                    self.gui.lw_ship.setEnabled(False)
-                    self.gui.lw_ship.clear()
-                    self.ship = ""
-                    self.gui.lw_wing.setEnabled(False)
-                    self.gui.lw_wing.clear()
-                    self.wing = ""
-                    self.gui.lw_squad.setEnabled(False)
-                    self.gui.lw_squad.clear()
-                    self.sqn = ""
-                    self.gui.cb_eliteSqn.setEnabled(False)
+                    self.enableWingAndSqnTab(False)
                     break
 
                 # Imperial Advisor.
                 elif radioButton == self.gui.rb_pos_ia:
                     self.showRanks(RA, HA)
                     self.position = "IA"
-
-                    # Set the options available to the user in the 'Wing and Squadron' tab.
-                    self.gui.lw_ship.setEnabled(False)
-                    self.gui.lw_ship.clear()
-                    self.ship = ""
-                    self.gui.lw_wing.setEnabled(False)
-                    self.gui.lw_wing.clear()
-                    self.wing = ""
-                    self.gui.lw_squad.setEnabled(False)
-                    self.gui.lw_squad.clear()
-                    self.sqn = ""
-                    self.gui.cb_eliteSqn.setEnabled(False)
+                    self.enableWingAndSqnTab(False)
                     break
 
                 # Command Attache.
                 elif radioButton == self.gui.rb_pos_ca:
                     self.showRanks(RA, HA)
                     self.position = "CA"
-
-                    # Set the options available to the user in the 'Wing and Squadron' tab.
-                    self.gui.lw_ship.setEnabled(False)
-                    self.gui.lw_ship.clear()
-                    self.ship = ""
-                    self.gui.lw_wing.setEnabled(False)
-                    self.gui.lw_wing.clear()
-                    self.wing = ""
-                    self.gui.lw_squad.setEnabled(False)
-                    self.gui.lw_squad.clear()
-                    self.sqn = ""
-                    self.gui.cb_eliteSqn.setEnabled(False)
+                    self.enableWingAndSqnTab(False)
                     break
 
                 # Sub-Group Commander.
                 elif radioButton == self.gui.rb_pos_sgcom:
                     self.showRanks(RA, GA)
                     self.position = "SGCOM"
-
-                    # Set the options available to the user in the 'Wing and Squadron' tab.
-                    self.gui.lw_ship.setEnabled(False)
-                    self.gui.lw_ship.clear()
-                    self.ship = ""
-                    self.gui.lw_wing.setEnabled(False)
-                    self.gui.lw_wing.clear()
-                    self.wing = ""
-                    self.gui.lw_squad.setEnabled(False)
-                    self.gui.lw_squad.clear()
-                    self.sqn = ""
-                    self.gui.cb_eliteSqn.setEnabled(False)
+                    self.enableWingAndSqnTab(False)
                     break
 
                 # Command Staff.
                 elif radioButton == self.gui.rb_pos_cs:
                     self.showRanks(RA, GA)
                     self.position = "CS"
-
-                    # Set the options available to the user in the 'Wing and Squadron' tab.
-                    self.gui.lw_ship.setEnabled(False)
-                    self.gui.lw_ship.clear()
-                    self.ship = ""
-                    self.gui.lw_wing.setEnabled(False)
-                    self.gui.lw_wing.clear()
-                    self.wing = ""
-                    self.gui.lw_squad.setEnabled(False)
-                    self.gui.lw_squad.clear()
-                    self.sqn = ""
-                    self.gui.cb_eliteSqn.setEnabled(False)
+                    self.enableWingAndSqnTab(False)
                     break
 
                 # Executive Officer.
                 elif radioButton == self.gui.rb_pos_xo:
                     self.showRanks(RA, GA)
                     self.position = "XO"
-
-                    # Set the options available to the user in the 'Wing and Squadron' tab.
-                    self.gui.lw_ship.setEnabled(False)
-                    self.gui.lw_ship.clear()
-                    self.ship = ""
-                    self.gui.lw_wing.setEnabled(False)
-                    self.gui.lw_wing.clear()
-                    self.wing = ""
-                    self.gui.lw_squad.setEnabled(False)
-                    self.gui.lw_squad.clear()
-                    self.sqn = ""
-                    self.gui.cb_eliteSqn.setEnabled(False)
+                    self.enableWingAndSqnTab(False)
                     break
 
                 # Fleet Commander.
@@ -523,89 +449,65 @@ class TTT3(QtGui.QMainWindow):
                     self.position = "FC"
                     self.gui.rb_rank_ga.setChecked(True)
                     self.rankRBLogic()
-
-                    # Set the options available to the user in the 'Wing and Squadron' tab.
-                    self.gui.lw_ship.setEnabled(False)
-                    self.gui.lw_ship.clear()
-                    self.ship = ""
-                    self.gui.lw_wing.setEnabled(False)
-                    self.gui.lw_wing.clear()
-                    self.wing = ""
-                    self.gui.lw_squad.setEnabled(False)
-                    self.gui.lw_squad.clear()
-                    self.sqn = ""
-                    self.gui.cb_eliteSqn.setEnabled(False)
+                    self.enableWingAndSqnTab(False)
                     break
 
                 # Line Ranks.
                 elif radioButton == self.gui.rb_pos_lr:
                     self.showRanks(CT, GN)
                     self.position = "NUL"
-
-                    # Set the options available to the user in the 'Wing and Squadron' tab.
-                    self.gui.lw_ship.setEnabled(False)
-                    self.gui.lw_ship.clear()
-                    self.ship = ""
-                    self.gui.lw_wing.setEnabled(False)
-                    self.gui.lw_wing.clear()
-                    self.wing = ""
-                    self.gui.lw_squad.setEnabled(False)
-                    self.gui.lw_squad.clear()
-                    self.sqn = ""
-                    self.gui.cb_eliteSqn.setEnabled(False)
+                    self.enableWingAndSqnTab(False)
                     break
 
                 # Flag Ranks.
                 elif radioButton == self.gui.rb_pos_fr:
                     self.showRanks(RA, GA)
                     self.position = "NUL"
-
-                    # Set the options available to the user in the 'Wing and Squadron' tab.
-                    self.gui.lw_ship.setEnabled(False)
-                    self.gui.lw_ship.clear()
-                    self.ship = ""
-                    self.gui.lw_wing.setEnabled(False)
-                    self.gui.lw_wing.clear()
-                    self.wing = ""
-                    self.gui.lw_squad.setEnabled(False)
-                    self.gui.lw_squad.clear()
-                    self.sqn = ""
-                    self.gui.cb_eliteSqn.setEnabled(False)
                     break
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def enableWingAndSqnTab(self):
+    def enableWingAndSqnTab(self, boolEnabled):
         '''Method that enables all options in the 'Wing and Squadron' tab.'''
 
-        self.gui.lw_ship.setEnabled(True)
-        self.gui.lw_wing.setEnabled(True)
-        self.gui.lw_squad.setEnabled(True)
-        self.gui.cb_eliteSqn.setEnabled(True)
+        if boolEnabled:
+            # Add the Ships to the Ships list view.
+            if self.gui.lw_ship.count() == 0:
+                self.gui.lw_ship.clear()
+                for ship in self.fleetConfig.options("fleet"):
+                    if ship != "count":
+                        self.gui.lw_ship.addItem(self.fleetConfig.get("fleet", ship))
 
-        # Add the Ships to the Ships list view.
-        if self.gui.lw_ship.count() == 0:
+            # Populate the 'Wing' List Widget with the Wings for the selected Ship.
+            try:
+                if self.gui.lw_wing.count() == 0:
+                    # Populate the 'Wing' List Widget with the Wings for the selected Ship.
+                    for wing in self.fleetConfig.options(str(self.gui.lw_ship.currentItem().text())):
+                        self.gui.lw_wing.addItem(self.fleetConfig.get(str(self.gui.lw_ship.currentItem().text()), wing))
+            except AttributeError:
+                pass
+
+            # Populate the 'Squadron' List Widget with the Squadrons for the selected Wing.
+            try:
+                if self.gui.lw_squad.count() == 0:
+                    # Populate the 'Wing' List Widget with the Wings for the selected Ship.
+                    for squadron in self.fleetConfig.options(str(self.gui.lw_wing.currentItem().text())):
+                        self.gui.lw_squad.addItem(self.fleetConfig.get(str(self.gui.lw_wing.currentItem().text()), squadron))
+            except AttributeError:
+                pass
+
+        else:
+            self.gui.cb_eliteSqn.setChecked(False)
             self.gui.lw_ship.clear()
-            for ship in self.fleetConfig.options("fleet"):
-                if ship != "count":
-                    self.gui.lw_ship.addItem(self.fleetConfig.get("fleet", ship))
+            self.ship = ""
+            self.gui.lw_wing.clear()
+            self.wing = ""
+            self.gui.lw_squad.clear()
+            self.sqn = ""
 
-        # Populate the 'Wing' List Widget with the Wings for the selected Ship.
-        try:
-            if self.gui.lw_wing.count() == 0:
-                # Populate the 'Wing' List Widget with the Wings for the selected Ship.
-                for wing in self.fleetConfig.options(str(self.gui.lw_ship.currentItem().text())):
-                    self.gui.lw_wing.addItem(self.fleetConfig.get(str(self.gui.lw_ship.currentItem().text()), wing))
-        except AttributeError:
-            pass
-
-        # Populate the 'Squadron' List Widget with the Squadrons for the selected Wing.
-        try:
-            if self.gui.lw_squad.count() == 0:
-                # Populate the 'Wing' List Widget with the Wings for the selected Ship.
-                for squadron in self.fleetConfig.options(str(self.gui.lw_wing.currentItem().text())):
-                    self.gui.lw_squad.addItem(self.fleetConfig.get(str(self.gui.lw_wing.currentItem().text()), squadron))
-        except AttributeError:
-            pass
+        self.gui.lw_ship.setEnabled(boolEnabled)
+        self.gui.lw_wing.setEnabled(boolEnabled)
+        self.gui.lw_squad.setEnabled(boolEnabled)
+        self.gui.cb_eliteSqn.setEnabled(boolEnabled)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def rankRBLogic(self):
@@ -748,13 +650,17 @@ class TTT3(QtGui.QMainWindow):
            directly call 'launchPOVRay' to open up PovRay and render the unirom.'''
 
         # Check to see if the user has made the correct selections for their position and rank.
-        if self.position in ["FM", "FL", "CMDR", "WC"]:
+        if self.position in ["FM", "FL", "CMDR", "WC"] and self.gui.cb_eliteSqn.isChecked() == False:
             if not self.ship or not self.wing:
                 msg = "Error: As a pilot you need to specify at least a ship and wing before a dress uniform can be created."
                 return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
             else:
                 self.createDressPov()
                 self.launchPOVRay("dress")
+
+        elif self.gui.cb_eliteSqn.isChecked() == True and not self.sqn:
+            msg = "Error: As an elite pilot you need to specify a squadron before a dress uniform can be created."
+            return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
 
         elif self.position in ["COM"]:
             if not self.ship:
@@ -1193,7 +1099,10 @@ class TTT3(QtGui.QMainWindow):
                 povData.append(line.replace("&SQUAD&", self.sqn))
 
             elif "&TRIMCOLOUR&" in line:
-                if self.position in ["COM", "BGCOM", "IA", "CA", "SGCOM", "CS", "XO", "FC"]:
+                if self.gui.cb_eliteSqn.isChecked():
+                    povData.append(line.replace("&TRIMCOLOUR&", "white"))
+
+                elif self.position in ["COM", "BGCOM", "IA", "CA", "SGCOM", "CS", "XO", "FC"]:
                     povData.append(line.replace("&TRIMCOLOUR&", "gold"))
 
                 elif self.wing == "Wing I":
@@ -1455,6 +1364,8 @@ class TTT3(QtGui.QMainWindow):
             self.gui.lw_ship.setEnabled(True)
             self.gui.lw_wing.setEnabled(True)
             self.gui.lw_squad.clear()
+            self.gui.lw_wing.clear()
+            self.gui.lw_ship.clear()
 
             # Add the Ships to the Ships list view.
             for ship in self.fleetConfig.options("fleet"):
@@ -1464,14 +1375,15 @@ class TTT3(QtGui.QMainWindow):
         elif value == 2:
 
             # Clear and disable the Ship and Wing List Widgets.
+            self.gui.lw_squad.clear()
             self.gui.lw_ship.clear()
             self.gui.lw_ship.setEnabled(False)
             self.gui.lw_wing.clear()
             self.gui.lw_wing.setEnabled(False)
 
             # Remove any prior saved Ship or Wing.
-            self.ship = "NUL"
-            self.wing = "NUL"
+            self.ship = ""
+            self.wing = ""
 
             # Populate the 'Squadron' List Widget with the Squadrons for the selected Wing.
             for squadron in self.fleetConfig.options("elites"):

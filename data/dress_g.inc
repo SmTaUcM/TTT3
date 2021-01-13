@@ -211,6 +211,8 @@ color_map
 #if (!strcmp(wing,"Wing XIX")) #declare pcolour = colour_purple; #end
 #if (!strcmp(wing,"Wing XXI")) #declare pcolour = colour_green; #end
 #if (!strcmp(category,"flag")) #declare pcolour = colour_gold; #end
+#if (!strcmp(squad,"Praetorian")) #declare pcolour = colour_white; #end
+#if (!strcmp(squad,"Omega")) #declare pcolour = colour_white; #end
 #if (defined (prae)) #declare pcolour = colour_white; #end
 
 #declare T_trim_gold = 
