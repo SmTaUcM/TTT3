@@ -662,3 +662,34 @@ texture
 }
 texture { T_unilayer scale 2}
 
+#declare T_r_ov_36e =
+texture
+{
+  pigment { image_map { gif ".\ribbons\ov-36e.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_ov_37e =
+texture
+{
+  pigment { image_map { gif ".\ribbons\ov-37e.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_ov_38e =
+texture
+{
+  pigment { image_map { gif ".\ribbons\ov-38e.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_ov_39e =
+texture
+{
+  pigment { image_map { gif ".\ribbons\ov-39e.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
