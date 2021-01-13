@@ -23,6 +23,8 @@ import datetime
 from _winreg import *
 from PyQt4 import QtGui, QtCore, uic
 from PIL import Image
+import numpy
+import cv2
 
 
 
@@ -1098,6 +1100,10 @@ class TTT3(QtGui.QMainWindow):
             elif "&SQUAD&" in line:
                 povData.append(line.replace("&SQUAD&", self.sqn))
 
+                # Create squadron patch mask.
+                if self.sqn != "":
+                    self.createPatchMask()
+
             elif "&TRIMCOLOUR&" in line:
                 if self.gui.cb_eliteSqn.isChecked():
                     povData.append(line.replace("&TRIMCOLOUR&", "white"))
@@ -1290,6 +1296,27 @@ class TTT3(QtGui.QMainWindow):
         # Write the parsed data to '\data\dress.pov'.
         with open(r"data\dress.pov", "w") as povFile:
             povFile.writelines(povData)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def createPatchMask(self):
+        '''Method that will create a mask file for the desired squadron patch.'''
+
+        fileName = "data\\squads\\{squad}.png".format(squad=self.sqn)
+
+        # Mask creation.
+        image = cv2.imread(fileName)
+        mask = numpy.ones(image.shape, dtype=numpy.uint8) * 255
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        cnts = cv2.findContours(gray, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        cnts = cnts[0] if len(cnts) == 2 else cnts[1]
+        for c in cnts:
+            cv2.drawContours(mask, [c], -1, (0, 0, 0), cv2.FILLED)
+        mask = cv2.bitwise_not(mask)
+
+        # Save the mask.
+        fileName = fileName.replace(".png","_mask.png")
+        cv2.imwrite(fileName, mask)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 

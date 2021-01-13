@@ -341,10 +341,10 @@ texture { T_patchlayer2 }
 #declare T_patch = 
 texture
 {
-  #if (file_exists(concat(".\\squads\\", squad, "_mask.gif")))
+  #if (file_exists(concat(".\\squads\\", squad, "_mask.png")))
   material_map
   {
-    gif concat(".\\squads\\", squad, "_mask.gif")
+    png concat(".\\squads\\", squad, "_mask.png")
     once
     texture 
     { //index 0
