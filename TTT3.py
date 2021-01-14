@@ -23,7 +23,6 @@ import datetime
 from _winreg import *
 from PyQt4 import QtGui, QtCore, uic
 from PIL import Image
-import numpy
 import cv2
 
 
@@ -1304,16 +1303,10 @@ class TTT3(QtGui.QMainWindow):
 
         fileName = "data\\squads\\{squad}.png".format(squad=self.sqn)
 
-        # Mask creation.
-        image = cv2.imread(fileName)
-        mask = numpy.ones(image.shape, dtype=numpy.uint8) * 255
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        cnts = cv2.findContours(gray, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        cnts = cnts[0] if len(cnts) == 2 else cnts[1]
-        for c in cnts:
-            cv2.drawContours(mask, [c], -1, (0, 0, 0), cv2.FILLED)
-        mask = cv2.bitwise_not(mask)
-
+        # Load image with alpha channel.
+        img = cv2.imread(fileName, cv2.IMREAD_UNCHANGED)
+        # Get mask from alpha channel.
+        mask = img[:, :, 3]
         # Save the mask.
         fileName = fileName.replace(".png","_mask.png")
         cv2.imwrite(fileName, mask)
@@ -1394,8 +1387,11 @@ class TTT3(QtGui.QMainWindow):
             self.gui.lw_ship.setEnabled(True)
             self.gui.lw_wing.setEnabled(True)
             self.gui.lw_squad.clear()
+            self.sqn = ""
             self.gui.lw_wing.clear()
+            self.wing = ""
             self.gui.lw_ship.clear()
+            self.ship = ""
 
             # Add the Ships to the Ships list view.
             for ship in self.fleetConfig.options("fleet"):
