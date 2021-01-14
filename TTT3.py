@@ -137,7 +137,7 @@ class TTT3(QtGui.QMainWindow):
         self.connect(self.gui.lw_medals,  QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.medalSelectionLogic)
 
 
-            # ----- Info Tab. -----
+        # ----- Info Tab. -----
 
                 # 'Info' Tab Hyperlinks.
         self.gui.lbl_readme.mouseReleaseEvent = self.readmeLink
@@ -164,7 +164,7 @@ class TTT3(QtGui.QMainWindow):
         self.ship = ""
         self.wing = ""
         self.sqn = ""
-        self.ribbons = {}
+        self.awards = {}
 
         # PovRay Template Constants.
         self.RANK_04_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787", # Rotate
@@ -1424,7 +1424,7 @@ class TTT3(QtGui.QMainWindow):
     def loadMedals(self):
         '''Method that reads in data from 'settings\medals.ini' adds the medals to the 'Medals, Ribbons and FCHG' tab.'''
 
-        # Read in the data from 'settings\ribbons.ini'.
+        # Read in the data from 'settings\medals.ini'.
         self.medalConfig = ConfigParser.ConfigParser()
         self.medalConfig.read(r"settings\medals.ini")
 
@@ -1433,12 +1433,13 @@ class TTT3(QtGui.QMainWindow):
 
             name = self.medalConfig.get(medal, "name")
 
-            # Store the medal in the 'self.ribbons' dictionary.
-            self.ribbons[name] = {"type" : self.medalConfig.get(medal, "type")}
-            self.ribbons[name]["upgrades"] = [name, 0]
+            # Store the medal in the 'self.awards' dictionary.
+            self.awards[name] = {"type" : self.medalConfig.get(medal, "type")}
+            self.awards[name]["upgrades"] = [name, 0]
 
             # Add the medal name to the GUI.
             self.gui.lw_medals.addItem(self.medalConfig.get(medal, "name"))
+            # TODO Dynamic medals like ribbons below?
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1475,15 +1476,15 @@ class TTT3(QtGui.QMainWindow):
             # Add the ribbon name to the GUI.
             self.gui.lw_medals.addItem(name)
 
-            # Store the ribbon in the 'self.ribbons' dictionary.
-            self.ribbons[name] = {"type" : self.ribbonConfig.get(ribbon, "type")}
+            # Store the ribbon in the 'self.awards' dictionary.
+            self.awards[name] = {"type" : self.ribbonConfig.get(ribbon, "type")}
 
 
             # Ranged ribbons like the OV.
             if self.ribbonConfig.get(ribbon, "type") == "ranged":
 
-                # Store the ribbon data to the 'self.ribbons' dictionary.
-                self.ribbons[name]["upgrades"] = [self.ribbonConfig.get(ribbon, "incrementName"), 0]
+                # Store the ribbon data to the 'self.awards' dictionary.
+                self.awards[name]["upgrades"] = [self.ribbonConfig.get(ribbon, "incrementName"), 0]
 
                 # Create the required inclide declarations for 'ribbons_g.inc'
                 rangeMin = int(self.ribbonConfig.get(ribbon, "rangeMin"))
@@ -1497,13 +1498,13 @@ class TTT3(QtGui.QMainWindow):
 
             # All other ribbons.
             else:
-                self.ribbons[name]["upgrades"] = []
+                self.awards[name]["upgrades"] = []
 
                 for option in self.ribbonConfig.options(ribbon):
 
-                    # Store the ribbon data to the 'self.ribbons' dictionary.
+                    # Store the ribbon data to the 'self.awards' dictionary.
                     if "type" not in option and "name" not in option.lower():
-                        self.ribbons[name]["upgrades"].append([self.ribbonConfig.get(ribbon, option), "WIDGET", 0])
+                        self.awards[name]["upgrades"].append([self.ribbonConfig.get(ribbon, option), "WIDGET", 0])
 
                     # Create the required inclide declarations for 'ribbons_g.inc'
                     if option != "name" and option != "type":
@@ -1512,7 +1513,7 @@ class TTT3(QtGui.QMainWindow):
                             ribbons_g += self.addToRibbonIncludes(self.ribbonConfig.get(ribbon, option))
 
                 # Assign a GUI widget to represent our ribbon.
-                self.assignRibbonGUIWidgets(name)
+                self.assignAwardGUIWidgets(name)
 
 
         with open("data\\ribbons_g.inc", "w") as ribbonFile:
@@ -1521,26 +1522,26 @@ class TTT3(QtGui.QMainWindow):
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
-    def assignRibbonGUIWidgets(self, ribbon):
+    def assignAwardGUIWidgets(self, ribbon):
         '''Method that will detect the number of ribbons and type of award and assign GUI widgets to reprersent them.'''
 
-        if self.ribbons.get(ribbon).get("type") == "upgradeable":
+        if self.awards.get(ribbon).get("type") == "upgradeable":
             # Medals with 3 or less options that will use the centre column of spinboxes.
-            upgrades = self.ribbons.get(ribbon).get("upgrades")
+            upgrades = self.awards.get(ribbon).get("upgrades")
 
             if len(upgrades) <= 3: # Center column.
-                guiElemens = []
-            else:
+                guiElemens = [] #TODO Insert TQ GUI references here
+            else: # #TODO Insert TQ GUI references here ---- TODO Outer award columns.
                 guiElements = [] # Outer columns:
 
             for upgrade in upgrades:
                 print upgrade
-                # TODO Finish assignRibbonGUIWidgets()
+                # TODO Finish assignAwardGUIWidgets()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
     def addToRibbonIncludes(self, filename):
-        '''Method that creates the include data for a single ribbon. This include data goes on top build ribbons_g.inc'''
+        '''Method that creates the include data for a single ribbon. This include data goes on to build ribbons_g.inc'''
 
         ribbonName = filename.replace("-", "_").replace(".gif", "")
 
@@ -1579,6 +1580,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         self.gui.gb_medals.setTitle(item.text().split(" (")[0])
 
         # Show the correct GUI elements for the given medal.
+        print item.text()
         # TODO medalSelectionLogic()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#

@@ -1273,7 +1273,7 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="title">
-       <string>Medal</string>
+       <string>==NULL==</string>
       </property>
       <widget class="QCheckBox" name="cb_singleMedal">
        <property name="enabled">
@@ -1294,7 +1294,7 @@ QListWidget:!enabled
         </font>
        </property>
        <property name="text">
-        <string>MEDAL NAME</string>
+        <string>==NULL==</string>
        </property>
       </widget>
       <widget class="QSpinBox" name="sb_multi_centerTop">
@@ -1326,7 +1326,7 @@ QListWidget:!enabled
         </font>
        </property>
        <property name="text">
-        <string>medal middle row top</string>
+        <string>==NULL==</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -1348,7 +1348,7 @@ QListWidget:!enabled
         </font>
        </property>
        <property name="text">
-        <string>text    </string>
+        <string>==NULL==</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1383,7 +1383,7 @@ QListWidget:!enabled
         </font>
        </property>
        <property name="text">
-        <string>medal middle row center</string>
+        <string>==NULL==</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -1405,7 +1405,7 @@ QListWidget:!enabled
         </font>
        </property>
        <property name="text">
-        <string>medal middle row bottom</string>
+        <string>==NULL==</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
