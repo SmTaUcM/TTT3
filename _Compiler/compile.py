@@ -12,6 +12,7 @@ os.chdir("..")
 ttt3Dir = os.path.abspath(os.curdir)
 
 setup(
+      zipfile = None, # Gets rid of library.zip.
       windows=
               [
                {
@@ -23,6 +24,12 @@ setup(
     options=
              {
               "py2exe" : {
+                          "optimize"     : 2,
+##                          "ascii"        : 1, # Do Not use. Breaks TTT3
+                          "packages"     : ["resource"], # Imports resource.py, must be in this files folder.
+                          "includes"     : ["sip"],
+                          "bundle_files" : 3, # 3 = don't bundle (default) 2 = bundle everything but the Python interpreter 1 = bundle everything, including the Python interpreter.
+                          "compressed"   : 1,
                           "dll_excludes" : ['libgstreamer-1.0-0.dll',
                                             'CRYPT32.DLL',
                                             'DNSAPI.DLL',
