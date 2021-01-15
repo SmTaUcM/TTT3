@@ -6,13 +6,17 @@
 
 from distutils.core import setup
 import py2exe
+import os
+
+os.chdir("..")
+ttt3Dir = os.path.abspath(os.curdir)
 
 setup(
       windows=
               [
                {
-                "script": "D:\\Local Repositories\\TTT3\\TTT3.py",
-                "icon_resources" : [(0, "D:\Local Repositories\TTT3\\_Resource\\ttt3.ico")],
+                "script": ttt3Dir + r"\TTT3.py",
+                "icon_resources" : [(0, ttt3Dir + r"\_Resource\ttt3.ico")],
                }
               ],
 
