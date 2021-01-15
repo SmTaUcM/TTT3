@@ -1283,7 +1283,7 @@ QListWidget:!enabled
         <rect>
          <x>25</x>
          <y>31</y>
-         <width>111</width>
+         <width>221</width>
          <height>17</height>
         </rect>
        </property>
@@ -2425,7 +2425,7 @@ QPushButton:!enabled
    </widget>
    <widget class="QPushButton" name="btn_helmet">
     <property name="enabled">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>

@@ -135,6 +135,8 @@ class TTT3(QtGui.QMainWindow):
 
                 # List Widget Connections.
         self.connect(self.gui.lw_medals,  QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.medalSelectionLogic)
+                # CheckBox.
+        self.connect(self.gui.cb_singleMedal, QtCore.SIGNAL("stateChanged(int)"), self.cb_singleMedalSelectionLogic)
 
 
         # ----- Info Tab. -----
@@ -1172,11 +1174,8 @@ class TTT3(QtGui.QMainWindow):
                 povData.append(line.replace("&ICGOEINCLUDE&", "")) # TODO ICGOEINCLUDE
 
             elif "&MEDALSINCLUDE&" in line:
-
-                medalsInclude = ['#include "medal_g.inc"', '#include "bs_g.inc"', '#include "pc_g.inc"', '#include "ism_g.inc"']# TODO include only needed medals. DEBUG TEST CODE for below??
-
-                for line in medalsInclude:
-                    povData.append(line + "\n") # TODO MEDALSINCLUDE add includes as per the above medal selections.
+                for includeRef in self.buildMedalIncludes():
+                    povData.append('#include "%s"\n'%includeRef)
 
 
             # ----- Scene. -----
@@ -1270,11 +1269,8 @@ class TTT3(QtGui.QMainWindow):
                     povData.append(line.replace("&PADTRIM&", "object { P_pad_left texture { T_pad_left } }  "))
 
             elif "&MEDALS&" in line:
-                medals = []
-##                medals = ["object { P_bs_3_1 }", "object { P_pc_3_2 }", "object { P_ism_3_3 }"] #--------------- DEBUG TEST CODE
-
-                for medal in medals:
-                    povData.append(medal + "\n") # TODO MEDALS
+                for objectRef in self.buildMedalObjects():
+                    povData.append('object { %s }\n'%objectRef)
 
             elif "&RIBBONS&" in line:
                 ribbons = []
@@ -1449,6 +1445,11 @@ class TTT3(QtGui.QMainWindow):
             # Store the medal in the 'self.awards' dictionary.
             self.awards[name] = {"type" : self.medalConfig.get(medal, "type")}
             self.awards[name]["upgrades"] = [name, 0]
+            self.awards[name]["includeFile"] = self.medalConfig.get(medal, "incFile")
+            try: # Add objects such as the Dagger for the GOE.
+                self.awards[name]["objectRef"] = self.medalConfig.get(medal, "objRef")
+            except ConfigParser.NoOptionError:
+                pass # Ignore medals thast have no extra objects.
 
             # Add the medal name to the GUI.
             self.gui.lw_medals.addItem(self.medalConfig.get(medal, "name"))
@@ -1525,31 +1526,10 @@ class TTT3(QtGui.QMainWindow):
                         if "filename" in option:
                             ribbons_g += self.addToRibbonIncludes(self.ribbonConfig.get(ribbon, option))
 
-                # Assign a GUI widget to represent our ribbon.
-                self.assignAwardGUIWidgets(name)
-
 
         with open("data\\ribbons_g.inc", "w") as ribbonFile:
             ribbonFile.write(ribbons_g)
         # TODO Finish loadRibbons()
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
-
-
-    def assignAwardGUIWidgets(self, ribbon):
-        '''Method that will detect the number of ribbons and type of award and assign GUI widgets to reprersent them.'''
-
-        if self.awards.get(ribbon).get("type") == "upgradeable":
-            # Medals with 3 or less options that will use the centre column of spinboxes.
-            upgrades = self.awards.get(ribbon).get("upgrades")
-
-            if len(upgrades) <= 3: # Center column.
-                guiElemens = [] #TODO Insert TQ GUI references here
-            else: # #TODO Insert TQ GUI references here ---- TODO Outer award columns.
-                guiElements = [] # Outer columns:
-
-            for upgrade in upgrades:
-                print upgrade
-                # TODO Finish assignAwardGUIWidgets()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1588,14 +1568,82 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
     def medalSelectionLogic(self, item):
         '''Method that handles the actions once a medal is selected from the 'Medals, Ribbons and FCHG tab.'''
 
+        # Reset the 'Medals, Ribbons and FCHG tab..
+        self.hideMedalOptions()
+
+        name = 0
+        quantity = 1
+
         # Show the Medals GroupBox and set it's title the the selected medal.
         self.gui.gb_medals.show()
         self.gui.gb_medals.setTitle(item.text().split(" (")[0])
 
         # Show the correct GUI elements for the given medal.
-        print item.text()
+        print "\nClicked: " + item.text()
+        award = self.awards.get(str(item.text())) # Str type conversion as you cannot reference a dict with a QString.
+        print award
+
+        # Single type awards.
+        if award.get("type") == "single":
+            self.gui.cb_singleMedal.setText(award.get("upgrades")[name])
+            if award.get("upgrades")[quantity] == 0:
+                self.gui.cb_singleMedal.setChecked(False)
+            else:
+                self.gui.cb_singleMedal.setChecked(True)
+            self.gui.cb_singleMedal.show()
+
         # TODO medalSelectionLogic()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def cb_singleMedalSelectionLogic(self):
+        '''Method that handles the actions once a medal is selected in the 'Medals, Ribbons and FCHG tab.'''
+
+        quantity = 1
+        if self.gui.cb_singleMedal.isChecked():
+            self.awards.get(str(self.gui.cb_singleMedal.text()))["upgrades"][quantity] = 1
+        else:
+            if self.awards.get(str(self.gui.cb_singleMedal.text()))["upgrades"][quantity] == 1:
+                self.awards.get(str(self.gui.cb_singleMedal.text()))["upgrades"][quantity] = 0
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def buildMedalIncludes(self):
+        '''Method that gathers all of the include files required for the user's medal selections..'''
+
+        medalIncludes = []
+
+        for award in self.awards:
+            if self.awards.get(award)["type"] == "single":
+                if self.awards.get(award)["upgrades"][1] == 1:
+                    medalIncludes.append(self.awards.get(award)["includeFile"])
+
+        # Special handling of IC and GOE combination.
+        if "ic_g.inc" in medalIncludes and "goe_g.inc" in  medalIncludes:
+            medalIncludes.remove("ic_g.inc")
+            medalIncludes.remove("goe_g.inc")
+            medalIncludes.append("ic_goe_g.inc")
+
+        return medalIncludes
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def buildMedalObjects(self):
+        '''Method that gathers all of the object references required for the user's medal selections..'''
+
+        medalObjects= []
+
+        for award in self.awards:
+            if self.awards.get(award)["type"] == "single":
+                if self.awards.get(award)["upgrades"][1] == 1:
+                    try: # Filtering for medals that do not contain objRefs.
+                        medalObjects.append(self.awards.get(award)["objectRef"])
+                    except KeyError:
+                        pass
+
+        return medalObjects
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
