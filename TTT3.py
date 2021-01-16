@@ -24,9 +24,9 @@ import psutil # python -m pip install psutil
 import time
 import datetime
 import winreg
-from PyQt5 import QtGui, QtCore, uic # python -m pip install pyqt5
-from PyQt5.QtWidgets import QApplication, QMainWindow # python -m pip install pyqt5-tools
-import PIL # python -m pip install pillow
+from PyQt5 import uic # python -m pip install pyqt5
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog # python -m pip install pyqt5-tools
+from PIL import Image # python -m pip install pillow
 import cv2 # python -m pip install opencv-python
 import numpy
 # python -m pip install pyinstaller - for compiler.
@@ -171,6 +171,7 @@ class TTT3(QMainWindow):
         self.wing = ""
         self.sqn = ""
         self.awards = {}
+        self.eeCount = 0
 
         # PovRay Template Constants.
         self.RANK_04_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787", # Rotate
@@ -194,7 +195,6 @@ class TTT3(QMainWindow):
         self.fleetConfig = None
         self.medalConfig = None
         self.ribbonConfig = None
-        self.eeCount = 0
 
 
         # ----- Application logic. -----
@@ -661,19 +661,19 @@ class TTT3(QMainWindow):
         if self.position in ["FM", "FL", "CMDR", "WC"] and self.gui.cb_eliteSqn.isChecked() == False:
             if not self.ship or not self.wing:
                 msg = "Error: As a pilot you need to specify at least a ship and wing before a dress uniform can be created."
-                return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
+                return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
             else:
                 self.createDressPov()
                 self.launchPOVRay("dress")
 
         elif self.gui.cb_eliteSqn.isChecked() == True and not self.sqn:
             msg = "Error: As an elite pilot you need to specify a squadron before a dress uniform can be created."
-            return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
+            return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
 
         elif self.position in ["COM"]:
             if not self.ship:
                 msg = "Error: As a COM you need to specify a ship before a dress uniform can be created."
-                return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
+                return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
             else:
                 self.createDressPov()
                 self.launchPOVRay("dress")
@@ -784,7 +784,7 @@ class TTT3(QMainWindow):
         '''Comnverts a given .bpf file into .jpg, .gif or .png'''
 
         path = r"data\%s"%uniform
-        img = PIL.Image.open(path + ".bmp")
+        img = Image.open(path + ".bmp")
         new_img = img.resize( (640, 853) )
         new_img.save( path + ".png", 'png')
 ##        new_img.save( path + ".jpg", 'jpeg')
@@ -812,7 +812,7 @@ class TTT3(QMainWindow):
 
         else:
             msg = "Error: Invalid setting for 'mode' in TTT3.ini."
-            return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
+            return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
 
         # ----- All other values -----
         self.config_gui.lbl_regPath.setText(self.config.get("POV", "regpath"))
@@ -891,7 +891,7 @@ class TTT3(QMainWindow):
 
             if not os.path.exists(self.config_gui.le_specPath.text()):
                 msg = "Cannot find valid installion of POV-Ray at:\n\n%s"%str(self.config_gui.le_specPath.text())
-                return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
+                return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
 
             else:
                 # Save the direct path.
@@ -953,7 +953,7 @@ class TTT3(QMainWindow):
         else:
             # Raise an error if we can't find POV-Ray in the Windows Registry.
             msg = "Cannot find valid installion of POV-Ray in the Windows Registry."
-            return ctypes.windll.user32.MessageBoxA(0, msg, "TTT3", 0)
+            return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
 
         # Save the detected path and return the value.
         self.config.set("POV", "regpath", path)
@@ -965,15 +965,12 @@ class TTT3(QMainWindow):
     def config_browse(self):
         '''Method that allows the user to select an executable file from a file picker.'''
 
-        fileDialog = QtGui.QFileDialog()
-        fileDialog.setFileMode(QtGui.QFileDialog.AnyFile)
-        fileDialog.setDirectory(r"C:\Program Files\POV-Ray")
-        fileDialog.setFilter("pvengine64.exe;;pvengine.exe")
-        fileDialog.show()
-        if fileDialog.exec_():
-            target = fileDialog.selectedFiles()
-            target = target[0].replace(r"/", "\\")
-            self.config_gui.le_specPath.setText(target)
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        fileName, _ = QFileDialog.getOpenFileName(self,"Browse for POV-Ray.", "C:\\","pvengine64.exe;;pvengine.exe", options=options)
+        if fileName:
+            fileName = fileName.replace(r"/", "\\")
+            self.config_gui.le_specPath.setText(fileName)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
