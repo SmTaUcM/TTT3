@@ -12,21 +12,24 @@
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                      Imports.                                                                      #
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
+# Developed using Python v3.8.7 32bit.
+# External dependancies are commented. Imports with no comments are included with the regular Python installation.
+# Alternatively run "TTT3\Useful Info\Dependancy Installer.bat"
 import resource
 import sys
 import os
 import ctypes
 import configparser
-import psutil
+import psutil # python -m pip install psutil
 import time
 import datetime
 import winreg
-from PyQt5 import QtGui, QtCore, uic
-from PyQt5.QtWidgets import QApplication, QMainWindow
-import PIL
-import cv2
+from PyQt5 import QtGui, QtCore, uic # python -m pip install pyqt5
+from PyQt5.QtWidgets import QApplication, QMainWindow # python -m pip install pyqt5-tools
+import PIL # python -m pip install pillow
+import cv2 # python -m pip install opencv-python
 import numpy
-
+# python -m pip install pyinstaller - for compiler.
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                      Classes.                                                                      #

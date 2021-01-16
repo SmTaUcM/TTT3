@@ -1891,7 +1891,7 @@ QListWidget:!enabled
        <string notr="true">color: rgb(6, 22, 125);</string>
       </property>
       <property name="text">
-       <string>Python v3.9.1</string>
+       <string>Python v3.8.7</string>
       </property>
      </widget>
      <widget class="QLabel" name="lbl_povray">
