@@ -1,8 +1,8 @@
 <RCC>
   <qresource prefix="icons">
+    <file>python.png</file>
     <file>Qt_logo.png</file>
     <file>ttt3.png</file>
     <file>povray.png</file>
-    <file>python27.png</file>
   </qresource>
 </RCC>

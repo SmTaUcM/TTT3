@@ -1833,7 +1833,7 @@ QListWidget:!enabled
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="resource.qrc">:/icons/python27.png</pixmap>
+       <pixmap resource="resource.qrc">:/icons/python.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -1870,9 +1870,9 @@ QListWidget:!enabled
      <widget class="QLabel" name="lbl_python">
       <property name="geometry">
        <rect>
-        <x>89</x>
+        <x>90</x>
         <y>309</y>
-        <width>101</width>
+        <width>91</width>
         <height>16</height>
        </rect>
       </property>
@@ -1891,7 +1891,7 @@ QListWidget:!enabled
        <string notr="true">color: rgb(6, 22, 125);</string>
       </property>
       <property name="text">
-       <string>Python v2.7.10</string>
+       <string>Python v3.9.1</string>
       </property>
      </widget>
      <widget class="QLabel" name="lbl_povray">
@@ -1979,7 +1979,7 @@ QListWidget:!enabled
        <string notr="true">color: rgb(6, 22, 125);</string>
       </property>
       <property name="text">
-       <string>PyQt4</string>
+       <string>PyQt5</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_20">
@@ -2709,7 +2709,6 @@ QPushButton:!enabled
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources>
-  <include location="resource.qrc"/>
   <include location="resource.qrc"/>
  </resources>
  <connections/>
