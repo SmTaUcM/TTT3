@@ -12,20 +12,24 @@
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                      Imports.                                                                      #
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
+# Developed using Python v3.8.7 32bit.
+# External dependancies are commented. Imports with no comments are included with the regular Python installation.
+# Alternatively run "TTT3\Useful Info\Dependancy Installer.bat"
 import resource
 import sys
 import os
 import ctypes
-import ConfigParser
-import psutil
+import configparser
+import psutil # python -m pip install psutil
 import time
 import datetime
-from _winreg import *
-from PyQt4 import QtGui, QtCore, uic
-from PIL import Image
-import cv2
+import winreg
+from PyQt5 import QtGui, QtCore, uic # python -m pip install pyqt5
+from PyQt5.QtWidgets import QApplication, QMainWindow # python -m pip install pyqt5-tools
+import PIL # python -m pip install pillow
+import cv2 # python -m pip install opencv-python
 import numpy
-
+# python -m pip install pyinstaller - for compiler.
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                      Classes.                                                                      #
@@ -39,7 +43,7 @@ class NullDevice():
 
 
 
-class TTT3(QtGui.QMainWindow):
+class TTT3(QMainWindow):
     '''Main object class representing the TTT3 application.'''
 
     def __init__(self):
@@ -47,11 +51,11 @@ class TTT3(QtGui.QMainWindow):
 
         # Version info.
         version = "3.00"
-        devVersion = "Alpha 4"
-        date = "15 January 2021"
+        devVersion = "Alpha 5"
+        date = "16 January 2021"
 
         # Initialise an instance of a QT Main Window and load our GUI file 'data\uis\ttt.ui'.
-        QtGui.QMainWindow.__init__(self)
+        QMainWindow.__init__(self)
         self.gui = uic.loadUi(r"data\uis\ttt.ui")
         self.gui.show()
 
@@ -64,50 +68,51 @@ class TTT3(QtGui.QMainWindow):
             # ----- Main Graphical User Interface. -----
 
                 # Button Connections.
-        self.connect(self.gui.btn_dress, QtCore.SIGNAL("clicked()"), self.btn_dressMethod)
-        self.connect(self.gui.btn_config, QtCore.SIGNAL("clicked()"), self.btn_configMethod)
-        self.connect(self.gui.btn_exit, QtCore.SIGNAL("clicked()"), self.exit)
-
+        self.gui.btn_dress.clicked.connect(self.btn_dressMethod)
+        self.gui.btn_config.clicked.connect(self.btn_configMethod)
+        self.gui.btn_exit.clicked.connect(self.exit)
 
             # ----- 'Position and Rank' Tab. -----
 
                 # Radio Button Connections.
 
                     # Positions.
-        self.connect(self.gui.rb_pos_trn,    QtCore.SIGNAL("clicked()"), self.posRBLogic)
-        self.connect(self.gui.rb_pos_fm,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
-        self.connect(self.gui.rb_pos_fl,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
-        self.connect(self.gui.rb_pos_cmdr,   QtCore.SIGNAL("clicked()"), self.posRBLogic)
-        self.connect(self.gui.rb_pos_wc,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
-        self.connect(self.gui.rb_pos_com,    QtCore.SIGNAL("clicked()"), self.posRBLogic)
-        self.connect(self.gui.rb_pos_bgcom,  QtCore.SIGNAL("clicked()"), self.posRBLogic)
-        self.connect(self.gui.rb_pos_ia,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
-        self.connect(self.gui.rb_pos_ca,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
-        self.connect(self.gui.rb_pos_sgcom,  QtCore.SIGNAL("clicked()"), self.posRBLogic)
-        self.connect(self.gui.rb_pos_cs,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
-        self.connect(self.gui.rb_pos_xo,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
-        self.connect(self.gui.rb_pos_fc,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
-        self.connect(self.gui.rb_pos_lr,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
-        self.connect(self.gui.rb_pos_fr,     QtCore.SIGNAL("clicked()"), self.posRBLogic)
+        self.gui.rb_pos_trn.clicked.connect(self.posRBLogic)
+        self.gui.rb_pos_fm.clicked.connect(self.posRBLogic)
+        self.gui.rb_pos_fl.clicked.connect(self.posRBLogic)
+        self.gui.rb_pos_cmdr.clicked.connect(self.posRBLogic)
+        self.gui.rb_pos_wc.clicked.connect(self.posRBLogic)
+        self.gui.rb_pos_com.clicked.connect(self.posRBLogic)
+        self.gui.rb_pos_bgcom.clicked.connect(self.posRBLogic)
+        self.gui.rb_pos_ia.clicked.connect(self.posRBLogic)
+        self.gui.rb_pos_ca.clicked.connect(self.posRBLogic)
+        self.gui.rb_pos_sgcom.clicked.connect(self.posRBLogic)
+        self.gui.rb_pos_cs.clicked.connect(self.posRBLogic)
+        self.gui.rb_pos_xo.clicked.connect(self.posRBLogic)
+        self.gui.rb_pos_fc.clicked.connect(self.posRBLogic)
+        self.gui.rb_pos_lr.clicked.connect(self.posRBLogic)
+        self.gui.rb_pos_fr.clicked.connect(self.posRBLogic)
+
 
                     # Ranks.
-        self.connect(self.gui.rb_rank_ct,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
-        self.connect(self.gui.rb_rank_sl,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
-        self.connect(self.gui.rb_rank_lt,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
-        self.connect(self.gui.rb_rank_lcm,   QtCore.SIGNAL("clicked()"), self.rankRBLogic)
-        self.connect(self.gui.rb_rank_cm,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
-        self.connect(self.gui.rb_rank_cpt,   QtCore.SIGNAL("clicked()"), self.rankRBLogic)
-        self.connect(self.gui.rb_rank_maj,   QtCore.SIGNAL("clicked()"), self.rankRBLogic)
-        self.connect(self.gui.rb_rank_lc,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
-        self.connect(self.gui.rb_rank_col,   QtCore.SIGNAL("clicked()"), self.rankRBLogic)
-        self.connect(self.gui.rb_rank_gn,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
-        self.connect(self.gui.rb_rank_ra,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
-        self.connect(self.gui.rb_rank_va,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
-        self.connect(self.gui.rb_rank_ad,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
-        self.connect(self.gui.rb_rank_fa,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
-        self.connect(self.gui.rb_rank_ha,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
-        self.connect(self.gui.rb_rank_sa,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
-        self.connect(self.gui.rb_rank_ga,    QtCore.SIGNAL("clicked()"), self.rankRBLogic)
+        self.gui.rb_rank_ct.clicked.connect(self.rankRBLogic)
+        self.gui.rb_rank_sl.clicked.connect(self.rankRBLogic)
+        self.gui.rb_rank_lt.clicked.connect(self.rankRBLogic)
+        self.gui.rb_rank_lcm.clicked.connect(self.rankRBLogic)
+        self.gui.rb_rank_cm.clicked.connect(self.rankRBLogic)
+        self.gui.rb_rank_cpt.clicked.connect(self.rankRBLogic)
+        self.gui.rb_rank_maj.clicked.connect(self.rankRBLogic)
+        self.gui.rb_rank_lc.clicked.connect(self.rankRBLogic)
+        self.gui.rb_rank_col.clicked.connect(self.rankRBLogic)
+        self.gui.rb_rank_gn.clicked.connect(self.rankRBLogic)
+        self.gui.rb_rank_ra.clicked.connect(self.rankRBLogic)
+        self.gui.rb_rank_va.clicked.connect(self.rankRBLogic)
+        self.gui.rb_rank_ad.clicked.connect(self.rankRBLogic)
+        self.gui.rb_rank_fa.clicked.connect(self.rankRBLogic)
+        self.gui.rb_rank_ha.clicked.connect(self.rankRBLogic)
+        self.gui.rb_rank_sa.clicked.connect(self.rankRBLogic)
+        self.gui.rb_rank_ga.clicked.connect(self.rankRBLogic)
+
 
                     # Radio Button lists.
         self.rankRadioButtons = [self.gui.rb_rank_ct, self.gui.rb_rank_sl, self.gui.rb_rank_lt, self.gui.rb_rank_lcm, self.gui.rb_rank_cm,
@@ -123,19 +128,19 @@ class TTT3(QtGui.QMainWindow):
             # ----- 'Wing and Squadron' Tab. -----
 
                 # List Widget Connections.
-        self.connect(self.gui.lw_ship,  QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.shipSelectionLogic)
-        self.connect(self.gui.lw_wing,  QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.wingSelectionLogic)
-        self.connect(self.gui.lw_squad, QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.squadSelectionLogic)
+        self.gui.lw_ship.itemClicked.connect(self.shipSelectionLogic)
+        self.gui.lw_wing.itemClicked.connect(self.wingSelectionLogic)
+        self.gui.lw_squad.itemClicked.connect(self.squadSelectionLogic)
                 # CheckBox.
-        self.connect(self.gui.cb_eliteSqn, QtCore.SIGNAL("stateChanged(int)"), self.eliteSqnSelectionLogic)
+        self.gui.cb_eliteSqn.stateChanged.connect(self.eliteSqnSelectionLogic)
 
 
         # ----- 'Medals, Ribbons and FCHG' Tab. -----
 
                 # List Widget Connections.
-        self.connect(self.gui.lw_medals,  QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.medalSelectionLogic)
+        self.gui.lw_medals.itemClicked.connect(self.medalSelectionLogic)
                 # CheckBox.
-        self.connect(self.gui.cb_singleMedal, QtCore.SIGNAL("stateChanged(int)"), self.cb_singleMedalSelectionLogic)
+        self.gui.cb_singleMedal.stateChanged.connect(self.cb_singleMedalSelectionLogic)
 
 
         # ----- Info Tab. -----
@@ -273,7 +278,7 @@ class TTT3(QtGui.QMainWindow):
             rank.hide()
 
         # Load 'Wing and Squadron' tab items from 'settings\fleet.ini'.
-        self.fleetConfig = ConfigParser.ConfigParser()
+        self.fleetConfig = configparser.ConfigParser()
         self.fleetConfig.read("settings\\fleet.ini")
 
         # Add the Ships to the Ships list view.
@@ -779,7 +784,7 @@ class TTT3(QtGui.QMainWindow):
         '''Comnverts a given .bpf file into .jpg, .gif or .png'''
 
         path = r"data\%s"%uniform
-        img = Image.open(path + ".bmp")
+        img = PIL.Image.open(path + ".bmp")
         new_img = img.resize( (640, 853) )
         new_img.save( path + ".png", 'png')
 ##        new_img.save( path + ".jpg", 'jpeg')
@@ -788,9 +793,9 @@ class TTT3(QtGui.QMainWindow):
 
 
     def loadSettings(self):
-        '''Method that reads in 'settings\TT3.ini' and stores the data as a ConfigParser object.'''
+        '''Method that reads in 'settings\TT3.ini' and stores the data as a configparser object.'''
 
-        self.config = ConfigParser.ConfigParser()
+        self.config = configparser.ConfigParser()
         self.config.read("settings\TTT3.ini")
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -834,11 +839,11 @@ class TTT3(QtGui.QMainWindow):
         self.config_gui.show()
 
         # GUI Connections.
-        self.connect(self.config_gui.btn_config_close, QtCore.SIGNAL("clicked()"), self.config_gui.close)
-        self.connect(self.config_gui.btn_config_ok, QtCore.SIGNAL("clicked()"), self.config_btn_ok_method)
-        self.connect(self.config_gui.rb_reg, QtCore.SIGNAL("toggled(bool)"), self.config_rb_reg_logic)
-        self.connect(self.config_gui.rb_specific, QtCore.SIGNAL("toggled(bool)"), self.config_rb_specific_logic)
-        self.connect(self.config_gui.btn_config_browse, QtCore.SIGNAL("clicked()"), self.config_browse)
+        self.config_gui.btn_config_close.clicked.connect(self.config_gui.close)
+        self.config_gui.btn_config_ok.clicked.connect(self.config_btn_ok_method)
+        self.config_gui.rb_reg.toggled.connect(self.config_rb_reg_logic)
+        self.config_gui.rb_specific.toggled.connect(self.config_rb_specific_logic)
+        self.config_gui.btn_config_browse.clicked.connect(self.config_browse)
 
         # Set the values displayed to the values in our config / setting from 'settings\TTT3.ini'.
         self.applySettings()
@@ -912,7 +917,7 @@ class TTT3(QtGui.QMainWindow):
     def getPathFromRegistry(self):
         '''Method to detect the installation path of POV-Ray from the Windows registry using the provided options..'''
 
-        # Determin the highest version of POV-Ray from the version setting in 'TTT3.ini'.
+        # Determine the highest version of POV-Ray from the version setting in 'TTT3.ini'.
         path = False
         version = float(self.config.get("POV", "version"))
 
@@ -920,17 +925,19 @@ class TTT3(QtGui.QMainWindow):
             try:
                 # Obtain the path to POV-Ray.
                 aKey = "Software\\POV-Ray\\v" + str(version) + "\\Windows\\"
-                values = OpenKey(HKEY_CURRENT_USER, aKey)
-                path = QueryValueEx(values, "Home")[0]
+                values = winreg.OpenKey(winreg.HKEY_CURRENT_USER, aKey,  0, winreg.KEY_READ)
+                path = winreg.QueryValueEx(values, "Home")[0]
 
             except WindowsError:
                 version -= 0.1
+                version = round(version, 1)
 
                 # Fall back to CurrentVerison if all else fails.
                 if version < 3.6:
+                    print("fallback")
                     aKey = "Software\\POV-Ray\\CurrentVersion\\Windows\\"
-                    values = OpenKey(HKEY_CURRENT_USER, aKey)
-                    path = QueryValueEx(values, "Home")[0]
+                    values = winreg.OpenKey(winreg.HKEY_CURRENT_USER, aKey)
+                    path = winreg.QueryValueEx(values, "Home")[0]
 
         # Add a backslash if required to the path.
         if path[-1] != "\\":
@@ -1433,7 +1440,7 @@ class TTT3(QtGui.QMainWindow):
         '''Method that reads in data from 'settings\medals.ini' adds the medals to the 'Medals, Ribbons and FCHG' tab.'''
 
         # Read in the data from 'settings\medals.ini'.
-        self.medalConfig = ConfigParser.ConfigParser()
+        self.medalConfig = configparser.ConfigParser()
         self.medalConfig.read(r"settings\medals.ini")
 
         # Parse 'settings\medals.ini'.
@@ -1447,7 +1454,7 @@ class TTT3(QtGui.QMainWindow):
             self.awards[name]["includeFile"] = self.medalConfig.get(medal, "incFile")
             try: # Add objects such as the Dagger for the GOE.
                 self.awards[name]["objectRef"] = self.medalConfig.get(medal, "objRef")
-            except ConfigParser.NoOptionError:
+            except configparser.NoOptionError:
                 pass # Ignore medals thast have no extra objects.
 
             # Add the medal name to the GUI.
@@ -1478,7 +1485,7 @@ class TTT3(QtGui.QMainWindow):
 
 """
         # Read in the data from 'settings\ribbons.ini'.
-        self.ribbonConfig = ConfigParser.ConfigParser()
+        self.ribbonConfig = configparser.ConfigParser()
         self.ribbonConfig.read(r"settings\ribbons.ini")
 
         # Parse 'settings\ribbons.ini'.
@@ -1578,9 +1585,9 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         self.gui.gb_medals.setTitle(item.text().split(" (")[0])
 
         # Show the correct GUI elements for the given medal.
-        print "\nClicked: " + item.text()
+        print("\nClicked: " + item.text())
         award = self.awards.get(str(item.text())) # Str type conversion as you cannot reference a dict with a QString.
-        print award
+        print(award)
 
         # Single type awards.
         if award.get("type") == "single":
@@ -1667,7 +1674,7 @@ if __name__ == "__main__":
 ##    sys.stderr = NullDevice()
 
     # Start the QT application.
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     ttt3 = TTT3()
     sys.exit(app.exec_())
 #----------------------------------------------------------------------------------------------------------------------------------------------------#

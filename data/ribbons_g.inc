@@ -46,6 +46,14 @@ texture
 }
 texture { T_unilayer scale 2}
 
+#declare T_r_moi_ec =
+texture
+{
+  pigment { image_map { gif ".\ribbons\moi-ec.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
 #declare T_r_moi_dc =
 texture
 {
