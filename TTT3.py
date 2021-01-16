@@ -690,7 +690,7 @@ class TTT3(QMainWindow):
            data\batch\povray.bat and invisible.vbs are delete after POV-Ray is closed.
            The "uniform" agrument takes "dress", "duty or "helmet which is dependant on which button has been pressed."'''
 
-        # Create the '..data\batch' direwctory if it doesn't already exist.
+        # Create the '..data\batch' directory if it doesn't already exist.
         try:
             os.mkdir("data\\batch")
         except WindowsError:
@@ -740,6 +740,7 @@ class TTT3(QMainWindow):
         # Delete invisible.vbs and povray.bat.
         os.remove(r"data\batch\invisible.vbs")
         os.remove(r"data\batch\povray.bat")
+        os.removedirs(r"data\batch")
 
         # Open the newly generated uniform.png file.
         if self.config.get("POV", "mode") == "registry":
@@ -834,6 +835,9 @@ class TTT3(QMainWindow):
     def btn_configMethod(self):
         '''Method that opens and handles control of the 'Configuration' window.'''
 
+        # Load in the settings for TTT3.ini.
+        self.loadSettings()
+
         # Load our GUI file 'data\uis\config.ui'.
         self.config_gui = uic.loadUi(r"data\uis\config.ui")
         self.config_gui.show()
@@ -906,8 +910,6 @@ class TTT3(QMainWindow):
         self.config.set("TCDB", "roster", str(self.config_gui.le_roster.text()))
         self.config.set("TCDB", "search", str(self.config_gui.le_search.text()))
 
-
-
         # Save and close.
         self.saveSettings()
         self.config_gui.close()
@@ -967,7 +969,7 @@ class TTT3(QMainWindow):
 
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        fileName, _ = QFileDialog.getOpenFileName(self,"Browse for POV-Ray.", "C:\\","pvengine64.exe;;pvengine.exe", options=options)
+        fileName, _ = QFileDialog.getOpenFileName(self, "Browse for POV-Ray Installation", "C:\\","pvengine64.exe;;pvengine.exe", options=options)
         if fileName:
             fileName = fileName.replace(r"/", "\\")
             self.config_gui.le_specPath.setText(fileName)

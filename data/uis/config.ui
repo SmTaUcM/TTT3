@@ -131,7 +131,7 @@ QPushButton:!enabled
 }</string>
     </property>
     <property name="text">
-     <string>Close</string>
+     <string>Cancel</string>
     </property>
    </widget>
    <widget class="QGroupBox" name="groupBox">
