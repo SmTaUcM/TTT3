@@ -41,163 +41,166 @@ class TTT3(QMainWindow):
     def __init__(self):
         '''Class constructor.'''
 
-        # Version info.
-        version = "3.00"
-        devVersion = "Alpha 5"
-        date = "16 January 2021"
+        try:
+            # Version info.
+            version = "3.00"
+            devVersion = "Alpha 5"
+            date = "16 January 2021"
 
-        # Initialise an instance of a QT Main Window and load our GUI file 'data\uis\ttt.ui'.
-        QMainWindow.__init__(self)
-        self.gui = uic.loadUi(r"data\uis\ttt.ui")
-        self.gui.show()
-        self.gui.closeEvent = self.closeEvent
+            # Initialise an instance of a QT Main Window and load our GUI file 'data\uis\ttt.ui'.
+            QMainWindow.__init__(self)
+            self.gui = uic.loadUi(r"data\uis\ttt.ui")
+            self.gui.show()
+            self.gui.closeEvent = self.closeEvent
 
-        # Set the version number.
-        self.gui.lblVersion.setText("Version: {v} {a}".format(v=version, a=devVersion))
-        self.gui.lblDate.setText("Date:     " + date)
+            # Set the version number.
+            self.gui.lblVersion.setText("Version: {v} {a}".format(v=version, a=devVersion))
+            self.gui.lblDate.setText("Date:     " + date)
 
-        # ---------- Initialise instance variables and connections. ----------
+            # ---------- Initialise instance variables and connections. ----------
 
-            # ----- Main Graphical User Interface. -----
+                # ----- Main Graphical User Interface. -----
 
-                # Button Connections.
-        self.gui.btn_dress.clicked.connect(self.btn_dressMethod)
-        self.gui.btn_config.clicked.connect(self.btn_configMethod)
-        self.gui.btn_exit.clicked.connect(self.closeEvent)
+                    # Button Connections.
+            self.gui.btn_dress.clicked.connect(self.btn_dressMethod)
+            self.gui.btn_config.clicked.connect(self.btn_configMethod)
+            self.gui.btn_exit.clicked.connect(self.closeEvent)
 
-            # ----- 'Position and Rank' Tab. -----
+                # ----- 'Position and Rank' Tab. -----
 
-                # Radio Button Connections.
+                    # Radio Button Connections.
 
-                    # Positions.
-        self.gui.rb_pos_trn.clicked.connect(self.posRBLogic)
-        self.gui.rb_pos_fm.clicked.connect(self.posRBLogic)
-        self.gui.rb_pos_fl.clicked.connect(self.posRBLogic)
-        self.gui.rb_pos_cmdr.clicked.connect(self.posRBLogic)
-        self.gui.rb_pos_wc.clicked.connect(self.posRBLogic)
-        self.gui.rb_pos_com.clicked.connect(self.posRBLogic)
-        self.gui.rb_pos_tccs.clicked.connect(self.posRBLogic)
-        self.gui.rb_pos_ia.clicked.connect(self.posRBLogic)
-        self.gui.rb_pos_ca.clicked.connect(self.posRBLogic)
-        self.gui.rb_pos_sgcom.clicked.connect(self.posRBLogic)
-        self.gui.rb_pos_cs.clicked.connect(self.posRBLogic)
-        self.gui.rb_pos_xo.clicked.connect(self.posRBLogic)
-        self.gui.rb_pos_fc.clicked.connect(self.posRBLogic)
-        self.gui.rb_pos_lr.clicked.connect(self.posRBLogic)
-        self.gui.rb_pos_fr.clicked.connect(self.posRBLogic)
-
-
-                    # Ranks.
-        self.gui.rb_rank_ct.clicked.connect(self.rankRBLogic)
-        self.gui.rb_rank_sl.clicked.connect(self.rankRBLogic)
-        self.gui.rb_rank_lt.clicked.connect(self.rankRBLogic)
-        self.gui.rb_rank_lcm.clicked.connect(self.rankRBLogic)
-        self.gui.rb_rank_cm.clicked.connect(self.rankRBLogic)
-        self.gui.rb_rank_cpt.clicked.connect(self.rankRBLogic)
-        self.gui.rb_rank_maj.clicked.connect(self.rankRBLogic)
-        self.gui.rb_rank_lc.clicked.connect(self.rankRBLogic)
-        self.gui.rb_rank_col.clicked.connect(self.rankRBLogic)
-        self.gui.rb_rank_gn.clicked.connect(self.rankRBLogic)
-        self.gui.rb_rank_ra.clicked.connect(self.rankRBLogic)
-        self.gui.rb_rank_va.clicked.connect(self.rankRBLogic)
-        self.gui.rb_rank_ad.clicked.connect(self.rankRBLogic)
-        self.gui.rb_rank_fa.clicked.connect(self.rankRBLogic)
-        self.gui.rb_rank_ha.clicked.connect(self.rankRBLogic)
-        self.gui.rb_rank_sa.clicked.connect(self.rankRBLogic)
-        self.gui.rb_rank_ga.clicked.connect(self.rankRBLogic)
+                        # Positions.
+            self.gui.rb_pos_trn.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_fm.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_fl.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_cmdr.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_wc.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_com.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_tccs.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_ia.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_ca.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_sgcom.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_cs.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_xo.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_fc.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_lr.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_fr.clicked.connect(self.posRBLogic)
 
 
-                    # Radio Button lists.
-        self.rankRadioButtons = [self.gui.rb_rank_ct, self.gui.rb_rank_sl, self.gui.rb_rank_lt, self.gui.rb_rank_lcm, self.gui.rb_rank_cm,
-                                 self.gui.rb_rank_cpt, self.gui.rb_rank_maj, self.gui.rb_rank_lc, self.gui.rb_rank_col, self.gui.rb_rank_gn,
-                                 self.gui.rb_rank_ra, self.gui.rb_rank_va, self.gui.rb_rank_ad, self.gui.rb_rank_fa, self.gui.rb_rank_ha,
-                                 self.gui.rb_rank_sa, self.gui.rb_rank_ga]
-
-        self.positionRadioButtons = [self.gui.rb_pos_trn, self.gui.rb_pos_fm, self.gui.rb_pos_fl, self.gui.rb_pos_cmdr, self.gui.rb_pos_wc,
-                                     self.gui.rb_pos_com, self.gui.rb_pos_tccs, self.gui.rb_pos_ia, self.gui.rb_pos_ca, self.gui.rb_pos_sgcom,
-                                     self.gui.rb_pos_cs, self.gui.rb_pos_xo, self.gui.rb_pos_fc, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
-
-
-            # ----- 'Wing and Squadron' Tab. -----
-
-                # List Widget Connections.
-        self.gui.lw_ship.itemClicked.connect(self.shipSelectionLogic)
-        self.gui.lw_wing.itemClicked.connect(self.wingSelectionLogic)
-        self.gui.lw_squad.itemClicked.connect(self.squadSelectionLogic)
-                # CheckBox.
-        self.gui.cb_eliteSqn.stateChanged.connect(self.eliteSqnSelectionLogic)
-
-
-        # ----- 'Medals, Ribbons and FCHG' Tab. -----
-
-                # List Widget Connections.
-        self.gui.lw_medals.itemClicked.connect(self.medalSelectionLogic)
-                # CheckBoxes.
-        self.gui.cb_singleMedal.stateChanged.connect(self.cb_singleMedalSelectionLogic)
+                        # Ranks.
+            self.gui.rb_rank_ct.clicked.connect(self.rankRBLogic)
+            self.gui.rb_rank_sl.clicked.connect(self.rankRBLogic)
+            self.gui.rb_rank_lt.clicked.connect(self.rankRBLogic)
+            self.gui.rb_rank_lcm.clicked.connect(self.rankRBLogic)
+            self.gui.rb_rank_cm.clicked.connect(self.rankRBLogic)
+            self.gui.rb_rank_cpt.clicked.connect(self.rankRBLogic)
+            self.gui.rb_rank_maj.clicked.connect(self.rankRBLogic)
+            self.gui.rb_rank_lc.clicked.connect(self.rankRBLogic)
+            self.gui.rb_rank_col.clicked.connect(self.rankRBLogic)
+            self.gui.rb_rank_gn.clicked.connect(self.rankRBLogic)
+            self.gui.rb_rank_ra.clicked.connect(self.rankRBLogic)
+            self.gui.rb_rank_va.clicked.connect(self.rankRBLogic)
+            self.gui.rb_rank_ad.clicked.connect(self.rankRBLogic)
+            self.gui.rb_rank_fa.clicked.connect(self.rankRBLogic)
+            self.gui.rb_rank_ha.clicked.connect(self.rankRBLogic)
+            self.gui.rb_rank_sa.clicked.connect(self.rankRBLogic)
+            self.gui.rb_rank_ga.clicked.connect(self.rankRBLogic)
 
 
-        # ----- Info Tab. -----
+                        # Radio Button lists.
+            self.rankRadioButtons = [self.gui.rb_rank_ct, self.gui.rb_rank_sl, self.gui.rb_rank_lt, self.gui.rb_rank_lcm, self.gui.rb_rank_cm,
+                                     self.gui.rb_rank_cpt, self.gui.rb_rank_maj, self.gui.rb_rank_lc, self.gui.rb_rank_col, self.gui.rb_rank_gn,
+                                     self.gui.rb_rank_ra, self.gui.rb_rank_va, self.gui.rb_rank_ad, self.gui.rb_rank_fa, self.gui.rb_rank_ha,
+                                     self.gui.rb_rank_sa, self.gui.rb_rank_ga]
 
-                # 'Info' Tab Hyperlinks.
-        self.gui.lbl_readme.mouseReleaseEvent = self.readmeLink
-        self.gui.lbl_email.mouseReleaseEvent = self.ioLink
-        self.gui.lbl_tcpm.mouseReleaseEvent = self.tcpmLink
-        self.gui.lbl_uniforms.mouseReleaseEvent = self.uniformsLink
-        self.gui.lbl_pic_python.mouseReleaseEvent = self.pythonLink
-        self.gui.lbl_python.mouseReleaseEvent = self.pythonLink
-        self.gui.lbl_pic_qt.mouseReleaseEvent = self.qtLink
-        self.gui.lbl_qt.mouseReleaseEvent = self.qtLink
-        self.gui.lbl_pic_povray.mouseReleaseEvent = self.povrayLink
-        self.gui.lbl_povray.mouseReleaseEvent = self.povrayLink
-        self.gui.label_11.mouseReleaseEvent = self.eeLink
+            self.positionRadioButtons = [self.gui.rb_pos_trn, self.gui.rb_pos_fm, self.gui.rb_pos_fl, self.gui.rb_pos_cmdr, self.gui.rb_pos_wc,
+                                         self.gui.rb_pos_com, self.gui.rb_pos_tccs, self.gui.rb_pos_ia, self.gui.rb_pos_ca, self.gui.rb_pos_sgcom,
+                                         self.gui.rb_pos_cs, self.gui.rb_pos_xo, self.gui.rb_pos_fc, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
 
 
-        # ----- POV-Ray Variables. -----
+                # ----- 'Wing and Squadron' Tab. -----
 
-        # PovRay Template variables.
-        self.position = None
-        self.rank = None
-        self.rankRotate = None
-        self.rankTranslate = None
-        self.name = "Unknown"
-        self.ship = ""
-        self.wing = ""
-        self.sqn = ""
-        self.awards = {}
-        self.eeCount = 0
-        self.deconflictNeckRibbons = False
-
-        # PovRay Template Constants.
-        self.RANK_04_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787", # Rotate
-                                "51.3199996948242,-131.973007202148,213.126998901367"]  # Translate
-
-        self.RANK_06_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787",
-                                "51.1030006408691,-130.444000244141,217.598007202148"]
-
-        self.RANK_08_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787",
-                                "51.3199996948242,-131.973007202148,213.126998901367"]
-
-        self.RANK_10_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787",
-                                "51.3199996948242,-131.973007202148,213.126998901367"]
-
-        self.RANK_12_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787",
-                                "51.3199996948242,-131.973007202148,213.126998901367"]
+                    # List Widget Connections.
+            self.gui.lw_ship.itemClicked.connect(self.shipSelectionLogic)
+            self.gui.lw_wing.itemClicked.connect(self.wingSelectionLogic)
+            self.gui.lw_squad.itemClicked.connect(self.squadSelectionLogic)
+                    # CheckBox.
+            self.gui.cb_eliteSqn.stateChanged.connect(self.eliteSqnSelectionLogic)
 
 
-        # ----- Configuration variables. -----
-        self.config = None
-        self.fleetConfig = None
-        self.medalConfig = None
-        self.ribbonConfig = None
+            # ----- 'Medals, Ribbons and FCHG' Tab. -----
+
+                    # List Widget Connections.
+            self.gui.lw_medals.itemClicked.connect(self.medalSelectionLogic)
+                    # CheckBoxes.
+            self.gui.cb_singleMedal.stateChanged.connect(self.cb_singleMedalSelectionLogic)
 
 
-        # ----- GUI variables. -----
-        self.combo_topConnected = False
+            # ----- Info Tab. -----
+
+                    # 'Info' Tab Hyperlinks.
+            self.gui.lbl_readme.mouseReleaseEvent = self.readmeLink
+            self.gui.lbl_email.mouseReleaseEvent = self.ioLink
+            self.gui.lbl_tcpm.mouseReleaseEvent = self.tcpmLink
+            self.gui.lbl_uniforms.mouseReleaseEvent = self.uniformsLink
+            self.gui.lbl_pic_python.mouseReleaseEvent = self.pythonLink
+            self.gui.lbl_python.mouseReleaseEvent = self.pythonLink
+            self.gui.lbl_pic_qt.mouseReleaseEvent = self.qtLink
+            self.gui.lbl_qt.mouseReleaseEvent = self.qtLink
+            self.gui.lbl_pic_povray.mouseReleaseEvent = self.povrayLink
+            self.gui.lbl_povray.mouseReleaseEvent = self.povrayLink
+            self.gui.label_11.mouseReleaseEvent = self.eeLink
 
 
-        # ----- Application logic. -----
-        self.loadSettings()
-        self.initialGUISetup()
+            # ----- POV-Ray Variables. -----
+
+            # PovRay Template variables.
+            self.position = None
+            self.rank = None
+            self.rankRotate = None
+            self.rankTranslate = None
+            self.name = "Unknown"
+            self.ship = ""
+            self.wing = ""
+            self.sqn = ""
+            self.awards = {}
+            self.eeCount = 0
+            self.deconflictNeckRibbons = False
+
+            # PovRay Template Constants.
+            self.RANK_04_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787", # Rotate
+                                    "51.3199996948242,-131.973007202148,213.126998901367"]  # Translate
+
+            self.RANK_06_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787",
+                                    "51.1030006408691,-130.444000244141,217.598007202148"]
+
+            self.RANK_08_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787",
+                                    "51.3199996948242,-131.973007202148,213.126998901367"]
+
+            self.RANK_10_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787",
+                                    "51.3199996948242,-131.973007202148,213.126998901367"]
+
+            self.RANK_12_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787",
+                                    "51.3199996948242,-131.973007202148,213.126998901367"]
+
+
+            # ----- Configuration variables. -----
+            self.config = None
+            self.fleetConfig = None
+            self.medalConfig = None
+            self.ribbonConfig = None
+
+
+            # ----- GUI variables. -----
+            self.combo_topConnected = False
+
+
+            # ----- Application logic. -----
+            self.loadSettings()
+            self.initialGUISetup()
+        except Exception as e:
+            handleException(e)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -253,10 +256,13 @@ class TTT3(QMainWindow):
     def eeLink(self, event):
         '''Method event for ee.'''
 
-        self.eeCount += 1
-        if self.eeCount >= 3:
-            self.gui.label_11.setText("PRAETORIAN MODE")
-            self.gui.label_11.setStyleSheet("color: rgb(255, 0, 0);")
+        try:
+            self.eeCount += 1
+            if self.eeCount >= 3:
+                self.gui.label_11.setText("PRAETORIAN MODE")
+                self.gui.label_11.setStyleSheet("color: rgb(255, 0, 0);")
+        except Exception as e:
+            handleException(e)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -266,6 +272,7 @@ class TTT3(QMainWindow):
         logging.shutdown()
         if os.stat("TTT3 Crash.log").st_size == 0:
             os.remove("TTT3 Crash.log")
+        sys.exit()
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -306,172 +313,175 @@ class TTT3(QMainWindow):
     def posRBLogic(self):
         '''Method that controls the Position Radio Button Logic - Showing or hiding the required rank options.'''
 
-        # Reset the user's position value.
-        self.position = "NUL"
+        try:
+            # Reset the user's position value.
+            self.position = "NUL"
 
-        # Disable the Dress and Duty Uniform buttons.
-        self.gui.btn_dress.setEnabled(False)
-        self.gui.btn_duty.setEnabled(False)
+            # Disable the Dress and Duty Uniform buttons.
+            self.gui.btn_dress.setEnabled(False)
+            self.gui.btn_duty.setEnabled(False)
 
-        # Deselect any previous rank selection.
-        for radioButton in self.rankRadioButtons:
-            radioButton.setAutoExclusive(False)
-            radioButton.setChecked(False)
-            radioButton.setAutoExclusive(True)
+            # Deselect any previous rank selection.
+            for radioButton in self.rankRadioButtons:
+                radioButton.setAutoExclusive(False)
+                radioButton.setChecked(False)
+                radioButton.setAutoExclusive(True)
 
-        # Initialise method constants.
-        # Ranks:
-            # Line Ranks.
-        CT  = 0
-        SL  = 1
-        LT  = 2
-        LCM = 3
-        CM  = 4
-        CPT = 5
-        MAJ = 6
-        LC  = 7
-        COL = 8
-        GN  = 9
-            # Flag Ranks
-        RA  = 10
-        VA  = 11
-        AD  = 12
-        FA  = 13
-        HA  = 14
-        SA  = 15
-        GA  = 16
-
-        # Enable all options from the 'Wing and Squadron' Tab.
-        if self.gui.cb_eliteSqn.isChecked() == False: # Stops the ship and wing tabs from repopulating if 'Elite Squadron' is checked.
-            self.enableWingAndSqnTab(True)
-
-        # Clean up the ranks group box.
-        self.hideAllRanks()
-
-        # Determine which position radio button has been selected.
-        for radioButton in self.positionRadioButtons:
-            if radioButton.isChecked():
-
-                # Show the correct rank radio buttons for the selected position.
-                # Trainee.
-                if radioButton == self.gui.rb_pos_trn:
-                    self.showRanks(CT, CT)
-                    self.position = "TRN"
-                    self.gui.rb_rank_ct.setChecked(True)
-                    self.rankRBLogic()
-                    self.enableWingAndSqnTab(False)
-                    break
-
-                # Flight Member.
-                elif radioButton == self.gui.rb_pos_fm:
-                    self.showRanks(SL, GN)
-                    self.position = "FM"
-                    break
-
-                # Flight Leader.
-                elif radioButton == self.gui.rb_pos_fl:
-                    self.showRanks(LT, GN)
-                    self.position = "FL"
-                    break
-
-                # Squadron Commander.
-                elif radioButton == self.gui.rb_pos_cmdr:
-                    self.showRanks(CM, GN)
-                    self.position = "CMDR"
-                    break
-
-                # Wing Commander.
-                elif radioButton == self.gui.rb_pos_wc:
-                    self.showRanks(MAJ, GN)
-                    self.position = "WC"
-
-                    # Set the options available to the user in the 'Wing and Squadron' tab.
-                    self.gui.cb_eliteSqn.setChecked(False)
-                    self.gui.cb_eliteSqn.setEnabled(False)
-                    self.gui.lw_squad.setEnabled(False)
-                    self.gui.lw_squad.clear()
-                    self.sqn = ""
-                    break
-
-                # Commodore.
-                elif radioButton == self.gui.rb_pos_com:
-                    self.showRanks(RA, HA)
-                    self.position = "COM"
-
-                    # Set the options available to the user in the 'Wing and Squadron' tab.
-                    self.gui.cb_eliteSqn.setChecked(False)
-                    self.gui.cb_eliteSqn.setEnabled(False)
-                    self.gui.lw_wing.setEnabled(False)
-                    self.gui.lw_wing.clear()
-                    self.wing = ""
-                    self.gui.lw_squad.setEnabled(False)
-                    self.gui.lw_squad.clear()
-                    self.sqn = ""
-                    break
-
-                # TE Corps Command Staff.
-                elif radioButton == self.gui.rb_pos_tccs:
-                    self.showRanks(RA, HA)
-                    self.position = "TCCS"
-                    self.enableWingAndSqnTab(False)
-                    break
-
-                # Imperial Advisor.
-                elif radioButton == self.gui.rb_pos_ia:
-                    self.showRanks(RA, SA)
-                    self.position = "IA"
-                    self.enableWingAndSqnTab(False)
-                    break
-
-                # Command Attache.
-                elif radioButton == self.gui.rb_pos_ca:
-                    self.showRanks(RA, SA)
-                    self.position = "CA"
-                    self.enableWingAndSqnTab(False)
-                    break
-
-                # Sub-Group Commander.
-                elif radioButton == self.gui.rb_pos_sgcom:
-                    self.showRanks(RA, GA)
-                    self.position = "SGCOM"
-                    self.enableWingAndSqnTab(False)
-                    break
-
-                # Command Staff.
-                elif radioButton == self.gui.rb_pos_cs:
-                    self.showRanks(RA, GA)
-                    self.position = "CS"
-                    self.enableWingAndSqnTab(False)
-                    break
-
-                # Executive Officer.
-                elif radioButton == self.gui.rb_pos_xo:
-                    self.showRanks(RA, GA)
-                    self.position = "XO"
-                    self.enableWingAndSqnTab(False)
-                    break
-
-                # Fleet Commander.
-                elif radioButton == self.gui.rb_pos_fc:
-                    self.showRanks(GA, GA)
-                    self.position = "FC"
-                    self.gui.rb_rank_ga.setChecked(True)
-                    self.rankRBLogic()
-                    self.enableWingAndSqnTab(False)
-                    break
-
+            # Initialise method constants.
+            # Ranks:
                 # Line Ranks.
-                elif radioButton == self.gui.rb_pos_lr:
-                    self.showRanks(CT, GN)
-                    self.position = "NUL"
-                    self.enableWingAndSqnTab(False)
-                    break
+            CT  = 0
+            SL  = 1
+            LT  = 2
+            LCM = 3
+            CM  = 4
+            CPT = 5
+            MAJ = 6
+            LC  = 7
+            COL = 8
+            GN  = 9
+                # Flag Ranks
+            RA  = 10
+            VA  = 11
+            AD  = 12
+            FA  = 13
+            HA  = 14
+            SA  = 15
+            GA  = 16
 
-                # Flag Ranks.
-                elif radioButton == self.gui.rb_pos_fr:
-                    self.showRanks(RA, GA)
-                    self.position = "NUL"
-                    break
+            # Enable all options from the 'Wing and Squadron' Tab.
+            if self.gui.cb_eliteSqn.isChecked() == False: # Stops the ship and wing tabs from repopulating if 'Elite Squadron' is checked.
+                self.enableWingAndSqnTab(True)
+
+            # Clean up the ranks group box.
+            self.hideAllRanks()
+
+            # Determine which position radio button has been selected.
+            for radioButton in self.positionRadioButtons:
+                if radioButton.isChecked():
+
+                    # Show the correct rank radio buttons for the selected position.
+                    # Trainee.
+                    if radioButton == self.gui.rb_pos_trn:
+                        self.showRanks(CT, CT)
+                        self.position = "TRN"
+                        self.gui.rb_rank_ct.setChecked(True)
+                        self.rankRBLogic()
+                        self.enableWingAndSqnTab(False)
+                        break
+
+                    # Flight Member.
+                    elif radioButton == self.gui.rb_pos_fm:
+                        self.showRanks(SL, GN)
+                        self.position = "FM"
+                        break
+
+                    # Flight Leader.
+                    elif radioButton == self.gui.rb_pos_fl:
+                        self.showRanks(LT, GN)
+                        self.position = "FL"
+                        break
+
+                    # Squadron Commander.
+                    elif radioButton == self.gui.rb_pos_cmdr:
+                        self.showRanks(CM, GN)
+                        self.position = "CMDR"
+                        break
+
+                    # Wing Commander.
+                    elif radioButton == self.gui.rb_pos_wc:
+                        self.showRanks(MAJ, GN)
+                        self.position = "WC"
+
+                        # Set the options available to the user in the 'Wing and Squadron' tab.
+                        self.gui.cb_eliteSqn.setChecked(False)
+                        self.gui.cb_eliteSqn.setEnabled(False)
+                        self.gui.lw_squad.setEnabled(False)
+                        self.gui.lw_squad.clear()
+                        self.sqn = ""
+                        break
+
+                    # Commodore.
+                    elif radioButton == self.gui.rb_pos_com:
+                        self.showRanks(RA, HA)
+                        self.position = "COM"
+
+                        # Set the options available to the user in the 'Wing and Squadron' tab.
+                        self.gui.cb_eliteSqn.setChecked(False)
+                        self.gui.cb_eliteSqn.setEnabled(False)
+                        self.gui.lw_wing.setEnabled(False)
+                        self.gui.lw_wing.clear()
+                        self.wing = ""
+                        self.gui.lw_squad.setEnabled(False)
+                        self.gui.lw_squad.clear()
+                        self.sqn = ""
+                        break
+
+                    # TE Corps Command Staff.
+                    elif radioButton == self.gui.rb_pos_tccs:
+                        self.showRanks(RA, HA)
+                        self.position = "TCCS"
+                        self.enableWingAndSqnTab(False)
+                        break
+
+                    # Imperial Advisor.
+                    elif radioButton == self.gui.rb_pos_ia:
+                        self.showRanks(RA, SA)
+                        self.position = "IA"
+                        self.enableWingAndSqnTab(False)
+                        break
+
+                    # Command Attache.
+                    elif radioButton == self.gui.rb_pos_ca:
+                        self.showRanks(RA, SA)
+                        self.position = "CA"
+                        self.enableWingAndSqnTab(False)
+                        break
+
+                    # Sub-Group Commander.
+                    elif radioButton == self.gui.rb_pos_sgcom:
+                        self.showRanks(RA, GA)
+                        self.position = "SGCOM"
+                        self.enableWingAndSqnTab(False)
+                        break
+
+                    # Command Staff.
+                    elif radioButton == self.gui.rb_pos_cs:
+                        self.showRanks(RA, GA)
+                        self.position = "CS"
+                        self.enableWingAndSqnTab(False)
+                        break
+
+                    # Executive Officer.
+                    elif radioButton == self.gui.rb_pos_xo:
+                        self.showRanks(RA, GA)
+                        self.position = "XO"
+                        self.enableWingAndSqnTab(False)
+                        break
+
+                    # Fleet Commander.
+                    elif radioButton == self.gui.rb_pos_fc:
+                        self.showRanks(GA, GA)
+                        self.position = "FC"
+                        self.gui.rb_rank_ga.setChecked(True)
+                        self.rankRBLogic()
+                        self.enableWingAndSqnTab(False)
+                        break
+
+                    # Line Ranks.
+                    elif radioButton == self.gui.rb_pos_lr:
+                        self.showRanks(CT, GN)
+                        self.position = "NUL"
+                        self.enableWingAndSqnTab(False)
+                        break
+
+                    # Flag Ranks.
+                    elif radioButton == self.gui.rb_pos_fr:
+                        self.showRanks(RA, GA)
+                        self.position = "NUL"
+                        break
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def enableWingAndSqnTab(self, boolEnabled):
@@ -521,115 +531,118 @@ class TTT3(QMainWindow):
     def rankRBLogic(self):
         '''Method that controls the Rank Radio Button Logic - Showing the 'Dress and Duty Uniform' buttons.'''
 
-        # Determine which rank radio button has been selected.
-        for radioButton in self.rankRadioButtons:
-            if radioButton.isChecked():
+        try:
+            # Determine which rank radio button has been selected.
+            for radioButton in self.rankRadioButtons:
+                if radioButton.isChecked():
 
-                # Set the correct rank for the selected rank.
-                if radioButton == self.gui.rb_rank_ct:
-                    self.rank = "CT"
-                    self.rankRotate = self.RANK_04_SQUARES[0]
-                    self.rankTranslate = self.RANK_04_SQUARES[1]
-                    break
+                    # Set the correct rank for the selected rank.
+                    if radioButton == self.gui.rb_rank_ct:
+                        self.rank = "CT"
+                        self.rankRotate = self.RANK_04_SQUARES[0]
+                        self.rankTranslate = self.RANK_04_SQUARES[1]
+                        break
 
-                elif radioButton == self.gui.rb_rank_sl:
-                    self.rank = "SL"
-                    self.rankRotate = self.RANK_04_SQUARES[0]
-                    self.rankTranslate = self.RANK_04_SQUARES[1]
-                    break
+                    elif radioButton == self.gui.rb_rank_sl:
+                        self.rank = "SL"
+                        self.rankRotate = self.RANK_04_SQUARES[0]
+                        self.rankTranslate = self.RANK_04_SQUARES[1]
+                        break
 
-                elif radioButton == self.gui.rb_rank_lt:
-                    self.rank = "LT"
-                    break
+                    elif radioButton == self.gui.rb_rank_lt:
+                        self.rank = "LT"
+                        break
 
-                elif radioButton == self.gui.rb_rank_lcm:
-                    self.rank = "LCM"
-                    self.rankRotate = self.RANK_04_SQUARES[0]
-                    self.rankTranslate = self.RANK_04_SQUARES[1]
-                    break
+                    elif radioButton == self.gui.rb_rank_lcm:
+                        self.rank = "LCM"
+                        self.rankRotate = self.RANK_04_SQUARES[0]
+                        self.rankTranslate = self.RANK_04_SQUARES[1]
+                        break
 
-                elif radioButton == self.gui.rb_rank_cm:
-                    self.rank = "CM"
-                    self.rankRotate = self.RANK_06_SQUARES[0]
-                    self.rankTranslate = self.RANK_06_SQUARES[1]
-                    break
+                    elif radioButton == self.gui.rb_rank_cm:
+                        self.rank = "CM"
+                        self.rankRotate = self.RANK_06_SQUARES[0]
+                        self.rankTranslate = self.RANK_06_SQUARES[1]
+                        break
 
-                elif radioButton == self.gui.rb_rank_cpt:
-                    self.rank = "CPT"
-                    self.rankRotate = self.RANK_06_SQUARES[0]
-                    self.rankTranslate = self.RANK_06_SQUARES[1]
-                    break
+                    elif radioButton == self.gui.rb_rank_cpt:
+                        self.rank = "CPT"
+                        self.rankRotate = self.RANK_06_SQUARES[0]
+                        self.rankTranslate = self.RANK_06_SQUARES[1]
+                        break
 
-                elif radioButton == self.gui.rb_rank_maj:
-                    self.rank = "MAJ"
-                    self.rankRotate = self.RANK_08_SQUARES[0]
-                    self.rankTranslate = self.RANK_08_SQUARES[1]
-                    break
+                    elif radioButton == self.gui.rb_rank_maj:
+                        self.rank = "MAJ"
+                        self.rankRotate = self.RANK_08_SQUARES[0]
+                        self.rankTranslate = self.RANK_08_SQUARES[1]
+                        break
 
-                elif radioButton == self.gui.rb_rank_lc:
-                    self.rank = "LC"
-                    self.rankRotate = self.RANK_08_SQUARES[0]
-                    self.rankTranslate = self.RANK_08_SQUARES[1]
-                    break
+                    elif radioButton == self.gui.rb_rank_lc:
+                        self.rank = "LC"
+                        self.rankRotate = self.RANK_08_SQUARES[0]
+                        self.rankTranslate = self.RANK_08_SQUARES[1]
+                        break
 
-                elif radioButton == self.gui.rb_rank_col:
-                    self.rank = "COL"
-                    self.rankRotate = self.RANK_08_SQUARES[0]
-                    self.rankTranslate = self.RANK_08_SQUARES[1]
-                    break
+                    elif radioButton == self.gui.rb_rank_col:
+                        self.rank = "COL"
+                        self.rankRotate = self.RANK_08_SQUARES[0]
+                        self.rankTranslate = self.RANK_08_SQUARES[1]
+                        break
 
-                elif radioButton == self.gui.rb_rank_gn:
-                    self.rank = "GN"
-                    self.rankRotate = self.RANK_08_SQUARES[0]
-                    self.rankTranslate = self.RANK_08_SQUARES[1]
-                    break
+                    elif radioButton == self.gui.rb_rank_gn:
+                        self.rank = "GN"
+                        self.rankRotate = self.RANK_08_SQUARES[0]
+                        self.rankTranslate = self.RANK_08_SQUARES[1]
+                        break
 
-                elif radioButton == self.gui.rb_rank_ra:
-                    self.rank = "RA"
-                    self.rankRotate = self.RANK_10_SQUARES[0]
-                    self.rankTranslate = self.RANK_10_SQUARES[1]
-                    break
+                    elif radioButton == self.gui.rb_rank_ra:
+                        self.rank = "RA"
+                        self.rankRotate = self.RANK_10_SQUARES[0]
+                        self.rankTranslate = self.RANK_10_SQUARES[1]
+                        break
 
-                elif radioButton == self.gui.rb_rank_va:
-                    self.rank = "VA"
-                    self.rankRotate = self.RANK_10_SQUARES[0]
-                    self.rankTranslate = self.RANK_10_SQUARES[1]
-                    break
+                    elif radioButton == self.gui.rb_rank_va:
+                        self.rank = "VA"
+                        self.rankRotate = self.RANK_10_SQUARES[0]
+                        self.rankTranslate = self.RANK_10_SQUARES[1]
+                        break
 
-                elif radioButton == self.gui.rb_rank_ad:
-                    self.rank = "AD"
-                    self.rankRotate = self.RANK_10_SQUARES[0]
-                    self.rankTranslate = self.RANK_10_SQUARES[1]
-                    break
+                    elif radioButton == self.gui.rb_rank_ad:
+                        self.rank = "AD"
+                        self.rankRotate = self.RANK_10_SQUARES[0]
+                        self.rankTranslate = self.RANK_10_SQUARES[1]
+                        break
 
-                elif radioButton == self.gui.rb_rank_fa:
-                    self.rank = "FA"
-                    self.rankRotate = self.RANK_12_SQUARES[0]
-                    self.rankTranslate = self.RANK_12_SQUARES[1]
-                    break
+                    elif radioButton == self.gui.rb_rank_fa:
+                        self.rank = "FA"
+                        self.rankRotate = self.RANK_12_SQUARES[0]
+                        self.rankTranslate = self.RANK_12_SQUARES[1]
+                        break
 
-                elif radioButton == self.gui.rb_rank_ha:
-                    self.rank = "HA"
-                    self.rankRotate = self.RANK_12_SQUARES[0]
-                    self.rankTranslate = self.RANK_12_SQUARES[1]
-                    break
+                    elif radioButton == self.gui.rb_rank_ha:
+                        self.rank = "HA"
+                        self.rankRotate = self.RANK_12_SQUARES[0]
+                        self.rankTranslate = self.RANK_12_SQUARES[1]
+                        break
 
-                elif radioButton == self.gui.rb_rank_sa:
-                    self.rank = "SA"
-                    self.rankRotate = self.RANK_12_SQUARES[0]
-                    self.rankTranslate = self.RANK_12_SQUARES[1]
-                    break
+                    elif radioButton == self.gui.rb_rank_sa:
+                        self.rank = "SA"
+                        self.rankRotate = self.RANK_12_SQUARES[0]
+                        self.rankTranslate = self.RANK_12_SQUARES[1]
+                        break
 
-                elif radioButton == self.gui.rb_rank_ga:
-                    self.rank = "GA"
-                    self.rankRotate = self.RANK_12_SQUARES[0]
-                    self.rankTranslate = self.RANK_12_SQUARES[1]
-                    break
+                    elif radioButton == self.gui.rb_rank_ga:
+                        self.rank = "GA"
+                        self.rankRotate = self.RANK_12_SQUARES[0]
+                        self.rankTranslate = self.RANK_12_SQUARES[1]
+                        break
 
-        # Enable the Dress and Duty Uniform buttons.
-        self.gui.btn_dress.setEnabled(True)
-        # TODO Disabled Duty Uniform UTFN.
-##        self.gui.btn_duty.setEnabled(True)
+            # Enable the Dress and Duty Uniform buttons.
+            self.gui.btn_dress.setEnabled(True)
+            # TODO Disabled Duty Uniform UTFN.
+    ##        self.gui.btn_duty.setEnabled(True)
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -657,7 +670,6 @@ class TTT3(QMainWindow):
            This method will check that the correct selections has been made within TTT3 such as Ship and Squadron and then
            directly call 'launchPOVRay' to open up PovRay and render the unirom.'''
 
-        # Error logging.
         try:
             # Check to see if the user has made the correct selections for their position and rank.
             if self.position in ["FM", "FL", "CMDR", "WC"] and self.gui.cb_eliteSqn.isChecked() == False:
@@ -684,13 +696,8 @@ class TTT3(QMainWindow):
             else:
                 self.createDressPov()
                 self.launchPOVRay("dress")
-
         except Exception as e:
-            # Capture the error and dump to "TTT3 Crash.log"
-            logging.error(e, exc_info=True)
-            logging.error("\n")
-            msg = "Error: Uh-Oh! TTT3 has encountered an error. Please submit 'TTT3\TTT3 Crash.log' to the Internet Office."
-            return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -844,84 +851,97 @@ class TTT3(QMainWindow):
     def btn_configMethod(self):
         '''Method that opens and handles control of the 'Configuration' window.'''
 
-        # Load in the settings for TTT3.ini.
-        self.loadSettings()
+        try:
+            # Load in the settings for TTT3.ini.
+            self.loadSettings()
 
-        # Load our GUI file 'data\uis\config.ui'.
-        self.config_gui = uic.loadUi(r"data\uis\config.ui")
-        self.config_gui.show()
+            # Load our GUI file 'data\uis\config.ui'.
+            self.config_gui = uic.loadUi(r"data\uis\config.ui")
+            self.config_gui.show()
 
-        # GUI Connections.
-        self.config_gui.btn_config_close.clicked.connect(self.config_gui.close)
-        self.config_gui.btn_config_ok.clicked.connect(self.config_btn_ok_method)
-        self.config_gui.rb_reg.toggled.connect(self.config_rb_reg_logic)
-        self.config_gui.rb_specific.toggled.connect(self.config_rb_specific_logic)
-        self.config_gui.btn_config_browse.clicked.connect(self.config_browse)
+            # GUI Connections.
+            self.config_gui.btn_config_close.clicked.connect(self.config_gui.close)
+            self.config_gui.btn_config_ok.clicked.connect(self.config_btn_ok_method)
+            self.config_gui.rb_reg.toggled.connect(self.config_rb_reg_logic)
+            self.config_gui.rb_specific.toggled.connect(self.config_rb_specific_logic)
+            self.config_gui.btn_config_browse.clicked.connect(self.config_browse)
 
-        # Set the values displayed to the values in our config / setting from 'settings\TTT3.ini'.
-        self.applySettings()
+            # Set the values displayed to the values in our config / setting from 'settings\TTT3.ini'.
+            self.applySettings()
+
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
     def config_rb_reg_logic(self, value=None):
         '''Method that controls what happens within the 'Configuration' window if a 'POV' radio button is clicked.'''
 
-        # Enable the registry path options.
-        self.config_gui.lbl_regPathTitle.setEnabled(True)
-        self.config_gui.lbl_regPath.setEnabled(True)
-        self.config_gui.lbl_regPath.setText(self.getPathFromRegistry())
+        try:
+            # Enable the registry path options.
+            self.config_gui.lbl_regPathTitle.setEnabled(True)
+            self.config_gui.lbl_regPath.setEnabled(True)
+            self.config_gui.lbl_regPath.setText(self.getPathFromRegistry())
 
-        # Disable the specific path options.
-        self.config_gui.le_specPath.setEnabled(False)
-        self.config_gui.btn_config_browse.setEnabled(False)
+            # Disable the specific path options.
+            self.config_gui.le_specPath.setEnabled(False)
+            self.config_gui.btn_config_browse.setEnabled(False)
 
-        # Save our setting.
-        self.config.set("POV", "mode", "registry")
+            # Save our setting.
+            self.config.set("POV", "mode", "registry")
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
     def config_rb_specific_logic(self, value=None):
         '''Method that controls what happens within the 'Configuration' window if a 'POV' radio button is clicked.'''
 
-        # Enable the specific path options.
-        self.config_gui.le_specPath.setEnabled(True)
-        self.config_gui.btn_config_browse.setEnabled(True)
+        try:
+            # Enable the specific path options.
+            self.config_gui.le_specPath.setEnabled(True)
+            self.config_gui.btn_config_browse.setEnabled(True)
 
-        # Disable the registry path options.
-        self.config_gui.lbl_regPathTitle.setEnabled(False)
-        self.config_gui.lbl_regPath.setEnabled(False)
+            # Disable the registry path options.
+            self.config_gui.lbl_regPathTitle.setEnabled(False)
+            self.config_gui.lbl_regPath.setEnabled(False)
 
-        # Save our setting.
-        self.config.set("POV", "mode", "specific")
+            # Save our setting.
+            self.config.set("POV", "mode", "specific")
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
     def config_btn_ok_method(self):
         '''Method that handles the functionality when the 'OK' button is pressed within  the 'Configuration' screen.'''
 
-        # Test to ensure that the direct POV-Ray exceutable is present.
-        if self.config.get("POV", "mode") == "specific":
+        try:
+            # Test to ensure that the direct POV-Ray exceutable is present.
+            if self.config.get("POV", "mode") == "specific":
 
-            if not os.path.exists(self.config_gui.le_specPath.text()):
-                msg = "Cannot find valid installion of POV-Ray at:\n\n%s"%str(self.config_gui.le_specPath.text())
-                return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+                if not os.path.exists(self.config_gui.le_specPath.text()):
+                    msg = "Cannot find valid installion of POV-Ray at:\n\n%s"%str(self.config_gui.le_specPath.text())
+                    return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+
+                else:
+                    # Save the direct path.
+                    self.config.set("POV", "path", self.config_gui.le_specPath.text())
 
             else:
-                # Save the direct path.
-                self.config.set("POV", "path", self.config_gui.le_specPath.text())
+                # Seve the detected registry path.
+                self.config.set("POV", "regpath", self.config_gui.lbl_regPath.text())
 
-        else:
-            # Seve the detected registry path.
-            self.config.set("POV", "regpath", self.config_gui.lbl_regPath.text())
+            # All other settings.
+            self.config.set("TCDB", "xml", str(self.config_gui.le_backend.text()))
+            self.config.set("TCDB", "roster", str(self.config_gui.le_roster.text()))
+            self.config.set("TCDB", "search", str(self.config_gui.le_search.text()))
 
-        # All other settings.
-        self.config.set("TCDB", "xml", str(self.config_gui.le_backend.text()))
-        self.config.set("TCDB", "roster", str(self.config_gui.le_roster.text()))
-        self.config.set("TCDB", "search", str(self.config_gui.le_search.text()))
-
-        # Save and close.
-        self.saveSettings()
-        self.config_gui.close()
+            # Save and close.
+            self.saveSettings()
+            self.config_gui.close()
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -975,12 +995,15 @@ class TTT3(QMainWindow):
     def config_browse(self):
         '''Method that allows the user to select an executable file from a file picker.'''
 
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        fileName, _ = QFileDialog.getOpenFileName(self, "Browse for POV-Ray Installation", "C:\\","pvengine64.exe;;pvengine.exe", options=options)
-        if fileName:
-            fileName = fileName.replace(r"/", "\\")
-            self.config_gui.le_specPath.setText(fileName)
+        try:
+            options = QFileDialog.Options()
+            options |= QFileDialog.DontUseNativeDialog
+            fileName, _ = QFileDialog.getOpenFileName(self, "Browse for POV-Ray Installation", "C:\\","pvengine64.exe;;pvengine.exe", options=options)
+            if fileName:
+                fileName = fileName.replace(r"/", "\\")
+                self.config_gui.le_specPath.setText(fileName)
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1342,51 +1365,57 @@ class TTT3(QMainWindow):
     def shipSelectionLogic(self, value):
         '''Method that handles the actions once a ship is selected from the 'Ship' section in the 'Wing and Squadron' tab.'''
 
-        # Clear the 'Wing' ListWidget.
-        self.gui.lw_wing.clear()
-
         try:
-            # Save the selected option.
-            self.ship = self.gui.lw_ship.currentItem().text()
+            # Clear the 'Wing' ListWidget.
+            self.gui.lw_wing.clear()
 
-            if self.position not in ["TRN", "COM", "TCCS", "IA", "CA", "SGCOM", "CS", "XO", "FC"]: # Stops Wings and Squadrons showing for COMs and above.
+            try:
+                # Save the selected option.
+                self.ship = self.gui.lw_ship.currentItem().text()
 
-                # Populate the 'Wing' List Widget with the Wings for the selected Ship.
-                for wing in self.fleetConfig.options(str(self.gui.lw_ship.currentItem().text())):
-                    self.gui.lw_wing.addItem(self.fleetConfig.get(str(self.gui.lw_ship.currentItem().text()), wing))
-                self.wingSelectionLogic(None)
+                if self.position not in ["TRN", "COM", "TCCS", "IA", "CA", "SGCOM", "CS", "XO", "FC"]: # Stops Wings and Squadrons showing for COMs and above.
 
-            else:
-                if self.position not in ["COM"]: # Stops Ship List Widget from being cleared.
-                    self.gui.lw_ship.clear()
-                self.gui.lw_wing.clear()
+                    # Populate the 'Wing' List Widget with the Wings for the selected Ship.
+                    for wing in self.fleetConfig.options(str(self.gui.lw_ship.currentItem().text())):
+                        self.gui.lw_wing.addItem(self.fleetConfig.get(str(self.gui.lw_ship.currentItem().text()), wing))
+                    self.wingSelectionLogic(None)
 
-        except AttributeError:
-            pass # Prevents the application throwing an error when the 'Ship' List Widget is clears and tries to populate wings from a 'blank' ship.
+                else:
+                    if self.position not in ["COM"]: # Stops Ship List Widget from being cleared.
+                        self.gui.lw_ship.clear()
+                    self.gui.lw_wing.clear()
+
+            except AttributeError:
+                pass # Prevents the application throwing an error when the 'Ship' List Widget is clears and tries to populate wings from a 'blank' ship.
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
     def wingSelectionLogic(self, value):
         '''Method that handles the actions once a Wing is selected from the 'Wing' section in the 'Wing and Squadron' tab.'''
 
-        # Clear the 'Squadron' ListWidget.
-        self.gui.lw_squad.clear()
-
         try:
-            # Save the selected option.
-            self.wing = self.gui.lw_wing.currentItem().text()
+            # Clear the 'Squadron' ListWidget.
+            self.gui.lw_squad.clear()
 
-            if self.position not in ["WC"]: # Stops Squadrons showing for WCs.
+            try:
+                # Save the selected option.
+                self.wing = self.gui.lw_wing.currentItem().text()
 
-                # Populate the 'Squadron' List Widget with the Squadrons for the selected Wing.
-                for squadron in self.fleetConfig.options(str(self.gui.lw_wing.currentItem().text())):
-                    self.gui.lw_squad.addItem(self.fleetConfig.get(str(self.gui.lw_wing.currentItem().text()), squadron))
+                if self.position not in ["WC"]: # Stops Squadrons showing for WCs.
 
-            else:
-                self.gui.lw_squad.clear()
+                    # Populate the 'Squadron' List Widget with the Squadrons for the selected Wing.
+                    for squadron in self.fleetConfig.options(str(self.gui.lw_wing.currentItem().text())):
+                        self.gui.lw_squad.addItem(self.fleetConfig.get(str(self.gui.lw_wing.currentItem().text()), squadron))
 
-        except AttributeError:
-            pass # Prevents the application throwing an error when the 'Wing' List Widget is clears and tries to populate squadrons from a 'blank' wing.
+                else:
+                    self.gui.lw_squad.clear()
+
+            except AttributeError:
+                pass # Prevents the application throwing an error when the 'Wing' List Widget is clears and tries to populate squadrons from a 'blank' wing.
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1407,39 +1436,42 @@ class TTT3(QMainWindow):
 
            0 = Unckecked, 2 = Checked.'''
 
-        if value == 0:
+        try:
+            if value == 0:
 
-            # Load and enable the Ship and Wing List Widgets.
-            self.gui.lw_ship.setEnabled(True)
-            self.gui.lw_wing.setEnabled(True)
-            self.gui.lw_squad.clear()
-            self.sqn = ""
-            self.gui.lw_wing.clear()
-            self.wing = ""
-            self.gui.lw_ship.clear()
-            self.ship = ""
+                # Load and enable the Ship and Wing List Widgets.
+                self.gui.lw_ship.setEnabled(True)
+                self.gui.lw_wing.setEnabled(True)
+                self.gui.lw_squad.clear()
+                self.sqn = ""
+                self.gui.lw_wing.clear()
+                self.wing = ""
+                self.gui.lw_ship.clear()
+                self.ship = ""
 
-            # Add the Ships to the Ships list view.
-            for ship in self.fleetConfig.options("fleet"):
-                if ship != "count":
-                    self.gui.lw_ship.addItem(self.fleetConfig.get("fleet", ship))
+                # Add the Ships to the Ships list view.
+                for ship in self.fleetConfig.options("fleet"):
+                    if ship != "count":
+                        self.gui.lw_ship.addItem(self.fleetConfig.get("fleet", ship))
 
-        elif value == 2:
+            elif value == 2:
 
-            # Clear and disable the Ship and Wing List Widgets.
-            self.gui.lw_squad.clear()
-            self.gui.lw_ship.clear()
-            self.gui.lw_ship.setEnabled(False)
-            self.gui.lw_wing.clear()
-            self.gui.lw_wing.setEnabled(False)
+                # Clear and disable the Ship and Wing List Widgets.
+                self.gui.lw_squad.clear()
+                self.gui.lw_ship.clear()
+                self.gui.lw_ship.setEnabled(False)
+                self.gui.lw_wing.clear()
+                self.gui.lw_wing.setEnabled(False)
 
-            # Remove any prior saved Ship or Wing.
-            self.ship = ""
-            self.wing = ""
+                # Remove any prior saved Ship or Wing.
+                self.ship = ""
+                self.wing = ""
 
-            # Populate the 'Squadron' List Widget with the Squadrons for the selected Wing.
-            for squadron in self.fleetConfig.options("elites"):
-                self.gui.lw_squad.addItem(self.fleetConfig.get("elites", squadron))
+                # Populate the 'Squadron' List Widget with the Squadrons for the selected Wing.
+                for squadron in self.fleetConfig.options("elites"):
+                    self.gui.lw_squad.addItem(self.fleetConfig.get("elites", squadron))
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1587,46 +1619,52 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
     def medalSelectionLogic(self, item):
         '''Method that handles the actions once a medal is selected from the 'Medals, Ribbons and FCHG tab.'''
 
-        # Reset the 'Medals, Ribbons and FCHG tab..
-        self.hideMedalOptions()
+        try:
+            # Reset the 'Medals, Ribbons and FCHG tab..
+            self.hideMedalOptions()
 
-        name = 0
-        quantity = 1
+            name = 0
+            quantity = 1
 
-        # Show the Medals GroupBox and set it's title the the selected medal.
-        self.gui.gb_medals.show()
-        self.gui.gb_medals.setTitle(item.text().split(" (")[0])
+            # Show the Medals GroupBox and set it's title the the selected medal.
+            self.gui.gb_medals.show()
+            self.gui.gb_medals.setTitle(item.text().split(" (")[0])
 
-        # Show the correct GUI elements for the given medal.
-        print("\nClicked: " + item.text())
-        award = self.awards.get(str(item.text())) # Str type conversion as you cannot reference a dict with a QString.
-        print(award)
+            # Show the correct GUI elements for the given medal.
+            print("\nClicked: " + item.text())
+            award = self.awards.get(str(item.text())) # Str type conversion as you cannot reference a dict with a QString.
+            print(award)
 
-        # Single type awards.
-        if award.get("type") == "single":
-            self.gui.cb_singleMedal.setText(award.get("upgrades")[name])
-            if award.get("upgrades")[quantity] == 0:
-                self.gui.cb_singleMedal.setChecked(False)
-            else:
-                self.gui.cb_singleMedal.setChecked(True)
-            self.gui.cb_singleMedal.show()
-            self.neckRibbonDeconfliction()
+            # Single type awards.
+            if award.get("type") == "single":
+                self.gui.cb_singleMedal.setText(award.get("upgrades")[name])
+                if award.get("upgrades")[quantity] == 0:
+                    self.gui.cb_singleMedal.setChecked(False)
+                else:
+                    self.gui.cb_singleMedal.setChecked(True)
+                self.gui.cb_singleMedal.show()
+                self.neckRibbonDeconfliction()
 
-        # TODO medalSelectionLogic()
+            # TODO medalSelectionLogic()
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
     def cb_singleMedalSelectionLogic(self):
         '''Method that handles the actions once a medal is selected in the 'Medals, Ribbons and FCHG tab.'''
 
-        quantity = 1
-        if self.gui.cb_singleMedal.isChecked():
-            self.awards.get(str(self.gui.cb_singleMedal.text()))["upgrades"][quantity] = 1
-        else:
-            self.awards.get(str(self.gui.cb_singleMedal.text()))["upgrades"][quantity] = 0
+        try:
+            quantity = 1
+            if self.gui.cb_singleMedal.isChecked():
+                self.awards.get(str(self.gui.cb_singleMedal.text()))["upgrades"][quantity] = 1
+            else:
+                self.awards.get(str(self.gui.cb_singleMedal.text()))["upgrades"][quantity] = 0
 
-        # IC & GOE Deconfliction.
-        self.neckRibbonDeconfliction()
+            # IC & GOE Deconfliction.
+            self.neckRibbonDeconfliction()
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1680,10 +1718,13 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
     def combo_neckRibbonDeconflictLogic(self):
         '''Method that stores the user's preference to deconflicting the IC and GOE neck ribbons.'''
 
-        if "Both" in str(self.gui.combo_top.currentText()):
-            self.deconflictNeckRibbons = False
-        else:
-            self.deconflictNeckRibbons = True
+        try:
+            if "Both" in str(self.gui.combo_top.currentText()):
+                self.deconflictNeckRibbons = False
+            else:
+                self.deconflictNeckRibbons = True
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1737,23 +1778,16 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                      Functions.                                                                    #
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
-def crashLogger():
-    '''Function to monitor and stall all error messages.'''
+def handleException(exception):
+    '''Method that will log all python exceptions to TTT3 Crash.log.'''
 
-    try:
-        # Start the QT application.
-        app = QApplication(sys.argv)
-        ttt3 = TTT3()
-        sys.exit(app.exec_())
-
-    except Exception as e:
-        # Capture the error and dump to "TTT3 Crash.log"
-        logging.error(e, exc_info=True)
-        logging.error("\n")
-        msg = "Error: Uh-Oh! TTT3 has encountered an error. Please submit 'TTT3\TTT3 Crash.log' to the Internet Office."
-        return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+    # Capture the error and dump to "TTT3 Crash.log"
+    logging.error(exception, exc_info=True)
+    logging.error("\n")
+    msg = "Error: Uh-Oh! TTT3 has encountered an error. Please submit 'TTT3\TTT3 Crash.log' to the Internet Office."
+    return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
-
 
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -1763,5 +1797,9 @@ if __name__ == "__main__":
 
     # Error logging.
     logging.basicConfig(filename="TTT3 Crash.log", filemode="a", level=logging.ERROR)
-    crashLogger()
+
+    # Start the QT application.
+    app = QApplication(sys.argv)
+    ttt3 = TTT3()
+    sys.exit(app.exec_())
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
