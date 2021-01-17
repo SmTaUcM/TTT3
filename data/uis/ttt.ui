@@ -1424,6 +1424,34 @@ QListWidget:!enabled
         <string notr="true">background-color: rgb(211, 211, 211);</string>
        </property>
       </widget>
+      <widget class="QComboBox" name="combo_top">
+       <property name="geometry">
+        <rect>
+         <x>41</x>
+         <y>81</y>
+         <width>170</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_top_free_text">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>60</y>
+         <width>215</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>==NUL====NUL====NUL====NUL==</string>
+       </property>
+      </widget>
+      <zorder>lbl_top_free_text</zorder>
+      <zorder>combo_top</zorder>
       <zorder>lbl_multi_centerTop</zorder>
       <zorder>cb_singleMedal</zorder>
       <zorder>sb_multi_centerTop</zorder>

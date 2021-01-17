@@ -139,7 +139,7 @@ class TTT3(QMainWindow):
 
                 # List Widget Connections.
         self.gui.lw_medals.itemClicked.connect(self.medalSelectionLogic)
-                # CheckBox.
+                # CheckBoxes.
         self.gui.cb_singleMedal.stateChanged.connect(self.cb_singleMedalSelectionLogic)
 
 
@@ -172,6 +172,7 @@ class TTT3(QMainWindow):
         self.sqn = ""
         self.awards = {}
         self.eeCount = 0
+        self.deconflictNeckRibbons = False
 
         # PovRay Template Constants.
         self.RANK_04_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787", # Rotate
@@ -195,6 +196,10 @@ class TTT3(QMainWindow):
         self.fleetConfig = None
         self.medalConfig = None
         self.ribbonConfig = None
+
+
+        # ----- GUI variables. -----
+        self.combo_topConnected = False
 
 
         # ----- Application logic. -----
@@ -936,7 +941,6 @@ class TTT3(QMainWindow):
 
                 # Fall back to CurrentVerison if all else fails.
                 if version < 3.6:
-                    print("fallback")
                     aKey = "Software\\POV-Ray\\CurrentVersion\\Windows\\"
                     values = winreg.OpenKey(winreg.HKEY_CURRENT_USER, aKey)
                     path = winreg.QueryValueEx(values, "Home")[0]
@@ -1452,7 +1456,11 @@ class TTT3(QMainWindow):
             self.awards[name]["upgrades"] = [name, 0]
             self.awards[name]["includeFile"] = self.medalConfig.get(medal, "incFile")
             try: # Add objects such as the Dagger for the GOE.
-                self.awards[name]["objectRef"] = self.medalConfig.get(medal, "objRef")
+                self.awards[name]["objectRef1"] = self.medalConfig.get(medal, "objRef1")
+            except configparser.NoOptionError:
+                pass # Ignore medals thast have no extra objects.
+            try: # Add objects such as the Dagger for the GOE.
+                self.awards[name]["objectRef2"] = self.medalConfig.get(medal, "objRef2")
             except configparser.NoOptionError:
                 pass # Ignore medals thast have no extra objects.
 
@@ -1567,6 +1575,8 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         self.gui.sb_multi_centerMiddle.hide()
         self.gui.lbl_multi_centerBottom.hide()
         self.gui.sb_multi_centerBottom.hide()
+        self.gui.combo_top.hide()
+        self.gui.lbl_top_free_text.hide()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1596,6 +1606,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
             else:
                 self.gui.cb_singleMedal.setChecked(True)
             self.gui.cb_singleMedal.show()
+            self.neckRibbonDeconfliction()
 
         # TODO medalSelectionLogic()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -1608,8 +1619,67 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         if self.gui.cb_singleMedal.isChecked():
             self.awards.get(str(self.gui.cb_singleMedal.text()))["upgrades"][quantity] = 1
         else:
-            if self.awards.get(str(self.gui.cb_singleMedal.text()))["upgrades"][quantity] == 1:
-                self.awards.get(str(self.gui.cb_singleMedal.text()))["upgrades"][quantity] = 0
+            self.awards.get(str(self.gui.cb_singleMedal.text()))["upgrades"][quantity] = 0
+
+        # IC & GOE Deconfliction.
+        self.neckRibbonDeconfliction()
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def neckRibbonDeconfliction(self):
+        '''Method for handling the display and selection logic for neck ribbon deconfliction.'''
+
+        quantity = 1
+        if (self.awards.get("Imperial Cross (IC)")["upgrades"][quantity] == 1 and \
+            self.awards.get("Grand Order of the Emperor (GOE)")["upgrades"][quantity] == 1) \
+           and \
+            (self.gui.gb_medals.title() == "Grand Order of the Emperor" or \
+             self.gui.gb_medals.title() == "Imperial Cross"):
+
+            # Text Label.
+            self.gui.lbl_top_free_text.setText("Neck ribbon to display:")
+            self.gui.lbl_top_free_text.show()
+            # Comobox.
+            if not self.combo_topConnected:
+                self.gui.combo_top.clear()
+                self.gui.combo_top.addItem("Both IC and GOE Ribbons")
+                self.gui.combo_top.addItem("Imperial Cross (IC) Only")
+            self.gui.combo_top.show()
+
+            # Apply the current setting.
+            if self.deconflictNeckRibbons:
+                self.gui.combo_top.setCurrentIndex(1)
+            else:
+                self.gui.combo_top.setCurrentIndex(0)
+
+            # Connection.
+            if not self.combo_topConnected:
+                self.gui.combo_top.currentTextChanged.connect(self.combo_neckRibbonDeconflictLogic)
+                self.combo_topConnected = True
+
+        else:
+            # Diconnection.
+            if self.combo_topConnected:
+                self.gui.combo_top.disconnect()
+                self.combo_topConnected = False
+
+            # Text Label.
+            self.gui.lbl_top_free_text.setText("==NUL====NUL====NUL====NUL==")
+            self.gui.lbl_top_free_text.hide()
+
+            # Comobox.
+            self.gui.combo_top.clear()
+            self.gui.combo_top.hide()
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def combo_neckRibbonDeconflictLogic(self):
+        '''Method that stores the user's preference to deconflicting the IC and GOE neck ribbons.'''
+
+        if "Both" in str(self.gui.combo_top.currentText()):
+            self.deconflictNeckRibbons = False
+        else:
+            self.deconflictNeckRibbons = True
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1624,7 +1694,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                     medalIncludes.append(self.awards.get(award)["includeFile"])
 
         # Special handling of IC and GOE combination.
-        if "ic_g.inc" in medalIncludes and "goe_g.inc" in  medalIncludes:
+        if "ic_g.inc" in medalIncludes and "goe_g.inc" in medalIncludes and not self.deconflictNeckRibbons:
             medalIncludes.remove("ic_g.inc")
             medalIncludes.remove("goe_g.inc")
             medalIncludes.append("ic_goe_g.inc")
@@ -1642,9 +1712,17 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
             if self.awards.get(award)["type"] == "single":
                 if self.awards.get(award)["upgrades"][1] == 1:
                     try: # Filtering for medals that do not contain objRefs.
-                        medalObjects.append(self.awards.get(award)["objectRef"])
+                        medalObjects.append(self.awards.get(award)["objectRef1"])
                     except KeyError:
                         pass
+                    try: # Filtering for medals that do not contain objRefs.
+                        medalObjects.append(self.awards.get(award)["objectRef2"])
+                    except KeyError:
+                        pass
+
+        # Special handling of IC and GOE combination.
+        if self.deconflictNeckRibbons:
+            medalObjects.remove("P_goe")
 
         return medalObjects
         #--------------------------------------------------------------------------------------------------------------------------------------------#

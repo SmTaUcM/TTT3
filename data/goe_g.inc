@@ -25,7 +25,4 @@ union
   object { P_goe_cloth }
   object { P_goe_base rotate <50.465,0,0> translate <0,-95.824,279.751> }
 }  
-
-
-object { P_goe }
    
