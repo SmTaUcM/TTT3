@@ -718,10 +718,10 @@ class TTT3(QMainWindow):
         template = template.replace("&TTTPATH&", os.getcwd())
 
         # Apply the path depending on what the user has selected from within the Configuratrion window.
-        if self.config.get("POV", "mode") == "registry":
+        if self.config.get("POV-Ray", "detection_mode") == "registry":
             template = template.replace("&POVPATH&", self.getPathFromRegistry())
         else:
-            template = template.replace("&POVPATH&", self.config.get("POV", "path"))
+            template = template.replace("&POVPATH&", self.config.get("POV-Ray", "user_specified_path"))
 
         template = template.replace("&TYPE&", uniform)
 
@@ -759,12 +759,12 @@ class TTT3(QMainWindow):
         os.removedirs(r"data\batch")
 
         # Open the newly generated uniform.png file.
-        if self.config.get("POV", "mode") == "registry":
-            if "3.6" in self.config.get("POV", "regpath"):
+        if self.config.get("POV-Ray", "detection_mode") == "registry":
+            if "3.6" in self.config.get("POV-Ray", "registry_detected_path"):
                 self.convertImage(uniform)
 
-        elif self.config.get("POV", "mode") == "specific":
-            if "3.6" in self.config.get("POV", "path"):
+        elif self.config.get("POV-Ray", "detection_mode") == "specific":
+            if "3.6" in self.config.get("POV-Ray", "user_specified_path"):
                 self.convertImage(uniform)
 
         os.system(r"data\{uniformType}.png".format(uniformType=uniform))
@@ -821,10 +821,10 @@ class TTT3(QMainWindow):
         '''Method that applies the settings to the 'Configuration' window.'''
 
         # ----- Mode. -----
-        if self.config.get("POV", "mode") == "registry":
+        if self.config.get("POV-Ray", "detection_mode") == "registry":
             self.config_gui.rb_reg.setChecked(True)
 
-        elif self.config.get("POV", "mode") == "specific":
+        elif self.config.get("POV-Ray", "detection_mode") == "specific":
             self.config_gui.rb_specific.setChecked(True)
 
         else:
@@ -832,8 +832,8 @@ class TTT3(QMainWindow):
             return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
 
         # ----- All other values -----
-        self.config_gui.lbl_regPath.setText(self.config.get("POV", "regpath"))
-        self.config_gui.le_specPath.setText(self.config.get("POV", "path"))
+        self.config_gui.lbl_regPath.setText(self.config.get("POV-Ray", "registry_detected_path"))
+        self.config_gui.le_specPath.setText(self.config.get("POV-Ray", "user_specified_path"))
         self.config_gui.le_backend.setText(self.config.get("TCDB", "xml"))
         self.config_gui.le_roster.setText(self.config.get("TCDB", "roster"))
         self.config_gui.le_search.setText(self.config.get("TCDB", "search"))
@@ -888,7 +888,7 @@ class TTT3(QMainWindow):
             self.config_gui.btn_config_browse.setEnabled(False)
 
             # Save our setting.
-            self.config.set("POV", "mode", "registry")
+            self.config.set("POV-Ray", "detection_mode", "registry")
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -907,7 +907,7 @@ class TTT3(QMainWindow):
             self.config_gui.lbl_regPath.setEnabled(False)
 
             # Save our setting.
-            self.config.set("POV", "mode", "specific")
+            self.config.set("POV-Ray", "detection_mode", "specific")
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -917,20 +917,20 @@ class TTT3(QMainWindow):
         '''Method that handles the functionality when the 'OK' button is pressed within  the 'Configuration' screen.'''
 
         try:
-            # Test to ensure that the direct POV-Ray exceutable is present.
-            if self.config.get("POV", "mode") == "specific":
+            # Test to ensure that the direct POV-Ray-Ray exceutable is present.
+            if self.config.get("POV-Ray", "detection_mode") == "specific":
 
                 if not os.path.exists(self.config_gui.le_specPath.text()):
-                    msg = "Cannot find valid installion of POV-Ray at:\n\n%s"%str(self.config_gui.le_specPath.text())
+                    msg = "Cannot find valid installion of POV-Ray-Ray at:\n\n%s"%str(self.config_gui.le_specPath.text())
                     return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
 
                 else:
                     # Save the direct path.
-                    self.config.set("POV", "path", self.config_gui.le_specPath.text())
+                    self.config.set("POV-Ray", "user_specified_path", self.config_gui.le_specPath.text())
 
             else:
                 # Seve the detected registry path.
-                self.config.set("POV", "regpath", self.config_gui.lbl_regPath.text())
+                self.config.set("POV-Ray", "registry_detected_path", self.config_gui.lbl_regPath.text())
 
             # All other settings.
             self.config.set("TCDB", "xml", str(self.config_gui.le_backend.text()))
@@ -950,7 +950,7 @@ class TTT3(QMainWindow):
 
         # Determine the highest version of POV-Ray from the version setting in 'TTT3.ini'.
         path = False
-        version = float(self.config.get("POV", "version"))
+        version = float(self.config.get("POV-Ray", "target_version"))
 
         while not path:
             try:
@@ -986,7 +986,7 @@ class TTT3(QMainWindow):
             return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
 
         # Save the detected path and return the value.
-        self.config.set("POV", "regpath", path)
+        self.config.set("POV-Ray", "registry_detected_path", path)
         self.saveSettings()
         return path
         #--------------------------------------------------------------------------------------------------------------------------------------------#
