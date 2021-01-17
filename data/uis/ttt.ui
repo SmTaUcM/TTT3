@@ -1816,7 +1816,7 @@ QListWidget:!enabled
        <rect>
         <x>95</x>
         <y>224</y>
-        <width>81</width>
+        <width>76</width>
         <height>81</height>
        </rect>
       </property>
@@ -1870,9 +1870,9 @@ QListWidget:!enabled
      <widget class="QLabel" name="lbl_python">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>69</x>
         <y>309</y>
-        <width>91</width>
+        <width>128</width>
         <height>16</height>
        </rect>
       </property>
@@ -1891,7 +1891,10 @@ QListWidget:!enabled
        <string notr="true">color: rgb(6, 22, 125);</string>
       </property>
       <property name="text">
-       <string>Python v3.8.7</string>
+       <string>Python v3.8.7 32-bit</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
      <widget class="QLabel" name="lbl_povray">
@@ -1913,6 +1916,9 @@ QListWidget:!enabled
       </property>
       <property name="cursor">
        <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(6, 22, 125);</string>
@@ -1980,6 +1986,9 @@ QListWidget:!enabled
       </property>
       <property name="text">
        <string>PyQt5</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
      <widget class="QLabel" name="label_20">
