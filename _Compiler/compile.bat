@@ -1,5 +1,8 @@
-copy ..\_Resource\TTT3.ico ttt3.ico
+@echo off
 python compile.py
-del ttt3.ico
-echo Compile Complete
+echo.
+echo.
+echo ----------- Compile Complete -----------
+echo.
+echo.
 pause

@@ -1,0 +1,32 @@
+ Resource Folder Guide:
+ ----------------------
+
+- pyqt5-tools must be installed to edit any of the GUI elements. Use the command:
+  'python -m pip install pyqt5-tools'
+  to install pyqt5-tools.
+
+- TTT3's GUI is created at 'ttt.ui' using Qt Designer and is to be placed in the 'TTT3\data\uis\ folder' for a final build.
+
+- Qt Designer can be executed by running the:
+  'pyqt5-tools.exe designer'
+  From within:
+  'C:\Users\USERNAME\AppData\Local\Programs\Python\Python38-32\Scripts\'
+
+- A copy of 'ttt.ui' is held in 'TTT3\_Resource' (this folder) to allow for editing with the correct graphics displayed and for resource file creation.
+
+- In order to compile the GUI imagry into 'TTT3.exe' (negating the need to store imagry wihin a seperate folder of a TTT3 build) 
+  a resource file containing byte compiled imagry must be created using 'pyrcc5.exe'.
+  
+- 'pyrcc5.exe' of the correct version of your Python installation MUST be used. Once you have installed pyqt5-tools using:
+  'python -m pip install pyqt5-tools' 
+  'pyrcc5.exe' will be located in your:
+  'C:\Users\USERNAME\AppData\Local\Programs\Python\Python38-32\Scripts\' directory and should be copied to 'TTT3\_Resource\'.
+  
+- A 'resource.qrc' file must be made using Qt Designer via 'ttt.ui'. Resource management is found in the bottom right of the Qt Designer screen.
+  
+- 'create resource.py.bat' is provided to automatically create the resource file 'resource.py' from 'resource.qrc' and is then automatically 
+  moved to the TTT3 folder.
+
+- 'resource.py' must be present within the 'TTT3' folder for imagry to be present after compilation.
+
+- TTT3's file icon 'ttt3.ico' is also held here and is required for compiling TTT3 into 'TTT3.exe'.
