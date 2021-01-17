@@ -15,6 +15,7 @@
 # Developed using Python v3.8.7 32bit.
 # External dependancies are commented. Imports with no comments are included with the regular Python installation.
 # Alternatively run "TTT3\Useful Info\Dependancy Installer.bat"
+import logging
 import resource
 import sys
 import os
@@ -34,15 +35,6 @@ import numpy
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                      Classes.                                                                      #
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
-class NullDevice():
-    '''A object class used to inhibit the SDTOUT/STDERR.'''
-
-    def write(self, s):
-        pass
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
-
-
-
 class TTT3(QMainWindow):
     '''Main object class representing the TTT3 application.'''
 
@@ -58,6 +50,7 @@ class TTT3(QMainWindow):
         QMainWindow.__init__(self)
         self.gui = uic.loadUi(r"data\uis\ttt.ui")
         self.gui.show()
+        self.gui.closeEvent = self.closeEvent
 
         # Set the version number.
         self.gui.lblVersion.setText("Version: {v} {a}".format(v=version, a=devVersion))
@@ -70,7 +63,7 @@ class TTT3(QMainWindow):
                 # Button Connections.
         self.gui.btn_dress.clicked.connect(self.btn_dressMethod)
         self.gui.btn_config.clicked.connect(self.btn_configMethod)
-        self.gui.btn_exit.clicked.connect(self.exit)
+        self.gui.btn_exit.clicked.connect(self.closeEvent)
 
             # ----- 'Position and Rank' Tab. -----
 
@@ -267,10 +260,12 @@ class TTT3(QMainWindow):
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
-    def exit(self):
-        '''Method that closes the application.'''
+    def closeEvent(self, event):
+        '''Method that overloads the self.gui close event and the application.'''
 
-        sys.exit()
+        logging.shutdown()
+        if os.stat("TTT3 Crash.log").st_size == 0:
+            os.remove("TTT3 Crash.log")
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -662,31 +657,40 @@ class TTT3(QMainWindow):
            This method will check that the correct selections has been made within TTT3 such as Ship and Squadron and then
            directly call 'launchPOVRay' to open up PovRay and render the unirom.'''
 
-        # Check to see if the user has made the correct selections for their position and rank.
-        if self.position in ["FM", "FL", "CMDR", "WC"] and self.gui.cb_eliteSqn.isChecked() == False:
-            if not self.ship or not self.wing:
-                msg = "Error: As a pilot you need to specify at least a ship and wing before a dress uniform can be created."
+        # Error logging.
+        try:
+            # Check to see if the user has made the correct selections for their position and rank.
+            if self.position in ["FM", "FL", "CMDR", "WC"] and self.gui.cb_eliteSqn.isChecked() == False:
+                if not self.ship or not self.wing:
+                    msg = "Error: As a pilot you need to specify at least a ship and wing before a dress uniform can be created."
+                    return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+                else:
+                    self.createDressPov()
+                    self.launchPOVRay("dress")
+
+            elif self.gui.cb_eliteSqn.isChecked() == True and not self.sqn:
+                msg = "Error: As an elite pilot you need to specify a squadron before a dress uniform can be created."
                 return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+
+            elif self.position in ["COM"]:
+                if not self.ship:
+                    msg = "Error: As a COM you need to specify a ship before a dress uniform can be created."
+                    return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+                else:
+                    self.createDressPov()
+                    self.launchPOVRay("dress")
+
+            # Run PovRay to render a uniform.
             else:
                 self.createDressPov()
                 self.launchPOVRay("dress")
 
-        elif self.gui.cb_eliteSqn.isChecked() == True and not self.sqn:
-            msg = "Error: As an elite pilot you need to specify a squadron before a dress uniform can be created."
+        except Exception as e:
+            # Capture the error and dump to "TTT3 Crash.log"
+            logging.error(e, exc_info=True)
+            logging.error("\n")
+            msg = "Error: Uh-Oh! TTT3 has encountered an error. Please submit 'TTT3\TTT3 Crash.log' to the Internet Office."
             return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
-
-        elif self.position in ["COM"]:
-            if not self.ship:
-                msg = "Error: As a COM you need to specify a ship before a dress uniform can be created."
-                return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
-            else:
-                self.createDressPov()
-                self.launchPOVRay("dress")
-
-        # Run PovRay to render a uniform.
-        else:
-            self.createDressPov()
-            self.launchPOVRay("dress")
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1726,7 +1730,6 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
 
         return medalObjects
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1734,9 +1737,21 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                      Functions.                                                                    #
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
-# None.
+def crashLogger():
+    '''Function to monitor and stall all error messages.'''
 
+    try:
+        # Start the QT application.
+        app = QApplication(sys.argv)
+        ttt3 = TTT3()
+        sys.exit(app.exec_())
 
+    except Exception as e:
+        # Capture the error and dump to "TTT3 Crash.log"
+        logging.error(e, exc_info=True)
+        logging.error("\n")
+        msg = "Error: Uh-Oh! TTT3 has encountered an error. Please submit 'TTT3\TTT3 Crash.log' to the Internet Office."
+        return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1745,13 +1760,8 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
 #                                                                     Main Program.                                                                  #
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 if __name__ == "__main__":
-    # TODO Disabled for development.
-##    # Inhibit the STDOUT and STDERR so we don't get the annoying pop up window when we close the app.
-##    sys.stdout = NullDevice()
-##    sys.stderr = NullDevice()
 
-    # Start the QT application.
-    app = QApplication(sys.argv)
-    ttt3 = TTT3()
-    sys.exit(app.exec_())
+    # Error logging.
+    logging.basicConfig(filename="TTT3 Crash.log", filemode="a", level=logging.ERROR)
+    crashLogger()
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
