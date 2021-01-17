@@ -83,7 +83,7 @@ class TTT3(QMainWindow):
         self.gui.rb_pos_cmdr.clicked.connect(self.posRBLogic)
         self.gui.rb_pos_wc.clicked.connect(self.posRBLogic)
         self.gui.rb_pos_com.clicked.connect(self.posRBLogic)
-        self.gui.rb_pos_bgcom.clicked.connect(self.posRBLogic)
+        self.gui.rb_pos_tccs.clicked.connect(self.posRBLogic)
         self.gui.rb_pos_ia.clicked.connect(self.posRBLogic)
         self.gui.rb_pos_ca.clicked.connect(self.posRBLogic)
         self.gui.rb_pos_sgcom.clicked.connect(self.posRBLogic)
@@ -121,7 +121,7 @@ class TTT3(QMainWindow):
                                  self.gui.rb_rank_sa, self.gui.rb_rank_ga]
 
         self.positionRadioButtons = [self.gui.rb_pos_trn, self.gui.rb_pos_fm, self.gui.rb_pos_fl, self.gui.rb_pos_cmdr, self.gui.rb_pos_wc,
-                                     self.gui.rb_pos_com, self.gui.rb_pos_bgcom, self.gui.rb_pos_ia, self.gui.rb_pos_ca, self.gui.rb_pos_sgcom,
+                                     self.gui.rb_pos_com, self.gui.rb_pos_tccs, self.gui.rb_pos_ia, self.gui.rb_pos_ca, self.gui.rb_pos_sgcom,
                                      self.gui.rb_pos_cs, self.gui.rb_pos_xo, self.gui.rb_pos_fc, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
 
 
@@ -409,10 +409,10 @@ class TTT3(QMainWindow):
                     self.sqn = ""
                     break
 
-                # Battlegroup Commander.
-                elif radioButton == self.gui.rb_pos_bgcom:
+                # TE Corps Command Staff.
+                elif radioButton == self.gui.rb_pos_tccs:
                     self.showRanks(RA, HA)
-                    self.position = "BGCOM"
+                    self.position = "TCCS"
                     self.enableWingAndSqnTab(False)
                     break
 
@@ -1115,7 +1115,7 @@ class TTT3(QMainWindow):
                 if self.gui.cb_eliteSqn.isChecked():
                     povData.append(line.replace("&TRIMCOLOUR&", "white"))
 
-                elif self.position in ["COM", "BGCOM", "IA", "CA", "SGCOM", "CS", "XO", "FC"]:
+                elif self.position in ["COM", "TCCS", "IA", "CA", "SGCOM", "CS", "XO", "FC"]:
                     povData.append(line.replace("&TRIMCOLOUR&", "gold"))
 
                 elif self.wing == "Wing I":
@@ -1341,7 +1341,7 @@ class TTT3(QMainWindow):
             # Save the selected option.
             self.ship = self.gui.lw_ship.currentItem().text()
 
-            if self.position not in ["TRN", "COM", "BGCOM", "IA", "CA", "SGCOM", "CS", "XO", "FC"]: # Stops Wings and Squadrons showing for COMs and above.
+            if self.position not in ["TRN", "COM", "TCCS", "IA", "CA", "SGCOM", "CS", "XO", "FC"]: # Stops Wings and Squadrons showing for COMs and above.
 
                 # Populate the 'Wing' List Widget with the Wings for the selected Ship.
                 for wing in self.fleetConfig.options(str(self.gui.lw_ship.currentItem().text())):

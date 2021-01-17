@@ -7,10 +7,12 @@
 
 - TTT3's GUI is created at 'ttt.ui' using Qt Designer and is to be placed in the 'TTT3\data\uis\ folder' for a final build.
 
-- Qt Designer can be executed by running the:
+- Qt Designer can be executed by running the 'Qt Designer.bat' file or:
   'pyqt5-tools.exe designer'
   From within:
   'C:\Users\USERNAME\AppData\Local\Programs\Python\Python38-32\Scripts\'
+  
+- 'ttt.ui to uis folder.bat' is provided for quick copying of 'ttt.ui. to the 'TTT3\data\uis\' folder.
 
 - A copy of 'ttt.ui' is held in 'TTT3\_Resource' (this folder) to allow for editing with the correct graphics displayed and for resource file creation.
 

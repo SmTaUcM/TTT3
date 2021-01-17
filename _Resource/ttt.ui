@@ -237,7 +237,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
         <string>Wing Commander (WC)</string>
        </property>
       </widget>
-      <widget class="QRadioButton" name="rb_pos_bgcom">
+      <widget class="QRadioButton" name="rb_pos_tccs">
        <property name="geometry">
         <rect>
          <x>14</x>
@@ -253,7 +253,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
         </font>
        </property>
        <property name="text">
-        <string>Battle Group Commander (BGCOM)</string>
+        <string>TIE Corps Command Staff (TCCS)</string>
        </property>
       </widget>
       <widget class="QRadioButton" name="rb_pos_ia">

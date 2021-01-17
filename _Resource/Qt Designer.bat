@@ -1,0 +1,1 @@
+"%UserProfile%\AppData\Local\Programs\Python\Python38-32\Scripts\pyqt5-tools.exe" designer
