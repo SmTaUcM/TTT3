@@ -30,6 +30,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog # python -m p
 from PIL import Image # python -m pip install pillow
 import cv2 # python -m pip install opencv-python
 import numpy
+import platform
 # python -m pip install pyinstaller - for compiler.
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -551,6 +552,8 @@ class TTT3(QMainWindow):
 
                     elif radioButton == self.gui.rb_rank_lt:
                         self.rank = "LT"
+                        self.rankRotate = self.RANK_04_SQUARES[0]
+                        self.rankTranslate = self.RANK_04_SQUARES[1]
                         break
 
                     elif radioButton == self.gui.rb_rank_lcm:
@@ -968,6 +971,7 @@ class TTT3(QMainWindow):
                     aKey = "Software\\POV-Ray\\CurrentVersion\\Windows\\"
                     values = winreg.OpenKey(winreg.HKEY_CURRENT_USER, aKey)
                     path = winreg.QueryValueEx(values, "Home")[0]
+                    self.config.set("POV-Ray", "detection_mode", "fallback")
 
         # Add a backslash if required to the path.
         if path[-1] != "\\":
@@ -1782,8 +1786,23 @@ def handleException(exception):
     '''Method that will log all python exceptions to TTT3 Crash.log.'''
 
     # Capture the error and dump to "TTT3 Crash.log"
+    logging.error("\n\n-----Crash Information:-----")
     logging.error(exception, exc_info=True)
-    logging.error("\n")
+    # System Info.
+    logging.error("\n\n-----System Information:-----")
+    try:
+      os.environ["PROGRAMFILES(X86)"]
+      bits = " 64"
+    except:
+      bits = " 32"
+    logging.error("Windows Version: " + platform.platform() + bits + "-bit.")
+    logging.error("Processor: " + platform.processor())
+    logging.error("Python Version: " + sys.version)
+    logging.error("\n\n-----TTT3 Settings:-----")
+    with open(os.getcwd() + "\\settings\\TTT3.ini", "r") as f:
+        settings = f.read()
+    logging.error("\n" + settings + "\nPosition : " + ttt3.position + "\nRank : " + ttt3.rank + "\nShip : " + ttt3.ship + \
+                  "\nWing : " + ttt3.wing + "\nSquadron : " + ttt3.sqn + "\nAwards :" + str(ttt3.awards))
     msg = "Error: Uh-Oh! TTT3 has encountered an error. Please submit 'TTT3\TTT3 Crash.log' to the Internet Office."
     return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
