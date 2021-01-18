@@ -12,7 +12,7 @@
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                      Imports.                                                                      #
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
-# Developed using Python v3.8.7 32bit.
+# Developed using Python v3.8.7 32-bit.
 # External dependancies are commented. Imports with no comments are included with the regular Python installation.
 # Alternatively run "TTT3\Useful Info\Dependancy Installer.bat"
 import logging
@@ -45,7 +45,7 @@ class TTT3(QMainWindow):
         try:
             # Version info.
             version = "3.00"
-            devVersion = "Alpha 6"
+            devVersion = "Alpha 7"
             date = "18 January 2021"
 
             # Initialise an instance of a QT Main Window and load our GUI file 'data\uis\ttt.ui'.
