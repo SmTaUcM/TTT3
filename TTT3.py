@@ -422,7 +422,7 @@ class TTT3(QMainWindow):
                     # TE Corps Command Staff.
                     elif radioButton == self.gui.rb_pos_tccs:
                         self.showRanks(RA, HA)
-                        self.position = "TCCS"
+                        self.position = "BGCOM"
                         self.enableWingAndSqnTab(False)
                         break
 
