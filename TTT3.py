@@ -1495,14 +1495,12 @@ class TTT3(QMainWindow):
             self.awards[name] = {"type" : self.medalConfig.get(medal, "type")}
             self.awards[name]["upgrades"] = [name, 0]
             self.awards[name]["includeFile"] = self.medalConfig.get(medal, "incFile")
-            try: # Add objects such as the Dagger for the GOE.
-                self.awards[name]["objectRef1"] = self.medalConfig.get(medal, "objRef1")
-            except configparser.NoOptionError:
-                pass # Ignore medals thast have no extra objects.
-            try: # Add objects such as the Dagger for the GOE.
-                self.awards[name]["objectRef2"] = self.medalConfig.get(medal, "objRef2")
-            except configparser.NoOptionError:
-                pass # Ignore medals thast have no extra objects.
+
+            for obj in range(1, 101, 1):
+                try: # Add objects such as the Dagger for the GOE.
+                    self.awards[name]["objectRef%s"%str(obj)] = self.medalConfig.get(medal, "objRef%s"%str(obj))
+                except configparser.NoOptionError:
+                    break # No more objRefs found.
 
             # Add the medal name to the GUI.
             self.gui.lw_medals.addItem(self.medalConfig.get(medal, "name"))
