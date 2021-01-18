@@ -1016,6 +1016,8 @@ class TTT3(QMainWindow):
     def createDressPov(self):
         '''Method that loads in '\data\dress.tpt' parses in the correct uniform data and creates a new 'data\dress.pov' file.'''
 
+        quantity = 1
+
         # Read in the template data.
         with open(r"data\dress.tpt", "r") as tptFile:
             template = tptFile.readlines()
@@ -1169,21 +1171,25 @@ class TTT3(QMainWindow):
 
 
             # ----- Medals. -----
-            elif "&MABGS&" in line: # BOOKMARK
-                num = self.awards.get("Gold Star of the Empire (GS)")["upgrades"][1]
+            elif "&MABGS&" in line:
+                num = self.awards.get("Gold Star of the Empire (GS)")["upgrades"][quantity]
                 povData.append(line.replace("&MABGS&", str(int(num) - 1)))
 
             elif "&MABSS&" in line:
-                povData.append(line.replace("&MABSS&", "0")) # TODO Medal Bars for SS
+                num = self.awards.get("Silver Star of the Empire (SS)")["upgrades"][quantity]
+                povData.append(line.replace("&MABSS&", str(int(num) - 1)))
 
             elif "&MABBS&" in line:
-                povData.append(line.replace("&MABBS&", "0")) # TODO Medal Bars for BS
+                num = self.awards.get("Bronze Star of the Empire (BS)")["upgrades"][quantity]
+                povData.append(line.replace("&MABBS&", str(int(num) - 1)))
 
             elif "&MABPC&" in line:
-                povData.append(line.replace("&MABPC&", "0")) # TODO Medal Bars for PC
+                num = self.awards.get("Palpatine Cresent (PC)")["upgrades"][quantity]
+                povData.append(line.replace("&MABPC&", str(int(num) - 1)))
 
             elif "&MABISM&" in line:
-                povData.append(line.replace("&MABISM&", "0")) # TODO Medal Bars for ISM
+                num = self.awards.get("Imperial Security Medal (ISM)")["upgrades"][quantity]
+                povData.append(line.replace("&MABISM&", str(int(num) - 1)))
 
 
             # ----- Other. -----
@@ -1781,8 +1787,10 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         medalObjects= []
 
         for award in self.awards:
+            # Single and Multi type awards.
             if self.awards.get(award)["type"] == "single" or self.awards.get(award)["type"] == "multi":
                 if self.awards.get(award)["upgrades"][1] >= 1:
+                    # Get all award onjRefs.
                     for obj in range(1, 101, 1):
                         try: # Filtering for medals that do not contain objRefs.
                             medalObjects.append(self.awards.get(award)["objectRef%s"%obj])
@@ -1793,7 +1801,38 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         if self.deconflictNeckRibbons:
             medalObjects.remove("P_goe")
 
+        medalObjects = self.determineMultiMedalOrders(medalObjects)
         return medalObjects
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def determineMultiMedalOrders(self, medalObjecRefs):
+        '''Used to determine the ordering for the GS to ISM medals and then upate their objRefs.'''
+
+        multiMedalsFound = []
+        modifiedObjectRefs = []
+        posNumCounter = 1
+
+        # Find and count multi type medals.
+        for ref in medalObjecRefs:
+            for medal in self.medalConfig.sections():
+                if self.medalConfig.get(medal, "type") == "multi":
+                    for num in range(1, 101, 1):
+                        try:
+                            if self.medalConfig.get(medal, "objRef%s"%num) == ref:
+                                multiMedalsFound.append(ref)
+                        except configparser.NoOptionError:
+                            break
+
+        # Modify the objRef with the correct numbering.
+        for ref in medalObjecRefs:
+            if ref in multiMedalsFound:
+                modifiedObjectRefs.append(ref + "_{totNum}_{posNum}".format(totNum=(len(multiMedalsFound)), posNum=posNumCounter))
+                posNumCounter += 1
+            else:
+                modifiedObjectRefs.append(ref)
+
+        return modifiedObjectRefs
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1815,7 +1854,6 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
     def sb_multi_centerTopLogic(self, value):
         '''Method for handling the Top Center spinbox logic.'''
 
-        #BOOKMARK
         try:
             quantity = 1
             self.awards.get(str(self.gui.lw_medals.currentItem().text()))["upgrades"][quantity] = value
