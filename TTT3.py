@@ -152,6 +152,7 @@ class TTT3(QMainWindow):
             self.gui.lbl_pic_povray.mouseReleaseEvent = self.povrayLink
             self.gui.lbl_povray.mouseReleaseEvent = self.povrayLink
             self.gui.label_11.mouseReleaseEvent = self.eeLink
+            self.gui.label_10.mouseReleaseEvent = self.devModeLink
 
 
             # ----- POV-Ray Variables. -----
@@ -167,6 +168,7 @@ class TTT3(QMainWindow):
             self.sqn = ""
             self.awards = {}
             self.eeCount = 0
+            self.devModeCount = 0
             self.deconflictNeckRibbons = False
 
             # PovRay Template Constants.
@@ -199,6 +201,7 @@ class TTT3(QMainWindow):
 
 
             # ----- Application logic. -----
+            self.fastRendering = False # Forces POV-Ray to render at a lower quality for quicker rendering during testing.
             self.loadSettings()
             self.initialGUISetup()
         except Exception as e:
@@ -263,6 +266,20 @@ class TTT3(QMainWindow):
             if self.eeCount >= 3:
                 self.gui.label_11.setText("PRAETORIAN MODE")
                 self.gui.label_11.setStyleSheet("color: rgb(255, 0, 0);")
+        except Exception as e:
+            handleException(e)
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def devModeLink(self, event):
+        '''Method event for ee.'''
+
+        try:
+            self.devModeCount += 1
+            if self.devModeCount >= 3:
+                self.gui.label_10.setText("DEV MODE")
+                self.gui.label_10.setStyleSheet("color: rgb(255, 0, 0);")
+                self.fastRendering = True
         except Exception as e:
             handleException(e)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -718,8 +735,10 @@ class TTT3(QMainWindow):
 
         # Dynamically write the 'data\batch\povray.bat' file.
             # Set the correct paths based on where TTT3 is located and the TTT3.ini settings file.
-##        template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\&TYPE&.pov" +W640 +H853 +Q9 +AM2 +A0.1 +D +F +GA +J1.0 /EXIT'
-        template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\&TYPE&.pov" /EXIT' # TODO Low Quality Renders Enabled.
+        if not self.fastRendering:
+            template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\&TYPE&.pov" +W640 +H853 +Q9 +AM2 +A0.1 +D +F +GA +J1.0 /EXIT'
+        else:
+            template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\&TYPE&.pov" +W640 +H853 +Q6 /EXIT'
         template = template.replace("&TTTPATH&", os.getcwd())
 
         # Apply the path depending on what the user has selected from within the Configuratrion window.
@@ -779,8 +798,7 @@ class TTT3(QMainWindow):
     def povrayMonitor(self):
         '''Monitors for povray running in the background and signals when it has closed.'''
 
-        time.sleep(1) # Allow one second for POV-Ray to open.
-
+        time.sleep(0.1) # Allow some time for POV-Ray to open.
         povRunning = True
 
         while povRunning:
@@ -798,7 +816,6 @@ class TTT3(QMainWindow):
                         break;
                 except:
                     pass
-            time.sleep(1)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
