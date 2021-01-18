@@ -195,6 +195,7 @@ class TTT3(QMainWindow):
 
             # ----- GUI variables. -----
             self.combo_topConnected = False
+            self.sb_multi_centerTopConnected = False
 
 
             # ----- Application logic. -----
@@ -717,7 +718,8 @@ class TTT3(QMainWindow):
 
         # Dynamically write the 'data\batch\povray.bat' file.
             # Set the correct paths based on where TTT3 is located and the TTT3.ini settings file.
-        template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\&TYPE&.pov" +W640 +H853 +Q9 +AM2 +A0.1 +D +F +GA +J1.0 /EXIT'
+##        template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\&TYPE&.pov" +W640 +H853 +Q9 +AM2 +A0.1 +D +F +GA +J1.0 /EXIT'
+        template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\&TYPE&.pov" /EXIT' # TODO Low Quality Renders Enabled.
         template = template.replace("&TTTPATH&", os.getcwd())
 
         # Apply the path depending on what the user has selected from within the Configuratrion window.
@@ -1167,8 +1169,9 @@ class TTT3(QMainWindow):
 
 
             # ----- Medals. -----
-            elif "&MABGS&" in line:
-                povData.append(line.replace("&MABGS&", "0")) # TODO Medal Bars for GS
+            elif "&MABGS&" in line: # BOOKMARK
+                num = self.awards.get("Gold Star of the Empire (GS)")["upgrades"][1]
+                povData.append(line.replace("&MABGS&", str(int(num) - 1)))
 
             elif "&MABSS&" in line:
                 povData.append(line.replace("&MABSS&", "0")) # TODO Medal Bars for SS
@@ -1571,7 +1574,7 @@ class TTT3(QMainWindow):
                     if "type" not in option and "name" not in option.lower():
                         self.awards[name]["upgrades"].append([self.ribbonConfig.get(ribbon, option), "WIDGET", 0])
 
-                    # Create the required inclide declarations for 'ribbons_g.inc'
+                    # Create the required include declarations for 'ribbons_g.inc'
                     if option != "name" and option != "type":
                         # Add the ribbon to ribbons_g.inc
                         if "filename" in option:
@@ -1580,7 +1583,7 @@ class TTT3(QMainWindow):
 
         with open("data\\ribbons_g.inc", "w") as ribbonFile:
             ribbonFile.write(ribbons_g)
-        # TODO Finish loadRibbons()
+        # TODO Finish loadRibbons() to auto create medal_g.inc like in ribbons??
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1624,6 +1627,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         try:
             # Reset the 'Medals, Ribbons and FCHG tab..
             self.hideMedalOptions()
+            self.disconnectAllMedalWidgets()
 
             name = 0
             quantity = 1
@@ -1646,6 +1650,17 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                     self.gui.cb_singleMedal.setChecked(True)
                 self.gui.cb_singleMedal.show()
                 self.neckRibbonDeconfliction()
+
+            # Multi type awards.
+            if award.get("type") == "multi":
+                self.gui.lbl_multi_centerTop.setText(award.get("upgrades")[name])
+                self.gui.lbl_multi_centerTop.show()
+                self.gui.sb_multi_centerTop.setValue(award.get("upgrades")[quantity])
+                self.gui.sb_multi_centerTop.show()
+                if not self.sb_multi_centerTopConnected:
+                    self.gui.sb_multi_centerTop.valueChanged.connect(self.sb_multi_centerTopLogic)
+                    self.sb_multi_centerTopConnected = True
+                # BOOKMARK
 
             # TODO medalSelectionLogic()
         except Exception as e:
@@ -1702,10 +1717,8 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                 self.combo_topConnected = True
 
         else:
-            # Diconnection.
-            if self.combo_topConnected:
-                self.gui.combo_top.disconnect()
-                self.combo_topConnected = False
+            # Disconnection.
+            self.disconnectAllMedalWidgets()
 
             # Text Label.
             self.gui.lbl_top_free_text.setText("==NUL====NUL====NUL====NUL==")
@@ -1733,18 +1746,30 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
     def buildMedalIncludes(self):
         '''Method that gathers all of the include files required for the user's medal selections..'''
 
+        quantity = 1
         medalIncludes = []
 
         for award in self.awards:
-            if self.awards.get(award)["type"] == "single":
-                if self.awards.get(award)["upgrades"][1] == 1:
-                    medalIncludes.append(self.awards.get(award)["includeFile"])
+            # Single type awards.
+            if self.awards.get(award)["type"] == "single" or self.awards.get(award)["type"] == "multi":
+                if self.awards.get(award)["upgrades"][quantity] >= 1:
+
+                    # Add the medal_g.inc file.
+                    if not "medal_g.inc" in medalIncludes:
+                        medalIncludes.append("medal_g.inc")
+
+                    # Add the selected medal's .inc file.
+                    incFile = self.awards.get(award)["includeFile"]
+                    if incFile == "goe_g.inc" or incFile == "ic_g.inc":
+                        medalIncludes.insert(0, incFile) # Must be first for all other medals to render properly.
+                    else:
+                        medalIncludes.append(self.awards.get(award)["includeFile"])
 
         # Special handling of IC and GOE combination.
         if "ic_g.inc" in medalIncludes and "goe_g.inc" in medalIncludes and not self.deconflictNeckRibbons:
             medalIncludes.remove("ic_g.inc")
             medalIncludes.remove("goe_g.inc")
-            medalIncludes.append("ic_goe_g.inc")
+            medalIncludes.insert(0, "ic_goe_g.inc") # Must be first for all other medals to render properly.
 
         return medalIncludes
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -1756,22 +1781,46 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         medalObjects= []
 
         for award in self.awards:
-            if self.awards.get(award)["type"] == "single":
-                if self.awards.get(award)["upgrades"][1] == 1:
-                    try: # Filtering for medals that do not contain objRefs.
-                        medalObjects.append(self.awards.get(award)["objectRef1"])
-                    except KeyError:
-                        pass
-                    try: # Filtering for medals that do not contain objRefs.
-                        medalObjects.append(self.awards.get(award)["objectRef2"])
-                    except KeyError:
-                        pass
+            if self.awards.get(award)["type"] == "single" or self.awards.get(award)["type"] == "multi":
+                if self.awards.get(award)["upgrades"][1] >= 1:
+                    for obj in range(1, 101, 1):
+                        try: # Filtering for medals that do not contain objRefs.
+                            medalObjects.append(self.awards.get(award)["objectRef%s"%obj])
+                        except KeyError:
+                            break
 
         # Special handling of IC and GOE combination.
         if self.deconflictNeckRibbons:
             medalObjects.remove("P_goe")
 
         return medalObjects
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def disconnectAllMedalWidgets(self):
+        '''Method for disconnecting all medal widgets.'''
+
+        # Combo Top.
+        if self.combo_topConnected:
+                self.gui.combo_top.disconnect()
+                self.combo_topConnected = False
+
+        # Multi Center Top.
+        if self.sb_multi_centerTopConnected:
+            self.gui.sb_multi_centerTop.disconnect()
+            self.sb_multi_centerTopConnected = False
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def sb_multi_centerTopLogic(self, value):
+        '''Method for handling the Top Center spinbox logic.'''
+
+        #BOOKMARK
+        try:
+            quantity = 1
+            self.awards.get(str(self.gui.lw_medals.currentItem().text()))["upgrades"][quantity] = value
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
