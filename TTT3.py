@@ -1785,10 +1785,11 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
 def handleException(exception):
     '''Method that will log all python exceptions to TTT3 Crash.log.'''
 
-    # Capture the error and dump to "TTT3 Crash.log"
+    # Capture the error and log to "TTT3 Crash.log"
     logging.error("\n\n-----Crash Information:-----")
     logging.error(exception, exc_info=True)
-    # System Info.
+
+    # Log System Info.
     logging.error("\n\n-----System Information:-----")
     try:
       os.environ["PROGRAMFILES(X86)"]
@@ -1798,11 +1799,30 @@ def handleException(exception):
     logging.error("Windows Version: " + platform.platform() + bits + "-bit.")
     logging.error("Processor: " + platform.processor())
     logging.error("Python Version: " + sys.version)
+
+    # Log TTT3 settings and selections.
     logging.error("\n\n-----TTT3 Settings:-----")
+
+        # TTT3.ini logging.
     with open(os.getcwd() + "\\settings\\TTT3.ini", "r") as f:
         settings = f.read()
+
+        # Medal selections.
+    selectedAwards = []
+    for award in ttt3.awards:
+        if ttt3.awards.get(award)["type"] == "single" or  ttt3.awards.get(award)["type"] == "ranged" or  ttt3.awards.get(award)["type"] == "multi":
+            if ttt3.awards.get(award)["upgrades"][1] != 0:
+                selectedAwards.append(award)
+        else:
+            for upgrades in ttt3.awards.get(award)["upgrades"]:
+                if upgrades[-1] != 0:
+                    selectedAwards.append(award + " " + str(upgrades))
+
+        # Uniform selections.
     logging.error("\n" + settings + "\nPosition : " + ttt3.position + "\nRank : " + ttt3.rank + "\nShip : " + ttt3.ship + \
-                  "\nWing : " + ttt3.wing + "\nSquadron : " + ttt3.sqn + "\nAwards :" + str(ttt3.awards))
+                  "\nWing : " + ttt3.wing + "\nSquadron : " + ttt3.sqn + "\nAwards :" + str(selectedAwards))
+
+    # Show error message.
     msg = "Error: Uh-Oh! TTT3 has encountered an error. Please submit 'TTT3\TTT3 Crash.log' to the Internet Office."
     return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
