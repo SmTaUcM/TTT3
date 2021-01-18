@@ -116,7 +116,7 @@ union
   object { P_cylinder_2_3 }
 }
 
-#declare P_BGCOM =
+#declare P_TCCS =
 union
 {
   object { P_cylinder_2_2 }

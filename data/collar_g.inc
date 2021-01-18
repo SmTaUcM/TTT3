@@ -145,12 +145,12 @@ texture
   } 
 }  
 
-#declare T_collar_bgcom = 
+#declare T_collar_tccs = 
 texture
 {
   material_map
   {
-    gif ".\collars\BGCOM.gif"
+    gif ".\collars\TCCS.gif"
     once
     interpolate 2
     texture 
@@ -166,7 +166,7 @@ texture
       {
         bump_map
         {
-          gif ".\collars\BGCOM.gif"
+          gif ".\collars\TCCS.gif"
           once
           bump_size 2
         }
@@ -381,11 +381,11 @@ union
   object { P_com_border no_shadow }
 }
   
-#declare P_collar_bgcom =
+#declare P_collar_tccs =
 object
 {
   P_collar
-  texture { T_collar_bgcom }
+  texture { T_collar_tccs }
   no_shadow
 }
 
@@ -433,13 +433,13 @@ object
   #if (!strcmp(position,"SGCOM")) #declare P_acollar = P_collar_sgcom; #end
   #if (!strcmp(position,"CA")) #declare P_acollar = P_collar_ca; #end
   #if (!strcmp(position,"IA")) #declare P_acollar = P_collar_ia; #end
-  #if (!strcmp(position,"BGCOM")) #declare P_acollar = P_collar_bgcom; #end
+  #if (!strcmp(position,"TCCS")) #declare P_acollar = P_collar_tccs; #end
   #if (!strcmp(position,"COM")) 
     #if (!strcmp(ship,"SSSD Sovereign")) #declare P_acollar = P_collar_sovcom; #end 
-    #if (!strcmp(ship,"ISD Hammer")) #declare P_acollar = P_collar_hammcom; #end 
-    #if (!strcmp(ship,"ISD Warrior")) #declare P_acollar = P_collar_warrcom; #end 
-    #if (!strcmp(ship,"ISD Challenge")) #declare P_acollar = P_collar_chalcom; #end   
-    #if (!strcmp(ship,"ISD Subjugator")) #declare P_acollar = P_collar_subcom; #end   
+    #if (!strcmp(ship,"ISDII Hammer")) #declare P_acollar = P_collar_hammcom; #end 
+    #if (!strcmp(ship,"ISDII Warrior")) #declare P_acollar = P_collar_warrcom; #end 
+    #if (!strcmp(ship,"ISDII Challenge")) #declare P_acollar = P_collar_chalcom; #end   
+    #if (!strcmp(ship,"ISDII Subjugator")) #declare P_acollar = P_collar_subcom; #end   
     #if (!strcmp(ship,"MC80B Redemption")) #declare P_acollar = P_collar_redcom; #end   
   #end
 #end
