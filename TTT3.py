@@ -1752,6 +1752,9 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
             # Comobox.
             self.gui.combo_top.clear()
             self.gui.combo_top.hide()
+
+            # Set deconfliction back to False.
+            self.deconflictNeckRibbons = False
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
