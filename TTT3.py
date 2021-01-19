@@ -25,8 +25,9 @@ import psutil # python -m pip install psutil
 import time
 import datetime
 import winreg
-from PyQt5 import uic # python -m pip install pyqt5
+from PyQt5 import QtCore, uic # python -m pip install pyqt5
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog # python -m pip install pyqt5-tools
+import PyQt5.QtWidgets as qtWidgets
 from PIL import Image # python -m pip install pillow
 import cv2 # python -m pip install opencv-python
 import numpy
@@ -196,6 +197,9 @@ class TTT3(QMainWindow):
 
 
             # ----- GUI variables. -----
+            layout = qtWidgets.QFormLayout()
+            self.gui.gb_medals.setLayout(layout)
+            self.activeWidgets = []
             self.cb_singleMedalConnected = False
             self.combo_topConnected = False
             self.sb_multi_centerTopConnected = False
@@ -320,7 +324,7 @@ class TTT3(QMainWindow):
 
         # Hide 'Medals, Ribbons and FCHG' items.
         self.gui.gb_medals.hide()
-        self.hideMedalOptions()
+        self.hideMedalOptions() # TODO is this now needed?
 
         # TODO Disabled Helmet UTFN.
         self.gui.btn_helmet.setEnabled(False)
@@ -328,6 +332,45 @@ class TTT3(QMainWindow):
         self.gui.btn_newProf.setEnabled(False)
         self.gui.btn_openProf.setEnabled(False)
         self.gui.btn_saveProf.setEnabled(False)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def buildMedalsGroupBox(self):
+        '''Method that dynamically builds the medal widgets.'''
+
+        self.activeWidgets = []
+        award = self.awards.get(str(self.gui.lw_medals.currentItem().text()))
+
+        if award.get("type") == "single":
+            # Establish the medals GroupBox layout.
+            layout = self.gui.gb_medals.layout()
+
+            self.cb_singleMedal = qtWidgets.QCheckBox("==NULL==")
+            self.activeWidgets.append(self.cb_singleMedal)
+            layout.addWidget(self.cb_singleMedal)
+
+            # Spacer
+            self.spacer = qtWidgets.QLabel(" ")
+            self.activeWidgets.append(self.spacer)
+            layout.addWidget(self.spacer)
+
+            self.lbl_top_free_text = qtWidgets.QLabel("==NUL==")
+            self.activeWidgets.append(self.lbl_top_free_text)
+            layout.addWidget(self.lbl_top_free_text)
+
+            self.combo_top = qtWidgets.QComboBox()
+            self.combo_top.setStyleSheet("background-color: rgb(211, 211, 211);")
+            self.activeWidgets.append(self.combo_top)
+            layout.addWidget(self.combo_top)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def deleteMedalWidgets(self):
+        '''Method that removed all current widgets from the 'Medals, Ribbons and FCHG' tab.'''
+
+        layout = self.gui.gb_medals.layout()
+        for widget in self.activeWidgets:
+            layout.removeWidget(widget)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1624,7 +1667,6 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
     def hideMedalOptions(self):
         '''Method that hides all Medal Spin Boxes, checkboxes and Radio Buttons.'''
 
-        self.gui.cb_singleMedal.hide()
         self.gui.lbl_multi_centerTop
         self.gui.lbl_ranged.hide()
         self.gui.lbl_multi_centerTop.hide()
@@ -1633,8 +1675,6 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         self.gui.sb_multi_centerMiddle.hide()
         self.gui.lbl_multi_centerBottom.hide()
         self.gui.sb_multi_centerBottom.hide()
-        self.gui.combo_top.hide()
-        self.gui.lbl_top_free_text.hide()
         self.gui.rb_upgradeable_0.hide()
         self.gui.rb_upgradeable_1.hide()
         self.gui.rb_upgradeable_2.hide()
@@ -1650,11 +1690,14 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         try:
             # Reset the 'Medals, Ribbons and FCHG tab..
             if self.cb_singleMedalConnected:
-                self.gui.cb_singleMedal.stateChanged.disconnect()
+                self.cb_singleMedal.stateChanged.disconnect()
                 self.cb_singleMedalConnected = False
 
-            self.hideMedalOptions()
+            self.hideMedalOptions() # TODO is this now needed?
+            # Clear and rebuild the medals BroupBox.
+            self.deleteMedalWidgets()
             self.disconnectAllMedalWidgets()
+            self.buildMedalsGroupBox()
 
             name = 0
             quantity = 1
@@ -1668,22 +1711,24 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
             award = self.awards.get(str(item.text())) # Str type conversion as you cannot reference a dict with a QString.
             print(award)
 
+
                 # === Medals ===
                 # Single type medal awards. (MOH, IC, OoR, GOE)
             if award.get("type") == "single":
-                self.gui.cb_singleMedal.setText(award.get("upgrades")[name])
+                self.cb_singleMedal.setText(award.get("upgrades")[name])
 
                 if award.get("upgrades")[quantity] == 0:
-                    self.gui.cb_singleMedal.setChecked(False)
+                    self.cb_singleMedal.setChecked(False)
                 else:
-                    self.gui.cb_singleMedal.setChecked(True)
+                    self.cb_singleMedal.setChecked(True)
 
                 if not self.cb_singleMedalConnected:
-                    self.gui.cb_singleMedal.stateChanged.connect(self.cb_singleMedalSelectionLogic)
+                    self.cb_singleMedal.stateChanged.connect(self.cb_singleMedalSelectionLogic)
                     self.cb_singleMedalConnected = True
 
-                self.gui.cb_singleMedal.show()
+                self.cb_singleMedal.show()
                 self.neckRibbonDeconfliction()
+
 
                 # Multi type medal awards. (GS, SS, BS, PC, ISM)
             elif award.get("type") == "multi":
@@ -1699,21 +1744,26 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                     # === Ribbons ===
                     # Upgradeable type ribbon awards. (MoI)
             elif award.get("type") == "upgradeable":
-                self.gui.cb_singleMedal.setText(item.text())
+                self.cb_singleMedal.setText(item.text())
 
                 for upgrade in award.get("upgrades"):
                     if upgrade[quantity] == 1:
-                        self.gui.cb_singleMedal.setChecked(True)
+                        self.cb_singleMedal.setChecked(True)
                         break
                     else:
-                        self.gui.cb_singleMedal.setChecked(False)
+                        self.cb_singleMedal.setChecked(False)
 
                 if not self.cb_singleMedalConnected:
-                    self.gui.cb_singleMedal.stateChanged.connect(self.cb_singleMedalSelectionLogic)
+                    self.cb_singleMedal.stateChanged.connect(self.cb_singleMedalSelectionLogic)
                     self.cb_singleMedalConnected = True
 
-                self.gui.cb_singleMedal.show()
+                self.cb_singleMedal.show()
                 self.showUpgradeableRadioButtons()
+
+
+                # Subribbons type ribbon awards. (MoI)
+            elif award.get("type") == "subribbons":
+                pass
                 # BOOKMARK
             # TODO medalSelectionLogic()
         except Exception as e:
@@ -1733,10 +1783,10 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                 # Single type medal awards. (MOH, IC, OoR, GOE)
             if award.get("type") == "single":
 
-                if self.gui.cb_singleMedal.isChecked():
-                    self.awards.get(str(self.gui.cb_singleMedal.text()))["upgrades"][quantity] = 1
+                if self.cb_singleMedal.isChecked():
+                    self.awards.get(str( self.cb_singleMedal.text()))["upgrades"][quantity] = 1
                 else:
-                    self.awards.get(str(self.gui.cb_singleMedal.text()))["upgrades"][quantity] = 0
+                    self.awards.get(str( self.cb_singleMedal.text()))["upgrades"][quantity] = 0
 
                 # IC & GOE Deconfliction.
                 self.neckRibbonDeconfliction()
@@ -1749,7 +1799,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                 widgets = [self.gui.rb_upgradeable_0, self.gui.rb_upgradeable_1, self.gui.rb_upgradeable_2,
                        self.gui.rb_upgradeable_3, self.gui.rb_upgradeable_4, self.gui.rb_upgradeable_5]
 
-                if self.gui.cb_singleMedal.isChecked():
+                if self.cb_singleMedal.isChecked():
 
                     # Set the initial selection.
                     self.gui.rb_upgradeable_0.setChecked(True)
@@ -1789,7 +1839,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         '''Method that shows the Upgradeable ribbon type radio buttonsd'''
 
         # Show the required Radio Buttons.
-        if self.gui.cb_singleMedal.isChecked():
+        if self.cb_singleMedal.isChecked():
 
             award = self.awards.get(str(self.gui.lw_medals.currentItem().text())) # Str type conversion as you cannot reference a dict with a QString.
             name = 0
@@ -1851,24 +1901,24 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
              self.gui.gb_medals.title() == "Imperial Cross"):
 
             # Text Label.
-            self.gui.lbl_top_free_text.setText("Neck ribbon to display:")
-            self.gui.lbl_top_free_text.show()
+            self.lbl_top_free_text.setText("Neck ribbon to display:")
+            self.lbl_top_free_text.show()
             # Comobox.
             if not self.combo_topConnected:
-                self.gui.combo_top.clear()
-                self.gui.combo_top.addItem("Both IC and GOE Ribbons")
-                self.gui.combo_top.addItem("Imperial Cross (IC) Only")
-            self.gui.combo_top.show()
+                self.combo_top.clear()
+                self.combo_top.addItem("Both IC and GOE Ribbons")
+                self.combo_top.addItem("Imperial Cross (IC) Only")
+            self.combo_top.show()
 
             # Apply the current setting.
             if self.deconflictNeckRibbons:
-                self.gui.combo_top.setCurrentIndex(1)
+                self.combo_top.setCurrentIndex(1)
             else:
-                self.gui.combo_top.setCurrentIndex(0)
+                self.combo_top.setCurrentIndex(0)
 
             # Connection.
             if not self.combo_topConnected:
-                self.gui.combo_top.currentTextChanged.connect(self.combo_neckRibbonDeconflictLogic)
+                self.combo_top.currentTextChanged.connect(self.combo_neckRibbonDeconflictLogic)
                 self.combo_topConnected = True
 
         else:
@@ -1876,12 +1926,12 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
             self.disconnectAllMedalWidgets()
 
             # Text Label.
-            self.gui.lbl_top_free_text.setText("==NUL====NUL====NUL====NUL==")
-            self.gui.lbl_top_free_text.hide()
+            self.lbl_top_free_text.setText("==NUL====NUL====NUL====NUL==")
+            self.lbl_top_free_text.hide()
 
             # Comobox.
-            self.gui.combo_top.clear()
-            self.gui.combo_top.hide()
+            self.combo_top.clear()
+            self.combo_top.hide()
 
             # Set deconfliction back to False.
             self.deconflictNeckRibbons = False
@@ -1892,7 +1942,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         '''Method that stores the user's preference to deconflicting the IC and GOE neck ribbons.'''
 
         try:
-            if "Both" in str(self.gui.combo_top.currentText()):
+            if "Both" in str(self.combo_top.currentText()):
                 self.deconflictNeckRibbons = False
             else:
                 self.deconflictNeckRibbons = True
@@ -2014,7 +2064,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
 
         # Combo Top.
         if self.combo_topConnected:
-                self.gui.combo_top.disconnect()
+                self.combo_top.disconnect()
                 self.combo_topConnected = False
 
         # Multi Center Top.
@@ -2074,9 +2124,7 @@ def handleException(exception):
                 selectedAwards.append(award)
 
         elif ttt3.awards.get(award)["type"] == "upgradeable":
-            print("DEBUG: UPGRADES: " + str(ttt3.awards.get(award)["upgrades"]))
             for upgrade in ttt3.awards.get(award)["upgrades"]:
-                print("DEBUG " + award + " : " + str(upgrade[0]))# + str(upgrade[1]))
                 if upgrade[1] != 0:
                     selectedAwards.append(award + " : " + str(upgrade[0]))
 

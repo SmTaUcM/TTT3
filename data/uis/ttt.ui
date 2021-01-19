@@ -32,7 +32,7 @@
    <string>TTT 3</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../_Resource/resource.qrc">
+   <iconset resource="resource.qrc">
     <normaloff>:/icons/ttt3.png</normaloff>:/icons/ttt3.png</iconset>
   </property>
   <property name="styleSheet">
@@ -134,7 +134,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
 }</string>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="tabPosRank">
      <attribute name="title">
@@ -1275,28 +1275,6 @@ QListWidget:!enabled
       <property name="title">
        <string>==NULL==</string>
       </property>
-      <widget class="QCheckBox" name="cb_singleMedal">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>25</x>
-         <y>31</y>
-         <width>221</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>9</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>==NULL==</string>
-       </property>
-      </widget>
       <widget class="QSpinBox" name="sb_multi_centerTop">
        <property name="geometry">
         <rect>
@@ -1424,32 +1402,6 @@ QListWidget:!enabled
         <string notr="true">background-color: rgb(211, 211, 211);</string>
        </property>
       </widget>
-      <widget class="QComboBox" name="combo_top">
-       <property name="geometry">
-        <rect>
-         <x>41</x>
-         <y>81</y>
-         <width>170</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(211, 211, 211);</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="lbl_top_free_text">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>60</y>
-         <width>215</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>==NUL====NUL====NUL====NUL==</string>
-       </property>
-      </widget>
       <widget class="QRadioButton" name="rb_upgradeable_0">
        <property name="geometry">
         <rect>
@@ -1528,10 +1480,7 @@ QListWidget:!enabled
         <string>==NULL==</string>
        </property>
       </widget>
-      <zorder>lbl_top_free_text</zorder>
-      <zorder>combo_top</zorder>
       <zorder>lbl_multi_centerTop</zorder>
-      <zorder>cb_singleMedal</zorder>
       <zorder>sb_multi_centerTop</zorder>
       <zorder>lbl_ranged</zorder>
       <zorder>sb_multi_centerMiddle</zorder>
@@ -1945,7 +1894,7 @@ QListWidget:!enabled
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../../_Resource/resource.qrc">:/icons/python.png</pixmap>
+       <pixmap resource="resource.qrc">:/icons/python.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -1973,7 +1922,7 @@ QListWidget:!enabled
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../../_Resource/resource.qrc">:/icons/povray.png</pixmap>
+       <pixmap resource="resource.qrc">:/icons/povray.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -2067,7 +2016,7 @@ QListWidget:!enabled
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../../_Resource/resource.qrc">:/icons/Qt_logo.png</pixmap>
+       <pixmap resource="resource.qrc">:/icons/Qt_logo.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -2423,7 +2372,7 @@ QListWidget:!enabled
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../../_Resource/resource.qrc">:/icons/io.png</pixmap>
+       <pixmap resource="resource.qrc">:/icons/io.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -2888,7 +2837,8 @@ QPushButton:!enabled
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources>
-  <include location="../../_Resource/resource.qrc"/>
+  <include location="resource.qrc"/>
+  <include location="resource.qrc"/>
   <include location="resource.qrc"/>
  </resources>
  <connections/>
