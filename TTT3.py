@@ -1341,16 +1341,8 @@ class TTT3(QMainWindow):
                     povData.append('object { %s }\n'%objectRef)
 
             elif "&RIBBONS&" in line:
-                ribbons = []
-##                ribbons = ["object { P_r12 texture { T_r_is_gw } }", "object { P_r13 texture { T_r_is_sw } }",
-##                           "object { P_r14 texture { T_r_is_bw } }", "object { P_r15 texture { T_r_is_gr } }",
-##                           "object { P_r16 texture { T_r_is_sr } }", "object { P_r17 texture { T_r_is_br } }",
-##                           "object { P_r18 texture { T_r_loc } }", "object { P_r19 texture { T_r_los_cs } }",
-##                           "object { P_r24 texture { T_r_moc_boc } }", "object { P_r25 texture { T_r_cob } }",
-##                           "object { P_r26 texture { T_r_ov_19e } }"] #----------------------------------------- DEBUG TEST CODE
-
-                for ribbon in ribbons:
-                    povData.append(ribbon + "\n") # TODO RIBBONS
+                for objectRef in self.buildRibbonObjects():
+                    povData.append('object { %s }\n'%objectRef)
 
 
             # ----- Non-Editable Data. -----
@@ -1942,7 +1934,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
 
 
     def buildMedalObjects(self):
-        '''Method that gathers all of the object references required for the user's medal selections..'''
+        '''Method that gathers all of the object references required for the user's medal selections.'''
 
         medalObjects= []
 
@@ -1950,7 +1942,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
             # Single and Multi type awards.
             if self.awards.get(award)["type"] == "single" or self.awards.get(award)["type"] == "multi":
                 if self.awards.get(award)["upgrades"][1] >= 1:
-                    # Get all award onjRefs.
+                    # Get all award objRefs.
                     for obj in range(1, 101, 1):
                         try: # Filtering for medals that do not contain objRefs.
                             medalObjects.append(self.awards.get(award)["objectRef%s"%obj])
@@ -1963,6 +1955,27 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
 
         medalObjects = self.determineMultiMedalOrders(medalObjects)
         return medalObjects
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def buildRibbonObjects(self):
+        '''Method that gathers all of the object references required for the user's ribbon selections.'''
+
+        ribbonObjects = []  #  I want P_r25 texture { T_r_moi }
+        name = 0
+        quantity = 1
+
+        for award in self.awards:
+            # Upgradeable type awards.
+            if self.awards.get(award)["type"] == "upgradeable":
+                for upgrade in self.awards.get(award)["upgrades"]:
+                    if upgrade[quantity] != 0:
+                        awardName = "T_r_" + upgrade[name].split(" ")[-1].replace("-", ("_")).replace("(", "").replace(")", "").lower()
+                        ribbonObjects.append("P_r25 texture { %s }"%awardName)
+
+        # TODO Ribbon number ordering.
+
+        return ribbonObjects #Bookmark
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
