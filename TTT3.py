@@ -151,6 +151,8 @@ class TTT3(QMainWindow):
             self.gui.lbl_qt.mouseReleaseEvent = self.qtLink
             self.gui.lbl_pic_povray.mouseReleaseEvent = self.povrayLink
             self.gui.lbl_povray.mouseReleaseEvent = self.povrayLink
+            self.gui.lbl_pic_io.mouseReleaseEvent = self.ioLink
+            self.gui.lbl_io.mouseReleaseEvent = self.ioLink
             self.gui.label_11.mouseReleaseEvent = self.eeLink
             self.gui.label_10.mouseReleaseEvent = self.devModeLink
 
@@ -219,7 +221,7 @@ class TTT3(QMainWindow):
     def ioLink(self, event):
         '''Method event for when 'Internet Office' is clicked on the 'Info' tab.'''
 
-        os.system("start https://tc.emperorshammer.org/ehstaff.php")
+        os.system("start https://ehnet.org/")
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
