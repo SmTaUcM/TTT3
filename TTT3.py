@@ -196,9 +196,10 @@ class TTT3(QMainWindow):
 
 
             # ----- GUI variables. -----
+            self.subRibbonAwards = []
             self.cb_singleMedalConnected = False
             self.combo_topConnected = False
-            self.sb_multi_centerTopConnected = False
+            self.sb_multi_center1Connected = False
             self.rb_upgradeablesConnected = False
 
 
@@ -1624,23 +1625,49 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
     def hideMedalOptions(self):
         '''Method that hides all Medal Spin Boxes, checkboxes and Radio Buttons.'''
 
+        # Single type awards.
         self.gui.cb_singleMedal.hide()
-        self.gui.lbl_multi_centerTop
-        self.gui.lbl_ranged.hide()
-        self.gui.lbl_multi_centerTop.hide()
-        self.gui.sb_multi_centerTop.hide()
-        self.gui.lbl_multi_centerMiddle.hide()
-        self.gui.sb_multi_centerMiddle.hide()
-        self.gui.lbl_multi_centerBottom.hide()
-        self.gui.sb_multi_centerBottom.hide()
         self.gui.combo_top.hide()
         self.gui.lbl_top_free_text.hide()
+
+        # Upgradeable type award.
         self.gui.rb_upgradeable_0.hide()
         self.gui.rb_upgradeable_1.hide()
         self.gui.rb_upgradeable_2.hide()
         self.gui.rb_upgradeable_3.hide()
         self.gui.rb_upgradeable_4.hide()
         self.gui.rb_upgradeable_5.hide()
+
+        # Multi type award.
+        self.gui.lbl_multi_left1.hide()
+        self.gui.lbl_multi_left2.hide()
+        self.gui.lbl_multi_left3.hide()
+        self.gui.lbl_multi_left4.hide()
+        self.gui.sb_multi_left1.hide()
+        self.gui.sb_multi_left2.hide()
+        self.gui.sb_multi_left3.hide()
+        self.gui.sb_multi_left4.hide()
+
+        self.gui.lbl_multi_center1.hide()
+        self.gui.lbl_multi_center2.hide()
+        self.gui.lbl_multi_center3.hide()
+        self.gui.lbl_multi_center4.hide()
+        self.gui.sb_multi_center1.hide()
+        self.gui.sb_multi_center2.hide()
+        self.gui.sb_multi_center3.hide()
+        self.gui.sb_multi_center4.hide()
+
+        self.gui.lbl_multi_right1.hide()
+        self.gui.lbl_multi_right2.hide()
+        self.gui.lbl_multi_right3.hide()
+        self.gui.lbl_multi_right4.hide()
+        self.gui.sb_multi_right1.hide()
+        self.gui.sb_multi_right2.hide()
+        self.gui.sb_multi_right3.hide()
+        self.gui.sb_multi_right4.hide()
+
+        # Ranged type award.
+        self.gui.lbl_ranged.hide() # Not Used
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1687,17 +1714,17 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
 
                 # Multi type medal awards. (GS, SS, BS, PC, ISM)
             elif award.get("type") == "multi":
-                self.gui.lbl_multi_centerTop.setText(award.get("upgrades")[name])
-                self.gui.lbl_multi_centerTop.show()
-                self.gui.sb_multi_centerTop.setValue(award.get("upgrades")[quantity])
-                self.gui.sb_multi_centerTop.show()
-                if not self.sb_multi_centerTopConnected:
-                    self.gui.sb_multi_centerTop.valueChanged.connect(self.sb_multi_centerTopLogic)
-                    self.sb_multi_centerTopConnected = True
+                self.gui.lbl_multi_center1.setText(award.get("upgrades")[name])
+                self.gui.lbl_multi_center1.show()
+                self.gui.sb_multi_center1.setValue(award.get("upgrades")[quantity])
+                self.gui.sb_multi_center1.show()
+                if not self.sb_multi_center1Connected:
+                    self.gui.sb_multi_center1.valueChanged.connect(self.sb_multi_center1Logic)
+                    self.sb_multi_center1Connected = True
 
 
                     # === Ribbons ===
-                    # Upgradeable type ribbon awards. (MoI)
+                    # Upgradeable type ribbon awards. (MoI, LoC, LoS, DFC)
             elif award.get("type") == "upgradeable":
                 self.gui.cb_singleMedal.setText(item.text())
 
@@ -1714,6 +1741,42 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
 
                 self.gui.cb_singleMedal.show()
                 self.showUpgradeableRadioButtons()
+
+                # subRibbons type ribbon awards. (MoS, MoT, IS, MoC, CoX)
+            elif award.get("type") == "subRibbons":
+                # Determine the number of subRibbons the award has for SpinBox assignment.
+                subRibbonNum = len(award.get("upgrades"))
+                upgrades = award.get("upgrades")
+
+                if subRibbonNum <= 4:
+                    spinBoxes = [self.gui.sb_multi_center1, self.gui.sb_multi_center2, self.gui.sb_multi_center3, self.gui.sb_multi_center4]
+                    spinBoxes = spinBoxes[ : subRibbonNum]
+                    spinLabels = [self.gui.lbl_multi_center1, self.gui.lbl_multi_center2, self.gui.lbl_multi_center3, self.gui.lbl_multi_center4]
+                    spinLabels = spinLabels[ : subRibbonNum]
+                    spinFunctions = [self.sb_multi_center1Logic, self.sb_multi_center2Logic, self.sb_multi_center3Logic, self.sb_multi_center4Logic]
+                    spinFunctions = spinFunctions[ : subRibbonNum]
+                else:
+                    spinBoxes = [self.gui.sb_multi_left1, self.gui.sb_multi_left2, self.gui.sb_multi_left3, self.gui.sb_multi_left4,
+                                 self.gui.sb_multi_right1, self.gui.sb_multi_right2, self.gui.sb_multi_right3, self.gui.sb_multi_right4]
+                    spinBoxes = spinBoxes[ : subRibbonNum]
+                    spinLabels = [self.gui.lbl_multi_left1, self.gui.lbl_multi_left2, self.gui.lbl_multi_left3, self.gui.lbl_multi_left4,
+                                  self.gui.lbl_multi_right1, self.gui.lbl_multi_right2, self.gui.lbl_multi_right3, self.gui.lbl_multi_right4]
+                    spinLabels = spinLabels[ : subRibbonNum]
+                    spinFunctions = [self.sb_multi_center5Logic, self.sb_multi_center6Logic, self.sb_multi_center7Logic, self.sb_multi_center8Logic,
+                                     self.sb_multi_center9Logic, self.sb_multi_center10Logic, self.sb_multi_center11Logic, self.sb_multi_center12Logic]
+                    spinFunctions = spinFunctions[ : subRibbonNum]
+
+                # Show the required spinboxes.
+                self.subRibbonAwards = []
+                for subRibbon in range(0, subRibbonNum):
+                    spinBoxes[subRibbon].setValue(upgrades[subRibbon][quantity])
+                    spinBoxes[subRibbon].show()
+                    spinBoxes[subRibbon].valueChanged.connect(spinFunctions[subRibbon])
+                    spinLabels[subRibbon].setText(upgrades[subRibbon][name])
+                    spinLabels[subRibbon].show()
+                    self.subRibbonAwards.append([self.gui.lw_medals.currentItem().text(), upgrades[subRibbon][name], spinBoxes[subRibbon]])
+
+
                 # BOOKMARK
             # TODO medalSelectionLogic()
         except Exception as e:
@@ -1958,27 +2021,6 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
-    def buildRibbonObjects(self):
-        '''Method that gathers all of the object references required for the user's ribbon selections.'''
-
-        ribbonObjects = []  #  I want P_r25 texture { T_r_moi }
-        name = 0
-        quantity = 1
-
-        for award in self.awards:
-            # Upgradeable type awards.
-            if self.awards.get(award)["type"] == "upgradeable":
-                for upgrade in self.awards.get(award)["upgrades"]:
-                    if upgrade[quantity] != 0:
-                        awardName = "T_r_" + upgrade[name].split(" ")[-1].replace("-", ("_")).replace("(", "").replace(")", "").lower()
-                        ribbonObjects.append("P_r25 texture { %s }"%awardName)
-
-        # TODO Ribbon number ordering.
-
-        return ribbonObjects #Bookmark
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
-
-
     def determineMultiMedalOrders(self, medalObjecRefs):
         '''Used to determine the ordering for the GS to ISM medals and then upate their objRefs.'''
 
@@ -2009,6 +2051,30 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
+    def buildRibbonObjects(self):
+        '''Method that gathers all of the object references required for the user's ribbon selections.'''
+
+        ribbonObjects = []
+        name = 0
+        quantity = 1
+
+        for award in self.awards:
+            # Upgradeable type awards.
+            if self.awards.get(award)["type"] == "upgradeable" or self.awards.get(award)["type"] == "subRibbons":
+                for upgrade in self.awards.get(award)["upgrades"]:
+                    if upgrade[quantity] != 0:
+                        for section in self.ribbonConfig.sections():
+                            for option in self.ribbonConfig.options(section):
+                                if self.ribbonConfig.get(section, option) == upgrade[name]:
+                                    awardName = "T_r_" + self.ribbonConfig.get(section, option + "filename").split(".")[0].lower().replace("-", "_")
+                        ribbonObjects.append("P_r25 texture { %s }"%awardName)
+
+        # TODO Ribbon number ordering.
+
+        return ribbonObjects #Bookmark
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
     def disconnectAllMedalWidgets(self):
         '''Method for disconnecting all medal widgets.'''
 
@@ -2018,21 +2084,122 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                 self.combo_topConnected = False
 
         # Multi Center Top.
-        if self.sb_multi_centerTopConnected:
-            self.gui.sb_multi_centerTop.disconnect()
-            self.sb_multi_centerTopConnected = False
+        if self.sb_multi_center1Connected:
+            self.gui.sb_multi_center1.disconnect()
+            self.sb_multi_center1Connected = False
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
-    def sb_multi_centerTopLogic(self, value):
-        '''Method for handling the Top Center spinbox logic.'''
+    def sb_masterLogic(self, sender, value):
+        '''Method for handling the all spinbox logic.'''
 
         try:
+            award = self.awards.get(str(self.gui.lw_medals.currentItem().text())) # Str type conversion as you cannot reference a dict with a QString.
+            name = 0
             quantity = 1
-            self.awards.get(str(self.gui.lw_medals.currentItem().text()))["upgrades"][quantity] = value
+
+            # Multi type medal awards. (GS, SS, BS, PC, ISM)
+            if award.get("type") == "multi":
+                self.awards.get(str(self.gui.lw_medals.currentItem().text()))["upgrades"][quantity] = value
+
+            # subRibbons type ribbon awards. (MoS, MoT, IS, MoC, CoX)
+            if award.get("type") == "subRibbons":
+                awardName  = self.subRibbonAwards[sender][0]
+                subRibbonName = self.subRibbonAwards[sender][1]
+                spinBox = self.subRibbonAwards[sender][2]
+
+                for upgrade in self.awards.get(awardName)["upgrades"]:
+                    if upgrade[name] == subRibbonName:
+                        self.awards.get(awardName)["upgrades"][sender][1] = spinBox.value()
+
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def sb_multi_center1Logic(self, value):
+        '''Method for handling the Center Top spinbox logic.'''
+
+        self.sb_masterLogic(0, value)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def sb_multi_center2Logic(self, value):
+        '''Method for handling the Center Top Middle spinbox logic.'''
+
+        self.sb_masterLogic(1, value)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def sb_multi_center3Logic(self, value):
+        '''Method for handling the Center Bottom Middle spinbox logic.'''
+
+        self.sb_masterLogic(2, value)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def sb_multi_center4Logic(self, value):
+        '''Method for handling the Center Bottom spinbox logic.'''
+
+        self.sb_masterLogic(3, value)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def sb_multi_center5Logic(self, value):
+        '''Method for handling the Center Bottom spinbox logic.'''
+
+        self.sb_masterLogic(0, value)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def sb_multi_center6Logic(self, value):
+        '''Method for handling the Center Bottom spinbox logic.'''
+
+        self.sb_masterLogic(1, value)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def sb_multi_center7Logic(self, value):
+        '''Method for handling the Center Bottom spinbox logic.'''
+
+        self.sb_masterLogic(2, value)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def sb_multi_center8Logic(self, value):
+        '''Method for handling the Center Bottom spinbox logic.'''
+
+        self.sb_masterLogic(3, value)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def sb_multi_center9Logic(self, value):
+        '''Method for handling the Center Bottom spinbox logic.'''
+
+        self.sb_masterLogic(4, value)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def sb_multi_center10Logic(self, value):
+        '''Method for handling the Center Bottom spinbox logic.'''
+
+        self.sb_masterLogic(5, value)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def sb_multi_center11Logic(self, value):
+        '''Method for handling the Center Bottom spinbox logic.'''
+
+        self.sb_masterLogic(6, value)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def sb_multi_center12Logic(self, value):
+        '''Method for handling the Center Bottom spinbox logic.'''
+
+        self.sb_masterLogic(7, value)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -2074,9 +2241,7 @@ def handleException(exception):
                 selectedAwards.append(award)
 
         elif ttt3.awards.get(award)["type"] == "upgradeable":
-            print("DEBUG: UPGRADES: " + str(ttt3.awards.get(award)["upgrades"]))
             for upgrade in ttt3.awards.get(award)["upgrades"]:
-                print("DEBUG " + award + " : " + str(upgrade[0]))# + str(upgrade[1]))
                 if upgrade[1] != 0:
                     selectedAwards.append(award + " : " + str(upgrade[0]))
 

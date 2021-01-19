@@ -1297,11 +1297,11 @@ QListWidget:!enabled
         <string>==NULL==</string>
        </property>
       </widget>
-      <widget class="QSpinBox" name="sb_multi_centerTop">
+      <widget class="QSpinBox" name="sb_multi_center1">
        <property name="geometry">
         <rect>
-         <x>106</x>
-         <y>53</y>
+         <x>108</x>
+         <y>42</y>
          <width>40</width>
          <height>22</height>
         </rect>
@@ -1310,11 +1310,11 @@ QListWidget:!enabled
         <string notr="true">background-color: rgb(211, 211, 211);</string>
        </property>
       </widget>
-      <widget class="QLabel" name="lbl_multi_centerTop">
+      <widget class="QLabel" name="lbl_multi_center1">
        <property name="geometry">
         <rect>
-         <x>6</x>
-         <y>29</y>
+         <x>8</x>
+         <y>18</y>
          <width>241</width>
          <height>20</height>
         </rect>
@@ -1354,11 +1354,11 @@ QListWidget:!enabled
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
-      <widget class="QSpinBox" name="sb_multi_centerMiddle">
+      <widget class="QSpinBox" name="sb_multi_center2">
        <property name="geometry">
         <rect>
-         <x>106</x>
-         <y>121</y>
+         <x>108</x>
+         <y>102</y>
          <width>40</width>
          <height>22</height>
         </rect>
@@ -1367,11 +1367,11 @@ QListWidget:!enabled
         <string notr="true">background-color: rgb(211, 211, 211);</string>
        </property>
       </widget>
-      <widget class="QLabel" name="lbl_multi_centerMiddle">
+      <widget class="QLabel" name="lbl_multi_center2">
        <property name="geometry">
         <rect>
-         <x>6</x>
-         <y>97</y>
+         <x>8</x>
+         <y>78</y>
          <width>241</width>
          <height>20</height>
         </rect>
@@ -1389,11 +1389,11 @@ QListWidget:!enabled
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="lbl_multi_centerBottom">
+      <widget class="QLabel" name="lbl_multi_center3">
        <property name="geometry">
         <rect>
-         <x>6</x>
-         <y>165</y>
+         <x>8</x>
+         <y>138</y>
          <width>241</width>
          <height>20</height>
         </rect>
@@ -1411,11 +1411,11 @@ QListWidget:!enabled
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QSpinBox" name="sb_multi_centerBottom">
+      <widget class="QSpinBox" name="sb_multi_center3">
        <property name="geometry">
         <rect>
-         <x>106</x>
-         <y>189</y>
+         <x>108</x>
+         <y>162</y>
          <width>40</width>
          <height>22</height>
         </rect>
@@ -1528,22 +1528,355 @@ QListWidget:!enabled
         <string>==NULL==</string>
        </property>
       </widget>
+      <widget class="QSpinBox" name="sb_multi_center4">
+       <property name="geometry">
+        <rect>
+         <x>108</x>
+         <y>222</y>
+         <width>40</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_multi_center4">
+       <property name="geometry">
+        <rect>
+         <x>8</x>
+         <y>198</y>
+         <width>241</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>==NULL==</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_multi_right4">
+       <property name="geometry">
+        <rect>
+         <x>129</x>
+         <y>198</y>
+         <width>125</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>==NULL==</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_multi_right1">
+       <property name="geometry">
+        <rect>
+         <x>129</x>
+         <y>18</y>
+         <width>125</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>==NULL==</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_multi_right3">
+       <property name="geometry">
+        <rect>
+         <x>129</x>
+         <y>138</y>
+         <width>125</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>==NULL==</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="sb_multi_right1">
+       <property name="geometry">
+        <rect>
+         <x>171</x>
+         <y>42</y>
+         <width>40</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_multi_right2">
+       <property name="geometry">
+        <rect>
+         <x>129</x>
+         <y>78</y>
+         <width>125</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>==NULL==</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="sb_multi_right2">
+       <property name="geometry">
+        <rect>
+         <x>171</x>
+         <y>102</y>
+         <width>40</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="sb_multi_right3">
+       <property name="geometry">
+        <rect>
+         <x>171</x>
+         <y>162</y>
+         <width>40</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="sb_multi_right4">
+       <property name="geometry">
+        <rect>
+         <x>171</x>
+         <y>222</y>
+         <width>40</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="sb_multi_left3">
+       <property name="geometry">
+        <rect>
+         <x>45</x>
+         <y>162</y>
+         <width>40</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_multi_left3">
+       <property name="geometry">
+        <rect>
+         <x>3</x>
+         <y>138</y>
+         <width>125</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>==NULL==</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_multi_left4">
+       <property name="geometry">
+        <rect>
+         <x>3</x>
+         <y>198</y>
+         <width>125</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>==NULL==</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_multi_left2">
+       <property name="geometry">
+        <rect>
+         <x>3</x>
+         <y>78</y>
+         <width>125</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>==NULL==</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="sb_multi_left2">
+       <property name="geometry">
+        <rect>
+         <x>45</x>
+         <y>102</y>
+         <width>40</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="sb_multi_left4">
+       <property name="geometry">
+        <rect>
+         <x>45</x>
+         <y>222</y>
+         <width>40</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="sb_multi_left1">
+       <property name="geometry">
+        <rect>
+         <x>45</x>
+         <y>42</y>
+         <width>40</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_multi_left1">
+       <property name="geometry">
+        <rect>
+         <x>3</x>
+         <y>18</y>
+         <width>125</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>9</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>==NULL==</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
       <zorder>lbl_top_free_text</zorder>
       <zorder>combo_top</zorder>
-      <zorder>lbl_multi_centerTop</zorder>
       <zorder>cb_singleMedal</zorder>
-      <zorder>sb_multi_centerTop</zorder>
       <zorder>lbl_ranged</zorder>
-      <zorder>sb_multi_centerMiddle</zorder>
-      <zorder>lbl_multi_centerMiddle</zorder>
-      <zorder>lbl_multi_centerBottom</zorder>
-      <zorder>sb_multi_centerBottom</zorder>
       <zorder>rb_upgradeable_0</zorder>
       <zorder>rb_upgradeable_1</zorder>
       <zorder>rb_upgradeable_2</zorder>
       <zorder>rb_upgradeable_3</zorder>
       <zorder>rb_upgradeable_4</zorder>
       <zorder>rb_upgradeable_5</zorder>
+      <zorder>lbl_multi_center1</zorder>
+      <zorder>lbl_multi_center3</zorder>
+      <zorder>lbl_multi_center2</zorder>
+      <zorder>sb_multi_center3</zorder>
+      <zorder>sb_multi_center2</zorder>
+      <zorder>sb_multi_center1</zorder>
+      <zorder>sb_multi_center4</zorder>
+      <zorder>lbl_multi_center4</zorder>
+      <zorder>lbl_multi_right4</zorder>
+      <zorder>lbl_multi_right1</zorder>
+      <zorder>lbl_multi_right3</zorder>
+      <zorder>sb_multi_right1</zorder>
+      <zorder>lbl_multi_right2</zorder>
+      <zorder>sb_multi_right2</zorder>
+      <zorder>sb_multi_right3</zorder>
+      <zorder>sb_multi_right4</zorder>
+      <zorder>sb_multi_left3</zorder>
+      <zorder>lbl_multi_left3</zorder>
+      <zorder>lbl_multi_left4</zorder>
+      <zorder>lbl_multi_left2</zorder>
+      <zorder>sb_multi_left2</zorder>
+      <zorder>sb_multi_left4</zorder>
+      <zorder>sb_multi_left1</zorder>
+      <zorder>lbl_multi_left1</zorder>
      </widget>
     </widget>
     <widget class="QWidget" name="tabImport">
