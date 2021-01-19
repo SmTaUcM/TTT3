@@ -134,8 +134,6 @@ class TTT3(QMainWindow):
 
                     # List Widget Connections.
             self.gui.lw_medals.itemClicked.connect(self.medalSelectionLogic)
-                    # CheckBoxes.
-            self.gui.cb_singleMedal.stateChanged.connect(self.cb_singleMedalSelectionLogic)
 
 
             # ----- Info Tab. -----
@@ -198,8 +196,10 @@ class TTT3(QMainWindow):
 
 
             # ----- GUI variables. -----
+            self.cb_singleMedalConnected = False
             self.combo_topConnected = False
             self.sb_multi_centerTopConnected = False
+            self.rb_upgradeablesConnected = False
 
 
             # ----- Application logic. -----
@@ -1597,7 +1597,7 @@ class TTT3(QMainWindow):
 
                     # Store the ribbon data to the 'self.awards' dictionary.
                     if "type" not in option and "name" not in option.lower():
-                        self.awards[name]["upgrades"].append([self.ribbonConfig.get(ribbon, option), "WIDGET", 0])
+                        self.awards[name]["upgrades"].append([self.ribbonConfig.get(ribbon, option), 0])
 
                     # Create the required include declarations for 'ribbons_g.inc'
                     if option != "name" and option != "type":
@@ -1643,6 +1643,12 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         self.gui.sb_multi_centerBottom.hide()
         self.gui.combo_top.hide()
         self.gui.lbl_top_free_text.hide()
+        self.gui.rb_upgradeable_0.hide()
+        self.gui.rb_upgradeable_1.hide()
+        self.gui.rb_upgradeable_2.hide()
+        self.gui.rb_upgradeable_3.hide()
+        self.gui.rb_upgradeable_4.hide()
+        self.gui.rb_upgradeable_5.hide()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1651,6 +1657,10 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
 
         try:
             # Reset the 'Medals, Ribbons and FCHG tab..
+            if self.cb_singleMedalConnected:
+                self.gui.cb_singleMedal.stateChanged.disconnect()
+                self.cb_singleMedalConnected = False
+
             self.hideMedalOptions()
             self.disconnectAllMedalWidgets()
 
@@ -1666,18 +1676,25 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
             award = self.awards.get(str(item.text())) # Str type conversion as you cannot reference a dict with a QString.
             print(award)
 
-            # Single type awards.
+                # === Medals ===
+                # Single type medal awards. (MOH, IC, OoR, GOE)
             if award.get("type") == "single":
                 self.gui.cb_singleMedal.setText(award.get("upgrades")[name])
+
                 if award.get("upgrades")[quantity] == 0:
                     self.gui.cb_singleMedal.setChecked(False)
                 else:
                     self.gui.cb_singleMedal.setChecked(True)
+
+                if not self.cb_singleMedalConnected:
+                    self.gui.cb_singleMedal.stateChanged.connect(self.cb_singleMedalSelectionLogic)
+                    self.cb_singleMedalConnected = True
+
                 self.gui.cb_singleMedal.show()
                 self.neckRibbonDeconfliction()
 
-            # Multi type awards.
-            if award.get("type") == "multi":
+                # Multi type medal awards. (GS, SS, BS, PC, ISM)
+            elif award.get("type") == "multi":
                 self.gui.lbl_multi_centerTop.setText(award.get("upgrades")[name])
                 self.gui.lbl_multi_centerTop.show()
                 self.gui.sb_multi_centerTop.setValue(award.get("upgrades")[quantity])
@@ -1685,8 +1702,27 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                 if not self.sb_multi_centerTopConnected:
                     self.gui.sb_multi_centerTop.valueChanged.connect(self.sb_multi_centerTopLogic)
                     self.sb_multi_centerTopConnected = True
-                # BOOKMARK
 
+
+                    # === Ribbons ===
+                    # Upgradeable type ribbon awards. (MoI)
+            elif award.get("type") == "upgradeable":
+                self.gui.cb_singleMedal.setText(item.text())
+
+                for upgrade in award.get("upgrades"):
+                    if upgrade[quantity] == 1:
+                        self.gui.cb_singleMedal.setChecked(True)
+                        break
+                    else:
+                        self.gui.cb_singleMedal.setChecked(False)
+
+                if not self.cb_singleMedalConnected:
+                    self.gui.cb_singleMedal.stateChanged.connect(self.cb_singleMedalSelectionLogic)
+                    self.cb_singleMedalConnected = True
+
+                self.gui.cb_singleMedal.show()
+                self.showUpgradeableRadioButtons()
+                # BOOKMARK
             # TODO medalSelectionLogic()
         except Exception as e:
             handleException(e)
@@ -1697,14 +1733,116 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         '''Method that handles the actions once a medal is selected in the 'Medals, Ribbons and FCHG tab.'''
 
         try:
+            award = self.awards.get(str(self.gui.lw_medals.currentItem().text())) # Str type conversion as you cannot reference a dict with a QString.
+            name = 0
             quantity = 1
-            if self.gui.cb_singleMedal.isChecked():
-                self.awards.get(str(self.gui.cb_singleMedal.text()))["upgrades"][quantity] = 1
-            else:
-                self.awards.get(str(self.gui.cb_singleMedal.text()))["upgrades"][quantity] = 0
 
-            # IC & GOE Deconfliction.
-            self.neckRibbonDeconfliction()
+            # === Medals ===
+                # Single type medal awards. (MOH, IC, OoR, GOE)
+            if award.get("type") == "single":
+
+                if self.gui.cb_singleMedal.isChecked():
+                    self.awards.get(str(self.gui.cb_singleMedal.text()))["upgrades"][quantity] = 1
+                else:
+                    self.awards.get(str(self.gui.cb_singleMedal.text()))["upgrades"][quantity] = 0
+
+                # IC & GOE Deconfliction.
+                self.neckRibbonDeconfliction()
+
+
+            # === Ribbons ===
+                # Upgradeable type ribbon awards. (MoI)
+            elif award.get("type") == "upgradeable":
+
+                widgets = [self.gui.rb_upgradeable_0, self.gui.rb_upgradeable_1, self.gui.rb_upgradeable_2,
+                       self.gui.rb_upgradeable_3, self.gui.rb_upgradeable_4, self.gui.rb_upgradeable_5]
+
+                if self.gui.cb_singleMedal.isChecked():
+
+                    # Set the initial selection.
+                    self.gui.rb_upgradeable_0.setChecked(True)
+                    selectionMade = False
+
+                    for upgrade in award.get("upgrades"):
+                        if upgrade[quantity] == 1:
+                            selectionMade = True
+
+                    if not selectionMade:
+                        award.get("upgrades")[0][quantity] = 1
+                    self.showUpgradeableRadioButtons()
+
+                else:
+                    # Reset the user selections.
+                    for upgrade in award.get("upgrades"):
+                        upgrade[quantity] = 0
+
+                    # Reset the selection.
+                    self.gui.rb_upgradeable_0.setChecked(True)
+
+                    # Hide and disconnect the radio buttons.
+                    for widget in widgets:
+                        widget.hide()
+                        # Disconnect the radio buttons.
+                        if self.rb_upgradeablesConnected:
+                            widget.clicked.disconnect()
+                    self.rb_upgradeablesConnected = False
+
+                # BOOKMARK
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def showUpgradeableRadioButtons(self):
+        '''Method that shows the Upgradeable ribbon type radio buttonsd'''
+
+        # Show the required Radio Buttons.
+        if self.gui.cb_singleMedal.isChecked():
+
+            award = self.awards.get(str(self.gui.lw_medals.currentItem().text())) # Str type conversion as you cannot reference a dict with a QString.
+            name = 0
+            quantity = 1
+            widgets = [self.gui.rb_upgradeable_0, self.gui.rb_upgradeable_1, self.gui.rb_upgradeable_2,
+                       self.gui.rb_upgradeable_3, self.gui.rb_upgradeable_4, self.gui.rb_upgradeable_5]
+            upgradeCount = 0
+
+            for upgrade in award.get("upgrades"):
+                widgets[upgradeCount].setText(upgrade[name])
+
+                # Connect the radio buttons.
+                if not self.rb_upgradeablesConnected:
+                    widgets[upgradeCount].clicked.connect(self.rb_upgradableSelectionLogic)
+
+                # Set the the correct radio button to checked as per the user's selection.
+                if upgrade[quantity] == 1:
+                    widgets[upgradeCount].setChecked(True)
+
+                widgets[upgradeCount].show()
+                upgradeCount += 1
+            self.rb_upgradeablesConnected = True
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def rb_upgradableSelectionLogic(self):
+        '''Method to control the logic upon upgradeable ribbon type award selection.'''
+
+        try:
+            award = self.awards.get(str(self.gui.lw_medals.currentItem().text())) # Str type conversion as you cannot reference a dict with a QString.
+            name = 0
+            quantity = 1
+            widgets = [self.gui.rb_upgradeable_0, self.gui.rb_upgradeable_1, self.gui.rb_upgradeable_2,
+                                   self.gui.rb_upgradeable_3, self.gui.rb_upgradeable_4, self.gui.rb_upgradeable_5]
+            widgetCount = 0
+
+            for widget in widgets:
+                if widget.isChecked():
+                    break
+                widgetCount += 1
+
+            # Store the user selection.
+            for upgrade in award.get("upgrades"):
+                upgrade[quantity] = 0
+            award.get("upgrades")[widgetCount][quantity] = 1
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -1917,17 +2055,26 @@ def handleException(exception):
         # Medal selections.
     selectedAwards = []
     for award in ttt3.awards:
+
         if ttt3.awards.get(award)["type"] == "single" or  ttt3.awards.get(award)["type"] == "ranged" or  ttt3.awards.get(award)["type"] == "multi":
             if ttt3.awards.get(award)["upgrades"][1] != 0:
                 selectedAwards.append(award)
+
+        elif ttt3.awards.get(award)["type"] == "upgradeable":
+            print("DEBUG: UPGRADES: " + str(ttt3.awards.get(award)["upgrades"]))
+            for upgrade in ttt3.awards.get(award)["upgrades"]:
+                print("DEBUG " + award + " : " + str(upgrade[0]))# + str(upgrade[1]))
+                if upgrade[1] != 0:
+                    selectedAwards.append(award + " : " + str(upgrade[0]))
+
         else:
             for upgrades in ttt3.awards.get(award)["upgrades"]:
                 if upgrades[-1] != 0:
                     selectedAwards.append(award + " " + str(upgrades))
 
         # Uniform selections.
-    logging.error("\n" + settings + "\nPosition : " + ttt3.position + "\nRank : " + ttt3.rank + "\nShip : " + ttt3.ship + \
-                  "\nWing : " + ttt3.wing + "\nSquadron : " + ttt3.sqn + "\nAwards :" + str(selectedAwards))
+    logging.error("\n" + settings + "\nPosition : " + str(ttt3.position) + "\nRank : " + str(ttt3.rank) + "\nShip : " + str(ttt3.ship) + \
+                  "\nWing : " + str(ttt3.wing) + "\nSquadron : " + str(ttt3.sqn) + "\nAwards :" + str(selectedAwards))
 
     # Show error message.
     msg = "Error: Uh-Oh! TTT3 has encountered an error. Please submit 'TTT3\TTT3 Crash.log' to the Internet Office."

@@ -1450,6 +1450,84 @@ QListWidget:!enabled
         <string>==NUL====NUL====NUL====NUL==</string>
        </property>
       </widget>
+      <widget class="QRadioButton" name="rb_upgradeable_0">
+       <property name="geometry">
+        <rect>
+         <x>38</x>
+         <y>62</y>
+         <width>211</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>==NULL==</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="rb_upgradeable_1">
+       <property name="geometry">
+        <rect>
+         <x>38</x>
+         <y>92</y>
+         <width>211</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>==NULL==</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="rb_upgradeable_2">
+       <property name="geometry">
+        <rect>
+         <x>38</x>
+         <y>122</y>
+         <width>211</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>==NULL==</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="rb_upgradeable_3">
+       <property name="geometry">
+        <rect>
+         <x>38</x>
+         <y>152</y>
+         <width>211</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>==NULL==</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="rb_upgradeable_4">
+       <property name="geometry">
+        <rect>
+         <x>38</x>
+         <y>182</y>
+         <width>211</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>==NULL==</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="rb_upgradeable_5">
+       <property name="geometry">
+        <rect>
+         <x>38</x>
+         <y>212</y>
+         <width>211</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>==NULL==</string>
+       </property>
+      </widget>
       <zorder>lbl_top_free_text</zorder>
       <zorder>combo_top</zorder>
       <zorder>lbl_multi_centerTop</zorder>
@@ -1460,6 +1538,12 @@ QListWidget:!enabled
       <zorder>lbl_multi_centerMiddle</zorder>
       <zorder>lbl_multi_centerBottom</zorder>
       <zorder>sb_multi_centerBottom</zorder>
+      <zorder>rb_upgradeable_0</zorder>
+      <zorder>rb_upgradeable_1</zorder>
+      <zorder>rb_upgradeable_2</zorder>
+      <zorder>rb_upgradeable_3</zorder>
+      <zorder>rb_upgradeable_4</zorder>
+      <zorder>rb_upgradeable_5</zorder>
      </widget>
     </widget>
     <widget class="QWidget" name="tabImport">
