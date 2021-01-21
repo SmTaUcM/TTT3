@@ -199,7 +199,6 @@ class TTT3(QMainWindow):
             self.subRibbonAwards = []
             self.cb_singleMedalConnected = False
             self.combo_topConnected = False
-            self.sb_multi_center1Connected = False
             self.rb_upgradeablesConnected = False
 
 
@@ -1718,9 +1717,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                 self.gui.lbl_multi_center1.show()
                 self.gui.sb_multi_center1.setValue(award.get("upgrades")[quantity])
                 self.gui.sb_multi_center1.show()
-                if not self.sb_multi_center1Connected:
-                    self.gui.sb_multi_center1.valueChanged.connect(self.sb_multi_center1Logic)
-                    self.sb_multi_center1Connected = True
+                self.gui.sb_multi_center1.valueChanged.connect(self.sb_multi_center1Logic)
 
 
                     # === Ribbons ===
@@ -2083,10 +2080,16 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                 self.gui.combo_top.disconnect()
                 self.combo_topConnected = False
 
-        # Multi Center Top.
-        if self.sb_multi_center1Connected:
-            self.gui.sb_multi_center1.disconnect()
-            self.sb_multi_center1Connected = False
+        # SpinBoxes.
+        spinBoxes = [self.gui.sb_multi_left1, self.gui.sb_multi_left2, self.gui.sb_multi_left3, self.gui.sb_multi_left4,
+                     self.gui.sb_multi_center1, self.gui.sb_multi_center2, self.gui.sb_multi_center3, self.gui.sb_multi_center4,
+                     self.gui.sb_multi_right1, self.gui.sb_multi_right2, self.gui.sb_multi_right3, self.gui.sb_multi_right4]
+
+        for spinBox in spinBoxes:
+            try:
+                spinBox.valueChanged.disconnect()
+            except TypeError:
+                pass # Prevents a crash if the spinBox isn't currently connected.
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
