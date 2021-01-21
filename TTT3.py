@@ -45,8 +45,8 @@ class TTT3(QMainWindow):
         try:
             # Version info.
             version = "3.00"
-            devVersion = "Alpha 7"
-            date = "18 January 2021"
+            devVersion = "Alpha 8"
+            date = "21 January 2021"
 
             # Initialise an instance of a QT Main Window and load our GUI file 'data\uis\ttt.ui'.
             QMainWindow.__init__(self)
@@ -1568,17 +1568,18 @@ class TTT3(QMainWindow):
             # Ranged ribbons like the OV.
             if self.ribbonConfig.get(ribbon, "type") == "ranged":
 
-                # Store the ribbon data to the 'self.awards' dictionary.
-                self.awards[name]["upgrades"] = [self.ribbonConfig.get(ribbon, "incrementName"), 0]
-
                 # Create the required inclide declarations for 'ribbons_g.inc'
                 rangeMin = int(self.ribbonConfig.get(ribbon, "rangeMin"))
-                rangeMax = int(self.ribbonConfig.get(ribbon, "rangeMax")) + 1 # +1 because Python doesn't include the last number in a range.
+                rangeMax = int(self.ribbonConfig.get(ribbon, "rangeMax"))
 
-                for i in range(rangeMin, rangeMax):
+                for i in range(rangeMin, rangeMax + 1): # + 1 as Python omits the last number in a range.
 
                     filename = self.ribbonConfig.get(ribbon, "filename").replace("&RANGE&", str(i))
                     ribbons_g += self.addToRibbonIncludes(filename)
+
+                # Store the ribbon data to the 'self.awards' dictionary.
+                self.awards[name]["upgrades"] = [self.ribbonConfig.get(ribbon, "incrementName"), 0]
+                self.awards[name]["ranges"] = [rangeMin, rangeMax]
 
 
             # All other ribbons.
@@ -1666,7 +1667,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         self.gui.sb_multi_right4.hide()
 
         # Ranged type award.
-        self.gui.lbl_ranged.hide() # Not Used
+        self.gui.lbl_ranged.hide()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1681,6 +1682,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
 
             self.hideMedalOptions()
             self.disconnectAllMedalWidgets()
+            self.gui.sb_multi_center2.setRange(0, 99) # Resets the range if range ribbon/OV was selected.
 
             name = 0
             quantity = 1
@@ -1690,12 +1692,10 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
             self.gui.gb_medals.setTitle(item.text().split(" (")[0])
 
             # Show the correct GUI elements for the given medal.
-            print("\nClicked: " + item.text())
             award = self.awards.get(str(item.text())) # Str type conversion as you cannot reference a dict with a QString.
-            print(award)
 
                 # === Medals ===
-                # Single type medal awards. (MOH, IC, OoR, GOE)
+                # ----- Single type medal awards. (MOH, IC, OoR, GOE)
             if award.get("type") == "single":
                 self.gui.cb_singleMedal.setText(award.get("upgrades")[name])
 
@@ -1711,7 +1711,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                 self.gui.cb_singleMedal.show()
                 self.neckRibbonDeconfliction()
 
-                # Multi type medal awards. (GS, SS, BS, PC, ISM)
+                # ----- Multi type medal awards. (GS, SS, BS, PC, ISM)
             elif award.get("type") == "multi":
                 self.gui.lbl_multi_center1.setText(award.get("upgrades")[name])
                 self.gui.lbl_multi_center1.show()
@@ -1721,7 +1721,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
 
 
                     # === Ribbons ===
-                    # Upgradeable type ribbon awards. (MoI, LoC, LoS, DFC)
+                    # ----- Upgradeable type ribbon awards. (MoI, LoC, LoS, DFC)
             elif award.get("type") == "upgradeable":
                 self.gui.cb_singleMedal.setText(item.text())
 
@@ -1739,7 +1739,8 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                 self.gui.cb_singleMedal.show()
                 self.showUpgradeableRadioButtons()
 
-                # subRibbons type ribbon awards. (MoS, MoT, IS, MoC, CoX)
+
+                # ----- SubRibbons type ribbon awards. (MoS, MoT, IS, MoC, CoX)
             elif award.get("type") == "subRibbons":
                 # Determine the number of subRibbons the award has for SpinBox assignment.
                 subRibbonNum = len(award.get("upgrades"))
@@ -1759,8 +1760,8 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                     spinLabels = [self.gui.lbl_multi_left1, self.gui.lbl_multi_left2, self.gui.lbl_multi_left3, self.gui.lbl_multi_left4,
                                   self.gui.lbl_multi_right1, self.gui.lbl_multi_right2, self.gui.lbl_multi_right3, self.gui.lbl_multi_right4]
                     spinLabels = spinLabels[ : subRibbonNum]
-                    spinFunctions = [self.sb_multi_center5Logic, self.sb_multi_center6Logic, self.sb_multi_center7Logic, self.sb_multi_center8Logic,
-                                     self.sb_multi_center9Logic, self.sb_multi_center10Logic, self.sb_multi_center11Logic, self.sb_multi_center12Logic]
+                    spinFunctions = [self.sb_multi_left1Logic, self.sb_multi_left2Logic, self.sb_multi_left3Logic, self.sb_multi_left4Logic,
+                                     self.sb_multi_right1Logic, self.sb_multi_right2Logic, self.sb_multi_right3Logic, self.sb_multi_right4Logic]
                     spinFunctions = spinFunctions[ : subRibbonNum]
 
                 # Show the required spinboxes.
@@ -1774,8 +1775,29 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                     self.subRibbonAwards.append([self.gui.lw_medals.currentItem().text(), upgrades[subRibbon][name], spinBoxes[subRibbon]])
 
 
-                # BOOKMARK
-            # TODO medalSelectionLogic()
+                # ----- Ranged type ribbon awards. (OV)
+            elif award.get("type") == "ranged":
+                self.gui.cb_singleMedal.setText(item.text())
+
+                # Specify the award data for the spinbox.
+                self.subRibbonAwards = []
+                self.subRibbonAwards.append(self.gui.lw_medals.currentItem().text())
+                self.subRibbonAwards.append(self.gui.sb_multi_center2)
+
+                # Set the checkbox state.
+                if award.get("upgrades")[quantity] > 0:
+                    self.gui.cb_singleMedal.setChecked(True)
+                    self.cb_singleMedalSelectionLogic()
+                else:
+                    self.gui.cb_singleMedal.setChecked(False)
+
+                # Connect the checkbox.
+                if not self.cb_singleMedalConnected:
+                    self.gui.cb_singleMedal.stateChanged.connect(self.cb_singleMedalSelectionLogic)
+                    self.cb_singleMedalConnected = True
+
+                self.gui.cb_singleMedal.show()
+
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -1790,7 +1812,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
             quantity = 1
 
             # === Medals ===
-                # Single type medal awards. (MOH, IC, OoR, GOE)
+                # ----- Single type medal awards. (MOH, IC, OoR, GOE)
             if award.get("type") == "single":
 
                 if self.gui.cb_singleMedal.isChecked():
@@ -1803,7 +1825,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
 
 
             # === Ribbons ===
-                # Upgradeable type ribbon awards. (MoI)
+                # ----- Upgradeable type ribbon awards. (MoI)
             elif award.get("type") == "upgradeable":
 
                 widgets = [self.gui.rb_upgradeable_0, self.gui.rb_upgradeable_1, self.gui.rb_upgradeable_2,
@@ -1836,10 +1858,34 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                         widget.hide()
                         # Disconnect the radio buttons.
                         if self.rb_upgradeablesConnected:
-                            widget.clicked.disconnect()
+                            try:
+                                widget.clicked.disconnect()
+                            except TypeError:
+                                pass # Prevents a crash when trying to disconnect a widget that isn't connected to aything.
                     self.rb_upgradeablesConnected = False
 
-                # BOOKMARK
+
+                # ----- Ranged type ribbon awards. (OV)
+            elif award.get("type") == "ranged":
+
+                if self.gui.cb_singleMedal.isChecked():
+
+                    # Setup and display the ribbon's spinbox and label.
+                    rangeMin = int(award.get("ranges")[0])
+                    rangeMax = int(award.get("ranges")[1])
+                    self.gui.sb_multi_center2.setRange(rangeMin, rangeMax)
+                    self.gui.sb_multi_center2.setValue(award.get("upgrades")[quantity])
+                    self.gui.sb_multi_center2.show()
+                    self.gui.sb_multi_center2.valueChanged.connect(self.sb_multi_center2Logic)
+                    self.gui.lbl_ranged.setText(award.get("upgrades")[name] + ":")
+                    self.gui.lbl_ranged.show()
+                    self.sb_multi_center2Logic(self.gui.sb_multi_center2.value())
+
+                else:
+                    self.gui.sb_multi_center2.hide()
+                    self.gui.lbl_ranged.hide()
+                    award.get("upgrades")[quantity] = 0
+
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -1904,32 +1950,32 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         '''Method for handling the display and selection logic for neck ribbon deconfliction.'''
 
         quantity = 1
-        if (self.awards.get("Imperial Cross (IC)")["upgrades"][quantity] == 1 and \
-            self.awards.get("Grand Order of the Emperor (GOE)")["upgrades"][quantity] == 1) \
-           and \
-            (self.gui.gb_medals.title() == "Grand Order of the Emperor" or \
-             self.gui.gb_medals.title() == "Imperial Cross"):
+        if self.awards.get("Imperial Cross (IC)")["upgrades"][quantity] == 1 and \
+            self.awards.get("Grand Order of the Emperor (GOE)")["upgrades"][quantity] == 1:
 
-            # Text Label.
-            self.gui.lbl_top_free_text.setText("Neck ribbon to display:")
-            self.gui.lbl_top_free_text.show()
-            # Comobox.
-            if not self.combo_topConnected:
-                self.gui.combo_top.clear()
-                self.gui.combo_top.addItem("Both IC and GOE Ribbons")
-                self.gui.combo_top.addItem("Imperial Cross (IC) Only")
-            self.gui.combo_top.show()
+           if self.gui.lw_medals.currentItem().text() == "Grand Order of the Emperor (GOE)" or \
+              self.gui.lw_medals.currentItem().text() == "Imperial Cross (IC)":
 
-            # Apply the current setting.
-            if self.deconflictNeckRibbons:
-                self.gui.combo_top.setCurrentIndex(1)
-            else:
-                self.gui.combo_top.setCurrentIndex(0)
+                # Text Label.
+                self.gui.lbl_top_free_text.setText("Neck ribbon to display:")
+                self.gui.lbl_top_free_text.show()
+                # Combobox.
+                if not self.combo_topConnected:
+                    self.gui.combo_top.clear()
+                    self.gui.combo_top.addItem("Both IC and GOE Ribbons")
+                    self.gui.combo_top.addItem("Imperial Cross (IC) Only")
+                self.gui.combo_top.show()
 
-            # Connection.
-            if not self.combo_topConnected:
-                self.gui.combo_top.currentTextChanged.connect(self.combo_neckRibbonDeconflictLogic)
-                self.combo_topConnected = True
+                # Apply the current setting.
+                if self.deconflictNeckRibbons:
+                    self.gui.combo_top.setCurrentIndex(1)
+                else:
+                    self.gui.combo_top.setCurrentIndex(0)
+
+                # Connection.
+                if not self.combo_topConnected:
+                    self.gui.combo_top.currentTextChanged.connect(self.combo_neckRibbonDeconflictLogic)
+                    self.combo_topConnected = True
 
         else:
             # Disconnection.
@@ -2101,12 +2147,12 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
             name = 0
             quantity = 1
 
-            # Multi type medal awards. (GS, SS, BS, PC, ISM)
+            # ----- Multi type medal awards. (GS, SS, BS, PC, ISM)
             if award.get("type") == "multi":
                 self.awards.get(str(self.gui.lw_medals.currentItem().text()))["upgrades"][quantity] = value
 
-            # subRibbons type ribbon awards. (MoS, MoT, IS, MoC, CoX)
-            if award.get("type") == "subRibbons":
+            # ----- SubRibbons type ribbon awards. (MoS, MoT, IS, MoC, CoX)
+            elif award.get("type") == "subRibbons":
                 awardName  = self.subRibbonAwards[sender][0]
                 subRibbonName = self.subRibbonAwards[sender][1]
                 spinBox = self.subRibbonAwards[sender][2]
@@ -2114,6 +2160,12 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                 for upgrade in self.awards.get(awardName)["upgrades"]:
                     if upgrade[name] == subRibbonName:
                         self.awards.get(awardName)["upgrades"][sender][1] = spinBox.value()
+
+            # ----- Ranged type ribbon awards. (OV)
+            elif award.get("type") == "ranged":
+                awardName = self.subRibbonAwards[0]
+                spinBox = self.subRibbonAwards[1]
+                self.awards.get(awardName)["upgrades"][quantity] = spinBox.value()
 
         except Exception as e:
             handleException(e)
@@ -2148,56 +2200,56 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
-    def sb_multi_center5Logic(self, value):
+    def sb_multi_left1Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(0, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
-    def sb_multi_center6Logic(self, value):
+    def sb_multi_left2Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(1, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
-    def sb_multi_center7Logic(self, value):
+    def sb_multi_left3Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(2, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
-    def sb_multi_center8Logic(self, value):
+    def sb_multi_left4Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(3, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
-    def sb_multi_center9Logic(self, value):
+    def sb_multi_right1Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(4, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
-    def sb_multi_center10Logic(self, value):
+    def sb_multi_right2Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(5, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
-    def sb_multi_center11Logic(self, value):
+    def sb_multi_right3Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(6, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
-    def sb_multi_center12Logic(self, value):
+    def sb_multi_right4Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(7, value)
@@ -2253,9 +2305,13 @@ def handleException(exception):
                 if upgrades[-1] != 0:
                     selectedAwards.append(award + " " + str(upgrades))
 
+        # Current medal selection.
+    currentSelection = ttt3.gui.lw_medals.currentItem().text()
+
         # Uniform selections.
     logging.error("\n" + settings + "\nPosition : " + str(ttt3.position) + "\nRank : " + str(ttt3.rank) + "\nShip : " + str(ttt3.ship) + \
-                  "\nWing : " + str(ttt3.wing) + "\nSquadron : " + str(ttt3.sqn) + "\nAwards :" + str(selectedAwards))
+                  "\nWing : " + str(ttt3.wing) + "\nSquadron : " + str(ttt3.sqn) + "\nAwards :" + str(selectedAwards) + \
+                  "\nCurrent Medal Selection: " + str(currentSelection))
 
     # Show error message.
     msg = "Error: Uh-Oh! TTT3 has encountered an error. Please submit 'TTT3\TTT3 Crash.log' to the Internet Office."

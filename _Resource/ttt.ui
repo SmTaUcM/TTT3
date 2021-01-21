@@ -1336,7 +1336,7 @@ QListWidget:!enabled
        <property name="geometry">
         <rect>
          <x>3</x>
-         <y>54</y>
+         <y>104</y>
          <width>101</width>
          <height>20</height>
         </rect>
