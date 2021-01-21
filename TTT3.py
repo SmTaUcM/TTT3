@@ -160,8 +160,6 @@ class TTT3(QMainWindow):
             # PovRay Template variables.
             self.position = None
             self.rank = None
-            self.rankRotate = None
-            self.rankTranslate = None
             self.name = "Unknown"
             self.ship = ""
             self.wing = ""
@@ -172,21 +170,20 @@ class TTT3(QMainWindow):
             self.deconflictNeckRibbons = False
 
             # PovRay Template Constants.
-            self.RANK_04_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787", # Rotate
-                                    "51.3199996948242,-131.973007202148,213.126998901367"]  # Translate
+            self.RANK_OFFSET_RIBBONS_00_TO_08 = ["-18.8939990997314,0.351000010967255,7.92899990081787", # Rotate
+                                                 "51.3199996948242,-131.973007202148,213.126998901367"]  # Translate
 
-            self.RANK_06_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787",
-                                    "51.1030006408691,-130.444000244141,217.598007202148"]
+            self.RANK_OFFSET_RIBBONS_09_TO_12 = ["-18.8939990997314,0.351000010967255,7.92899990081787",
+                                                 "51.1030006408691,-130.444000244141,217.598007202148"]
 
-            self.RANK_08_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787",
-                                    "51.3199996948242,-131.973007202148,213.126998901367"]
+            self.RANK_OFFSET_RIBBONS_13_TO_16 = ["-20.8950004577637,0.25,7.64699983596802",
+                                                 "50.8540000915527,-128.714996337891,222.033004760742"]
 
-            self.RANK_10_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787",
-                                    "51.3199996948242,-131.973007202148,213.126998901367"]
+            self.RANK_OFFSET_RIBBONS_17_TO_20 = ["-23.7950000762939,0.264999985694885,7.68100023269653",
+                                                 "50.5919990539551,-126.778999328613,226.337997436523"]
 
-            self.RANK_12_SQUARES = ["-18.8939990997314,0.351000010967255,7.92899990081787",
-                                    "51.3199996948242,-131.973007202148,213.126998901367"]
-
+            self.RANK_OFFSET_RIBBONS_21_TO_23 = ["-25.6240005493164,0.264999985694885,7.68100023269653",
+                                                 "50.326000213623,-124.832000732422,230.47900390625"]
 
             # ----- Configuration variables. -----
             self.config = None
@@ -560,104 +557,70 @@ class TTT3(QMainWindow):
                     # Set the correct rank for the selected rank.
                     if radioButton == self.gui.rb_rank_ct:
                         self.rank = "CT"
-                        self.rankRotate = self.RANK_04_SQUARES[0]
-                        self.rankTranslate = self.RANK_04_SQUARES[1]
                         break
 
                     elif radioButton == self.gui.rb_rank_sl:
                         self.rank = "SL"
-                        self.rankRotate = self.RANK_04_SQUARES[0]
-                        self.rankTranslate = self.RANK_04_SQUARES[1]
                         break
 
                     elif radioButton == self.gui.rb_rank_lt:
                         self.rank = "LT"
-                        self.rankRotate = self.RANK_04_SQUARES[0]
-                        self.rankTranslate = self.RANK_04_SQUARES[1]
                         break
 
                     elif radioButton == self.gui.rb_rank_lcm:
                         self.rank = "LCM"
-                        self.rankRotate = self.RANK_04_SQUARES[0]
-                        self.rankTranslate = self.RANK_04_SQUARES[1]
                         break
 
                     elif radioButton == self.gui.rb_rank_cm:
                         self.rank = "CM"
-                        self.rankRotate = self.RANK_06_SQUARES[0]
-                        self.rankTranslate = self.RANK_06_SQUARES[1]
                         break
 
                     elif radioButton == self.gui.rb_rank_cpt:
                         self.rank = "CPT"
-                        self.rankRotate = self.RANK_06_SQUARES[0]
-                        self.rankTranslate = self.RANK_06_SQUARES[1]
                         break
 
                     elif radioButton == self.gui.rb_rank_maj:
                         self.rank = "MAJ"
-                        self.rankRotate = self.RANK_08_SQUARES[0]
-                        self.rankTranslate = self.RANK_08_SQUARES[1]
                         break
 
                     elif radioButton == self.gui.rb_rank_lc:
                         self.rank = "LC"
-                        self.rankRotate = self.RANK_08_SQUARES[0]
-                        self.rankTranslate = self.RANK_08_SQUARES[1]
                         break
 
                     elif radioButton == self.gui.rb_rank_col:
                         self.rank = "COL"
-                        self.rankRotate = self.RANK_08_SQUARES[0]
-                        self.rankTranslate = self.RANK_08_SQUARES[1]
                         break
 
                     elif radioButton == self.gui.rb_rank_gn:
                         self.rank = "GN"
-                        self.rankRotate = self.RANK_08_SQUARES[0]
-                        self.rankTranslate = self.RANK_08_SQUARES[1]
                         break
 
                     elif radioButton == self.gui.rb_rank_ra:
                         self.rank = "RA"
-                        self.rankRotate = self.RANK_10_SQUARES[0]
-                        self.rankTranslate = self.RANK_10_SQUARES[1]
                         break
 
                     elif radioButton == self.gui.rb_rank_va:
                         self.rank = "VA"
-                        self.rankRotate = self.RANK_10_SQUARES[0]
-                        self.rankTranslate = self.RANK_10_SQUARES[1]
                         break
 
                     elif radioButton == self.gui.rb_rank_ad:
                         self.rank = "AD"
-                        self.rankRotate = self.RANK_10_SQUARES[0]
-                        self.rankTranslate = self.RANK_10_SQUARES[1]
                         break
 
                     elif radioButton == self.gui.rb_rank_fa:
                         self.rank = "FA"
-                        self.rankRotate = self.RANK_12_SQUARES[0]
-                        self.rankTranslate = self.RANK_12_SQUARES[1]
                         break
 
                     elif radioButton == self.gui.rb_rank_ha:
                         self.rank = "HA"
-                        self.rankRotate = self.RANK_12_SQUARES[0]
-                        self.rankTranslate = self.RANK_12_SQUARES[1]
                         break
 
                     elif radioButton == self.gui.rb_rank_sa:
                         self.rank = "SA"
-                        self.rankRotate = self.RANK_12_SQUARES[0]
-                        self.rankTranslate = self.RANK_12_SQUARES[1]
                         break
 
                     elif radioButton == self.gui.rb_rank_ga:
                         self.rank = "GA"
-                        self.rankRotate = self.RANK_12_SQUARES[0]
-                        self.rankTranslate = self.RANK_12_SQUARES[1]
                         break
 
             # Enable the Dress and Duty Uniform buttons.
@@ -1137,10 +1100,10 @@ class TTT3(QMainWindow):
                 povData.append(line.replace("&RANK&", self.rank))
 
             elif "&RANKROTATE&" in line:
-                povData.append(line.replace("&RANKROTATE&", self.rankRotate))
+                povData.append(line.replace("&RANKROTATE&", self.getRankRotateOffset()))
 
             elif "&RANKTRANSLATE&" in line:
-                povData.append(line.replace("&RANKTRANSLATE&", self.rankTranslate))
+                povData.append(line.replace("&RANKTRANSLATE&", self.getRankTranslateOffset()))
 
 
             # ----- Assignment. -----
@@ -1352,6 +1315,67 @@ class TTT3(QMainWindow):
         # Write the parsed data to '\data\dress.pov'.
         with open(r"data\dress.pov", "w") as povFile:
             povFile.writelines(povData)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def getRankRotateOffset(self):
+        '''Method that returns the correct rank rotate value for the user's medal and ribbon selections.'''
+
+        ribbonCount = self.getRibbonAwardCount()
+
+        if ribbonCount <= 8:
+            return self.RANK_OFFSET_RIBBONS_00_TO_08[0]
+        elif ribbonCount > 8 and ribbonCount <= 12:
+            return self.RANK_OFFSET_RIBBONS_09_TO_12[0]
+        elif ribbonCount > 12 and ribbonCount <= 16:
+            return self.RANK_OFFSET_RIBBONS_13_TO_16[0]
+        elif ribbonCount > 16 and ribbonCount <= 20:
+            return self.RANK_OFFSET_RIBBONS_17_TO_20[0]
+        elif ribbonCount > 20 and ribbonCount <= 23:
+            return self.RANK_OFFSET_RIBBONS_21_TO_23[0]
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def getRankTranslateOffset(self):
+        '''Method that returns the correct rank rotate value for the user's medal and ribbon selections.'''
+
+        ribbonCount = self.getRibbonAwardCount()
+
+        if ribbonCount <= 8:
+            return self.RANK_OFFSET_RIBBONS_00_TO_08[1]
+        elif ribbonCount > 8 and ribbonCount <= 12:
+            return self.RANK_OFFSET_RIBBONS_09_TO_12[1]
+        elif ribbonCount > 12 and ribbonCount <= 16:
+            return self.RANK_OFFSET_RIBBONS_13_TO_16[1]
+        elif ribbonCount > 16 and ribbonCount <= 20:
+            return self.RANK_OFFSET_RIBBONS_17_TO_20[1]
+        elif ribbonCount > 20 and ribbonCount <= 23:
+            return self.RANK_OFFSET_RIBBONS_21_TO_23[1]
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def getRibbonAwardCount(self):
+        '''Method that returns the number of indicidual ribbons that the user has selected.'''
+
+        ribbonCount = 0
+        name = 0
+        quantity = 1
+
+        for award in self.awards:
+            # Upgradeable and SubRibbon type awards.
+            if self.awards.get(award)["type"] == "upgradeable" or self.awards.get(award)["type"] == "subRibbons":
+                for upgrade in self.awards.get(award)["upgrades"]:
+                    if upgrade[quantity] != 0:
+                        ribbonCount += 1
+
+            # Ranged type awards.
+            elif self.awards.get(award)["type"] == "ranged":
+                if self.awards.get(award)["upgrades"][quantity] > 0:
+                    for section in self.ribbonConfig.sections():
+                        if self.ribbonConfig.get(section, "name") == award:
+                            ribbonCount += 1
+
+        return ribbonCount
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -2127,7 +2151,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
     def ribbonNumberOrdering(self, ribbons):
         '''Method that arranged the awarded ribbons into the correct order.'''
 
-        ribbonObjects = []
+        ribbonObjects = [] # TODO over 23 to max ribbons (30) causes some medal &NUMS& to go negative.
         fullRows = int(len(ribbons) / 4)
         bottomRowNumCount = len(ribbons) % 4
         ribbonCounter = 20 - (fullRows * 4)
@@ -2175,7 +2199,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                 ribbonObjects.append(ribbon.replace("&NUM&", str(ribbonCounter)))
                 ribbonCounter += 1
 
-        return ribbonObjects #Bookmark
+        return ribbonObjects
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -2315,7 +2339,6 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
 
         self.sb_masterLogic(7, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
