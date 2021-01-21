@@ -2065,7 +2065,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                     if upgrade[quantity] != 0:
                         for section in self.ribbonConfig.sections():
                             for option in self.ribbonConfig.options(section):
-                                if self.ribbonConfig.get(section, option) == upgrade[name]:
+                                if self.ribbonConfig.get(section, option) == upgrade[name] and self.ribbonConfig.get(section, "name") == award:
                                     awardName = "T_r_" + self.ribbonConfig.get(section, option + "filename").split(".")[0].lower().replace("-", "_")
                         ribbonObjects.append("P_r25 texture { %s }"%awardName)
 
