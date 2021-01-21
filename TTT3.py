@@ -45,7 +45,7 @@ class TTT3(QMainWindow):
         try:
             # Version info.
             version = "3.00"
-            devVersion = "Alpha 8"
+            devVersion = "Alpha 9"
             date = "21 January 2021"
 
             # Initialise an instance of a QT Main Window and load our GUI file 'data\uis\ttt.ui'.
@@ -1333,6 +1333,8 @@ class TTT3(QMainWindow):
             return self.RANK_OFFSET_RIBBONS_17_TO_20[0]
         elif ribbonCount > 20 and ribbonCount <= 24:
             return self.RANK_OFFSET_RIBBONS_21_TO_24[0]
+        else:
+            return self.RANK_OFFSET_RIBBONS_21_TO_24[0] # TODO expansion of further ribbon slots.
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1351,6 +1353,8 @@ class TTT3(QMainWindow):
             return self.RANK_OFFSET_RIBBONS_17_TO_20[1]
         elif ribbonCount > 20 and ribbonCount <= 24:
             return self.RANK_OFFSET_RIBBONS_21_TO_24[1]
+        else:
+            return self.RANK_OFFSET_RIBBONS_21_TO_24[1] # TODO expansion of further ribbon slots.
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -2163,6 +2167,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                     ribbonObjects.append(ribbon.replace("&NUM&", str(ribbonCounter)))
                     ribbonCounter += 1
             else:
+                ribbonCounter -= 4 # To account for the bottom row.
                 for ribbon in ribbons[ : - bottomRowNumCount]:
                     ribbonObjects.append(ribbon.replace("&NUM&", str(ribbonCounter)))
                     ribbonCounter += 1
