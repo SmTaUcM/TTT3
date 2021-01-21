@@ -2059,8 +2059,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         if self.deconflictNeckRibbons:
             medalObjects.remove("P_goe")
 
-        medalObjects = self.determineMultiMedalOrders(medalObjects)
-        return medalObjects
+        return self.determineMultiMedalOrders(medalObjects)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -2102,7 +2101,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         quantity = 1
 
         for award in self.awards:
-            # Upgradeable type awards.
+            # Upgradeable and SubRibbon type awards.
             if self.awards.get(award)["type"] == "upgradeable" or self.awards.get(award)["type"] == "subRibbons":
                 for upgrade in self.awards.get(award)["upgrades"]:
                     if upgrade[quantity] != 0:
@@ -2110,9 +2109,71 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                             for option in self.ribbonConfig.options(section):
                                 if self.ribbonConfig.get(section, option) == upgrade[name] and self.ribbonConfig.get(section, "name") == award:
                                     awardName = "T_r_" + self.ribbonConfig.get(section, option + "filename").split(".")[0].lower().replace("-", "_")
-                        ribbonObjects.append("P_r25 texture { %s }"%awardName)
+                        ribbonObjects.append("P_r&NUM& texture { %s }"%awardName)
 
-        # TODO Ribbon number ordering.
+            # Ranged type awards.
+            elif self.awards.get(award)["type"] == "ranged":
+                if self.awards.get(award)["upgrades"][quantity] > 0:
+                    for section in self.ribbonConfig.sections():
+                        if self.ribbonConfig.get(section, "name") == award:
+                            awardName = "T_r_" + self.ribbonConfig.get(section, "filename").split(".")[0].lower().replace("-", "_")
+                            awardName = awardName.replace("&range&", str(self.awards.get(award)["upgrades"][quantity]))
+                            ribbonObjects.append("P_r&NUM& texture { %s }"%awardName)
+
+        return self.ribbonNumberOrdering(ribbonObjects)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def ribbonNumberOrdering(self, ribbons):
+        '''Method that arranged the awarded ribbons into the correct order.'''
+
+        ribbonObjects = []
+        fullRows = int(len(ribbons) / 4)
+        bottomRowNumCount = len(ribbons) % 4
+        ribbonCounter = 20 - (fullRows * 4)
+
+        # Logic for complete ribbon rows of 4 for more than 4 ribbons.
+        if len(ribbons) > 4:
+            if bottomRowNumCount == 0:
+                for ribbon in ribbons:
+                    ribbonObjects.append(ribbon.replace("&NUM&", str(ribbonCounter)))
+                    ribbonCounter += 1
+            else:
+                for ribbon in ribbons[ : - bottomRowNumCount]:
+                    ribbonObjects.append(ribbon.replace("&NUM&", str(ribbonCounter)))
+                    ribbonCounter += 1
+
+            # Logic to add the bottom row of ribbons for more than 4 ribbons.
+            if bottomRowNumCount != 0:
+                if bottomRowNumCount == 1:
+                    ribbonCounter = 25
+                elif bottomRowNumCount == 2:
+                    ribbonCounter = 21
+                elif bottomRowNumCount == 3:
+                    ribbonCounter = 24
+
+                for ribbon in ribbons[-bottomRowNumCount : ]:
+                    ribbonObjects.append(ribbon.replace("&NUM&", str(ribbonCounter)))
+                    ribbonCounter += 1
+
+        # Logic to add the bottom row of ribbons for less than 5 ribbons.
+        else:
+            if len(ribbons) == 1:
+                for ribbon in ribbons:
+                    ribbonCounter = 25
+
+            elif len(ribbons) == 2:
+                    ribbonCounter = 21
+
+            elif len(ribbons) == 3:
+                ribbonCounter = 24
+
+            elif len(ribbons) == 4:
+                ribbonCounter = 20
+
+            for ribbon in ribbons:
+                ribbonObjects.append(ribbon.replace("&NUM&", str(ribbonCounter)))
+                ribbonCounter += 1
 
         return ribbonObjects #Bookmark
         #--------------------------------------------------------------------------------------------------------------------------------------------#
