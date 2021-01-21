@@ -182,7 +182,7 @@ class TTT3(QMainWindow):
             self.RANK_OFFSET_RIBBONS_17_TO_20 = ["-23.7950000762939,0.264999985694885,7.68100023269653",
                                                  "50.5919990539551,-126.778999328613,226.337997436523"]
 
-            self.RANK_OFFSET_RIBBONS_21_TO_23 = ["-25.6240005493164,0.264999985694885,7.68100023269653",
+            self.RANK_OFFSET_RIBBONS_21_TO_24 = ["-25.6240005493164,0.264999985694885,7.68100023269653",
                                                  "50.326000213623,-124.832000732422,230.47900390625"]
 
             # ----- Configuration variables. -----
@@ -1331,8 +1331,8 @@ class TTT3(QMainWindow):
             return self.RANK_OFFSET_RIBBONS_13_TO_16[0]
         elif ribbonCount > 16 and ribbonCount <= 20:
             return self.RANK_OFFSET_RIBBONS_17_TO_20[0]
-        elif ribbonCount > 20 and ribbonCount <= 23:
-            return self.RANK_OFFSET_RIBBONS_21_TO_23[0]
+        elif ribbonCount > 20 and ribbonCount <= 24:
+            return self.RANK_OFFSET_RIBBONS_21_TO_24[0]
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1349,8 +1349,8 @@ class TTT3(QMainWindow):
             return self.RANK_OFFSET_RIBBONS_13_TO_16[1]
         elif ribbonCount > 16 and ribbonCount <= 20:
             return self.RANK_OFFSET_RIBBONS_17_TO_20[1]
-        elif ribbonCount > 20 and ribbonCount <= 23:
-            return self.RANK_OFFSET_RIBBONS_21_TO_23[1]
+        elif ribbonCount > 20 and ribbonCount <= 24:
+            return self.RANK_OFFSET_RIBBONS_21_TO_24[1]
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -2154,7 +2154,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         ribbonObjects = [] # TODO over 23 to max ribbons (30) causes some medal &NUMS& to go negative.
         fullRows = int(len(ribbons) / 4)
         bottomRowNumCount = len(ribbons) % 4
-        ribbonCounter = 20 - (fullRows * 4)
+        ribbonCounter = 24 - (fullRows * 4)
 
         # Logic for complete ribbon rows of 4 for more than 4 ribbons.
         if len(ribbons) > 4:
