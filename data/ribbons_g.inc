@@ -102,6 +102,46 @@ texture
 }
 texture { T_unilayer scale 2}
 
+#declare T_r_moc_boc =
+texture
+{
+  pigment { image_map { gif ".\ribbons\moc-boc.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_moc_soc =
+texture
+{
+  pigment { image_map { gif ".\ribbons\moc-soc.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_moc_goc =
+texture
+{
+  pigment { image_map { gif ".\ribbons\moc-goc.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_moc_poc =
+texture
+{
+  pigment { image_map { gif ".\ribbons\moc-poc.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_moc_doc =
+texture
+{
+  pigment { image_map { gif ".\ribbons\moc-doc.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
 #declare T_r_mot_bh =
 texture
 {
@@ -314,46 +354,6 @@ texture { T_unilayer scale 2}
 texture
 {
   pigment { image_map { gif ".\ribbons\dfc-gw.gif" } }
-  finish  { fin_T_uni }
-}
-texture { T_unilayer scale 2}
-
-#declare T_r_moc_boc =
-texture
-{
-  pigment { image_map { gif ".\ribbons\moc-boc.gif" } }
-  finish  { fin_T_uni }
-}
-texture { T_unilayer scale 2}
-
-#declare T_r_moc_soc =
-texture
-{
-  pigment { image_map { gif ".\ribbons\moc-soc.gif" } }
-  finish  { fin_T_uni }
-}
-texture { T_unilayer scale 2}
-
-#declare T_r_moc_goc =
-texture
-{
-  pigment { image_map { gif ".\ribbons\moc-goc.gif" } }
-  finish  { fin_T_uni }
-}
-texture { T_unilayer scale 2}
-
-#declare T_r_moc_poc =
-texture
-{
-  pigment { image_map { gif ".\ribbons\moc-poc.gif" } }
-  finish  { fin_T_uni }
-}
-texture { T_unilayer scale 2}
-
-#declare T_r_moc_doc =
-texture
-{
-  pigment { image_map { gif ".\ribbons\moc-doc.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
