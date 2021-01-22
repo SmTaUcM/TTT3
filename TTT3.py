@@ -2131,7 +2131,27 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         for award in self.awards:
             # Upgradeable and SubRibbon type awards.
             if self.awards.get(award)["type"] == "upgradeable" or self.awards.get(award)["type"] == "subRibbons":
-                for upgrade in self.awards.get(award)["upgrades"]:
+
+                if "Iron Star (IS)" == award or "Medal of Communication (MoC)" == award or \
+                   "Medal of Scholarship (MoS)" == award: # Reverse the ribbon list for certain medals.
+
+                    upgrades = self.awards.get(award)["upgrades"][::-1]
+
+                    if "Iron Star (IS)" == award: # Re-Sorting of IS-XW and US-XR.
+                        half1 = upgrades[0 : 4]
+                        half2 = upgrades[4 : ]
+                        upgrades = half2 + half1
+
+                else:
+                    upgrades = self.awards.get(award)["upgrades"]
+
+                if "Medal of Tactics (MoT)" == award: # Special sorting correction for MoT.
+                    blue = [upgrades[0]]
+                    green = [upgrades[1]]
+                    red = [upgrades[2]]
+                    upgrades = blue + red + green
+
+                for upgrade in upgrades: # Medals that don't require reversing.
                     if upgrade[quantity] != 0:
                         for section in self.ribbonConfig.sections():
                             for option in self.ribbonConfig.options(section):
