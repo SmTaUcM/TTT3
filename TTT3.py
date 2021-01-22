@@ -2142,6 +2142,13 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                         half2 = upgrades[4 : ]
                         upgrades = half2 + half1
 
+                    if "Medal of Communication (MoC)" == award:
+                        highestMOC = ["name", 0]
+                        for upgrade in upgrades[::-1]:
+                            if upgrade[1] >= highestMOC[1]:
+                                highestMOC = upgrade
+                        upgrades = [highestMOC]
+
                 else:
                     upgrades = self.awards.get(award)["upgrades"]
 
