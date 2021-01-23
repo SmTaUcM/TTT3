@@ -133,7 +133,7 @@ class TTT3(QMainWindow):
             # ----- 'Medals, Ribbons and FCHG' Tab. -----
 
                     # List Widget Connections.
-            self.gui.lw_medals.itemClicked.connect(self.medalSelectionLogic)
+            self.gui.lw_medals.currentItemChanged.connect(self.medalSelectionLogic)
 
 
             # ----- Info Tab. -----
