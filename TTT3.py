@@ -202,6 +202,7 @@ class TTT3(QMainWindow):
 
             # ----- Application logic. -----
             self.fastRendering = False # Forces POV-Ray to render at a lower quality for quicker rendering during testing.
+            self.continueRender = True
             self.loadSettings()
             self.initialGUISetup()
         except Exception as e:
@@ -658,6 +659,8 @@ class TTT3(QMainWindow):
            directly call 'launchPOVRay' to open up PovRay and render the unirom.'''
 
         try:
+            self.continueRender = True
+
             # Check to see if the user has made the correct selections for their position and rank.
             if self.position in ["FM", "FL", "CMDR", "WC"] and self.gui.cb_eliteSqn.isChecked() == False:
                 if not self.ship or not self.wing:
@@ -682,7 +685,8 @@ class TTT3(QMainWindow):
             # Run PovRay to render a uniform.
             else:
                 self.createDressPov()
-                self.launchPOVRay("dress")
+                if self.continueRender:
+                    self.launchPOVRay("dress")
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -1305,8 +1309,18 @@ class TTT3(QMainWindow):
                     povData.append('object { %s }\n'%objectRef)
 
             elif "&RIBBONS&" in line:
-                for objectRef in self.buildRibbonObjects():
-                    povData.append('object { %s }\n'%objectRef)
+                objectRefs = self.buildRibbonObjects()
+
+                # Check to see if the user has selected 24 or less ribbons.
+                if len(objectRefs) > 24:
+                    self.continueRender = False
+                    # Show error message.
+                    msg = "You have selected more than 24 ribbons. Unfortunately TTT3 cannot make a uniform with more than 24 ribbons at this time.\n\n Please select less ribbon awards."
+                    return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+
+                else:
+                    for objectRef in objectRefs:
+                        povData.append('object { %s }\n'%objectRef)
 
 
             # ----- Non-Editable Data. -----
