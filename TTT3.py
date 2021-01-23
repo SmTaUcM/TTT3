@@ -32,6 +32,7 @@ from PIL import Image # python -m pip install pillow
 import cv2 # python -m pip install opencv-python
 import numpy
 import platform
+import pickle
 # python -m pip install pyinstaller - for compiler.
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -46,7 +47,7 @@ class TTT3(QMainWindow):
         try:
             # Version info.
             version = "3.00"
-            devVersion = "Alpha 11"
+            devVersion = "Alpha 12"
             date = "23 January 2021"
 
             # Initialise an instance of a QT Main Window and load our GUI file 'data\uis\ttt.ui'.
@@ -494,14 +495,15 @@ class TTT3(QMainWindow):
                     # Line Ranks.
                     elif radioButton == self.gui.rb_pos_lr:
                         self.showRanks(CT, GN)
-                        self.position = "NUL"
+                        self.position = "LR"
                         self.enableWingAndSqnTab(False)
                         break
 
                     # Flag Ranks.
                     elif radioButton == self.gui.rb_pos_fr:
                         self.showRanks(RA, GA)
-                        self.position = "NUL"
+                        self.position = "FR"
+                        self.enableWingAndSqnTab(False)
                         break
         except Exception as e:
             handleException(e)
@@ -1014,7 +1016,7 @@ class TTT3(QMainWindow):
 
         # Header text.
         position = ""
-        if self.position == "NUL":
+        if self.position == "NUL" or self.position == "LR" or self.position == "FR":
             position = "    "
         else:
             position = self.position + "/"
@@ -1099,7 +1101,7 @@ class TTT3(QMainWindow):
                 povData.append(line.replace("&CLOTH&", "0")) # TODO createDressPov() OpenGL CLOTH
 
             elif "&POSITION&" in line:
-                if self.position == "TRN":
+                if self.position == "TRN" or self.position == "LR" or self.position == "FR":
                     povData.append(line.replace("&POSITION&", "NUL"))
                 else:
                     povData.append(line.replace("&POSITION&", self.position))
@@ -1117,7 +1119,7 @@ class TTT3(QMainWindow):
             # ----- Assignment. -----
             elif "&CATEGORY&" in line:
 
-                if self.position == "NUL":
+                if self.position == "NUL" or self.position == "LR" or self.position == "FR":
                     povData.append(line.replace("&CATEGORY&", "reserve"))
 
                 elif self.rank in ["CT", "SL", "LT", "LCM", "CM", "CPT", "MAJ", "LC", "COL", "GN"]:
@@ -2395,6 +2397,8 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         '''Method event for when the 'New Profile' button is clicked.'''
 
         try:
+            self.gui.lw_medals.setCurrentRow(0) # Required to prevent bug of the user's last upgradeable type selection not showing.
+
             # PovRay Template variables.
             self.position = None
             self.rank = None
@@ -2445,7 +2449,78 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         '''Method event for when the 'Open Profile' button is clicked.'''
 
         try:
-            print("Clicked 'Open Profile'")
+            # Load the saved data file.
+            fileName = (self.loadUniformFileDialog())
+            if fileName:
+
+                with open(fileName, "rb") as dataFile:
+                    saveData = pickle.load(dataFile)
+
+                # Apply the saved settings.
+
+                    # Position.
+                self.position = saveData[0]
+                radioBtns = [self.gui.rb_pos_trn, self.gui.rb_pos_fm, self.gui.rb_pos_fl, self.gui.rb_pos_cmdr,
+                             self.gui.rb_pos_wc, self.gui.rb_pos_com, self.gui.rb_pos_tccs, self.gui.rb_pos_ia,
+                             self.gui.rb_pos_ca, self.gui.rb_pos_sgcom, self.gui.rb_pos_cs, self.gui.rb_pos_xo,
+                             self.gui.rb_pos_fc, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
+
+                if self.position:
+                    for radioButton in radioBtns:
+                        if self.position.lower() in radioButton.objectName():
+                            radioButton.setChecked(True)
+                    self.posRBLogic()
+
+                    # Ranks
+                self.rank = saveData[1]
+                radioBtns = [self.gui.rb_rank_ct, self.gui.rb_rank_sl, self.gui.rb_rank_lt, self.gui.rb_rank_lcm,
+                                self.gui.rb_rank_cm, self.gui.rb_rank_cpt, self.gui.rb_rank_maj, self.gui.rb_rank_lc,
+                                self.gui.rb_rank_col, self.gui.rb_rank_gn, self.gui.rb_rank_ra, self.gui.rb_rank_va,
+                                self.gui.rb_rank_ad, self.gui.rb_rank_fa, self.gui.rb_rank_ha, self.gui.rb_rank_sa,
+                                self.gui.rb_rank_ga]
+
+                if self.rank:
+                    for radioButton in radioBtns:
+                        if self.rank.lower() in radioButton.objectName():
+                            radioButton.setChecked(True)
+                    self.rankRBLogic()
+
+                    # Ship.
+                self.ship = saveData[2]
+                if self.ship:
+                    for row in range(self.gui.lw_ship.count()):
+                        self.gui.lw_ship.setCurrentRow(row)
+                        if self.gui.lw_ship.currentItem().text() == self.ship:
+                            break
+                    self.shipSelectionLogic(None)
+
+                    # Wing.
+                self.wing = saveData[3]
+                if self.wing:
+                    for row in range(self.gui.lw_wing.count()):
+                        self.gui.lw_wing.setCurrentRow(row)
+                        if self.gui.lw_wing.currentItem().text() == self.wing:
+                            break
+                    self.wingSelectionLogic(None)
+
+                    # Squadron.
+                self.gui.cb_eliteSqn.setChecked(saveData[4])
+                self.sqn = saveData[5]
+                if self.sqn:
+                    for row in range(self.gui.lw_squad.count()):
+                        self.gui.lw_squad.setCurrentRow(row)
+                        if self.gui.lw_squad.currentItem().text() == self.sqn:
+                            break
+                    self.squadSelectionLogic(None)
+
+                    # Medals & Awards.
+                self.awards = saveData[6]
+                self.deconflictNeckRibbons = saveData[7]
+                if self.gui.lw_medals.currentItem():
+                    self.medalSelectionLogic(self.gui.lw_medals.currentItem())
+
+                    # FCHG.
+                self.gui.cbFCHG.setCurrentText(saveData[8])
 
         except Exception as e:
             handleException(e)
@@ -2456,11 +2531,52 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         '''Method event for when the 'Save Profile' button is clicked.'''
 
         try:
-            print("Clicked 'Save Profile'")
+            # Collect the data to be saved into a list.
+            saveData = (self.position, self.rank, self.ship, self.wing, self.gui.cb_eliteSqn.isChecked(), self.sqn, self.awards, self.deconflictNeckRibbons,
+                        self.gui.cbFCHG.currentText())
+
+            # Save the data.
+            fileName = self.saveUniformFileDialog()
+            if fileName:
+                with open(fileName, "wb") as saveFile:
+                    pickle.dump(saveData, saveFile)
 
         except Exception as e:
             handleException(e)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def saveUniformFileDialog(self):
+        '''Method that opens a QT File Save dialog to save a uniform.'''
+
+        try:
+            options = QFileDialog.Options()
+            options |= QFileDialog.DontUseNativeDialog
+            fileName, _ = QFileDialog.getSaveFileName(self, "Save uniform settings", os.getcwd() + "\\settings\\untitled.ttt", "*.ttt", options=options)
+            if fileName:
+                if ".ttt" not in fileName:
+                    fileName = fileName + ".ttt"
+                return fileName
+
+        except Exception as e:
+            handleException(e)
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def loadUniformFileDialog(self):
+        '''Method that opens a QT File Open dialog to save a uniform.'''
+
+        try:
+            options = QFileDialog.Options()
+            options |= QFileDialog.DontUseNativeDialog
+            fileName, _ = QFileDialog.getOpenFileName(self, "Load uniform settings", os.getcwd() + "\\settings\\", "*.ttt", options=options)
+            if fileName:
+                fileName = fileName.replace(r"/", "\\")
+                return fileName
+
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -2469,7 +2585,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
 #                                                                      Functions.                                                                    #
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 def handleException(exception):
-    '''Method that will log all python exceptions to TTT3 Crash.log.'''
+    '''Function that will log all python exceptions to TTT3 Crash.log.'''
 
     # Capture the error and log to "TTT3 Crash.log"
     logging.error("\n\n-----Crash Information:-----")
@@ -2512,7 +2628,10 @@ def handleException(exception):
                     selectedAwards.append(award + " " + str(upgrades))
 
         # Current medal selection.
-    currentSelection = ttt3.gui.lw_medals.currentItem().text()
+    try:
+        currentSelection = ttt3.gui.lw_medals.currentItem().text()
+    except AttributeError:
+        currentSelection = "None"
 
         # Uniform selections.
     logging.error("\n" + settings + "\nPosition : " + str(ttt3.position) + "\nRank : " + str(ttt3.rank) + "\nShip : " + str(ttt3.ship) + \
