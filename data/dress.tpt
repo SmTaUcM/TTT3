@@ -124,9 +124,6 @@ camera
 #include "ribbons_g.inc"
 &FCHGINCLUDE&
 &SABERINCLUDE&
-&MOHINCLUDE&
-&OORINCLUDE&
-&ICGOEINCLUDE&
 &MEDALSINCLUDE&
   
 // SCENE
@@ -152,7 +149,6 @@ object { P_trim texture { T_trim } }
 object { P_patch texture { T_patch } no_shadow }
 &FCHG& 
 &SABER&
-&GOEDAGGER&
 &MEDALS&
 &RIBBONS& 
                 

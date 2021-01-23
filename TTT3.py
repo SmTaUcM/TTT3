@@ -1200,15 +1200,6 @@ class TTT3(QMainWindow):
             elif "&SABERINCLUDE&" in line:
                 povData.append(line.replace("&SABERINCLUDE&", "")) # TODO SABERINCLUDE
 
-            elif "&MOHINCLUDE&" in line:
-                povData.append(line.replace("&MOHINCLUDE&", "")) # TODO MOHINCLUDE
-
-            elif "&OORINCLUDE&" in line:
-                povData.append(line.replace("&OORINCLUDE&", "")) # TODO OORINCLUDE
-
-            elif "&ICGOEINCLUDE&" in line:
-                povData.append(line.replace("&ICGOEINCLUDE&", "")) # TODO ICGOEINCLUDE
-
             elif "&MEDALSINCLUDE&" in line:
                 for includeRef in self.buildMedalIncludes():
                     povData.append('#include "%s"\n'%includeRef)
@@ -1289,9 +1280,6 @@ class TTT3(QMainWindow):
             elif "&SABER&" in line:
                 povData.append(line.replace("&SABER&", "")) # TODO SABER
 
-            elif "&GOEDAGGER&" in line:
-                povData.append(line.replace("&GOEDAGGER&", "")) # TODO GOEDAGGER
-
             elif "&PAD&" in line:
                 if self.rank == "CT":
                     povData.append(line.replace("&PAD&", ""))
@@ -1349,7 +1337,7 @@ class TTT3(QMainWindow):
         elif ribbonCount > 20 and ribbonCount <= 24:
             return self.RANK_OFFSET_RIBBONS_21_TO_24[0]
         else:
-            return self.RANK_OFFSET_RIBBONS_21_TO_24[0] # TODO expansion of further ribbon slots.
+            return self.RANK_OFFSET_RIBBONS_21_TO_24[0]
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1369,7 +1357,7 @@ class TTT3(QMainWindow):
         elif ribbonCount > 20 and ribbonCount <= 24:
             return self.RANK_OFFSET_RIBBONS_21_TO_24[1]
         else:
-            return self.RANK_OFFSET_RIBBONS_21_TO_24[1] # TODO expansion of further ribbon slots.
+            return self.RANK_OFFSET_RIBBONS_21_TO_24[1]
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1567,7 +1555,6 @@ class TTT3(QMainWindow):
 
             # Add the medal name to the GUI.
             self.gui.lw_medals.addItem(self.medalConfig.get(medal, "name"))
-            # TODO Dynamic medals like ribbons below?
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -1644,7 +1631,6 @@ class TTT3(QMainWindow):
 
         with open("data\\ribbons_g.inc", "w") as ribbonFile:
             ribbonFile.write(ribbons_g)
-        # TODO Finish loadRibbons() to auto create medal_g.inc like in ribbons??
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -2197,7 +2183,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
     def ribbonNumberOrdering(self, ribbons):
         '''Method that arranged the awarded ribbons into the correct order.'''
 
-        ribbonObjects = [] # TODO over 23 to max ribbons (30) causes some medal &NUMS& to go negative.
+        ribbonObjects = []
         fullRows = int(len(ribbons) / 4)
         bottomRowNumCount = len(ribbons) % 4
         ribbonCounter = 24 - (fullRows * 4)
