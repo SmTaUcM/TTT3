@@ -1,3 +1,4 @@
+# -*- coding: latin-1 -*-
 '''#-------------------------------------------------------------------------------------------------------------------------------------------------#
 # Name:        TIE Corps Tailoring Tool v3
 # Purpose:     TTT is a tool to create Emperor's Hammer TIE Corps uniforms.

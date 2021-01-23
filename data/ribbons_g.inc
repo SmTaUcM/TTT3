@@ -166,6 +166,70 @@ texture
 }
 texture { T_unilayer scale 2}
 
+#declare T_r_tc_tcu_bronze =
+texture
+{
+  pigment { image_map { gif ".\ribbons\tc-tcu-bronze.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_tc_tcu_silver =
+texture
+{
+  pigment { image_map { gif ".\ribbons\tc-tcu-silver.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_tc_tcu_gold =
+texture
+{
+  pigment { image_map { gif ".\ribbons\tc-tcu-gold.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_tc_tcu_plat =
+texture
+{
+  pigment { image_map { gif ".\ribbons\tc-tcu-plat.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_tc_mu_bronze =
+texture
+{
+  pigment { image_map { gif ".\ribbons\tc-mu-bronze.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_tc_mu_silver =
+texture
+{
+  pigment { image_map { gif ".\ribbons\tc-mu-silver.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_tc_mu_gold =
+texture
+{
+  pigment { image_map { gif ".\ribbons\tc-mu-gold.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_tc_mu_plat =
+texture
+{
+  pigment { image_map { gif ".\ribbons\tc-mu-plat.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
 #declare T_r_is_bw =
 texture
 {
