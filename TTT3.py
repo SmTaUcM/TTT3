@@ -65,6 +65,9 @@ class TTT3(QMainWindow):
 
                     # Button Connections.
             self.gui.btn_dress.clicked.connect(self.btn_dressMethod)
+            self.gui.btn_newProf.clicked.connect(self.btn_newProfMethod)
+            self.gui.btn_openProf.clicked.connect(self.btn_openProfMethod)
+            self.gui.btn_saveProf.clicked.connect(self.btn_saveProfMethod)
             self.gui.btn_config.clicked.connect(self.btn_configMethod)
             self.gui.btn_exit.clicked.connect(self.closeEvent)
 
@@ -327,10 +330,6 @@ class TTT3(QMainWindow):
 
         # TODO Disabled Helmet UTFN.
         self.gui.btn_helmet.setEnabled(False)
-        # TODO Disabled Profiles UTFN.
-        self.gui.btn_newProf.setEnabled(False)
-        self.gui.btn_openProf.setEnabled(False)
-        self.gui.btn_saveProf.setEnabled(False)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -2379,16 +2378,88 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
 
 
     def btn_browseRosterFunc(self, event):
-        '''Method event for when 'QT' is clicked on the 'Info' tab.'''
+        '''Method event for when the 'Browse Fleet Roster' button is clicked on the 'Import' tab.'''
 
         os.system("start " + self.config.get("TCDB", "roster"))
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
     def btn_searchFunc(self, event):
-        '''Method event for when 'QT' is clicked on the 'Info' tab.'''
+        '''Method event for when the 'Personnel Search' button is clicked on the 'Import' tab.'''
 
         os.system("start " + self.config.get("TCDB", "search"))
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def btn_newProfMethod(self, event):
+        '''Method event for when the 'New Profile' button is clicked.'''
+
+        try:
+            # PovRay Template variables.
+            self.position = None
+            self.rank = None
+            self.name = "Unknown"
+            self.ship = ""
+            self.wing = ""
+            self.sqn = ""
+            self.awards = {}
+            self.deconflictNeckRibbons = False
+
+            # Configuration variables.
+            self.fleetConfig = None
+            self.medalConfig = None
+            self.ribbonConfig = None
+
+            # GUI variables.
+            self.subRibbonAwards = []
+            self.cb_singleMedalConnected = False
+            self.combo_topConnected = False
+            self.rb_upgradeablesConnected = False
+
+            # Application logic.
+            self.continueRender = True
+            self.gui.lw_medals.currentItemChanged.disconnect(self.medalSelectionLogic)
+            self.gui.lw_medals.clear()
+            self.initialGUISetup()
+            self.gui.lw_medals.currentItemChanged.connect(self.medalSelectionLogic)
+
+            # GUI Cleanup.
+                # Position Radio Buttons.
+            self.gui.rb_pos_trn.setChecked(True)
+            self.gui.rb_pos_trn.setAutoExclusive(False);
+            self.gui.rb_pos_trn.setChecked(False);
+            self.gui.rb_pos_trn.setAutoExclusive(True);
+                # Ship, Wing and Squadron ListWidgets.
+            self.enableWingAndSqnTab(False)
+
+            # Disable render buttons.
+            self.gui.btn_dress.setEnabled(False)
+            self.gui.btn_duty.setEnabled(False)
+
+        except Exception as e:
+            handleException(e)
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def btn_openProfMethod(self, event):
+        '''Method event for when the 'Open Profile' button is clicked.'''
+
+        try:
+            print("Clicked 'Open Profile'")
+
+        except Exception as e:
+            handleException(e)
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def btn_saveProfMethod(self, event):
+        '''Method event for when the 'Save Profile' button is clicked.'''
+
+        try:
+            print("Clicked 'Save Profile'")
+
+        except Exception as e:
+            handleException(e)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
