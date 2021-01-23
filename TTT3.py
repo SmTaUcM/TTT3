@@ -46,8 +46,8 @@ class TTT3(QMainWindow):
         try:
             # Version info.
             version = "3.00"
-            devVersion = "Alpha 10"
-            date = "22 January 2021"
+            devVersion = "Alpha 11"
+            date = "23 January 2021"
 
             # Initialise an instance of a QT Main Window and load our GUI file 'data\uis\ttt.ui'.
             QMainWindow.__init__(self)
