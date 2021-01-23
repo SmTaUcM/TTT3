@@ -137,6 +137,10 @@ class TTT3(QMainWindow):
             self.gui.lw_medals.currentItemChanged.connect(self.medalSelectionLogic)
 
 
+            # ----- 'Import' Tab. -----
+            self.gui.btn_browseRoster.clicked.connect(self.btn_browseRosterFunc)
+            self.gui.btn_search.clicked.connect(self.btn_searchFunc)
+
             # ----- Info Tab. -----
 
                     # 'Info' Tab Hyperlinks.
@@ -2372,6 +2376,20 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
 
         self.sb_masterLogic(7, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def btn_browseRosterFunc(self, event):
+        '''Method event for when 'QT' is clicked on the 'Info' tab.'''
+
+        os.system("start " + self.config.get("TCDB", "roster"))
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def btn_searchFunc(self, event):
+        '''Method event for when 'QT' is clicked on the 'Info' tab.'''
+
+        os.system("start " + self.config.get("TCDB", "search"))
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
