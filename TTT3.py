@@ -22,14 +22,14 @@ import sys
 import os
 import ctypes
 import configparser
-import psutil # python -m pip install psutil
+import psutil  # python -m pip install psutil
 import time
 import datetime
 import winreg
-from PyQt5 import uic # python -m pip install pyqt5
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog # python -m pip install pyqt5-tools
-from PIL import Image # python -m pip install pillow
-import cv2 # python -m pip install opencv-python
+from PyQt5 import uic  # python -m pip install pyqt5
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog  # python -m pip install pyqt5-tools
+from PIL import Image  # python -m pip install pillow
+import cv2  # python -m pip install opencv-python
 import numpy
 import platform
 import pickle
@@ -38,6 +38,8 @@ import pickle
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                      Classes.                                                                      #
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
 class TTT3(QMainWindow):
     '''Main object class representing the TTT3 application.'''
 
@@ -62,9 +64,9 @@ class TTT3(QMainWindow):
 
             # ---------- Initialise instance variables and connections. ----------
 
-                # ----- Main Graphical User Interface. -----
+            # ----- Main Graphical User Interface. -----
 
-                    # Button Connections.
+            # Button Connections.
             self.gui.btn_dress.clicked.connect(self.btn_dressMethod)
             self.gui.btn_duty.clicked.connect(self.btn_dutyMethod)
             self.gui.btn_newProf.clicked.connect(self.btn_newProfMethod)
@@ -73,11 +75,11 @@ class TTT3(QMainWindow):
             self.gui.btn_config.clicked.connect(self.btn_configMethod)
             self.gui.btn_exit.clicked.connect(self.closeEvent)
 
-                # ----- 'Position and Rank' Tab. -----
+            # ----- 'Position and Rank' Tab. -----
 
-                    # Radio Button Connections.
+            # Radio Button Connections.
 
-                        # Positions.
+            # Positions.
             self.gui.rb_pos_trn.clicked.connect(self.posRBLogic)
             self.gui.rb_pos_fm.clicked.connect(self.posRBLogic)
             self.gui.rb_pos_fl.clicked.connect(self.posRBLogic)
@@ -94,8 +96,7 @@ class TTT3(QMainWindow):
             self.gui.rb_pos_lr.clicked.connect(self.posRBLogic)
             self.gui.rb_pos_fr.clicked.connect(self.posRBLogic)
 
-
-                        # Ranks.
+            # Ranks.
             self.gui.rb_rank_ct.clicked.connect(self.rankRBLogic)
             self.gui.rb_rank_sl.clicked.connect(self.rankRBLogic)
             self.gui.rb_rank_lt.clicked.connect(self.rankRBLogic)
@@ -114,8 +115,7 @@ class TTT3(QMainWindow):
             self.gui.rb_rank_sa.clicked.connect(self.rankRBLogic)
             self.gui.rb_rank_ga.clicked.connect(self.rankRBLogic)
 
-
-                        # Radio Button lists.
+            # Radio Button lists.
             self.rankRadioButtons = [self.gui.rb_rank_ct, self.gui.rb_rank_sl, self.gui.rb_rank_lt, self.gui.rb_rank_lcm, self.gui.rb_rank_cm,
                                      self.gui.rb_rank_cpt, self.gui.rb_rank_maj, self.gui.rb_rank_lc, self.gui.rb_rank_col, self.gui.rb_rank_gn,
                                      self.gui.rb_rank_ra, self.gui.rb_rank_va, self.gui.rb_rank_ad, self.gui.rb_rank_fa, self.gui.rb_rank_ha,
@@ -125,22 +125,19 @@ class TTT3(QMainWindow):
                                          self.gui.rb_pos_com, self.gui.rb_pos_tccs, self.gui.rb_pos_ia, self.gui.rb_pos_ca, self.gui.rb_pos_sgcom,
                                          self.gui.rb_pos_cs, self.gui.rb_pos_xo, self.gui.rb_pos_fc, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
 
+            # ----- 'Wing and Squadron' Tab. -----
 
-                # ----- 'Wing and Squadron' Tab. -----
-
-                    # List Widget Connections.
+            # List Widget Connections.
             self.gui.lw_ship.itemClicked.connect(self.shipSelectionLogic)
             self.gui.lw_wing.itemClicked.connect(self.wingSelectionLogic)
             self.gui.lw_squad.itemClicked.connect(self.squadSelectionLogic)
-                    # CheckBox.
+            # CheckBox.
             self.gui.cb_eliteSqn.stateChanged.connect(self.eliteSqnSelectionLogic)
-
 
             # ----- 'Medals, Ribbons and FCHG' Tab. -----
 
-                    # List Widget Connections.
+            # List Widget Connections.
             self.gui.lw_medals.currentItemChanged.connect(self.medalSelectionLogic)
-
 
             # ----- 'Import' Tab. -----
             self.gui.btn_browseRoster.clicked.connect(self.btn_browseRosterFunc)
@@ -148,7 +145,7 @@ class TTT3(QMainWindow):
 
             # ----- Info Tab. -----
 
-                    # 'Info' Tab Hyperlinks.
+            # 'Info' Tab Hyperlinks.
             self.gui.lbl_readme.mouseReleaseEvent = self.readmeLink
             self.gui.lbl_email.mouseReleaseEvent = self.ioLink
             self.gui.lbl_tcpm.mouseReleaseEvent = self.tcpmLink
@@ -163,7 +160,6 @@ class TTT3(QMainWindow):
             self.gui.lbl_io.mouseReleaseEvent = self.ioLink
             self.gui.label_11.mouseReleaseEvent = self.eeLink
             self.gui.label_10.mouseReleaseEvent = self.devModeLink
-
 
             # ----- POV-Ray Variables. -----
 
@@ -180,7 +176,7 @@ class TTT3(QMainWindow):
             self.deconflictNeckRibbons = False
 
             # PovRay Template Constants.
-            self.RANK_OFFSET_RIBBONS_00_TO_08 = ["-18.8939990997314,0.351000010967255,7.92899990081787", # Rotate
+            self.RANK_OFFSET_RIBBONS_00_TO_08 = ["-18.8939990997314,0.351000010967255,7.92899990081787",  # Rotate
                                                  "51.3199996948242,-131.973007202148,213.126998901367"]  # Translate
 
             self.RANK_OFFSET_RIBBONS_09_TO_12 = ["-18.8939990997314,0.351000010967255,7.92899990081787",
@@ -201,16 +197,14 @@ class TTT3(QMainWindow):
             self.medalConfig = None
             self.ribbonConfig = None
 
-
             # ----- GUI variables. -----
             self.subRibbonAwards = []
             self.cb_singleMedalConnected = False
             self.combo_topConnected = False
             self.rb_upgradeablesConnected = False
 
-
             # ----- Application logic. -----
-            self.fastRendering = False # Forces POV-Ray to render at a lower quality for quicker rendering during testing.
+            self.fastRendering = False  # Forces POV-Ray to render at a lower quality for quicker rendering during testing.
             self.continueRender = True
             self.loadSettings()
             self.initialGUISetup()
@@ -218,13 +212,11 @@ class TTT3(QMainWindow):
             handleException(e)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def readmeLink(self, event):
         '''Method event for when 'TTT3readme.htm' is clicked on the 'Info' tab.'''
 
         os.system("start TTT3_readme.htm")
     #------------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def ioLink(self, event):
         '''Method event for when 'Internet Office' is clicked on the 'Info' tab.'''
@@ -232,13 +224,11 @@ class TTT3(QMainWindow):
         os.system("start https://ehnet.org/")
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def tcpmLink(self, event):
         '''Method event for when 'TIE Corps Pilot Manual' is clicked on the 'Info' tab.'''
 
         os.system("start https://tc.emperorshammer.org/downloads/TCPM.pdf")
     #------------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def uniformsLink(self, event):
         '''Method event for when 'TIE Corps Personnel Uniforms' is clicked on the 'Info' tab.'''
@@ -246,13 +236,11 @@ class TTT3(QMainWindow):
         os.system("start https://tc.emperorshammer.org/uniforms.php")
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def pythonLink(self, event):
         '''Method event for when 'Python' is clicked on the 'Info' tab.'''
 
         os.system("start https://www.python.org/about/")
     #------------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def qtLink(self, event):
         '''Method event for when 'QT' is clicked on the 'Info' tab.'''
@@ -260,13 +248,11 @@ class TTT3(QMainWindow):
         os.system("start https://www.qt.io/")
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def povrayLink(self, event):
         '''Method event for when 'POV-Ray' is clicked on the 'Info' tab.'''
 
         os.system("start http://www.povray.org/")
     #------------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def eeLink(self, event):
         '''Method event for ee.'''
@@ -279,7 +265,6 @@ class TTT3(QMainWindow):
         except Exception as e:
             handleException(e)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def devModeLink(self, event):
         '''Method event for ee.'''
@@ -294,7 +279,6 @@ class TTT3(QMainWindow):
             handleException(e)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def closeEvent(self, event):
         '''Method that overloads the self.gui close event and the application.'''
 
@@ -303,7 +287,6 @@ class TTT3(QMainWindow):
             os.remove("TTT3 Crash.log")
         sys.exit()
     #------------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def initialGUISetup(self):
         '''Method that sets the application's GUI for initial use.
@@ -334,7 +317,6 @@ class TTT3(QMainWindow):
         self.gui.btn_helmet.setEnabled(False)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def posRBLogic(self):
         '''Method that controls the Position Radio Button Logic - Showing or hiding the required rank options.'''
 
@@ -355,27 +337,27 @@ class TTT3(QMainWindow):
             # Initialise method constants.
             # Ranks:
                 # Line Ranks.
-            CT  = 0
-            SL  = 1
-            LT  = 2
+            CT = 0
+            SL = 1
+            LT = 2
             LCM = 3
-            CM  = 4
+            CM = 4
             CPT = 5
             MAJ = 6
-            LC  = 7
+            LC = 7
             COL = 8
-            GN  = 9
-                # Flag Ranks
-            RA  = 10
-            VA  = 11
-            AD  = 12
-            FA  = 13
-            HA  = 14
-            SA  = 15
-            GA  = 16
+            GN = 9
+            # Flag Ranks
+            RA = 10
+            VA = 11
+            AD = 12
+            FA = 13
+            HA = 14
+            SA = 15
+            GA = 16
 
             # Enable all options from the 'Wing and Squadron' Tab.
-            if self.gui.cb_eliteSqn.isChecked() == False: # Stops the ship and wing tabs from repopulating if 'Elite Squadron' is checked.
+            if self.gui.cb_eliteSqn.isChecked() == False:  # Stops the ship and wing tabs from repopulating if 'Elite Squadron' is checked.
                 self.enableWingAndSqnTab(True)
 
             # Clean up the ranks group box.
@@ -638,7 +620,6 @@ class TTT3(QMainWindow):
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def hideAllRanks(self):
         '''Method used to hide all rank radio buttons on the 'Position and Rank' tab.'''
 
@@ -648,15 +629,13 @@ class TTT3(QMainWindow):
         self.rank = None
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def showRanks(self, rankMin, rankMax):
         '''Method used to show a range of ranks in the 'Position and Rank' tab.
            self.showRanks(int(rankMin), int(rankMax)) -> Rank Radio Buttons shown.'''
 
-        for rankRadioButton in self.rankRadioButtons[rankMin : rankMax + 1]: # + 1 because Python doesn't include the last item when indexing.
+        for rankRadioButton in self.rankRadioButtons[rankMin: rankMax + 1]:  # + 1 because Python doesn't include the last item when indexing.
             rankRadioButton.show()
         #----------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def btn_dressMethod(self):
         '''Method that is triggered when the 'Dress Uniform' button is clicked.
@@ -675,7 +654,7 @@ class TTT3(QMainWindow):
                     self.createDressPov()
                     self.launchPOVRay("dress")
 
-            elif self.gui.cb_eliteSqn.isChecked() == True and not self.sqn:
+            elif self.gui.cb_eliteSqn.isChecked() and not self.sqn:
                 msg = "Error: As an elite pilot you need to specify a squadron before a dress uniform can be created."
                 return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
 
@@ -696,7 +675,6 @@ class TTT3(QMainWindow):
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def btn_dutyMethod(self):
         '''Method that is triggered when the 'Duty Uniform' button is clicked.
            This method will check that the correct selections has been made within TTT3 such as Ship and Squadron and then
@@ -709,7 +687,6 @@ class TTT3(QMainWindow):
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def launchPOVRay(self, uniform):
         '''Method that dynamically writes data\batch\povray.bat and invisible.vbs to silently launch POV-Ray with the correct paths.
            data\batch\povray.bat and invisible.vbs are delete after POV-Ray is closed.
@@ -719,7 +696,7 @@ class TTT3(QMainWindow):
         try:
             os.mkdir("data\\batch")
         except WindowsError:
-            pass # Direcory already exists.
+            pass  # Direcory already exists.
 
         # Dynamically write the 'data\batch\povray.bat' file.
             # Set the correct paths based on where TTT3 is located and the TTT3.ini settings file.
@@ -737,15 +714,15 @@ class TTT3(QMainWindow):
 
         template = template.replace("&TYPE&", uniform)
 
-            # Write the 'data\batch\povray.bat' file.
+        # Write the 'data\batch\povray.bat' file.
         with open(r"data\batch\povray.bat", "w") as dataFile:
             dataFile.write(template)
 
         # Dynamically write the 'data\batch\invisible.vbs' file.
             # Set the correct paths based on where TTT3 is located.
         template = [r'Set WshShell = CreateObject("WScript.Shell")' + "\n",
-                     r'WshShell.Run chr(34) & "&PATH&\data\batch\povray.bat" & Chr(34), 0' + "\n",
-                     r'Set WshShell = Nothing']
+                    r'WshShell.Run chr(34) & "&PATH&\data\batch\povray.bat" & Chr(34), 0' + "\n",
+                    r'Set WshShell = Nothing']
         output = []
 
         for line in template:
@@ -782,11 +759,10 @@ class TTT3(QMainWindow):
         os.system(r"data\{uniformType}.png".format(uniformType=uniform))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def povrayMonitor(self):
         '''Monitors for povray running in the background and signals when it has closed.'''
 
-        time.sleep(0.1) # Allow some time for POV-Ray to open.
+        time.sleep(0.1)  # Allow some time for POV-Ray to open.
         povRunning = True
 
         while povRunning:
@@ -801,31 +777,28 @@ class TTT3(QMainWindow):
                     p = psutil.Process(list[i])
                     if p.cmdline()[0].find("pvengine64.exe") != -1 or p.cmdline()[0].find("pvengine.exe") != -1:
                         povRunning = True
-                        break;
-                except:
+                        break
+                except BaseException:
                     pass
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def convertImage(self, uniform):
         '''Comnverts a given .bpf file into .jpg, .gif or .png'''
 
-        path = r"data\%s"%uniform
+        path = r"data\%s" % uniform
         img = Image.open(path + ".bmp")
-        new_img = img.resize( (640, 853) )
-        new_img.save( path + ".png", 'png')
+        new_img = img.resize((640, 853))
+        new_img.save(path + ".png", 'png')
 ##        new_img.save( path + ".jpg", 'jpeg')
 ##        new_img.save( path + ".gif", 'gif')
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def loadSettings(self):
-        '''Method that reads in 'settings\TT3.ini' and stores the data as a configparser object.'''
+        r'''Method that reads in 'settings\TT3.ini' and stores the data as a configparser object.'''
 
         self.config = configparser.ConfigParser()
-        self.config.read("settings\TTT3.ini")
+        self.config.read(r"settings\TTT3.ini")
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def applySettings(self):
         '''Method that applies the settings to the 'Configuration' window.'''
@@ -849,14 +822,12 @@ class TTT3(QMainWindow):
         self.config_gui.le_search.setText(self.config.get("TCDB", "search"))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def saveSettings(self):
-        '''Method that saves the user's settings to 'settings\TT3.ini'.'''
+        r'''Method that saves the user's settings to 'settings\TT3.ini'.'''
 
         with open(r"settings\TTT3.ini", "w") as settingsFile:
             self.config.write(settingsFile)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def btn_configMethod(self):
         '''Method that opens and handles control of the 'Configuration' window.'''
@@ -883,7 +854,6 @@ class TTT3(QMainWindow):
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def config_rb_reg_logic(self, value=None):
         '''Method that controls what happens within the 'Configuration' window if a 'POV' radio button is clicked.'''
 
@@ -903,7 +873,6 @@ class TTT3(QMainWindow):
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def config_rb_specific_logic(self, value=None):
         '''Method that controls what happens within the 'Configuration' window if a 'POV' radio button is clicked.'''
 
@@ -922,7 +891,6 @@ class TTT3(QMainWindow):
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def config_btn_ok_method(self):
         '''Method that handles the functionality when the 'OK' button is pressed within  the 'Configuration' screen.'''
 
@@ -931,7 +899,7 @@ class TTT3(QMainWindow):
             if self.config.get("POV-Ray", "detection_mode") == "specific":
 
                 if not os.path.exists(self.config_gui.le_specPath.text()):
-                    msg = "Cannot find valid installion of POV-Ray-Ray at:\n\n%s"%str(self.config_gui.le_specPath.text())
+                    msg = "Cannot find valid installion of POV-Ray-Ray at:\n\n%s" % str(self.config_gui.le_specPath.text())
                     return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
 
                 else:
@@ -954,7 +922,6 @@ class TTT3(QMainWindow):
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def getPathFromRegistry(self):
         '''Method to detect the installation path of POV-Ray from the Windows registry using the provided options..'''
 
@@ -966,7 +933,7 @@ class TTT3(QMainWindow):
             try:
                 # Obtain the path to POV-Ray.
                 aKey = "Software\\POV-Ray\\v" + str(version) + "\\Windows\\"
-                values = winreg.OpenKey(winreg.HKEY_CURRENT_USER, aKey,  0, winreg.KEY_READ)
+                values = winreg.OpenKey(winreg.HKEY_CURRENT_USER, aKey, 0, winreg.KEY_READ)
                 path = winreg.QueryValueEx(values, "Home")[0]
 
             except WindowsError:
@@ -1002,14 +969,14 @@ class TTT3(QMainWindow):
         return path
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def config_browse(self):
         '''Method that allows the user to select an executable file from a file picker.'''
 
         try:
             options = QFileDialog.Options()
             options |= QFileDialog.DontUseNativeDialog
-            fileName, _ = QFileDialog.getOpenFileName(self, "Browse for POV-Ray Installation", "C:\\","pvengine64.exe;;pvengine.exe", options=options)
+            fileName, _ = QFileDialog.getOpenFileName(self, "Browse for POV-Ray Installation", "C:\\",
+                                                      "pvengine64.exe;;pvengine.exe", options=options)
             if fileName:
                 fileName = fileName.replace(r"/", "\\")
                 self.config_gui.le_specPath.setText(fileName)
@@ -1017,9 +984,8 @@ class TTT3(QMainWindow):
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def createDressPov(self):
-        '''Method that loads in '\data\dress.tpt' parses in the correct uniform data and creates a new 'data\dress.pov' file.'''
+        r'''Method that loads in '\data\dress.tpt' parses in the correct uniform data and creates a new 'data\dress.pov' file.'''
 
         quantity = 1
 
@@ -1076,29 +1042,26 @@ class TTT3(QMainWindow):
 
             # ----- Global. -----
             if "&BGCOLOUR&" in line:
-                povData.append(line.replace("&BGCOLOUR&", "0, 0, 0")) # TODO createDressPov() BGCOLOUR
-
+                povData.append(line.replace("&BGCOLOUR&", "0, 0, 0"))  # TODO createDressPov() BGCOLOUR
 
             # ----- Light. -----
 
             elif "&LIGHT&" in line:
-                povData.append(line.replace("&LIGHT&", "1518.5, -647.4, 1750.1")) # TODO createDressPov() OpenGL BGCOLOUR
+                povData.append(line.replace("&LIGHT&", "1518.5, -647.4, 1750.1"))  # TODO createDressPov() OpenGL BGCOLOUR
 
             elif "&SPOTLIGHTCOLOUR&" in line:
-                povData.append(line.replace("&SPOTLIGHTCOLOUR&", "1, 1, 1")) # TODO createDressPov() OpenGL SPOTLIGHTCOLOUR
+                povData.append(line.replace("&SPOTLIGHTCOLOUR&", "1, 1, 1"))  # TODO createDressPov() OpenGL SPOTLIGHTCOLOUR
 
             elif "&SHADOWLESS&" in line:
-                povData.append(line.replace("&SHADOWLESS&", "")) # TODO createDressPov() OpenGL SHADOWLESS
-
+                povData.append(line.replace("&SHADOWLESS&", ""))  # TODO createDressPov() OpenGL SHADOWLESS
 
             # ----- Camera. -----
 
             elif "&CAMERA&" in line:
-                povData.append(line.replace("&CAMERA&", "-260.8, -1331.1, 209.0")) # TODO createDressPov() OpenGL CAMERA
+                povData.append(line.replace("&CAMERA&", "-260.8, -1331.1, 209.0"))  # TODO createDressPov() OpenGL CAMERA
 
             elif "&TARGET&" in line:
-                povData.append(line.replace("&TARGET&", "0, -12.8, 2.8")) # TODO createDressPov() OpenGL TARGET
-
+                povData.append(line.replace("&TARGET&", "0, -12.8, 2.8"))  # TODO createDressPov() OpenGL TARGET
 
             # ----- Basic Info. -----
             elif "&EE&" in line:
@@ -1111,7 +1074,7 @@ class TTT3(QMainWindow):
                     povData.append(line.replace("&EE&", ""))
 
             elif "&CLOTH&" in line:
-                povData.append(line.replace("&CLOTH&", "0")) # TODO createDressPov() OpenGL CLOTH
+                povData.append(line.replace("&CLOTH&", "0"))  # TODO createDressPov() OpenGL CLOTH
 
             elif "&POSITION&" in line:
                 if self.position == "TRN" or self.position == "LR" or self.position == "FR":
@@ -1128,7 +1091,6 @@ class TTT3(QMainWindow):
             elif "&RANKTRANSLATE&" in line:
                 povData.append(line.replace("&RANKTRANSLATE&", self.getRankTranslateOffset()))
 
-
             # ----- Assignment. -----
             elif "&CATEGORY&" in line:
 
@@ -1140,7 +1102,6 @@ class TTT3(QMainWindow):
 
                 else:
                     povData.append(line.replace("&CATEGORY&", "flag"))
-
 
             elif "&SHIP&" in line:
                 povData.append(line.replace("&SHIP&", self.ship))
@@ -1172,8 +1133,7 @@ class TTT3(QMainWindow):
                     povData.append(line.replace("&TRIMCOLOUR&", "blue"))
 
                 else:
-                    povData.append(line.replace("&TRIMCOLOUR&", "black")) # TODO Automate trim colouring so not hard coded.
-
+                    povData.append(line.replace("&TRIMCOLOUR&", "black"))  # TODO Automate trim colouring so not hard coded.
 
             # ----- Medals. -----
             elif "&MABGS&" in line:
@@ -1196,7 +1156,6 @@ class TTT3(QMainWindow):
                 num = self.awards.get("Imperial Security Medal (ISM)")["upgrades"][quantity]
                 povData.append(line.replace("&MABISM&", str(int(num) - 1)))
 
-
             # ----- Other. -----
 
             elif "&PADINCLUDE&" in line:
@@ -1216,12 +1175,11 @@ class TTT3(QMainWindow):
                     povData.append(line.replace("&FCHGINCLUDE&", ""))
 
             elif "&SABERINCLUDE&" in line:
-                povData.append(line.replace("&SABERINCLUDE&", "")) # TODO SABERINCLUDE
+                povData.append(line.replace("&SABERINCLUDE&", ""))  # TODO SABERINCLUDE
 
             elif "&MEDALSINCLUDE&" in line:
                 for includeRef in self.buildMedalIncludes():
-                    povData.append('#include "%s"\n'%includeRef)
-
+                    povData.append('#include "%s"\n' % includeRef)
 
             # ----- Scene. -----
 
@@ -1292,11 +1250,10 @@ class TTT3(QMainWindow):
 
                 else:
                     pass
-                #------------------------------------------------------------
-
+                # ------------------------------------------------------------
 
             elif "&SABER&" in line:
-                povData.append(line.replace("&SABER&", "")) # TODO SABER
+                povData.append(line.replace("&SABER&", ""))  # TODO SABER
 
             elif "&PAD&" in line:
                 if self.rank == "CT":
@@ -1312,7 +1269,7 @@ class TTT3(QMainWindow):
 
             elif "&MEDALS&" in line:
                 for objectRef in self.buildMedalObjects():
-                    povData.append('object { %s }\n'%objectRef)
+                    povData.append('object { %s }\n' % objectRef)
 
             elif "&RIBBONS&" in line:
                 objectRefs = self.buildRibbonObjects()
@@ -1326,8 +1283,7 @@ class TTT3(QMainWindow):
 
                 else:
                     for objectRef in objectRefs:
-                        povData.append('object { %s }\n'%objectRef)
-
+                        povData.append('object { %s }\n' % objectRef)
 
             # ----- Non-Editable Data. -----
             else:
@@ -1338,9 +1294,8 @@ class TTT3(QMainWindow):
             povFile.writelines(povData)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def createDutyPov(self):
-        '''Method that loads in '\data\duty.tpt' parses in the correct uniform data and creates a new 'data\duty.pov' file.'''
+        r'''Method that loads in '\data\duty.tpt' parses in the correct uniform data and creates a new 'data\duty.pov' file.'''
 
         quantity = 1
 
@@ -1397,42 +1352,39 @@ class TTT3(QMainWindow):
 
             # ----- Global. -----
             if "&BGCOLOUR&" in line:
-                povData.append(line.replace("&BGCOLOUR&", "0, 0, 0")) # TODO createDressPov() BGCOLOUR
-
+                povData.append(line.replace("&BGCOLOUR&", "0, 0, 0"))  # TODO createDressPov() BGCOLOUR
 
             # ----- Light. -----
 
             elif "&LIGHT&" in line:
-                povData.append(line.replace("&LIGHT&", "1518.5, -647.4, 1750.1")) # TODO createDressPov() OpenGL BGCOLOUR
+                povData.append(line.replace("&LIGHT&", "1518.5, -647.4, 1750.1"))  # TODO createDressPov() OpenGL BGCOLOUR
 
             elif "&SPOTLIGHTCOLOUR&" in line:
-                povData.append(line.replace("&SPOTLIGHTCOLOUR&", "1, 1, 1")) # TODO createDressPov() OpenGL SPOTLIGHTCOLOUR
+                povData.append(line.replace("&SPOTLIGHTCOLOUR&", "1, 1, 1"))  # TODO createDressPov() OpenGL SPOTLIGHTCOLOUR
 
             elif "&SHADOWLESS&" in line:
-                povData.append(line.replace("&SHADOWLESS&", "")) # TODO createDressPov() OpenGL SHADOWLESS
+                povData.append(line.replace("&SHADOWLESS&", ""))  # TODO createDressPov() OpenGL SHADOWLESS
 
             elif "&ENVLIGHTCOLOUR&" in line:
-                povData.append(line.replace("&ENVLIGHTCOLOUR&", "0.501, 0.462, 0.423")) # TODO createDressPov() OpenGL ENVLIGHTCOLOUR
-
+                povData.append(line.replace("&ENVLIGHTCOLOUR&", "0.501, 0.462, 0.423"))  # TODO createDressPov() OpenGL ENVLIGHTCOLOUR
 
             # ----- Camera. -----
 
             elif "&CAMERA&" in line:
-                povData.append(line.replace("&CAMERA&", "-260.8, -1331.1, 209.0")) # TODO createDressPov() OpenGL CAMERA
+                povData.append(line.replace("&CAMERA&", "-260.8, -1331.1, 209.0"))  # TODO createDressPov() OpenGL CAMERA
 
             elif "&TARGET&" in line:
-                povData.append(line.replace("&TARGET&", "0, -12.8, 2.8")) # TODO createDressPov() OpenGL TARGET
-
+                povData.append(line.replace("&TARGET&", "0, -12.8, 2.8"))  # TODO createDressPov() OpenGL TARGET
 
             # ----- Basic Info. -----
             elif "&CLOTH&" in line:
-                povData.append(line.replace("&CLOTH&", "0")) # TODO createDressPov() OpenGL CLOTH
+                povData.append(line.replace("&CLOTH&", "0"))  # TODO createDressPov() OpenGL CLOTH
 
             elif "&POSITION&" in line:
                 if self.position == "TRN" or self.position == "LR" or self.position == "FR":
                     povData.append(line.replace("&POSITION&", ""))
                 else:
-                    povData.append(line.replace("&POSITION&", "object { P_%s }"%self.position))
+                    povData.append(line.replace("&POSITION&", "object { P_%s }" % self.position))
 
             elif "&RANK&" in line:
                 povData.append(line.replace("&RANK&", self.rank))
@@ -1443,7 +1395,6 @@ class TTT3(QMainWindow):
             elif "&RANKTRANSLATE&" in line:
                 povData.append(line.replace("&RANKTRANSLATE&", self.getRankTranslateOffset()))
 
-
             # ----- Non-Editable Data. -----
             else:
                 povData.append(line)
@@ -1452,7 +1403,6 @@ class TTT3(QMainWindow):
         with open(r"data\duty.pov", "w") as povFile:
             povFile.writelines(povData)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def getRankRotateOffset(self):
         '''Method that returns the correct rank rotate value for the user's medal and ribbon selections.'''
@@ -1473,7 +1423,6 @@ class TTT3(QMainWindow):
             return self.RANK_OFFSET_RIBBONS_21_TO_24[0]
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def getRankTranslateOffset(self):
         '''Method that returns the correct rank rotate value for the user's medal and ribbon selections.'''
 
@@ -1492,7 +1441,6 @@ class TTT3(QMainWindow):
         else:
             return self.RANK_OFFSET_RIBBONS_21_TO_24[1]
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def getRibbonAwardCount(self):
         '''Method that returns the number of indicidual ribbons that the user has selected.'''
@@ -1518,7 +1466,6 @@ class TTT3(QMainWindow):
         return ribbonCount
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def createPatchMask(self):
         '''Method that will create a mask file for the desired squadron patch.'''
 
@@ -1531,10 +1478,10 @@ class TTT3(QMainWindow):
             # Get mask from alpha channel.
             mask = img[:, :, 3]
             # Save the mask.
-            fileName = fileName.replace(".png","_mask.png")
+            fileName = fileName.replace(".png", "_mask.png")
             cv2.imwrite(fileName, mask)
 
-        except IndexError: # Bacground likely not transparent. Doesn't need a transparent background but does not work well with high color / shaded patches.
+        except IndexError:  # Bacground likely not transparent. Doesn't need a transparent background but does not work well with high color / shaded patches.
             # Alternate Mask creation.
             image = cv2.imread(fileName)
             mask = numpy.ones(image.shape, dtype=numpy.uint8) * 255
@@ -1545,10 +1492,9 @@ class TTT3(QMainWindow):
                 cv2.drawContours(mask, [c], -1, (0, 0, 0), cv2.FILLED)
             mask = cv2.bitwise_not(mask)
             # Save the mask.
-            fileName = fileName.replace(".png","_mask.png")
+            fileName = fileName.replace(".png", "_mask.png")
             cv2.imwrite(fileName, mask)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def shipSelectionLogic(self, value):
         '''Method that handles the actions once a ship is selected from the 'Ship' section in the 'Wing and Squadron' tab.'''
@@ -1561,7 +1507,8 @@ class TTT3(QMainWindow):
                 # Save the selected option.
                 self.ship = self.gui.lw_ship.currentItem().text()
 
-                if self.position not in ["TRN", "COM", "TCCS", "IA", "CA", "SGCOM", "CS", "XO", "FC"]: # Stops Wings and Squadrons showing for COMs and above.
+                if self.position not in ["TRN", "COM", "TCCS", "IA", "CA", "SGCOM", "CS",
+                                         "XO", "FC"]:  # Stops Wings and Squadrons showing for COMs and above.
 
                     # Populate the 'Wing' List Widget with the Wings for the selected Ship.
                     for wing in self.fleetConfig.options(str(self.gui.lw_ship.currentItem().text())):
@@ -1569,16 +1516,15 @@ class TTT3(QMainWindow):
                     self.wingSelectionLogic(None)
 
                 else:
-                    if self.position not in ["COM"]: # Stops Ship List Widget from being cleared.
+                    if self.position not in ["COM"]:  # Stops Ship List Widget from being cleared.
                         self.gui.lw_ship.clear()
                     self.gui.lw_wing.clear()
 
             except AttributeError:
-                pass # Prevents the application throwing an error when the 'Ship' List Widget is clears and tries to populate wings from a 'blank' ship.
+                pass  # Prevents the application throwing an error when the 'Ship' List Widget is clears and tries to populate wings from a 'blank' ship.
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def wingSelectionLogic(self, value):
         '''Method that handles the actions once a Wing is selected from the 'Wing' section in the 'Wing and Squadron' tab.'''
@@ -1591,7 +1537,7 @@ class TTT3(QMainWindow):
                 # Save the selected option.
                 self.wing = self.gui.lw_wing.currentItem().text()
 
-                if self.position not in ["WC"]: # Stops Squadrons showing for WCs.
+                if self.position not in ["WC"]:  # Stops Squadrons showing for WCs.
 
                     # Populate the 'Squadron' List Widget with the Squadrons for the selected Wing.
                     for squadron in self.fleetConfig.options(str(self.gui.lw_wing.currentItem().text())):
@@ -1601,11 +1547,10 @@ class TTT3(QMainWindow):
                     self.gui.lw_squad.clear()
 
             except AttributeError:
-                pass # Prevents the application throwing an error when the 'Wing' List Widget is clears and tries to populate squadrons from a 'blank' wing.
+                pass  # Prevents the application throwing an error when the 'Wing' List Widget is clears and tries to populate squadrons from a 'blank' wing.
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def squadSelectionLogic(self, value):
         '''Method that handles the actions once a Wing is selected from the 'Wing' section in the 'Wing and Squadron' tab.'''
@@ -1615,9 +1560,8 @@ class TTT3(QMainWindow):
             self.sqn = self.gui.lw_squad.currentItem().text()
 
         except AttributeError:
-            pass # Prevents the application throwing an error when the 'Wing' List Widget clears and tries to populate squadrons from a 'blank' wing.
+            pass  # Prevents the application throwing an error when the 'Wing' List Widget clears and tries to populate squadrons from a 'blank' wing.
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def eliteSqnSelectionLogic(self, value):
         '''Method that handles the actions once the 'Elite Squadron' CheckBox is selected.
@@ -1662,9 +1606,8 @@ class TTT3(QMainWindow):
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def loadMedals(self):
-        '''Method that reads in data from 'settings\medals.ini' adds the medals to the 'Medals, Ribbons and FCHG' tab.'''
+        r'''Method that reads in data from 'settings\medals.ini' adds the medals to the 'Medals, Ribbons and FCHG' tab.'''
 
         # Read in the data from 'settings\medals.ini'.
         self.medalConfig = configparser.ConfigParser()
@@ -1676,20 +1619,19 @@ class TTT3(QMainWindow):
             name = self.medalConfig.get(medal, "name")
 
             # Store the medal in the 'self.awards' dictionary.
-            self.awards[name] = {"type" : self.medalConfig.get(medal, "type")}
+            self.awards[name] = {"type": self.medalConfig.get(medal, "type")}
             self.awards[name]["upgrades"] = [name, 0]
             self.awards[name]["includeFile"] = self.medalConfig.get(medal, "incFile")
 
             for obj in range(1, 101, 1):
-                try: # Add objects such as the Dagger for the GOE.
-                    self.awards[name]["objectRef%s"%str(obj)] = self.medalConfig.get(medal, "objRef%s"%str(obj))
+                try:  # Add objects such as the Dagger for the GOE.
+                    self.awards[name]["objectRef%s" % str(obj)] = self.medalConfig.get(medal, "objRef%s" % str(obj))
                 except configparser.NoOptionError:
-                    break # No more objRefs found.
+                    break  # No more objRefs found.
 
             # Add the medal name to the GUI.
             self.gui.lw_medals.addItem(self.medalConfig.get(medal, "name"))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def loadRibbons(self):
         '''Method that reads in data from 'settings\ribbons.ini' adds the ribbons to the 'Medals, Ribbons and FCHG' tab
@@ -1725,8 +1667,7 @@ class TTT3(QMainWindow):
             self.gui.lw_medals.addItem(name)
 
             # Store the ribbon in the 'self.awards' dictionary.
-            self.awards[name] = {"type" : self.ribbonConfig.get(ribbon, "type")}
-
+            self.awards[name] = {"type": self.ribbonConfig.get(ribbon, "type")}
 
             # Ranged ribbons like the OV.
             if self.ribbonConfig.get(ribbon, "type") == "ranged":
@@ -1735,7 +1676,7 @@ class TTT3(QMainWindow):
                 rangeMin = int(self.ribbonConfig.get(ribbon, "rangeMin"))
                 rangeMax = int(self.ribbonConfig.get(ribbon, "rangeMax"))
 
-                for i in range(rangeMin, rangeMax + 1): # + 1 as Python omits the last number in a range.
+                for i in range(rangeMin, rangeMax + 1):  # + 1 as Python omits the last number in a range.
 
                     filename = self.ribbonConfig.get(ribbon, "filename").replace("&RANGE&", str(i))
                     ribbons_g += self.addToRibbonIncludes(filename)
@@ -1743,7 +1684,6 @@ class TTT3(QMainWindow):
                 # Store the ribbon data to the 'self.awards' dictionary.
                 self.awards[name]["upgrades"] = [self.ribbonConfig.get(ribbon, "incrementName"), 0]
                 self.awards[name]["ranges"] = [rangeMin, rangeMax]
-
 
             # All other ribbons.
             else:
@@ -1761,11 +1701,9 @@ class TTT3(QMainWindow):
                         if "filename" in option:
                             ribbons_g += self.addToRibbonIncludes(self.ribbonConfig.get(ribbon, option))
 
-
         with open("data\\ribbons_g.inc", "w") as ribbonFile:
             ribbonFile.write(ribbons_g)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def addToRibbonIncludes(self, filename):
         '''Method that creates the include data for a single ribbon. This include data goes on to build ribbons_g.inc'''
@@ -1778,11 +1716,10 @@ texture
   pigment { image_map { gif ".\\ribbons\\%s" } }
   finish  { fin_T_uni }
 }
-texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
+texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         return includeTemplate
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def hideMedalOptions(self):
         '''Method that hides all Medal Spin Boxes, checkboxes and Radio Buttons.'''
@@ -1832,7 +1769,6 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         self.gui.lbl_ranged.hide()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def medalSelectionLogic(self, item):
         '''Method that handles the actions once a medal is selected from the 'Medals, Ribbons and FCHG tab.'''
 
@@ -1844,7 +1780,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
 
             self.hideMedalOptions()
             self.disconnectAllMedalWidgets()
-            self.gui.sb_multi_center2.setRange(0, 99) # Resets the range if range ribbon/OV was selected.
+            self.gui.sb_multi_center2.setRange(0, 99)  # Resets the range if range ribbon/OV was selected.
 
             name = 0
             quantity = 1
@@ -1854,10 +1790,10 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
             self.gui.gb_medals.setTitle(item.text().split(" (")[0])
 
             # Show the correct GUI elements for the given medal.
-            award = self.awards.get(str(item.text())) # Str type conversion as you cannot reference a dict with a QString.
+            award = self.awards.get(str(item.text()))  # Str type conversion as you cannot reference a dict with a QString.
 
-                # === Medals ===
-                # ----- Single type medal awards. (MOH, IC, OoR, GOE)
+            # === Medals ===
+            # ----- Single type medal awards. (MOH, IC, OoR, GOE)
             if award.get("type") == "single":
                 self.gui.cb_singleMedal.setText(award.get("upgrades")[name])
 
@@ -1881,9 +1817,8 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                 self.gui.sb_multi_center1.show()
                 self.gui.sb_multi_center1.valueChanged.connect(self.sb_multi_center1Logic)
 
-
-                    # === Ribbons ===
-                    # ----- Upgradeable type ribbon awards. (MoI, LoC, LoS, DFC)
+                # === Ribbons ===
+                # ----- Upgradeable type ribbon awards. (MoI, LoC, LoS, DFC)
             elif award.get("type") == "upgradeable":
                 self.gui.cb_singleMedal.setText(item.text())
 
@@ -1901,7 +1836,6 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                 self.gui.cb_singleMedal.show()
                 self.showUpgradeableRadioButtons()
 
-
                 # ----- SubRibbons type ribbon awards. (MoS, MoT, IS, MoC, CoX)
             elif award.get("type") == "subRibbons":
                 # Determine the number of subRibbons the award has for SpinBox assignment.
@@ -1910,21 +1844,21 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
 
                 if subRibbonNum <= 4:
                     spinBoxes = [self.gui.sb_multi_center1, self.gui.sb_multi_center2, self.gui.sb_multi_center3, self.gui.sb_multi_center4]
-                    spinBoxes = spinBoxes[ : subRibbonNum]
+                    spinBoxes = spinBoxes[: subRibbonNum]
                     spinLabels = [self.gui.lbl_multi_center1, self.gui.lbl_multi_center2, self.gui.lbl_multi_center3, self.gui.lbl_multi_center4]
-                    spinLabels = spinLabels[ : subRibbonNum]
+                    spinLabels = spinLabels[: subRibbonNum]
                     spinFunctions = [self.sb_multi_center1Logic, self.sb_multi_center2Logic, self.sb_multi_center3Logic, self.sb_multi_center4Logic]
-                    spinFunctions = spinFunctions[ : subRibbonNum]
+                    spinFunctions = spinFunctions[: subRibbonNum]
                 else:
                     spinBoxes = [self.gui.sb_multi_left1, self.gui.sb_multi_left2, self.gui.sb_multi_left3, self.gui.sb_multi_left4,
                                  self.gui.sb_multi_right1, self.gui.sb_multi_right2, self.gui.sb_multi_right3, self.gui.sb_multi_right4]
-                    spinBoxes = spinBoxes[ : subRibbonNum]
+                    spinBoxes = spinBoxes[: subRibbonNum]
                     spinLabels = [self.gui.lbl_multi_left1, self.gui.lbl_multi_left2, self.gui.lbl_multi_left3, self.gui.lbl_multi_left4,
                                   self.gui.lbl_multi_right1, self.gui.lbl_multi_right2, self.gui.lbl_multi_right3, self.gui.lbl_multi_right4]
-                    spinLabels = spinLabels[ : subRibbonNum]
+                    spinLabels = spinLabels[: subRibbonNum]
                     spinFunctions = [self.sb_multi_left1Logic, self.sb_multi_left2Logic, self.sb_multi_left3Logic, self.sb_multi_left4Logic,
                                      self.sb_multi_right1Logic, self.sb_multi_right2Logic, self.sb_multi_right3Logic, self.sb_multi_right4Logic]
-                    spinFunctions = spinFunctions[ : subRibbonNum]
+                    spinFunctions = spinFunctions[: subRibbonNum]
 
                 # Show the required spinboxes.
                 self.subRibbonAwards = []
@@ -1935,7 +1869,6 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                     spinLabels[subRibbon].setText(upgrades[subRibbon][name])
                     spinLabels[subRibbon].show()
                     self.subRibbonAwards.append([self.gui.lw_medals.currentItem().text(), upgrades[subRibbon][name], spinBoxes[subRibbon]])
-
 
                 # ----- Ranged type ribbon awards. (OV)
             elif award.get("type") == "ranged":
@@ -1964,17 +1897,17 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def cb_singleMedalSelectionLogic(self):
         '''Method that handles the actions once a medal is selected in the 'Medals, Ribbons and FCHG tab.'''
 
         try:
-            award = self.awards.get(str(self.gui.lw_medals.currentItem().text())) # Str type conversion as you cannot reference a dict with a QString.
+            # Str type conversion as you cannot reference a dict with a QString.
+            award = self.awards.get(str(self.gui.lw_medals.currentItem().text()))
             name = 0
             quantity = 1
 
             # === Medals ===
-                # ----- Single type medal awards. (MOH, IC, OoR, GOE)
+            # ----- Single type medal awards. (MOH, IC, OoR, GOE)
             if award.get("type") == "single":
 
                 if self.gui.cb_singleMedal.isChecked():
@@ -1985,13 +1918,12 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                 # IC & GOE Deconfliction.
                 self.neckRibbonDeconfliction()
 
-
             # === Ribbons ===
                 # ----- Upgradeable type ribbon awards. (MoI)
             elif award.get("type") == "upgradeable":
 
                 widgets = [self.gui.rb_upgradeable_0, self.gui.rb_upgradeable_1, self.gui.rb_upgradeable_2,
-                       self.gui.rb_upgradeable_3, self.gui.rb_upgradeable_4, self.gui.rb_upgradeable_5]
+                           self.gui.rb_upgradeable_3, self.gui.rb_upgradeable_4, self.gui.rb_upgradeable_5]
 
                 if self.gui.cb_singleMedal.isChecked():
 
@@ -2023,9 +1955,8 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                             try:
                                 widget.clicked.disconnect()
                             except TypeError:
-                                pass # Prevents a crash when trying to disconnect a widget that isn't connected to aything.
+                                pass  # Prevents a crash when trying to disconnect a widget that isn't connected to aything.
                     self.rb_upgradeablesConnected = False
-
 
                 # ----- Ranged type ribbon awards. (OV)
             elif award.get("type") == "ranged":
@@ -2052,14 +1983,14 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def showUpgradeableRadioButtons(self):
         '''Method that shows the Upgradeable ribbon type radio buttonsd'''
 
         # Show the required Radio Buttons.
         if self.gui.cb_singleMedal.isChecked():
 
-            award = self.awards.get(str(self.gui.lw_medals.currentItem().text())) # Str type conversion as you cannot reference a dict with a QString.
+            # Str type conversion as you cannot reference a dict with a QString.
+            award = self.awards.get(str(self.gui.lw_medals.currentItem().text()))
             name = 0
             quantity = 1
             widgets = [self.gui.rb_upgradeable_0, self.gui.rb_upgradeable_1, self.gui.rb_upgradeable_2,
@@ -2082,16 +2013,16 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
             self.rb_upgradeablesConnected = True
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def rb_upgradableSelectionLogic(self):
         '''Method to control the logic upon upgradeable ribbon type award selection.'''
 
         try:
-            award = self.awards.get(str(self.gui.lw_medals.currentItem().text())) # Str type conversion as you cannot reference a dict with a QString.
+            # Str type conversion as you cannot reference a dict with a QString.
+            award = self.awards.get(str(self.gui.lw_medals.currentItem().text()))
             name = 0
             quantity = 1
             widgets = [self.gui.rb_upgradeable_0, self.gui.rb_upgradeable_1, self.gui.rb_upgradeable_2,
-                                   self.gui.rb_upgradeable_3, self.gui.rb_upgradeable_4, self.gui.rb_upgradeable_5]
+                       self.gui.rb_upgradeable_3, self.gui.rb_upgradeable_4, self.gui.rb_upgradeable_5]
             widgetCount = 0
 
             for widget in widgets:
@@ -2107,16 +2038,15 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def neckRibbonDeconfliction(self):
         '''Method for handling the display and selection logic for neck ribbon deconfliction.'''
 
         quantity = 1
         if self.awards.get("Imperial Cross (IC)")["upgrades"][quantity] == 1 and \
-            self.awards.get("Grand Order of the Emperor (GOE)")["upgrades"][quantity] == 1:
+                self.awards.get("Grand Order of the Emperor (GOE)")["upgrades"][quantity] == 1:
 
-           if self.gui.lw_medals.currentItem().text() == "Grand Order of the Emperor (GOE)" or \
-              self.gui.lw_medals.currentItem().text() == "Imperial Cross (IC)":
+            if self.gui.lw_medals.currentItem().text() == "Grand Order of the Emperor (GOE)" or \
+               self.gui.lw_medals.currentItem().text() == "Imperial Cross (IC)":
 
                 # Text Label.
                 self.gui.lbl_top_free_text.setText("Neck ribbon to display:")
@@ -2155,7 +2085,6 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
             self.deconflictNeckRibbons = False
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def combo_neckRibbonDeconflictLogic(self):
         '''Method that stores the user's preference to deconflicting the IC and GOE neck ribbons.'''
 
@@ -2167,7 +2096,6 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def buildMedalIncludes(self):
         '''Method that gathers all of the include files required for the user's medal selections..'''
@@ -2181,13 +2109,13 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                 if self.awards.get(award)["upgrades"][quantity] >= 1:
 
                     # Add the medal_g.inc file.
-                    if not "medal_g.inc" in medalIncludes:
+                    if "medal_g.inc" not in medalIncludes:
                         medalIncludes.append("medal_g.inc")
 
                     # Add the selected medal's .inc file.
                     incFile = self.awards.get(award)["includeFile"]
                     if incFile == "goe_g.inc" or incFile == "ic_g.inc":
-                        medalIncludes.insert(0, incFile) # Must be first for all other medals to render properly.
+                        medalIncludes.insert(0, incFile)  # Must be first for all other medals to render properly.
                     else:
                         medalIncludes.append(self.awards.get(award)["includeFile"])
 
@@ -2195,16 +2123,15 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         if "ic_g.inc" in medalIncludes and "goe_g.inc" in medalIncludes and not self.deconflictNeckRibbons:
             medalIncludes.remove("ic_g.inc")
             medalIncludes.remove("goe_g.inc")
-            medalIncludes.insert(0, "ic_goe_g.inc") # Must be first for all other medals to render properly.
+            medalIncludes.insert(0, "ic_goe_g.inc")  # Must be first for all other medals to render properly.
 
         return medalIncludes
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def buildMedalObjects(self):
         '''Method that gathers all of the object references required for the user's medal selections.'''
 
-        medalObjects= []
+        medalObjects = []
 
         for award in self.awards:
             # Single and Multi type awards.
@@ -2212,8 +2139,8 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                 if self.awards.get(award)["upgrades"][1] >= 1:
                     # Get all award objRefs.
                     for obj in range(1, 101, 1):
-                        try: # Filtering for medals that do not contain objRefs.
-                            medalObjects.append(self.awards.get(award)["objectRef%s"%obj])
+                        try:  # Filtering for medals that do not contain objRefs.
+                            medalObjects.append(self.awards.get(award)["objectRef%s" % obj])
                         except KeyError:
                             break
 
@@ -2223,7 +2150,6 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
 
         return self.determineMultiMedalOrders(medalObjects)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def determineMultiMedalOrders(self, medalObjecRefs):
         '''Used to determine the ordering for the GS to ISM medals and then upate their objRefs.'''
@@ -2238,7 +2164,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                 if self.medalConfig.get(medal, "type") == "multi":
                     for num in range(1, 101, 1):
                         try:
-                            if self.medalConfig.get(medal, "objRef%s"%num) == ref:
+                            if self.medalConfig.get(medal, "objRef%s" % num) == ref:
                                 multiMedalsFound.append(ref)
                         except configparser.NoOptionError:
                             break
@@ -2254,7 +2180,6 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         return modifiedObjectRefs
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def buildRibbonObjects(self):
         '''Method that gathers all of the object references required for the user's ribbon selections.'''
 
@@ -2267,13 +2192,13 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
             if self.awards.get(award)["type"] == "upgradeable" or self.awards.get(award)["type"] == "subRibbons":
 
                 if "Iron Star (IS)" == award or "Medal of Communication (MoC)" == award or \
-                   "Medal of Scholarship (MoS)" == award: # Reverse the ribbon list for certain medals.
+                   "Medal of Scholarship (MoS)" == award:  # Reverse the ribbon list for certain medals.
 
                     upgrades = self.awards.get(award)["upgrades"][::-1]
 
-                    if "Iron Star (IS)" == award: # Re-Sorting of IS-XW and US-XR.
-                        half1 = upgrades[0 : 4]
-                        half2 = upgrades[4 : ]
+                    if "Iron Star (IS)" == award:  # Re-Sorting of IS-XW and US-XR.
+                        half1 = upgrades[0: 4]
+                        half2 = upgrades[4:]
                         upgrades = half2 + half1
 
                     if "Medal of Communication (MoC)" == award:
@@ -2286,19 +2211,19 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                 else:
                     upgrades = self.awards.get(award)["upgrades"]
 
-                if "Medal of Tactics (MoT)" == award: # Special sorting correction for MoT.
+                if "Medal of Tactics (MoT)" == award:  # Special sorting correction for MoT.
                     blue = [upgrades[0]]
                     green = [upgrades[1]]
                     red = [upgrades[2]]
                     upgrades = blue + red + green
 
-                for upgrade in upgrades: # Medals that don't require reversing.
+                for upgrade in upgrades:  # Medals that don't require reversing.
                     if upgrade[quantity] != 0:
                         for section in self.ribbonConfig.sections():
                             for option in self.ribbonConfig.options(section):
                                 if self.ribbonConfig.get(section, option) == upgrade[name] and self.ribbonConfig.get(section, "name") == award:
                                     awardName = "T_r_" + self.ribbonConfig.get(section, option + "filename").split(".")[0].lower().replace("-", "_")
-                        ribbonObjects.append("P_r&NUM& texture { %s }"%awardName)
+                        ribbonObjects.append("P_r&NUM& texture { %s }" % awardName)
 
             # Ranged type awards.
             elif self.awards.get(award)["type"] == "ranged":
@@ -2307,11 +2232,10 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                         if self.ribbonConfig.get(section, "name") == award:
                             awardName = "T_r_" + self.ribbonConfig.get(section, "filename").split(".")[0].lower().replace("-", "_")
                             awardName = awardName.replace("&range&", str(self.awards.get(award)["upgrades"][quantity]))
-                            ribbonObjects.append("P_r&NUM& texture { %s }"%awardName)
+                            ribbonObjects.append("P_r&NUM& texture { %s }" % awardName)
 
         return self.ribbonNumberOrdering(ribbonObjects)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def ribbonNumberOrdering(self, ribbons):
         '''Method that arranged the awarded ribbons into the correct order.'''
@@ -2328,8 +2252,8 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                     ribbonObjects.append(ribbon.replace("&NUM&", str(ribbonCounter)))
                     ribbonCounter += 1
             else:
-                ribbonCounter -= 4 # To account for the bottom row.
-                for ribbon in ribbons[ : - bottomRowNumCount]:
+                ribbonCounter -= 4  # To account for the bottom row.
+                for ribbon in ribbons[: - bottomRowNumCount]:
                     ribbonObjects.append(ribbon.replace("&NUM&", str(ribbonCounter)))
                     ribbonCounter += 1
 
@@ -2342,7 +2266,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                 elif bottomRowNumCount == 3:
                     ribbonCounter = 24
 
-                for ribbon in ribbons[-bottomRowNumCount : ]:
+                for ribbon in ribbons[-bottomRowNumCount:]:
                     ribbonObjects.append(ribbon.replace("&NUM&", str(ribbonCounter)))
                     ribbonCounter += 1
 
@@ -2353,7 +2277,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                     ribbonCounter = 25
 
             elif len(ribbons) == 2:
-                    ribbonCounter = 21
+                ribbonCounter = 21
 
             elif len(ribbons) == 3:
                 ribbonCounter = 24
@@ -2368,14 +2292,13 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         return ribbonObjects
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def disconnectAllMedalWidgets(self):
         '''Method for disconnecting all medal widgets.'''
 
         # Combo Top.
         if self.combo_topConnected:
-                self.gui.combo_top.disconnect()
-                self.combo_topConnected = False
+            self.gui.combo_top.disconnect()
+            self.combo_topConnected = False
 
         # SpinBoxes.
         spinBoxes = [self.gui.sb_multi_left1, self.gui.sb_multi_left2, self.gui.sb_multi_left3, self.gui.sb_multi_left4,
@@ -2386,15 +2309,15 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
             try:
                 spinBox.valueChanged.disconnect()
             except TypeError:
-                pass # Prevents a crash if the spinBox isn't currently connected.
+                pass  # Prevents a crash if the spinBox isn't currently connected.
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def sb_masterLogic(self, sender, value):
         '''Method for handling the all spinbox logic.'''
 
         try:
-            award = self.awards.get(str(self.gui.lw_medals.currentItem().text())) # Str type conversion as you cannot reference a dict with a QString.
+            # Str type conversion as you cannot reference a dict with a QString.
+            award = self.awards.get(str(self.gui.lw_medals.currentItem().text()))
             name = 0
             quantity = 1
 
@@ -2404,7 +2327,7 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
 
             # ----- SubRibbons type ribbon awards. (MoS, MoT, IS, MoC, CoX)
             elif award.get("type") == "subRibbons":
-                awardName  = self.subRibbonAwards[sender][0]
+                awardName = self.subRibbonAwards[sender][0]
                 subRibbonName = self.subRibbonAwards[sender][1]
                 spinBox = self.subRibbonAwards[sender][2]
 
@@ -2422,13 +2345,11 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def sb_multi_center1Logic(self, value):
         '''Method for handling the Center Top spinbox logic.'''
 
         self.sb_masterLogic(0, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def sb_multi_center2Logic(self, value):
         '''Method for handling the Center Top Middle spinbox logic.'''
@@ -2436,13 +2357,11 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         self.sb_masterLogic(1, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def sb_multi_center3Logic(self, value):
         '''Method for handling the Center Bottom Middle spinbox logic.'''
 
         self.sb_masterLogic(2, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def sb_multi_center4Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
@@ -2450,13 +2369,11 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         self.sb_masterLogic(3, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def sb_multi_left1Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(0, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def sb_multi_left2Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
@@ -2464,13 +2381,11 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         self.sb_masterLogic(1, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def sb_multi_left3Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(2, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def sb_multi_left4Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
@@ -2478,13 +2393,11 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         self.sb_masterLogic(3, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def sb_multi_right1Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(4, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def sb_multi_right2Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
@@ -2492,13 +2405,11 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         self.sb_masterLogic(5, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def sb_multi_right3Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(6, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def sb_multi_right4Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
@@ -2506,13 +2417,11 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         self.sb_masterLogic(7, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def btn_browseRosterFunc(self, event):
         '''Method event for when the 'Browse Fleet Roster' button is clicked on the 'Import' tab.'''
 
         os.system("start " + self.config.get("TCDB", "roster"))
     #------------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def btn_searchFunc(self, event):
         '''Method event for when the 'Personnel Search' button is clicked on the 'Import' tab.'''
@@ -2520,12 +2429,11 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         os.system("start " + self.config.get("TCDB", "search"))
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def btn_newProfMethod(self, event):
         '''Method event for when the 'New Profile' button is clicked.'''
 
         try:
-            self.gui.lw_medals.setCurrentRow(0) # Required to prevent bug of the user's last upgradeable type selection not showing.
+            self.gui.lw_medals.setCurrentRow(0)  # Required to prevent bug of the user's last upgradeable type selection not showing.
 
             # PovRay Template variables.
             self.position = None
@@ -2556,12 +2464,12 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
             self.gui.lw_medals.currentItemChanged.connect(self.medalSelectionLogic)
 
             # GUI Cleanup.
-                # Position Radio Buttons.
+            # Position Radio Buttons.
             self.gui.rb_pos_trn.setChecked(True)
-            self.gui.rb_pos_trn.setAutoExclusive(False);
-            self.gui.rb_pos_trn.setChecked(False);
-            self.gui.rb_pos_trn.setAutoExclusive(True);
-                # Ship, Wing and Squadron ListWidgets.
+            self.gui.rb_pos_trn.setAutoExclusive(False)
+            self.gui.rb_pos_trn.setChecked(False)
+            self.gui.rb_pos_trn.setAutoExclusive(True)
+            # Ship, Wing and Squadron ListWidgets.
             self.enableWingAndSqnTab(False)
 
             # Disable render buttons.
@@ -2571,7 +2479,6 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         except Exception as e:
             handleException(e)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def btn_openProfMethod(self, event):
         '''Method event for when the 'Open Profile' button is clicked.'''
@@ -2602,10 +2509,10 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
                     # Ranks
                 self.rank = saveData[1]
                 radioBtns = [self.gui.rb_rank_ct, self.gui.rb_rank_sl, self.gui.rb_rank_lt, self.gui.rb_rank_lcm,
-                                self.gui.rb_rank_cm, self.gui.rb_rank_cpt, self.gui.rb_rank_maj, self.gui.rb_rank_lc,
-                                self.gui.rb_rank_col, self.gui.rb_rank_gn, self.gui.rb_rank_ra, self.gui.rb_rank_va,
-                                self.gui.rb_rank_ad, self.gui.rb_rank_fa, self.gui.rb_rank_ha, self.gui.rb_rank_sa,
-                                self.gui.rb_rank_ga]
+                             self.gui.rb_rank_cm, self.gui.rb_rank_cpt, self.gui.rb_rank_maj, self.gui.rb_rank_lc,
+                             self.gui.rb_rank_col, self.gui.rb_rank_gn, self.gui.rb_rank_ra, self.gui.rb_rank_va,
+                             self.gui.rb_rank_ad, self.gui.rb_rank_fa, self.gui.rb_rank_ha, self.gui.rb_rank_sa,
+                             self.gui.rb_rank_ga]
 
                 if self.rank:
                     for radioButton in radioBtns:
@@ -2654,14 +2561,13 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
             handleException(e)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def btn_saveProfMethod(self, event):
         '''Method event for when the 'Save Profile' button is clicked.'''
 
         try:
             # Collect the data to be saved into a list.
-            saveData = (self.position, self.rank, self.ship, self.wing, self.gui.cb_eliteSqn.isChecked(), self.sqn, self.awards, self.deconflictNeckRibbons,
-                        self.gui.cbFCHG.currentText())
+            saveData = (self.position, self.rank, self.ship, self.wing, self.gui.cb_eliteSqn.isChecked(),
+                        self.sqn, self.awards, self.deconflictNeckRibbons, self.gui.cbFCHG.currentText())
 
             # Save the data.
             fileName = self.saveUniformFileDialog()
@@ -2673,14 +2579,14 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
             handleException(e)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def saveUniformFileDialog(self):
         '''Method that opens a QT File Save dialog to save a uniform.'''
 
         try:
             options = QFileDialog.Options()
             options |= QFileDialog.DontUseNativeDialog
-            fileName, _ = QFileDialog.getSaveFileName(self, "Save uniform settings", os.getcwd() + "\\settings\\untitled.ttt", "*.ttt", options=options)
+            fileName, _ = QFileDialog.getSaveFileName(self, "Save uniform settings", os.getcwd() +
+                                                      "\\settings\\untitled.ttt", "*.ttt", options=options)
             if fileName:
                 if ".ttt" not in fileName:
                     fileName = fileName + ".ttt"
@@ -2689,7 +2595,6 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
         except Exception as e:
             handleException(e)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def loadUniformFileDialog(self):
         '''Method that opens a QT File Open dialog to save a uniform.'''
@@ -2708,7 +2613,6 @@ texture { T_unilayer scale 2}\n\n"""%(ribbonName, filename)
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
-
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                      Functions.                                                                    #
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -2722,10 +2626,10 @@ def handleException(exception):
     # Log System Info.
     logging.error("\n\n-----System Information:-----")
     try:
-      os.environ["PROGRAMFILES(X86)"]
-      bits = " 64"
-    except:
-      bits = " 32"
+        os.environ["PROGRAMFILES(X86)"]
+        bits = " 64"
+    except BaseException:
+        bits = " 32"
     logging.error("Windows Version: " + platform.platform() + bits + "-bit.")
     logging.error("Processor: " + platform.processor())
     logging.error("Python Version: " + sys.version)
@@ -2733,7 +2637,7 @@ def handleException(exception):
     # Log TTT3 settings and selections.
     logging.error("\n\n-----TTT3 Settings:-----")
 
-        # TTT3.ini logging.
+    # TTT3.ini logging.
     with open(os.getcwd() + "\\settings\\TTT3.ini", "r") as f:
         settings = f.read()
 
@@ -2741,7 +2645,7 @@ def handleException(exception):
     selectedAwards = []
     for award in ttt3.awards:
 
-        if ttt3.awards.get(award)["type"] == "single" or  ttt3.awards.get(award)["type"] == "ranged" or  ttt3.awards.get(award)["type"] == "multi":
+        if ttt3.awards.get(award)["type"] == "single" or ttt3.awards.get(award)["type"] == "ranged" or ttt3.awards.get(award)["type"] == "multi":
             if ttt3.awards.get(award)["upgrades"][1] != 0:
                 selectedAwards.append(award)
 
@@ -2762,12 +2666,12 @@ def handleException(exception):
         currentSelection = "None"
 
         # Uniform selections.
-    logging.error("\n" + settings + "\nPosition : " + str(ttt3.position) + "\nRank : " + str(ttt3.rank) + "\nShip : " + str(ttt3.ship) + \
-                  "\nWing : " + str(ttt3.wing) + "\nSquadron : " + str(ttt3.sqn) + "\nAwards :" + str(selectedAwards) + \
+    logging.error("\n" + settings + "\nPosition : " + str(ttt3.position) + "\nRank : " + str(ttt3.rank) + "\nShip : " + str(ttt3.ship) +
+                  "\nWing : " + str(ttt3.wing) + "\nSquadron : " + str(ttt3.sqn) + "\nAwards :" + str(selectedAwards) +
                   "\nCurrent Medal Selection: " + str(currentSelection))
 
     # Show error message.
-    msg = "Error: Uh-Oh! TTT3 has encountered an error. Please submit 'TTT3\TTT3 Crash.log' to the Internet Office."
+    msg = r"Error: Uh-Oh! TTT3 has encountered an error. Please submit 'TTT3\TTT3 Crash.log' to the Internet Office."
     return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
