@@ -51,6 +51,7 @@ class TTT3(QMainWindow):
             version = "3.00"
             devVersion = "Alpha 12"
             date = "23 January 2021"
+            self.saveFileVersion = 1
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
             # Initialise an instance of a QT Main Window and load our GUI file 'data\uis\ttt.ui'.
@@ -2502,71 +2503,77 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 with open(fileName, "rb") as dataFile:
                     saveData = pickle.load(dataFile)
 
-                # Apply the saved settings.
+                if saveData[0] == self.saveFileVersion:
+                    # Apply the saved settings.
 
                     # Position.
-                self.position = saveData[0]
-                radioBtns = [self.gui.rb_pos_trn, self.gui.rb_pos_fm, self.gui.rb_pos_fl, self.gui.rb_pos_cmdr,
-                             self.gui.rb_pos_wc, self.gui.rb_pos_com, self.gui.rb_pos_tccs, self.gui.rb_pos_ia,
-                             self.gui.rb_pos_ca, self.gui.rb_pos_sgcom, self.gui.rb_pos_cs, self.gui.rb_pos_xo,
-                             self.gui.rb_pos_fc, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
+                    self.position = saveData[1]
+                    radioBtns = [self.gui.rb_pos_trn, self.gui.rb_pos_fm, self.gui.rb_pos_fl, self.gui.rb_pos_cmdr,
+                                 self.gui.rb_pos_wc, self.gui.rb_pos_com, self.gui.rb_pos_tccs, self.gui.rb_pos_ia,
+                                 self.gui.rb_pos_ca, self.gui.rb_pos_sgcom, self.gui.rb_pos_cs, self.gui.rb_pos_xo,
+                                 self.gui.rb_pos_fc, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
 
-                if self.position:
-                    for radioButton in radioBtns:
-                        if self.position.lower() in radioButton.objectName():
-                            radioButton.setChecked(True)
-                    self.posRBLogic()
+                    if self.position:
+                        for radioButton in radioBtns:
+                            if self.position.lower() in radioButton.objectName():
+                                radioButton.setChecked(True)
+                        self.posRBLogic()
 
-                    # Ranks
-                self.rank = saveData[1]
-                radioBtns = [self.gui.rb_rank_ct, self.gui.rb_rank_sl, self.gui.rb_rank_lt, self.gui.rb_rank_lcm,
-                             self.gui.rb_rank_cm, self.gui.rb_rank_cpt, self.gui.rb_rank_maj, self.gui.rb_rank_lc,
-                             self.gui.rb_rank_col, self.gui.rb_rank_gn, self.gui.rb_rank_ra, self.gui.rb_rank_va,
-                             self.gui.rb_rank_ad, self.gui.rb_rank_fa, self.gui.rb_rank_ha, self.gui.rb_rank_sa,
-                             self.gui.rb_rank_ga]
+                        # Ranks
+                    self.rank = saveData[2]
+                    radioBtns = [self.gui.rb_rank_ct, self.gui.rb_rank_sl, self.gui.rb_rank_lt, self.gui.rb_rank_lcm,
+                                 self.gui.rb_rank_cm, self.gui.rb_rank_cpt, self.gui.rb_rank_maj, self.gui.rb_rank_lc,
+                                 self.gui.rb_rank_col, self.gui.rb_rank_gn, self.gui.rb_rank_ra, self.gui.rb_rank_va,
+                                 self.gui.rb_rank_ad, self.gui.rb_rank_fa, self.gui.rb_rank_ha, self.gui.rb_rank_sa,
+                                 self.gui.rb_rank_ga]
 
-                if self.rank:
-                    for radioButton in radioBtns:
-                        if self.rank.lower() in radioButton.objectName():
-                            radioButton.setChecked(True)
-                    self.rankRBLogic()
+                    if self.rank:
+                        for radioButton in radioBtns:
+                            if self.rank.lower() in radioButton.objectName():
+                                radioButton.setChecked(True)
+                        self.rankRBLogic()
 
-                    # Ship.
-                self.ship = saveData[2]
-                if self.ship:
-                    for row in range(self.gui.lw_ship.count()):
-                        self.gui.lw_ship.setCurrentRow(row)
-                        if self.gui.lw_ship.currentItem().text() == self.ship:
-                            break
-                    self.shipSelectionLogic(None)
+                        # Ship.
+                    self.ship = saveData[3]
+                    if self.ship:
+                        for row in range(self.gui.lw_ship.count()):
+                            self.gui.lw_ship.setCurrentRow(row)
+                            if self.gui.lw_ship.currentItem().text() == self.ship:
+                                break
+                        self.shipSelectionLogic(None)
 
-                    # Wing.
-                self.wing = saveData[3]
-                if self.wing:
-                    for row in range(self.gui.lw_wing.count()):
-                        self.gui.lw_wing.setCurrentRow(row)
-                        if self.gui.lw_wing.currentItem().text() == self.wing:
-                            break
-                    self.wingSelectionLogic(None)
+                        # Wing.
+                    self.wing = saveData[4]
+                    if self.wing:
+                        for row in range(self.gui.lw_wing.count()):
+                            self.gui.lw_wing.setCurrentRow(row)
+                            if self.gui.lw_wing.currentItem().text() == self.wing:
+                                break
+                        self.wingSelectionLogic(None)
 
-                    # Squadron.
-                self.gui.cb_eliteSqn.setChecked(saveData[4])
-                self.sqn = saveData[5]
-                if self.sqn:
-                    for row in range(self.gui.lw_squad.count()):
-                        self.gui.lw_squad.setCurrentRow(row)
-                        if self.gui.lw_squad.currentItem().text() == self.sqn:
-                            break
-                    self.squadSelectionLogic(None)
+                        # Squadron.
+                    self.gui.cb_eliteSqn.setChecked(saveData[5])
+                    self.sqn = saveData[6]
+                    if self.sqn:
+                        for row in range(self.gui.lw_squad.count()):
+                            self.gui.lw_squad.setCurrentRow(row)
+                            if self.gui.lw_squad.currentItem().text() == self.sqn:
+                                break
+                        self.squadSelectionLogic(None)
 
-                    # Medals & Awards.
-                self.awards = saveData[6]
-                self.deconflictNeckRibbons = saveData[7]
-                if self.gui.lw_medals.currentItem():
-                    self.medalSelectionLogic(self.gui.lw_medals.currentItem())
+                        # Medals & Awards.
+                    self.awards = saveData[7]
+                    self.deconflictNeckRibbons = saveData[8]
+                    if self.gui.lw_medals.currentItem():
+                        self.medalSelectionLogic(self.gui.lw_medals.currentItem())
 
-                    # FCHG.
-                self.gui.cbFCHG.setCurrentText(saveData[8])
+                        # FCHG.
+                    self.gui.cbFCHG.setCurrentText(saveData[9])
+
+                else:
+                    # Show error message.
+                    msg = "%s is not compatible with this version of TTT3.\nPlease save a new profile." % fileName.split("\\")[-1]
+                    return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
 
         except Exception as e:
             handleException(e)
@@ -2577,7 +2584,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         try:
             # Collect the data to be saved into a list.
-            saveData = (self.position, self.rank, self.ship, self.wing, self.gui.cb_eliteSqn.isChecked(),
+            saveData = (self.saveFileVersion, self.position, self.rank, self.ship, self.wing, self.gui.cb_eliteSqn.isChecked(),
                         self.sqn, self.awards, self.deconflictNeckRibbons, self.gui.cbFCHG.currentText())
 
             # Save the data.
