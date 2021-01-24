@@ -19,19 +19,24 @@ io@emperorshammer.org.
 
 ### PENDING ###
 ADDED: - Added additional lightsaber models.
-CHANGED: - Only the member's highest Medal of Communication level is displayed.
-ADDED: - New TIE Corps ribbons.
+CHANGED: - Updated shoulder marks for EH Command Staff positions.
 
 ### Added
 - Members with both the IC and GOE may elect to display both neck ribbons and GOE dagger, or only
-the IC neck ribbon along with the dagger to represet GOE award.
+the IC neck ribbon along with the dagger to represet receipt of the GOE.
 - Imperial Advisor/Command Attache positions support ranks up to Sector Admiral.
-- Implemented Legion of Skirmish.
+- Implemented the Legion of Skirmish.
+- Added new TIE Corps awards: TIE Corps Commander's Unit Award and TIE Corps Meritorious Unit Award.
 
 ### Changed
 - Improved appearance of wing devices on ribbons.
-- Expanded Over of the Vanguard to 39th echelon.
+- Expanded Order of the Vanguard to a maximum of 39th echelon.
+- Only the member's highest Medal of Communication level is displayed.
 
 ### Fixed (since TTT2 UP1.09)
 - Display COM collars correctly.
-- Replaced inactive BGCOM position selection with TCCS.
+- Replaced inactive BGCOM position selection with TIE Corps Command Staff.
+
+### Removed
+- Due to lack of modern support for the legacy 3D assets, the live 3D preview option has not been
+re-implemented in TTT3.
