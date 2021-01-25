@@ -29,7 +29,7 @@ import winreg
 from PyQt5 import uic  # python -m pip install pyqt5
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog  # python -m pip install pyqt5-tools
 from PyQt5.QtGui import QPixmap
-##from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt
 from PIL import Image  # python -m pip install pillow
 import cv2  # python -m pip install opencv-python
 import numpy
@@ -291,6 +291,13 @@ class TTT3(QMainWindow):
         if os.stat("TTT3 Crash.log").st_size == 0:
             os.remove("TTT3 Crash.log")
         sys.exit()
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def outputCloseEvent(self, event):
+        '''Method that overloads the self.output_gui close event and the application.'''
+
+        self.gui.setWindowFlags(self.gui.windowFlags() & ~Qt.WindowStaysOnBottomHint)
+        self.gui.show()
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
     def initialGUISetup(self):
@@ -752,9 +759,10 @@ class TTT3(QMainWindow):
         os.remove(r"data\batch\povray.bat")
         os.removedirs(r"data\batch")
 
+        self.gui.setWindowFlags(self.gui.windowFlags() | Qt.WindowStaysOnBottomHint)
+        self.gui.show()
         self.showOutputDialog(uniform)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def showOutputDialog(self, uniform):
         '''Method to display the POV-Ray rendered image.'''
@@ -777,12 +785,11 @@ class TTT3(QMainWindow):
         # Load our GUI file 'data\uis\output.ui'
         self.output_gui = uic.loadUi(r"data\uis\output.ui")
         self.output_gui.lbl_output.setPixmap(QPixmap(self.imagePath))
-##        self.output_gui.setWindowFlags(self.output_gui.windowFlags() | Qt.WindowStaysOnTopHint) # Blocks save as dialog.
         self.output_gui.show()
-        self.output_gui.btn_upload.setEnabled(False) # TODO Output upload diabled UTFN.
+        self.output_gui.btn_upload.setEnabled(False)  # TODO Output upload diabled UTFN.
         self.output_gui.btn_saveAs.clicked.connect(self.btn_saveAsFunc)
+        self.output_gui.closeEvent = self.outputCloseEvent
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def btn_saveAsFunc(self):
         '''Method to Save As the rendered image file.'''
@@ -790,7 +797,8 @@ class TTT3(QMainWindow):
         try:
             options = QFileDialog.Options()
             options |= QFileDialog.DontUseNativeDialog
-            saveName, ext = QFileDialog.getSaveFileName(self, "Save Uniform As", "C:\\users\\" + os.getlogin() + "\\Pictures\\", "*.png;;*.jpg;;*.gif;;*.bmp", options=options)
+            saveName, ext = QFileDialog.getSaveFileName(self, "Save Uniform As", "C:\\users\\" +
+                                                        os.getlogin() + "\\Pictures\\untitled", "*.png;;*.jpg;;*.gif;;*.bmp", options=options)
             ext = ext.replace("*", "")
             if saveName:
                 saveName = saveName.replace(r"/", "\\") + ext
@@ -799,7 +807,6 @@ class TTT3(QMainWindow):
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def povrayMonitor(self):
         '''Monitors for POV-Ray running in the background and signals when it has closed.'''
