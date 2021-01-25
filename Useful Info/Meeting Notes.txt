@@ -1,8 +1,0 @@
-TTT v3 - 
-
-Auto trimming colours  - Currently manaual changed via readme.
-Legion of Skirmish, Medal of Scholarship - missing - Medals updates.
-
-Decompile TTT2.exe
-Research .3dt files
-Start a beta...

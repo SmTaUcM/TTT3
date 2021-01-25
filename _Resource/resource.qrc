@@ -1,0 +1,9 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>io.png</file>
+    <file>python.png</file>
+    <file>Qt_logo.png</file>
+    <file>ttt3.png</file>
+    <file>povray.png</file>
+  </qresource>
+</RCC>

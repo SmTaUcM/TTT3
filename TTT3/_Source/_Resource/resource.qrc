@@ -1,8 +1,0 @@
-<RCC>
-  <qresource prefix="icons">
-    <file>Qt_logo.png</file>
-    <file>ttt3.png</file>
-    <file>povray.png</file>
-    <file>python27.png</file>
-  </qresource>
-</RCC>

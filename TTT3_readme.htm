@@ -1,0 +1,455 @@
+<!DOCTYPE>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>TIECorps Tailoring Tool 3 - README</title>
+  <style type="text/css">
+    BODY {
+      background-color: #FFFFFF;
+      color: #606760;
+    }
+
+    a:link {
+      text-decoration: none;
+      color: #4F67AF;
+    }
+
+    a:visited {
+      text-decoration: none;
+      color: #4F67AF;
+    }
+
+    a:active {
+      text-decoration: none;
+      color: #DD0000;
+    }
+
+    a:hover {
+      text-decoration: none;
+      background-color: #4F67AF;
+      color: #FFFFFF;
+    }
+
+    h1 {
+      font-family: Verdana, "Times New Roman", sans-serif;
+      font-size: 24px;
+      font-weight: normal;
+      color: #4F67AF;
+      background-color: #FFFFFF;
+      text-align: center;
+    }
+
+    h2 {
+      font-family: Verdana, Arial, sans-serif;
+      font-size: 13px;
+      font-weight: bold;
+      color: #606760;
+      background-color: #FFFFFF;
+      text-align: left;
+      text-decoration: none;
+    }
+
+    .small {
+      font-family: Verdana, Arial, sans-serif;
+      font-size: 10px;
+      color: #606760;
+      background-color: #FFFFFF;
+    }
+
+    .stan {
+      font-family: Arial, Verdana, sans-serif;
+      font-size: 14px;
+      color: #606760;
+      background-color: #FFFFFF;
+      text-align: left;
+    }
+
+    .sub {
+      font-family: Arial, Verdana, sans-serif;
+      font-size: 10px;
+      color: #4F67AF;
+      background-color: #FFFFFF;
+      text-align: right;
+    }
+  </style>
+</head>
+
+<body>
+  <center>
+    <table width="740" cellspacing="0" cellpadding="0" border="0">
+      <tbody>
+        <tr>
+          <td> <a name="top">
+              <hr>
+            </a>
+            <h1>TIECorps Tailoring Tool 3</h1>
+            <hr> <span class="stan">v3.0.0<br>
+              <br>
+            </span> <span class="small"> created 2001 - 2007 by<br>
+              FM-TACA-OPSA/LC Tempest/Kappa 3-2/Wing VI/SSSD Sovereign<br>
+              GOE/GS/SSx2/BSx4/PCx6/ISMx8/MoI/MoT-1gh/IS-9BW-2BR-9SW-2SR-15GW-2GR-1PW-1PR/LoC-Rx2/MoC-4BoC-1SoC/CoLx3/CoB/LoA/OV-6E<br>
+              [DCRN] {IWATS-CBX-GFX-M/1/2-SM/2/3-TM/1/3-TT}<br>
+              RSV/WO Tempest/CD [CoL/SoA/BoMx2/CSS/CDMx2]<br>
+              <br>
+              created 2020 - 2020 by<br>
+              CMDR/CM SkyShadow/Epsilon/Wing I/ISDII Hammer<br>
+              BS/PCx2/ISMx3/IS-1GW-2SW-10BW-2GR-1SR-4BR/LoC-Rx4/LoS-CSx9/MoC-2boc/CoB/OV-19E<br>
+              [Paladin] [Trainee] [Private 4th] <br>
+              {TCCORE-MP/2-SM/2/3/4}<br>
+            </span> <span class="stan"><br>
+              For comments/questions please send a mail to: <a
+                href="mailto:io@emperorshammer.org">io@emperorshammer.org</a><br>
+              <hr><br>
+              <table cellspacing="0" cellpadding="0" border="0">
+                <tbody>
+                  <tr>
+                    <td width="100%" valign="top">
+                      <h2>CONTENTS</h2>
+                      <a href="TTT3_readme.htm#intro">1. Introduction: What is TTT3?</a><br>
+                      <a href="TTT3_readme.htm#disclaimer">2. Disclaimer</a><br>
+                      <a href="TTT3_readme.htm#requirements">3. Requirements</a><br>
+                      <a href="TTT3_readme.htm#rendering">4. Rendering options</a><br>
+                      <a href="TTT3_readme.htm#tips">5. Tips from the authors</a><br>
+                      <a href="TTT3_readme.htm#patches">6. Squadron patches</a><br>
+                      <a href="TTT3_readme.htm#status">7. Project status</a><br>
+                      <a href="TTT3_readme.htm#issues">8. Known issues</a><br>
+                      <a href="TTT3_readme.htm#bugs">9. Bug reports</a><br>
+                      <a href="TTT3_readme.htm#changes">10. Changes from last version</a><br>
+                      <a href="TTT3_readme.htm#contributors">11. Contributors</a><br>
+                      <br>
+                    </td>
+                    <td width="30"><br>
+                    </td>
+                    <td> <img src="data/misc/moh.gif" height="240" width="280" border="0"> </td>
+                    <td width="30"><br>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <br>
+              <a name="intro">
+                <hr>
+              </a><br>
+              <h2>1. Introduction: What is TTT?</h2>
+              <p>TIECorps Tailoring Tool 3 is a program for creating Emperor's Hammer and TIE Corps
+                uniforms.</p>
+              <p>Since the template files for the uniforms are 3D models, which
+                not too many people can easily work with, this tool is for
+                assembling the uniform parts from given personnel data (either
+                entered via the GUI or imported from the TC database).</p>
+              <!--<p>TTT3 generates a preview in OpenGL, allowing the user to
+              comfortably set camera position, lighting and some other
+              options, and finally renders the final uniform image by calling
+              POV-Ray (the Persistence of Vision raytracer).</p>-->
+              <p>While it would have been easier and faster to just render out
+                template pictures and have TTT put them together, as the first
+                version of the program did, there would have been some
+                disadvantages.</p>
+              <p>First, when putting images together that look 3D, but are only
+                2D, the objects don't interact (don't reflect and don't cast
+                shadows on each other). Elements that do not always appear on
+                the exact same spot (like a 3rd class merit medal) would also
+                look perspectively wrong when put to a location where they were
+                not originally rendered at. You therefore end up with a kind of
+                2.5D look.</p>
+              <p>Second, working with the 3D data directly adds a new level of
+                flexibility, like being able to set the camera and lighting,
+                change the resolution, and so on.</p>
+              <br>
+              <br>
+              <br>
+              <span class="sub"><a href="TTT3_readme.htm#top">back to top</a></span>
+              <a name="disclaimer">
+                <hr>
+              </a><br>
+              <br>
+              <h2>2. Disclaimer</h2>
+              <p>A lot of work and time was put into creating these uniforms <i>for
+                  the Emperor's Hammer Strike Fleet</i>.</p>
+              <p>Any use of this material outside the EH (especially, but not
+                restricted to, use for other SW clubs) require explicit
+                permission from the Fleet Commander.</p>
+              <p>Some parts of the geometry were inspired and/or taken from
+                freeware sources which prohibit commercial use (please see the
+                list of <a href="TTT3_readme.htm#contributors">contributors</a>).
+                Some parts of the design are legal property of Lucasfilm Ltd.<br>
+                Hence, the uniforms created by TTT3 can not be put to any
+                commercial uses.</p>
+              <p>
+                While TTT3 allows you to set the camera position freely,
+                pictures which you want to upload to the TC database must
+                clearly show your position (cuff of at least one arm) and rank
+                (left breast).</p>
+              <p>While the POV scripts that come with TTT3 allow for a high
+                degree of customization, pictures you want to upload to the TC
+                database must (obviously) obey EH/TC uniform regulations.</p>
+              <p>
+                Finally, you are using the program on your own risk. Flawless
+                operation of TTT3 on your system can't be guaranteed.</p>
+              <br>
+              <br>
+              <br>
+              <span class="sub"><a href="TTT3_readme.htm#top">back to top</a></span>
+              <a name="requirements">
+                <hr>
+              </a><br>
+              <br>
+              <h2>3. Requirements</h2>
+              <p>TTT3 uses the Persistence of Vision raytracer (in short POV-Ray)
+                to create the uniform pictures. POV-Ray is freeware and can be
+                downloaded from <a href="http://www.povray.org/" target="_blank">http://www.povray.org/</a>.
+                You can install it to any directory, TTT3 <i>should</i> be able
+                to find it via the registry. If that fails, please open TTT3's
+                configuration dialog and set the path to your POV-Ray
+                installation manually.</p>
+              <p>TTT3 has been developed and tested primarily on Windows 10 64-bit. It has also been successfully tested
+                on Windows 7 32-bit, and Windows 7 64-bit.</p>
+              <br>
+              <br>
+              <br>
+              <span class="sub"><a href="TTT3_readme.htm#top">back to top</a></span>
+              <a name="rendering">
+                <hr>
+              </a><br>
+              <br>
+              <h2>4. Rendering options</h2>
+              <p></p>As with previous versions of TTT, most of the
+              program functionality should be self-explaining. However, with
+              the new 3D approach there are some aspects which are not that
+              obvious. They will be explained in this section.</p>
+              <ul>
+                <li>
+                  <u>Cancel rendering</u>: You can always cancel POV-Ray by
+                  pressing Alt-G.
+                </li>
+                <!--<li>
+                  <u>Camera and light movement</u>: Aside from moving the camera
+                  and the light source using the slider controls, you can also use
+                  a more intuitive method via the preview window:<br>
+                  With the left mouse button pressed, use the WSAD keys to
+                  navigate as in an FPS game. F and V move up and down.<br>
+                  With the left mouse button and ALT pressed, moving the mouse
+                  will rotate the camera around the scene center.<br>
+                  With the right mouse button pressed, moving the mouse will
+                  rotate the spotlight around the scene center. Note that, when in
+                  this mode, you will look at the scene from the spotlight's point
+                  of view to give you better control. Once you release the right
+                  mouse button, you will be switched back to camera view.
+                </li>-->
+                <li>
+                  <u>Mosaic preview mode</u>: There is a check box in the POV
+                  options (all previews) labeled "mosaic preview mode". With this
+                  enabled, POV-Ray will first generate a rough preview of the
+                  scene with large blocks, then refine them so more details become
+                  visible with every pass. Note that the final pass does not get
+                  done faster by this, so overall rendering time will increase.
+                </li>
+                <li>
+                  <u>Cloth detail (dress and duty uniforms only)</u>: There is a
+                  highly detailed cloth texture on the uniform that makes it look
+                  more realistic when viewed from close. But from far away, this
+                  leads to heavy <a href="http://en.wikipedia.org/wiki/Aliasing" target="_blank">aliasing</a> that looks
+                  like a Moiré pattern
+                  (if you really want to see the effect, switch from auto to
+                  highest quality and raytrace at standard camera setting and
+                  resolution).<br>
+                  To get a grip on that unpleasant affect, there are four versions
+                  of the cloth texture in different resolutions. With "Cloth
+                  detail" to "automatic", TTT3 will attempt to choose the best one
+                  based on two factors; output image width, and the distance
+                  between camera lens and uniform surface. Leaving that setting alone should work for most cases.
+                  However, the parameters for the texture choosing algo were set
+                  by a trial-and-error procedure since it is obviously not
+                  possible to test every configuration. So you may encounter
+                  situations in which you are not happy with the cloth detail. If
+                  you can't see it at all, increase the detail, if you get Moiré
+                  effects, decrease it. You may also want to save your scene
+                  settings and send them to me, for I might be able to improve the
+                  automatic algo to produce better results based on your
+                  experiment.
+                </li>
+              </ul>
+              <br>
+              <br>
+              <br>
+              <span class="sub"><a href="TTT3_readme.htm#top">back to top</a></span>
+              <a name="tips">
+                <hr>
+              </a><br>
+              <br>
+              <h2>5. Tips from the author</h2>
+              Just a few things which I thought you might find useful.
+
+              <ul>
+
+                <li><u>Profiles</u>: In TTT3 you can save profiles from the main
+                  windows as well as from each preview window. This might seem
+                  confusing at first, but serves a purpose, which is keeping the
+                  uniform data and the <i>displaying</i> of the uniform data
+                  separate. So, for example, you can import a new officer's
+                  profile, but display it with your favorite camera and light
+                  settings which you have stored in a separate config file.</li>
+                <li>
+                  <u>Speed up</u>: In some cases you may wish to only see a rough
+                  preview of a scene so you can judge how it would work out in the
+                  end. In such a case you wouldn't want to wait hours for the
+                  result. One of the biggest slowdowns in the raytracing process
+                  is the anti-aliasing. Switching it off makes the picture much
+                  rougher, but it will also go *a lot* faster. Getting rid of
+                  shadows and turning down the resolution are only points two and
+                  three on the list. Then there is the overall quality setting
+                  which goes from 9 down to 1. Here is what it does (from the
+                  POV-Ray help):<br>
+                  9: Compute media and radiosity<br>
+                  8: Compute reflected, refracted, and transmitted rays<br>
+                  6, 7: Compute texture patterns, compute photons<br>
+                  5: Render shadows, including extended lights<br>
+                  4: Render shadows, but no extended lights<br>
+                  2-3: Show specified diffuse and ambient light<br>
+                  0-1: Just show quick colors. Use full ambient lighting only.
+                  Quick colors are used only at 5 or below
+                </li>
+                <li>
+                  <u>Image formats</u>: TTT3 natively exports the generated image in PNG format.
+                </li>
+
+              </ul>
+              <br>
+              <br>
+              <br>
+              <span class="sub"><a href="TTT3_readme.htm#top">back to top</a></span>
+              <a name="patches">
+                <hr>
+              </a><br>
+              <br>
+              <h2>6. Squadron patches</h2>
+              <p>In order for a squadron patch to be displayed on the uniform, it
+                must be in BMP or PNG format, it must be in the <i>data/squads</i>
+                directory and it must be named after the squadron (same spelling
+                that it has in TTT3).</p>
+              <p>A size of 256 x 256 pixels is recommended, but not enforced.
+                Just make sure it is square because otherwise it will appear
+                distorted.</p>
+              <p>You can define transparent areas by alpha channel (PNG format
+                only), by using pure green (RGB 0, 255, 0) or the pixel colour
+                of the leftmost uppermost (0, 0) pixel.
+                TTT3 will auto-generate a b/w mask from it and store it in the
+                same directory under <i>originalname</i>_mask.gif. You don't
+                have to care about it, but if you ever modify an existing patch,
+                delete the GIF mask file that belongs to it, because as long as
+                a mask file is in place TTT3 won't generate a new one.</p>
+              <br>
+              <br>
+              <br>
+              <span class="sub"><a href="TTT3_readme.htm#top">back to top</a></span>
+              <a name="customize">
+                <hr>
+              </a><br>
+              <br>
+              <h2>7. Project status</h2>
+              <p>TTT3 is actively maintained by the Emperor's Hammer Internet Office. Please refer questions, comments,
+                and
+                bug reports to io@emperorshammer.org.</p>
+              <br>
+              <br>
+              <br>
+              <span class="sub"><a href="TTT3_readme.htm#top">back to top</a></span>
+              <a name="faq">
+                <hr>
+              </a><br>
+              <br>
+              <h2>8. Known issues</h2>
+              <p></p>The following bugs and/or problems of the TTT3 software are
+              known, but not getting fixed anytime soon for some reason or
+              another.</p>
+              <p>None currently.</p>
+              <br>
+              <br>
+              <br>
+              <span class="sub"><a href="TTT3_readme.htm#top">back to top</a></span>
+              <a name="bugs">
+                <hr>
+              </a><br>
+              <br>
+              <h2>9. Bug reports</h2>
+              The first rule of programming is still Murphy's.<br>
+              Which is why I don't expect TTT3 to be free of bugs. There are
+              just too many uniform configurations in which they can hide.<br>
+              <br>
+              If you encounter one, please save the uniform profiles and send
+              them to me. If POV-Ray shuts down during the parsing phase,
+              please open the .pov file, start the rendering "manually", and
+              see what error message appears. Thanks in advance. :)
+              <br>
+              <br>
+              <br>
+              <span class="sub"><a href="TTT3_readme.htm#top">back to top</a></span>
+              <a name="changes">
+                <hr>
+              </a><br>
+              <br>
+              <h2>10. Changes from last version</h2>
+              <p>Changes are available in the TTT3 <a href='CHANGELOG.md'>changelog</a>.</p>
+              <br>
+              <br>
+              <br>
+              <span class="sub"><a href="TTT3_readme.htm#top">back to top</a></span>
+              <a name="contributors">
+                <hr>
+              </a><br>
+              <br>
+              <h2>11. Contributors</h2>
+              <p>Many people have had a share in the creation of the Emperor's Hammer uniforms, uniform accessories, and
+                this program. The contributions were of various
+                kinds, so we will not try to measure and compare and determine
+                who helped most, but list them alphabetically. Thanks to:</p>
+
+              <h3>Emperor's Hammer Members</h3>
+              <ul>
+                <li>Braz Ile (TTT3 - lightsabers, blasters)</li>
+                <li>Den Darkhill (TTT2 - programming tips, beta testing)</li>
+                <li>Eclipse (TTT3 - alpha/beta testing)</li>
+                <li>Ender mBind (TTT2 - design ideas, beta testing)</li>
+                <li>Khaine (medal design, groundwork for the FCHG wings design)</li>
+                <li>Ronin (need a club to have club uniforms *g*)</li>
+                <li>SkyShadow (TTT3 - lead developer)</li>
+                <li>Silwar Naiilo (TTT3 - alpha/beta testing)</li>
+                <li>Tempest (TTT2 - lead developer, lead modeler, project management)</li>
+                <li>Turtle Jerrar (TTT3 - POV-Ray scenes, testing, project management)</li>
+                <li>Zeth Durron (TTT2 - lightsabers)</li>
+              </ul>
+
+              <h3>Others</h3>
+              <ul>
+                <li>Cage (Free Poser wingset used for the GOE, <a href="http://www.renderosity.com/"
+                    target="_blank">http://www.renderosity.com/</a>)</li>
+                <li>JJ Palomo (parts of the helmet from his stormtrooper model, <a href="http://www.scifi3d.com/"
+                    target="_blank">http://www.scifi3d.com/</a>)</li>
+                <li>Martin K. (the eagle's head of the GOE dagger is based on one of
+                  his drawings... originally it was a tattoo design *g*)</li>
+                <li>Mister X (parts of the helmet from his rebel pilot model, <a href="http://www.scifi3d.com/"
+                    target="_blank">http://www.scifi3d.com/</a>)</li>
+                <li>POV-Ray community, most notably Alain (<a href="http://www.povray.org/"
+                    target="_blank">http://www.povray.org/</a>)</li>
+                <li>Raphaël de Bouchony a.k.a. Tron (the imperial officer model was
+                  the base for the jacket, <a href="http://www.scifi3d.com/"
+                    target="_blank">http://www.scifi3d.com/</a>)</li>
+                <li>Revanto (Braid tutorial which was very helpful for making the
+                  admiralty braids... unfortunately the page went 404)</li>
+              </ul>
+
+              <br>
+              <br>
+              <br>
+              <span class="sub"><a href="TTT3_readme.htm#top">back to top</a></span>
+              <hr><br>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </center>
+</body>
+
+</html>
