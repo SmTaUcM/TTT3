@@ -28,6 +28,8 @@ import datetime
 import winreg
 from PyQt5 import uic  # python -m pip install pyqt5
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog  # python -m pip install pyqt5-tools
+from PyQt5.QtGui import QPixmap
+##from PyQt5.QtCore import Qt
 from PIL import Image  # python -m pip install pillow
 import cv2  # python -m pip install opencv-python
 import numpy
@@ -204,6 +206,7 @@ class TTT3(QMainWindow):
             self.cb_singleMedalConnected = False
             self.combo_topConnected = False
             self.rb_upgradeablesConnected = False
+            self.imagePath = None
 
             # ----- Application logic. -----
             self.fastRendering = False  # Forces POV-Ray to render at a lower quality for quicker rendering during testing.
@@ -703,9 +706,9 @@ class TTT3(QMainWindow):
         # Dynamically write the 'data\batch\povray.bat' file.
             # Set the correct paths based on where TTT3 is located and the TTT3.ini settings file.
         if not self.fastRendering:
-            template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\&TYPE&.pov" +W640 +H853 +Q9 +AM2 +A0.1 +D +F +GA +J1.0 /EXIT'
+            template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\&TYPE&.pov" +W640 +H853 +Q9 +AM2 +A0.1 +D +F +GA +J1.0 -D /EXIT'
         else:
-            template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\&TYPE&.pov" +W640 +H853 +Q6 /EXIT'
+            template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\&TYPE&.pov" +W640 +H853 +Q6 -D /EXIT'
         template = template.replace("&TTTPATH&", os.getcwd())
 
         # Apply the path depending on what the user has selected from within the Configuratrion window.
@@ -749,20 +752,57 @@ class TTT3(QMainWindow):
         os.remove(r"data\batch\povray.bat")
         os.removedirs(r"data\batch")
 
-        # Open the newly generated uniform.png file.
+        self.showOutputDialog(uniform)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def showOutputDialog(self, uniform):
+        '''Method to display the POV-Ray rendered image.'''
+
+        # Determin the version of POV-Ray and it's associated file output type.
         if self.config.get("POV-Ray", "detection_mode") == "registry":
             if "3.6" in self.config.get("POV-Ray", "registry_detected_path"):
-                self.convertImage(uniform)
+                ext = ".bmp"
+            else:
+                ext = ".png"
 
         elif self.config.get("POV-Ray", "detection_mode") == "specific":
             if "3.6" in self.config.get("POV-Ray", "user_specified_path"):
-                self.convertImage(uniform)
+                ext = ".bmp"
+            else:
+                ext = ".png"
 
-        os.system(r"data\{uniformType}.png".format(uniformType=uniform))
+        self.imagePath = r"data\%s%s" % (uniform, ext)
+
+        # Load our GUI file 'data\uis\output.ui'
+        self.output_gui = uic.loadUi(r"data\uis\output.ui")
+        self.output_gui.lbl_output.setPixmap(QPixmap(self.imagePath))
+##        self.output_gui.setWindowFlags(self.output_gui.windowFlags() | Qt.WindowStaysOnTopHint) # Blocks save as dialog.
+        self.output_gui.show()
+        self.output_gui.btn_upload.setEnabled(False) # TODO Output upload diabled UTFN.
+        self.output_gui.btn_saveAs.clicked.connect(self.btn_saveAsFunc)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
+
+    def btn_saveAsFunc(self):
+        '''Method to Save As the rendered image file.'''
+
+        try:
+            options = QFileDialog.Options()
+            options |= QFileDialog.DontUseNativeDialog
+            saveName, ext = QFileDialog.getSaveFileName(self, "Save Uniform As", "C:\\users\\" + os.getlogin() + "\\Pictures\\", "*.png;;*.jpg;;*.gif;;*.bmp", options=options)
+            ext = ext.replace("*", "")
+            if saveName:
+                saveName = saveName.replace(r"/", "\\") + ext
+                self.convertImage(self.imagePath, ext, saveName)
+
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
     def povrayMonitor(self):
-        '''Monitors for povray running in the background and signals when it has closed.'''
+        '''Monitors for POV-Ray running in the background and signals when it has closed.'''
 
         time.sleep(0.1)  # Allow some time for POV-Ray to open.
         povRunning = True
@@ -784,15 +824,15 @@ class TTT3(QMainWindow):
                     pass
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def convertImage(self, uniform):
-        '''Comnverts a given .bpf file into .jpg, .gif or .png'''
+    def convertImage(self, src, ext, dest):
+        '''Converts a given .bpf file into .jpg, .gif, .png or .bmp'''
 
-        path = r"data\%s" % uniform
-        img = Image.open(path + ".bmp")
+        img = Image.open(src)
         new_img = img.resize((640, 853))
-        new_img.save(path + ".png", 'png')
-##        new_img.save( path + ".jpg", 'jpeg')
-##        new_img.save( path + ".gif", 'gif')
+        newFilePath = dest.split(".")[0] + ext
+        if ext == ".jpg":
+            ext = ".jpeg"
+        new_img.save(newFilePath, ext.replace(".", ""))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def loadSettings(self):
@@ -819,7 +859,7 @@ class TTT3(QMainWindow):
         # ----- All other values -----
         self.config_gui.lbl_regPath.setText(self.config.get("POV-Ray", "registry_detected_path"))
         self.config_gui.le_specPath.setText(self.config.get("POV-Ray", "user_specified_path"))
-        self.config_gui.le_backend.setText(self.config.get("TCDB", "xml"))
+        self.config_gui.le_backend.setText(self.config.get("TCDB", "api"))
         self.config_gui.le_roster.setText(self.config.get("TCDB", "roster"))
         self.config_gui.le_search.setText(self.config.get("TCDB", "search"))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -913,7 +953,7 @@ class TTT3(QMainWindow):
                 self.config.set("POV-Ray", "registry_detected_path", self.config_gui.lbl_regPath.text())
 
             # All other settings.
-            self.config.set("TCDB", "xml", str(self.config_gui.le_backend.text()))
+            self.config.set("TCDB", "api", str(self.config_gui.le_backend.text()))
             self.config.set("TCDB", "roster", str(self.config_gui.le_roster.text()))
             self.config.set("TCDB", "search", str(self.config_gui.le_search.text()))
 
