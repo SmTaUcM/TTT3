@@ -36,8 +36,7 @@ import numpy
 import platform
 import pickle
 import urllib.request
-from bs4 import BeautifulSoup  # python -m pip install bs4
-import ast
+import json
 # python -m pip install pyinstaller - for compiler.
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -2570,6 +2569,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         for radioButton in radioBtns:
                             if self.position.lower() in radioButton.objectName():
                                 radioButton.setChecked(True)
+                                break
                         self.posRBLogic()
 
                         # Ranks
@@ -2584,6 +2584,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         for radioButton in radioBtns:
                             if self.rank.lower() in radioButton.objectName():
                                 radioButton.setChecked(True)
+                                break
                         self.rankRBLogic()
 
                         # Ship.
@@ -2686,10 +2687,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method to retrieve TIE Corps Website API returned data and return it as a Python Disctionary.'''
 
         with urllib.request.urlopen(url + pin) as response:
-            html = response.read()
-        soup = BeautifulSoup(html, features="html.parser")
-        text = soup.get_text()
-        return ast.literal_eval(text)
+            data = json.loads(response.read())
+
+        return data
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_importFunc(self):
@@ -2699,7 +2699,6 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             # Read the data.
             try:
                 apiData = self.getRetrieveAPIData(self.config.get("TCDB", "api"), str(self.gui.sbPin.value()))
-                print(str(apiData))
 
                 # Rank.
                 self.rank = apiData.get("rankAbbr")
@@ -2711,18 +2710,24 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     else:
                         self.position = "FR"
                 else:
-                    self.position = apiData.get("position")  # TODO check other API return values.
+                    positions = ["TRN", "FM", "FL", "CMDR", "WC", "COM", "TCCS", "IA", "CA", "SGCOM", "CS", "XO", "FC"]
+                    for position in positions:
+                        if position in apiData.get("position"):
+                            self.position = position
+                            break
 
-                # Apply the Position and Rank settings.
+                # Apply the Position setting.
                 radioBtns = [self.gui.rb_pos_trn, self.gui.rb_pos_fm, self.gui.rb_pos_fl, self.gui.rb_pos_cmdr,
                              self.gui.rb_pos_wc, self.gui.rb_pos_com, self.gui.rb_pos_tccs, self.gui.rb_pos_ia,
                              self.gui.rb_pos_ca, self.gui.rb_pos_sgcom, self.gui.rb_pos_cs, self.gui.rb_pos_xo,
                              self.gui.rb_pos_fc, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
 
+                # Apply the Rank setting.
                 if self.position:
                     for radioButton in radioBtns:
                         if self.position.lower() in radioButton.objectName():
                             radioButton.setChecked(True)
+                            break
                     self.posRBLogic()
                     self.rank = apiData.get("rankAbbr")  # Added again because self.posRBLogic() sets self.rank to None.
 
@@ -2736,9 +2741,68 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     for radioButton in radioBtns:
                         if self.rank.lower() in radioButton.objectName():
                             radioButton.setChecked(True)
+                            break
                     self.rankRBLogic()
 
                 self.writeToImportTextBox("WRITE DETAILS HERE!")
+
+                # Ship
+                idline = apiData.get("IDLine")
+                for ship in self.fleetConfig.sections():
+                    if ship in idline:
+                        self.ship = ship
+                        break
+                    else:
+                        self.ship = ""
+
+                if self.ship:
+                    for row in range(self.gui.lw_ship.count()):
+                        self.gui.lw_ship.setCurrentRow(row)
+                        if self.gui.lw_ship.currentItem().text() == self.ship:
+                            break
+                    self.shipSelectionLogic(None)
+
+                # Wing.
+                for wing in self.fleetConfig.sections():
+                    if wing in idline:
+                        self.wing = wing
+                        break
+                    else:
+                        self.wing = ""
+
+                if self.wing:
+                    for row in range(self.gui.lw_wing.count()):
+                        self.gui.lw_wing.setCurrentRow(row)
+                        if self.gui.lw_wing.currentItem().text() == self.wing:
+                            break
+                    self.wingSelectionLogic(None)
+
+                # Squadron.
+                try:
+                    for item in self.fleetConfig.options(self.wing):
+                        squadron = self.fleetConfig.get(self.wing, item)
+                        if squadron in idline:
+                            self.sqn = squadron
+                            break
+                        else:
+                            self.sqn = ""
+
+                    # Elite Squadrons.
+                    for item in self.fleetConfig.options("elites"):
+                        squadron = self.fleetConfig.get("elites", item)
+
+                        if squadron in idline:
+                            self.sqn = squadron
+                            self.gui.cb_eliteSqn.setChecked(True)
+
+                    if self.sqn:
+                        for row in range(self.gui.lw_squad.count()):
+                            self.gui.lw_squad.setCurrentRow(row)
+                            if self.gui.lw_squad.currentItem().text() == self.sqn:
+                                break
+                        self.squadSelectionLogic(None)
+                except configparser.NoSectionError:
+                    pass # If users that have no Squadron
 
             except urllib.error.HTTPError:
                 self.writeToImportTextBox("Invalid PIN number.")
