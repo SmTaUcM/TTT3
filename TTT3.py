@@ -298,6 +298,7 @@ class TTT3(QMainWindow):
 
         self.gui.setWindowFlags(self.gui.windowFlags() & ~Qt.WindowStaysOnBottomHint)
         self.gui.show()
+        self.output_gui.close()
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
     def initialGUISetup(self):
@@ -788,6 +789,7 @@ class TTT3(QMainWindow):
         self.output_gui.show()
         self.output_gui.btn_upload.setEnabled(False)  # TODO Output upload diabled UTFN.
         self.output_gui.btn_saveAs.clicked.connect(self.btn_saveAsFunc)
+        self.output_gui.btn_close.clicked.connect(self.outputCloseEvent)
         self.output_gui.closeEvent = self.outputCloseEvent
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
