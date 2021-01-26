@@ -35,6 +35,9 @@ import cv2  # python -m pip install opencv-python
 import numpy
 import platform
 import pickle
+import urllib.request
+from bs4 import BeautifulSoup  # python -m pip install bs4
+import ast
 # python -m pip install pyinstaller - for compiler.
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -146,6 +149,7 @@ class TTT3(QMainWindow):
             # ----- 'Import' Tab. -----
             self.gui.btn_browseRoster.clicked.connect(self.btn_browseRosterFunc)
             self.gui.btn_search.clicked.connect(self.btn_searchFunc)
+            self.gui.btn_import.clicked.connect(self.btn_importFunc)
 
             # ----- Info Tab. -----
 
@@ -2676,6 +2680,79 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def getRetrieveAPIData(self, url, pin):
+        '''Method to retrieve TIE Corps Website API returned data and return it as a Python Disctionary.'''
+
+        with urllib.request.urlopen(url + pin) as response:
+            html = response.read()
+        soup = BeautifulSoup(html, features="html.parser")
+        text = soup.get_text()
+        return ast.literal_eval(text)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def btn_importFunc(self):
+        '''Method to parse the API data in the form of a Python Dictionary and apply those settings to TTT3.'''
+
+        try:
+            # Read the data.
+            try:
+                apiData = self.getRetrieveAPIData(self.config.get("TCDB", "api"), str(self.gui.sbPin.value()))
+                print(str(apiData))
+
+                # Rank.
+                self.rank = apiData.get("rankAbbr")
+
+                # Position.
+                if apiData.get("position") == "":
+                    if self.rank in ["CT", "SL", "LT", "LCM", "CM", "CPT", "MAJ", "LC", "COL", "GN"]:
+                        self.position = "LR"
+                    else:
+                        self.position = "FR"
+                else:
+                    self.position = apiData.get("position")  # TODO check other API return values.
+
+                # Apply the Position and Rank settings.
+                radioBtns = [self.gui.rb_pos_trn, self.gui.rb_pos_fm, self.gui.rb_pos_fl, self.gui.rb_pos_cmdr,
+                             self.gui.rb_pos_wc, self.gui.rb_pos_com, self.gui.rb_pos_tccs, self.gui.rb_pos_ia,
+                             self.gui.rb_pos_ca, self.gui.rb_pos_sgcom, self.gui.rb_pos_cs, self.gui.rb_pos_xo,
+                             self.gui.rb_pos_fc, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
+
+                if self.position:
+                    for radioButton in radioBtns:
+                        if self.position.lower() in radioButton.objectName():
+                            radioButton.setChecked(True)
+                    self.posRBLogic()
+                    self.rank = apiData.get("rankAbbr")  # Added again because self.posRBLogic() sets self.rank to None.
+
+                radioBtns = [self.gui.rb_rank_ct, self.gui.rb_rank_sl, self.gui.rb_rank_lt, self.gui.rb_rank_lcm,
+                             self.gui.rb_rank_cm, self.gui.rb_rank_cpt, self.gui.rb_rank_maj, self.gui.rb_rank_lc,
+                             self.gui.rb_rank_col, self.gui.rb_rank_gn, self.gui.rb_rank_ra, self.gui.rb_rank_va,
+                             self.gui.rb_rank_ad, self.gui.rb_rank_fa, self.gui.rb_rank_ha, self.gui.rb_rank_sa,
+                             self.gui.rb_rank_ga]
+
+                if self.rank:
+                    for radioButton in radioBtns:
+                        if self.rank.lower() in radioButton.objectName():
+                            radioButton.setChecked(True)
+                    self.rankRBLogic()
+
+                self.writeToImportTextBox("WRITE DETAILS HERE!")
+
+            except urllib.error.HTTPError:
+                self.writeToImportTextBox("Invalid PIN number.")
+
+        except Exception as e:
+            handleException(e)
+        # Bookmark
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def writeToImportTextBox(self, message):
+        '''Method that will display text in the 'Import' tab text box.'''
+
+        self.gui.textEdit.clear()
+        self.gui.textEdit.setPlainText(message)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
