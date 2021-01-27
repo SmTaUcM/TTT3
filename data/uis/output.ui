@@ -46,7 +46,7 @@
     </property>
     <property name="geometry">
      <rect>
-      <x>199</x>
+      <x>124</x>
       <y>896</y>
       <width>131</width>
       <height>23</height>
@@ -93,7 +93,7 @@ QPushButton:!enabled
     </property>
     <property name="geometry">
      <rect>
-      <x>349</x>
+      <x>274</x>
       <y>896</y>
       <width>131</width>
       <height>23</height>
@@ -183,6 +183,53 @@ QPushButton:!enabled
       <string/>
      </property>
     </widget>
+   </widget>
+   <widget class="QPushButton" name="btn_close">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>424</x>
+      <y>896</y>
+      <width>131</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton
+{
+    color: #b1b1b1;
+    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:0.4375 rgba(6, 22, 125, 255));
+    border-width: 1px;
+    border-color: #1e1e1e;
+    border-style: solid;
+    border-radius: 6;
+    padding: 3px;
+    font-size: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+QPushButton:pressed
+{
+    background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:0, y2:1, stop:0 rgba(0, 0, 0, 255), stop:0.4375 rgba(6, 22, 125, 255));
+}
+
+QPushButton:hover
+{
+    border: 2px solid rgb(208, 208, 208);
+}
+
+QPushButton:!enabled
+{
+     color: gray;
+	background-color: darkgray;
+}</string>
+    </property>
+    <property name="text">
+     <string>Close</string>
+    </property>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

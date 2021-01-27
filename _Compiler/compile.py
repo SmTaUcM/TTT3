@@ -16,6 +16,8 @@ import PyInstaller.__main__
 import os
 import shutil
 from zipfile import ZipFile, ZIP_DEFLATED
+import platform
+import sys
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -69,4 +71,7 @@ with ZipFile('_Compiler\\TTT3.zip', 'w', compression=ZIP_DEFLATED, compresslevel
            # Add file to zip
            zipObj.write(filePath, filePath.split("_Compiler\\")[1])
 print("\nTTT3.zip created.")
+bits = sys.version[ : sys.version.index(" bit")][-3:]
+version = platform.platform().split("-")[0] + bits + "-bit"
+print("\n\n----------- Compile for %s Complete -----------\n\n" % version)
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
