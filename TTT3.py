@@ -2710,19 +2710,15 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     else:
                         self.position = "FR"
                 else:
-                    positions = ["TRN", "FM", "FL", "CMDR", "WC", "COM", "TCCS", "IA", "CA", "SGCOM", "CS", "XO", "FC"]
-                    for position in positions:
-                        if position in apiData.get("position"):
-                            self.position = position
-                            break
+                    self.position = apiData.get("TTT").get("position")
 
-                # Apply the Position setting.
+                # Apply the Position setting to the GUI.
                 radioBtns = [self.gui.rb_pos_trn, self.gui.rb_pos_fm, self.gui.rb_pos_fl, self.gui.rb_pos_cmdr,
                              self.gui.rb_pos_wc, self.gui.rb_pos_com, self.gui.rb_pos_tccs, self.gui.rb_pos_ia,
                              self.gui.rb_pos_ca, self.gui.rb_pos_sgcom, self.gui.rb_pos_cs, self.gui.rb_pos_xo,
                              self.gui.rb_pos_fc, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
 
-                # Apply the Rank setting.
+                # Apply the Rank setting to the GUI.
                 if self.position:
                     for radioButton in radioBtns:
                         if self.position.lower() in radioButton.objectName():
@@ -2744,17 +2740,14 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                             break
                     self.rankRBLogic()
 
-                self.writeToImportTextBox("WRITE DETAILS HERE!")
-
                 # Ship
-                idline = apiData.get("IDLine")
-                for ship in self.fleetConfig.sections():
-                    if ship in idline:
-                        self.ship = ship
-                        break
-                    else:
-                        self.ship = ""
+                shipData = apiData.get("ship")
+                if shipData:
+                    self.ship = shipData.get("nameShort")
+                else:
+                    self.ship = ""
 
+                # Apply the Ship setting to the GUI.
                 if self.ship:
                     for row in range(self.gui.lw_ship.count()):
                         self.gui.lw_ship.setCurrentRow(row)
@@ -2763,13 +2756,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.shipSelectionLogic(None)
 
                 # Wing.
-                for wing in self.fleetConfig.sections():
-                    if wing in idline:
-                        self.wing = wing
-                        break
-                    else:
-                        self.wing = ""
+                wingData = apiData.get("wing")
+                if wingData:
+                    self.wing = wingData.get("name")
+                else:
+                    self.wing = ""
 
+                # Apply the Wing setting to the GUI.
                 if self.wing:
                     for row in range(self.gui.lw_wing.count()):
                         self.gui.lw_wing.setCurrentRow(row)
@@ -2778,31 +2771,30 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.wingSelectionLogic(None)
 
                 # Squadron.
-                try:
-                    for item in self.fleetConfig.options(self.wing):
-                        squadron = self.fleetConfig.get(self.wing, item)
-                        if squadron in idline:
-                            self.sqn = squadron
+                sqnData = apiData.get("squadron")
+                if sqnData:
+                    self.sqn = sqnData.get("name")
+                else:
+                    self.sqn = ""
+
+                # Elite Squadrons.
+                for item in self.fleetConfig.options("elites"):
+                    squadron = self.fleetConfig.get("elites", item)
+                    if self.sqn == squadron:
+                        self.gui.cb_eliteSqn.setChecked(True)
+
+                # Apply the Sqn setting to the GUI.
+                if self.sqn:
+                    for row in range(self.gui.lw_squad.count()):
+                        self.gui.lw_squad.setCurrentRow(row)
+                        if self.gui.lw_squad.currentItem().text() == self.sqn:
                             break
-                        else:
-                            self.sqn = ""
+                    self.squadSelectionLogic(None)
 
-                    # Elite Squadrons.
-                    for item in self.fleetConfig.options("elites"):
-                        squadron = self.fleetConfig.get("elites", item)
-
-                        if squadron in idline:
-                            self.sqn = squadron
-                            self.gui.cb_eliteSqn.setChecked(True)
-
-                    if self.sqn:
-                        for row in range(self.gui.lw_squad.count()):
-                            self.gui.lw_squad.setCurrentRow(row)
-                            if self.gui.lw_squad.currentItem().text() == self.sqn:
-                                break
-                        self.squadSelectionLogic(None)
-                except configparser.NoSectionError:
-                    pass # If users that have no Squadron
+                # Write to information box.
+                msg = "Importing uniform data for {label}\nCallsign '{callsign}'\n{idLine}\n\nImport finished.".format(
+                    label=apiData.get("label"), callsign=apiData.get("callsign"), idLine=apiData.get("IDLine"))
+                self.writeToImportTextBox(msg)
 
             except urllib.error.HTTPError:
                 self.writeToImportTextBox("Invalid PIN number.")
