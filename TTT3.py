@@ -2567,7 +2567,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
                     if self.position:
                         for radioButton in radioBtns:
-                            if self.position.lower() in radioButton.objectName():
+                            if self.position.lower() == radioButton.objectName().replace("rb_pos_", ""):
                                 radioButton.setChecked(True)
                                 break
                         self.posRBLogic()
@@ -2582,7 +2582,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
                     if self.rank:
                         for radioButton in radioBtns:
-                            if self.rank.lower() in radioButton.objectName():
+                            if self.rank.lower() == radioButton.objectName().replace("rb_rank_", ""):
                                 radioButton.setChecked(True)
                                 break
                         self.rankRBLogic()
@@ -2696,6 +2696,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method to parse the API data in the form of a Python Dictionary and apply those settings to TTT3.'''
 
         try:
+            # Reset TTTs data.
+            self.btn_newProfMethod(None)
+
             # Read the data.
             try:
                 apiData = self.getRetrieveAPIData(self.config.get("TCDB", "api"), str(self.gui.sbPin.value()))
@@ -2721,7 +2724,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 # Apply the Rank setting to the GUI.
                 if self.position:
                     for radioButton in radioBtns:
-                        if self.position.lower() in radioButton.objectName():
+                        if self.position.lower() == radioButton.objectName().replace("rb_pos_", ""):
                             radioButton.setChecked(True)
                             break
                     self.posRBLogic()
@@ -2735,7 +2738,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
                 if self.rank:
                     for radioButton in radioBtns:
-                        if self.rank.lower() in radioButton.objectName():
+                        if self.rank.lower() == radioButton.objectName().replace("rb_rank_", ""):
                             radioButton.setChecked(True)
                             break
                     self.rankRBLogic()
@@ -2790,6 +2793,20 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         if self.gui.lw_squad.currentItem().text() == self.sqn:
                             break
                     self.squadSelectionLogic(None)
+
+                # Medals & Ribbons.
+                apiMedalData = apiData.get("medals")
+
+                for medal in apiMedalData.keys():
+                    for award in self.awards:
+                        if medal.split("-")[0] in award:
+
+                            # Single, Multi and Ranged type awards.
+                            if self.awards.get(award)["type"] == "single" or \
+                               self.awards.get(award)["type"] == "multi" or \
+                               self.awards.get(award)["type"] == "ranged":
+
+                                self.awards.get(award)["upgrades"][1] = apiMedalData.get(medal)
 
                 # Write to information box.
                 msg = "Importing uniform data for {label}\nCallsign '{callsign}'\n{idLine}\n\nImport finished.".format(
