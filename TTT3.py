@@ -2733,6 +2733,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 else:
                     self.position = apiData.get("TTT").get("position")
 
+                # Special handling of FC and XO positions.
+                idLine = apiData.get("IDLine")
+                pos = idLine.split("/")[0]
+                if pos == "FC" or pos == "XO":
+                    self.position = pos
+
                 # Apply the Position setting to the GUI.
                 radioBtns = [self.gui.rb_pos_trn, self.gui.rb_pos_fm, self.gui.rb_pos_fl, self.gui.rb_pos_cmdr,
                              self.gui.rb_pos_wc, self.gui.rb_pos_com, self.gui.rb_pos_tccs, self.gui.rb_pos_ia,
@@ -2817,25 +2823,28 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 name = 0
                 quantity = 1
 
-                for medal in apiMedalData.keys():
-                    for award in self.awards:
-                        if medal.split("-")[0] in award or ("CoX" in award and "Co" in medal):
+                try:
+                    for medal in apiMedalData.keys():
+                        for award in self.awards:
+                            if medal.split("-")[0] in award or ("CoX" in award and "Co" in medal):
 
-                            # Single, Multi and Ranged type awards.
-                            if self.awards.get(award)["type"] == "single" or \
-                               self.awards.get(award)["type"] == "multi" or \
-                               self.awards.get(award)["type"] == "ranged":
+                                # Single, Multi and Ranged type awards.
+                                if self.awards.get(award)["type"] == "single" or \
+                                   self.awards.get(award)["type"] == "multi" or \
+                                   self.awards.get(award)["type"] == "ranged":
 
-                                self.awards.get(award)["upgrades"][1] = apiMedalData.get(medal)
+                                    self.awards.get(award)["upgrades"][1] = apiMedalData.get(medal)
 
-                            # Upgradeable and SubRibbons type awards.
-                            elif self.awards.get(award)["type"] == "upgradeable" or \
-                                    self.awards.get(award)["type"] == "subRibbons":
+                                # Upgradeable and SubRibbons type awards.
+                                elif self.awards.get(award)["type"] == "upgradeable" or \
+                                        self.awards.get(award)["type"] == "subRibbons":
 
-                                for upgrade in self.awards.get(award)["upgrades"]:
-                                    if medal in upgrade[name]:
-                                        index = self.awards.get(award)["upgrades"].index(upgrade)
-                                        self.awards.get(award)["upgrades"][index][quantity] = apiMedalData.get(medal)
+                                    for upgrade in self.awards.get(award)["upgrades"]:
+                                        if medal in upgrade[name]:
+                                            index = self.awards.get(award)["upgrades"].index(upgrade)
+                                            self.awards.get(award)["upgrades"][index][quantity] = apiMedalData.get(medal)
+                except AttributeError:
+                    pass # User has no medals.
 
                 # FCHG.
                 fchg = apiData.get("FCHG").get("label")
