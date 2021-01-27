@@ -2830,11 +2830,11 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
                             # Upgradeable and SubRibbons type awards.
                             elif self.awards.get(award)["type"] == "upgradeable" or \
-                                 self.awards.get(award)["type"] == "subRibbons":
+                                    self.awards.get(award)["type"] == "subRibbons":
 
                                 for upgrade in self.awards.get(award)["upgrades"]:
                                     if medal in upgrade[name]:
-                                        index =  self.awards.get(award)["upgrades"].index(upgrade)
+                                        index = self.awards.get(award)["upgrades"].index(upgrade)
                                         self.awards.get(award)["upgrades"][index][quantity] = apiMedalData.get(medal)
 
                 # FCHG.
@@ -2910,7 +2910,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.gui.lw_presets.addItem(item.split("#")[0])
 
         except FileNotFoundError:
-            pass # No pin.dat file is saved.
+            pass  # No pin.dat file is saved.
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
     def checkForNewPIN(self):
@@ -2956,7 +2956,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     try:
                         self.deletePreset(item.text())
                     except AttributeError:
-                        pass # User has not clicked on a name.
+                        pass  # User has not clicked on a name.
                 return True
             return super(TTT3, self).eventFilter(source, event)
 
