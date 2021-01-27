@@ -27,9 +27,9 @@ import time
 import datetime
 import winreg
 from PyQt5 import uic  # python -m pip install pyqt5
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog  # python -m pip install pyqt5-tools
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMenu  # python -m pip install pyqt5-tools
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QEvent
 from PIL import Image  # python -m pip install pillow
 import cv2  # python -m pip install opencv-python
 import numpy
@@ -149,6 +149,9 @@ class TTT3(QMainWindow):
             self.gui.btn_browseRoster.clicked.connect(self.btn_browseRosterFunc)
             self.gui.btn_search.clicked.connect(self.btn_searchFunc)
             self.gui.btn_import.clicked.connect(self.btn_importFunc)
+            self.gui.btn_remember.clicked.connect(self.btn_rememberFunc)
+            self.gui.lw_presets.itemClicked.connect(self.lw_presetsFunc)
+            self.gui.lw_presets.installEventFilter(self)
 
             # ----- Info Tab. -----
 
@@ -174,6 +177,7 @@ class TTT3(QMainWindow):
             self.position = None
             self.rank = None
             self.name = "Unknown"
+            self.pin = None
             self.ship = ""
             self.wing = ""
             self.sqn = ""
@@ -203,6 +207,7 @@ class TTT3(QMainWindow):
             self.fleetConfig = None
             self.medalConfig = None
             self.ribbonConfig = None
+            self.pinData = []
 
             # ----- GUI variables. -----
             self.subRibbonAwards = []
@@ -216,6 +221,7 @@ class TTT3(QMainWindow):
             self.continueRender = True
             self.loadSettings()
             self.initialGUISetup()
+            self.loadPinData()
         except Exception as e:
             handleException(e)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -331,6 +337,9 @@ class TTT3(QMainWindow):
 
         # TODO Disabled Helmet UTFN.
         self.gui.btn_helmet.setEnabled(False)
+
+        # Hide the remember button.
+        self.gui.btn_remember.hide()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def posRBLogic(self):
@@ -1882,12 +1891,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.gui.sb_multi_center1.valueChanged.connect(self.sb_multi_center1Logic)
 
                 # === Ribbons ===
-                # ----- Upgradeable type ribbon awards. (MoI, LoC, LoS, DFC)
+                # ----- Upgradeable type ribbon awards. (MoI, MoC LoC, LoS, DFC)
             elif award.get("type") == "upgradeable":
                 self.gui.cb_singleMedal.setText(item.text())
 
                 for upgrade in award.get("upgrades"):
-                    if upgrade[quantity] == 1:
+                    if upgrade[quantity] >= 1:
                         self.gui.cb_singleMedal.setChecked(True)
                         break
                     else:
@@ -1900,7 +1909,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.gui.cb_singleMedal.show()
                 self.showUpgradeableRadioButtons()
 
-                # ----- SubRibbons type ribbon awards. (MoS, MoT, IS, MoC, CoX)
+                # ----- SubRibbons type ribbon awards. (MoS, MoT, IS, CoX)
             elif award.get("type") == "subRibbons":
                 # Determine the number of subRibbons the award has for SpinBox assignment.
                 subRibbonNum = len(award.get("upgrades"))
@@ -2548,6 +2557,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method event for when the 'Open Profile' button is clicked.'''
 
         try:
+            # Reset TTTs data.
+            self.btn_newProfMethod(None)
+
             # Load the saved data file.
             fileName = (self.loadUniformFileDialog())
             if fileName:
@@ -2703,6 +2715,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             try:
                 apiData = self.getRetrieveAPIData(self.config.get("TCDB", "api"), str(self.gui.sbPin.value()))
 
+                # Name
+                self.name = apiData.get("label").replace(apiData.get("rankAbbr") + " ", "")
+
+                # PIN
+                self.pin = apiData.get("PIN")
+
                 # Rank.
                 self.rank = apiData.get("rankAbbr")
 
@@ -2796,10 +2814,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
                 # Medals & Ribbons.
                 apiMedalData = apiData.get("medals")
+                name = 0
+                quantity = 1
 
                 for medal in apiMedalData.keys():
                     for award in self.awards:
-                        if medal.split("-")[0] in award:
+                        if medal.split("-")[0] in award or ("CoX" in award and "Co" in medal):
 
                             # Single, Multi and Ranged type awards.
                             if self.awards.get(award)["type"] == "single" or \
@@ -2808,17 +2828,33 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
                                 self.awards.get(award)["upgrades"][1] = apiMedalData.get(medal)
 
+                            # Upgradeable and SubRibbons type awards.
+                            elif self.awards.get(award)["type"] == "upgradeable" or \
+                                 self.awards.get(award)["type"] == "subRibbons":
+
+                                for upgrade in self.awards.get(award)["upgrades"]:
+                                    if medal in upgrade[name]:
+                                        index =  self.awards.get(award)["upgrades"].index(upgrade)
+                                        self.awards.get(award)["upgrades"][index][quantity] = apiMedalData.get(medal)
+
+                # FCHG.
+                fchg = apiData.get("FCHG").get("label")
+                FCHGIndex = self.gui.cbFCHG.findText(fchg, Qt.MatchContains)
+                self.gui.cbFCHG.setCurrentIndex(FCHGIndex)
+
                 # Write to information box.
                 msg = "Importing uniform data for {label}\nCallsign '{callsign}'\n{idLine}\n\nImport finished.".format(
                     label=apiData.get("label"), callsign=apiData.get("callsign"), idLine=apiData.get("IDLine"))
                 self.writeToImportTextBox(msg)
+
+                # PIN number saving.
+                self.checkForNewPIN()
 
             except urllib.error.HTTPError:
                 self.writeToImportTextBox("Invalid PIN number.")
 
         except Exception as e:
             handleException(e)
-        # Bookmark
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def writeToImportTextBox(self, message):
@@ -2827,6 +2863,116 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         self.gui.textEdit.clear()
         self.gui.textEdit.setPlainText(message)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def btn_rememberFunc(self):
+        '''Method to remember imported PINS.'''
+
+        try:
+            pin = self.name + "#" + str(self.pin) + "\n"
+            self.pinData.append(pin)
+            self.savePinData()
+            self.loadPinData()
+            self.gui.btn_remember.hide()
+
+        except Exception as e:
+            handleException(e)
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def savePinData(self):
+        '''Method to save imported PINS.'''
+
+        try:
+            data = []
+            for item in self.pinData:
+                if item != "\n" and item != "":
+                    data.append(item)
+
+            print(str(data))
+
+            with open("settings\\pins.dat", "w") as pinFile:
+                pinFile.writelines(data)
+
+        except Exception as e:
+            handleException(e)
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def loadPinData(self):
+        '''Method to load imported PINS.'''
+
+        try:
+            self.gui.lw_presets.clear()
+
+            with open("settings\\pins.dat", "r") as pinFile:
+                self.pinData = pinFile.readlines()
+
+            for item in self.pinData:
+                if item != "\n":
+                    self.gui.lw_presets.addItem(item.split("#")[0])
+
+        except FileNotFoundError:
+            pass # No pin.dat file is saved.
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def checkForNewPIN(self):
+        '''Method to check if a pin has already been saved..'''
+
+        if self.pinData != []:
+            nameFound = False
+
+            for item in self.pinData:
+                if self.name in item:
+                    nameFound = True
+
+            if not nameFound:
+                self.gui.btn_remember.show()
+            else:
+                self.gui.btn_remember.hide()
+
+        else:
+            self.gui.btn_remember.show()
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lw_presetsFunc(self):
+        '''Method to remember imported PINS.'''
+
+        try:
+            for pin in self.pinData:
+                if self.gui.lw_presets.currentItem().text() in pin:
+                    self.gui.sbPin.setValue(int(pin.split("#")[1]))
+
+        except Exception as e:
+            handleException(e)
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def eventFilter(self, source, event):
+        '''Preset list widget contect menu.'''
+
+        try:
+            if (event.type() == QEvent.ContextMenu and source is self.gui.lw_presets):
+                menu = QMenu()
+                menu.addAction('delete      Del')
+                if menu.exec_(event.globalPos()):
+                    item = source.itemAt(event.pos())
+                    try:
+                        self.deletePreset(item.text())
+                    except AttributeError:
+                        pass # User has not clicked on a name.
+                return True
+            return super(TTT3, self).eventFilter(source, event)
+
+        except Exception as e:
+            handleException(e)
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def deletePreset(self, name):
+        '''Method to remove a reset stored PIN.'''
+
+        for pin in self.pinData:
+            if name in pin:
+                self.pinData.pop(self.pinData.index(pin))
+        self.savePinData()
+        self.loadPinData()
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 

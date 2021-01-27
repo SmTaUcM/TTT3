@@ -2063,6 +2063,22 @@ QListWidget:!enabled
        <bool>false</bool>
       </property>
      </widget>
+     <widget class="QPushButton" name="btn_remember">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>170</y>
+        <width>111</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(211, 211, 211);</string>
+      </property>
+      <property name="text">
+       <string>^ remember ^</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tabInfo">
      <attribute name="title">
