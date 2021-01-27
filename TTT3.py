@@ -2887,8 +2887,6 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 if item != "\n" and item != "":
                     data.append(item)
 
-            print(str(data))
-
             with open("settings\\pins.dat", "w") as pinFile:
                 pinFile.writelines(data)
 
