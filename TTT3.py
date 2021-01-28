@@ -2009,7 +2009,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     selectionMade = False
 
                     for upgrade in award.get("upgrades"):
-                        if upgrade[quantity] == 1:
+                        if upgrade[quantity] >= 1:
                             selectionMade = True
 
                     if not selectionMade:
@@ -2082,7 +2082,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     widgets[upgradeCount].clicked.connect(self.rb_upgradableSelectionLogic)
 
                 # Set the the correct radio button to checked as per the user's selection.
-                if upgrade[quantity] == 1:
+                if upgrade[quantity] >= 1:
                     widgets[upgradeCount].setChecked(True)
 
                 widgets[upgradeCount].show()
@@ -2830,7 +2830,14 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 try:
                     for medal in apiMedalData.keys():
                         for award in self.awards:
-                            if medal.split("-")[0] in award or ("CoX" in award and "Co" in medal):
+
+                            try:
+                                awardShort = award.split("(")[1].replace(")", "")
+                            except IndexError:
+                                awardShort = award
+                            medalShort = medal.split("-")[0]
+
+                            if medalShort == awardShort or ("CoX" in award and "Co" in medal):
 
                                 # Single, Multi and Ranged type awards.
                                 if self.awards.get(award)["type"] == "single" or \
@@ -2844,16 +2851,20 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                         self.awards.get(award)["type"] == "subRibbons":
 
                                     for upgrade in self.awards.get(award)["upgrades"]:
-                                        if medal in upgrade[name]:
+
+                                        try:
+                                            upgradeShort = upgrade[name].split("(")[1].replace(")", "")
+                                        except IndexError:
+                                            upgradeShort = upgrade[name]
+
+                                        if medal == upgradeShort:
                                             index = self.awards.get(award)["upgrades"].index(upgrade)
                                             self.awards.get(award)["upgrades"][index][quantity] = apiMedalData.get(medal)
                 except AttributeError:
                     pass  # User has no medals.
 
-                # FCHG.
-                fchg = apiData.get("FCHG").get("label")
-                FCHGIndex = self.gui.cbFCHG.findText(fchg, Qt.MatchContains)
-                self.gui.cbFCHG.setCurrentIndex(FCHGIndex)
+                # Pilot Wings.
+                self.gui.cbFCHG.setCurrentIndex(apiData.get("TTT").get("pilotWings"))
 
                 # Write to information box.
                 msg = "Importing uniform data for {label}\nCallsign '{callsign}'\n{idLine}\n\nImport finished.".format(
