@@ -53,8 +53,8 @@ class TTT3(QMainWindow):
         try:
             # Version info.
             version = "3.00"
-            devVersion = "Alpha 14"
-            date = "27 January 2021"
+            devVersion = "Alpha 15"
+            date = "28 January 2021"
             self.saveFileVersion = 1
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
