@@ -32,7 +32,7 @@
    <string>TTT 3</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resource.qrc">
+   <iconset resource="../../_Resource/resource.qrc">
     <normaloff>:/icons/ttt3.png</normaloff>:/icons/ttt3.png</iconset>
   </property>
   <property name="styleSheet">
@@ -1071,9 +1071,9 @@ QListWidget:!enabled
       <widget class="QLabel" name="label_26">
        <property name="geometry">
         <rect>
-         <x>10</x>
+         <x>90</x>
          <y>17</y>
-         <width>81</width>
+         <width>161</width>
          <height>16</height>
         </rect>
        </property>
@@ -1087,15 +1087,15 @@ QListWidget:!enabled
         </font>
        </property>
        <property name="text">
-        <string>FCHG Rank:</string>
+        <string>Pilot Certification Wings:</string>
        </property>
       </widget>
       <widget class="QComboBox" name="cbFCHG">
        <property name="geometry">
         <rect>
-         <x>97</x>
+         <x>260</x>
          <y>14</y>
-         <width>160</width>
+         <width>181</width>
          <height>22</height>
         </rect>
        </property>
@@ -1110,107 +1110,112 @@ QListWidget:!enabled
        </property>
        <item>
         <property name="text">
-         <string>None (0 Pts)</string>
+         <string>None</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Grenadier (10 Pts)</string>
+         <string>1st Echelon (10 Pts)</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Lancer (25 Pts)</string>
+         <string>2nd Echelon (25 Pts)</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Hussar (50 Pts)</string>
+         <string>3rd Echelon (50 Pts)</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Fusilier (75 Pts)</string>
+         <string>4th Echelon (75 Pts)</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Dragoon (100 Pts)</string>
+         <string>5th Echelon (100 Pts)</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Cavalier (150 Pts)</string>
+         <string>6th Echelon (150 Pts)</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Gallant (200 Pts)</string>
+         <string>7th Echelon (200 Pts)</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Knight (250 Pts)</string>
+         <string>8th Echelon (250 Pts)</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Paladin (300 Pts)</string>
+         <string>9th Echelon (300 Pts)</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Legionnaire (400 Pts)</string>
+         <string>10th Echelon (400 Pts)</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Aquilifer (500 Pts)</string>
+         <string>11th Echelon (500 Pts)</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Decurion (750 Pts)</string>
+         <string>12th Echelon (750 Pts)</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Tesserarius (1,000 Pts)</string>
+         <string>13th Echelon (1,000 Pts)</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Optio (1,250 Pts)</string>
+         <string>14th Echelon (1,250 Pts)</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Centurion (1,500 Pts)</string>
+         <string>15th Echelon (1,500 Pts)</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Executor (2,000 Pts)</string>
+         <string>16th Echelon (2,000 Pts)</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Gladiator (2,500 Pts)</string>
+         <string>17th Echelon (2,500 Pts)</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Archon (3,000 Pts)</string>
+         <string>18th Echelon (3,000 Pts)</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Templar (3,500 Pts)</string>
+         <string>19th Echelon (3,500 Pts)</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Imperator (4,000 Pts)</string>
+         <string>20th Echelon (4,000 Pts)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>21st Echelon (5,000 Pts)</string>
         </property>
        </item>
       </widget>
@@ -2297,7 +2302,7 @@ QListWidget:!enabled
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="resource.qrc">:/icons/python.png</pixmap>
+       <pixmap resource="../../_Resource/resource.qrc">:/icons/python.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -2325,7 +2330,7 @@ QListWidget:!enabled
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="resource.qrc">:/icons/povray.png</pixmap>
+       <pixmap resource="../../_Resource/resource.qrc">:/icons/povray.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -2419,7 +2424,7 @@ QListWidget:!enabled
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="resource.qrc">:/icons/Qt_logo.png</pixmap>
+       <pixmap resource="../../_Resource/resource.qrc">:/icons/Qt_logo.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -2775,7 +2780,7 @@ QListWidget:!enabled
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="resource.qrc">:/icons/io.png</pixmap>
+       <pixmap resource="../../_Resource/resource.qrc">:/icons/io.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -3241,8 +3246,7 @@ QPushButton:!enabled
  </widget>
  <resources>
   <include location="resource.qrc"/>
-  <include location="resource.qrc"/>
-  <include location="resource.qrc"/>
+  <include location="../../_Resource/resource.qrc"/>
  </resources>
  <connections/>
 </ui>

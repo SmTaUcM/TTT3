@@ -27,11 +27,14 @@ the IC neck ribbon along with the dagger to represet receipt of the GOE.
 - Imperial Advisor/Command Attache positions support ranks up to Sector Admiral.
 - Implemented the Legion of Skirmish.
 - Added new TIE Corps awards: TIE Corps Commander's Unit Award and TIE Corps Meritorious Unit Award.
+- Added ribbon for display of the Letter of Achievement.
 
 ### Changed
 - Improved appearance of wing devices on ribbons.
 - Expanded Order of the Vanguard to a maximum of 39th echelon.
 - Only the member's highest Medal of Communication level is displayed.
+- Wings for FCHG ranks updated to Pilot Certification Wings; added additional 21st Echelon with
+updated 3D model.
 
 ### Fixed (since TTT2 UP1.09)
 - Display COM collars correctly.

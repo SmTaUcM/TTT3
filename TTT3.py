@@ -1115,7 +1115,7 @@ class TTT3(QMainWindow):
             # ----- Light. -----
 
             elif "&LIGHT&" in line:
-                povData.append(line.replace("&LIGHT&", "1518.5, -647.4, 1750.1"))  # TODO createDressPov() OpenGL BGCOLOUR
+                povData.append(line.replace("&LIGHT&", "1448.3, -1613.6, 1042.2"))  # TODO createDressPov() OpenGL BGCOLOUR
 
             elif "&SPOTLIGHTCOLOUR&" in line:
                 povData.append(line.replace("&SPOTLIGHTCOLOUR&", "1, 1, 1"))  # TODO createDressPov() OpenGL SPOTLIGHTCOLOUR
@@ -1238,7 +1238,7 @@ class TTT3(QMainWindow):
 
             elif "&FCHGINCLUDE&" in line:
                 if not self.gui.cbFCHG.currentText() == "None (0 Pts)":
-                    povData.append(line.replace("&FCHGINCLUDE&", '#include "fchg_g.inc"'))
+                    povData.append(line.replace("&FCHGINCLUDE&", '#include "wing_g.inc"'))
                 else:
                     povData.append(line.replace("&FCHGINCLUDE&", ""))
 
@@ -1251,70 +1251,73 @@ class TTT3(QMainWindow):
 
             # ----- Scene. -----
 
-            # Fleet Commander's Honour Guard. -------------------------------
+            # Pilot Certification Wings. -------------------------------
             elif "&FCHG&" in line:
                 if "None" in self.gui.cbFCHG.currentText():
                     pass
 
-                elif "Grenadier" in self.gui.cbFCHG.currentText():
-                    povData.append(line.replace("&FCHG&", "object { gren }"))
+                elif self.gui.cbFCHG.currentText().startswith("1st Echelon"):
+                    povData.append(line.replace("&FCHG&", "object { echelon1 }"))
 
-                elif "Lancer" in self.gui.cbFCHG.currentText():
-                    povData.append(line.replace("&FCHG&", "object { lanc }"))
+                elif self.gui.cbFCHG.currentText().startswith("2nd Echelon"):
+                    povData.append(line.replace("&FCHG&", "object { echelon2 }"))
 
-                elif "Hussar" in self.gui.cbFCHG.currentText():
-                    povData.append(line.replace("&FCHG&", "object { huss }"))
+                elif self.gui.cbFCHG.currentText().startswith("3rd Echelon"):
+                    povData.append(line.replace("&FCHG&", "object { echelon3 }"))
 
-                elif "Fusilier" in self.gui.cbFCHG.currentText():
-                    povData.append(line.replace("&FCHG&", "object { fusl }"))
+                elif self.gui.cbFCHG.currentText().startswith("4th Echelon"):
+                    povData.append(line.replace("&FCHG&", "object { echelon4 }"))
 
-                elif "Dragoon" in self.gui.cbFCHG.currentText():
-                    povData.append(line.replace("&FCHG&", "object { drag }"))
+                elif self.gui.cbFCHG.currentText().startswith("5th Echelon"):
+                    povData.append(line.replace("&FCHG&", "object { echelon5 }"))
 
-                elif "Cavalier" in self.gui.cbFCHG.currentText():
-                    povData.append(line.replace("&FCHG&", "object { cavl }"))
+                elif self.gui.cbFCHG.currentText().startswith("6th Echelon"):
+                    povData.append(line.replace("&FCHG&", "object { echelon6 }"))
 
-                elif "Gallant" in self.gui.cbFCHG.currentText():
-                    povData.append(line.replace("&FCHG&", "object { gall }"))
+                elif self.gui.cbFCHG.currentText().startswith("7th Echelon"):
+                    povData.append(line.replace("&FCHG&", "object { echelon7 }"))
 
-                elif "Knight" in self.gui.cbFCHG.currentText():
-                    povData.append(line.replace("&FCHG&", "object { kngt }"))
+                elif self.gui.cbFCHG.currentText().startswith("8th Echelon"):
+                    povData.append(line.replace("&FCHG&", "object { echelon8 }"))
 
-                elif "Paladin" in self.gui.cbFCHG.currentText():
-                    povData.append(line.replace("&FCHG&", "object { pldn }"))
+                elif self.gui.cbFCHG.currentText().startswith("9th Echelon"):
+                    povData.append(line.replace("&FCHG&", "object { echelon9 }"))
 
-                elif "Legionnaire" in self.gui.cbFCHG.currentText():
-                    povData.append(line.replace("&FCHG&", "object { lgnr }"))
+                elif self.gui.cbFCHG.currentText().startswith("10th Echelon"):
+                    povData.append(line.replace("&FCHG&", "object { echelon10 }"))
 
-                elif "Aquilifer" in self.gui.cbFCHG.currentText():
-                    povData.append(line.replace("&FCHG&", "object { aqfr }"))
+                elif self.gui.cbFCHG.currentText().startswith("11th Echelon"):
+                    povData.append(line.replace("&FCHG&", "object { echelon11 }"))
 
-                elif "Decurion" in self.gui.cbFCHG.currentText():
-                    povData.append(line.replace("&FCHG&", "object { dcrn }"))
+                elif self.gui.cbFCHG.currentText().startswith("12th Echelon"):
+                    povData.append(line.replace("&FCHG&", "object { echelon12 }"))
 
-                elif "Tesserarius" in self.gui.cbFCHG.currentText():
-                    povData.append(line.replace("&FCHG&", "object { tsrs }"))
+                elif self.gui.cbFCHG.currentText().startswith("13th Echelon"):
+                    povData.append(line.replace("&FCHG&", "object { echelon13 }"))
 
-                elif "Optio" in self.gui.cbFCHG.currentText():
-                    povData.append(line.replace("&FCHG&", "object { opti }"))
+                elif self.gui.cbFCHG.currentText().startswith("14th Echelon"):
+                    povData.append(line.replace("&FCHG&", "object { echelon14 }"))
 
-                elif "Centurion" in self.gui.cbFCHG.currentText():
-                    povData.append(line.replace("&FCHG&", "object { cntr }"))
+                elif self.gui.cbFCHG.currentText().startswith("15th Echelon"):
+                    povData.append(line.replace("&FCHG&", "object { echelon15 }"))
 
-                elif "Executor" in self.gui.cbFCHG.currentText():
-                    povData.append(line.replace("&FCHG&", "object { excr }"))
+                elif self.gui.cbFCHG.currentText().startswith("16th Echelon"):
+                    povData.append(line.replace("&FCHG&", "object { echelon16 }"))
 
-                elif "Gladiator" in self.gui.cbFCHG.currentText():
-                    povData.append(line.replace("&FCHG&", "object { gldr }"))
+                elif self.gui.cbFCHG.currentText().startswith("17th Echelon"):
+                    povData.append(line.replace("&FCHG&", "object { echelon17 }"))
 
-                elif "Archon" in self.gui.cbFCHG.currentText():
-                    povData.append(line.replace("&FCHG&", "object { arcn }"))
+                elif self.gui.cbFCHG.currentText().startswith("18th Echelon"):
+                    povData.append(line.replace("&FCHG&", "object { echelon18 }"))
 
-                elif "Templar" in self.gui.cbFCHG.currentText():
-                    povData.append(line.replace("&FCHG&", "object { tmpr }"))
+                elif self.gui.cbFCHG.currentText().startswith("19th Echelon"):
+                    povData.append(line.replace("&FCHG&", "object { echelon19 }"))
 
-                elif "Imperator" in self.gui.cbFCHG.currentText():
-                    povData.append(line.replace("&FCHG&", "object { impr }"))
+                elif self.gui.cbFCHG.currentText().startswith("20th Echelon"):
+                    povData.append(line.replace("&FCHG&", "object { echelon20 }"))
+
+                elif self.gui.cbFCHG.currentText().startswith("21st Echelon"):
+                    povData.append(line.replace("&FCHG&", "object { echelon21 }"))
 
                 else:
                     pass
@@ -1430,7 +1433,7 @@ class TTT3(QMainWindow):
             # ----- Light. -----
 
             elif "&LIGHT&" in line:
-                povData.append(line.replace("&LIGHT&", "1518.5, -647.4, 1750.1"))  # TODO createDressPov() OpenGL BGCOLOUR
+                povData.append(line.replace("&LIGHT&", "1448.3, -1613.6, 1042.2"))  # TODO createDressPov() OpenGL BGCOLOUR
 
             elif "&SPOTLIGHTCOLOUR&" in line:
                 povData.append(line.replace("&SPOTLIGHTCOLOUR&", "1, 1, 1"))  # TODO createDressPov() OpenGL SPOTLIGHTCOLOUR
@@ -2844,7 +2847,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                             index = self.awards.get(award)["upgrades"].index(upgrade)
                                             self.awards.get(award)["upgrades"][index][quantity] = apiMedalData.get(medal)
                 except AttributeError:
-                    pass # User has no medals.
+                    pass  # User has no medals.
 
                 # FCHG.
                 fchg = apiData.get("FCHG").get("label")
