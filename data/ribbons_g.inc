@@ -454,6 +454,14 @@ texture
 }
 texture { T_unilayer scale 2}
 
+#declare T_r_loa =
+texture
+{
+  pigment { image_map { gif ".\ribbons\loa.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
 #declare T_r_ov_1e =
 texture
 {

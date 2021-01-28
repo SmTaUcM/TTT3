@@ -63,6 +63,7 @@ class TTT3(QMainWindow):
             self.gui = uic.loadUi(r"data\uis\ttt.ui")
             self.gui.show()
             self.gui.closeEvent = self.closeEvent
+            self.gui.keyPressEvent = self.keyPressEvent
 
             # Set the version number.
             self.gui.lblVersion.setText("Version: {v} {a}".format(v=version, a=devVersion))
@@ -2982,6 +2983,20 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.pinData.pop(self.pinData.index(pin))
         self.savePinData()
         self.loadPinData()
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def keyPressEvent(self, event):
+        '''Method to detect keyboard input.'''
+
+        if event.key() == Qt.Key_Escape:
+            self.close()
+
+        if event.key() == Qt.Key_Delete:
+            if self.gui.tabWidget.tabText(self.gui.tabWidget.currentIndex()) == "Import":
+                try:
+                    self.deletePreset(self.gui.lw_presets.currentItem().text())
+                except AttributeError:
+                    pass  # User has not clicked on a name.
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
