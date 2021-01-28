@@ -32,7 +32,7 @@
    <string>TTT 3</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resource.qrc">
+   <iconset resource="../../_Resource/resource.qrc">
     <normaloff>:/icons/ttt3.png</normaloff>:/icons/ttt3.png</iconset>
   </property>
   <property name="styleSheet">
@@ -2302,7 +2302,7 @@ QListWidget:!enabled
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="resource.qrc">:/icons/python.png</pixmap>
+       <pixmap resource="../../_Resource/resource.qrc">:/icons/python.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -2330,7 +2330,7 @@ QListWidget:!enabled
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="resource.qrc">:/icons/povray.png</pixmap>
+       <pixmap resource="../../_Resource/resource.qrc">:/icons/povray.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -2424,7 +2424,7 @@ QListWidget:!enabled
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="resource.qrc">:/icons/Qt_logo.png</pixmap>
+       <pixmap resource="../../_Resource/resource.qrc">:/icons/Qt_logo.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -2780,7 +2780,7 @@ QListWidget:!enabled
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="resource.qrc">:/icons/io.png</pixmap>
+       <pixmap resource="../../_Resource/resource.qrc">:/icons/io.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -3322,7 +3322,6 @@ QPushButton:!enabled
   <tabstop>btn_exit</tabstop>
  </tabstops>
  <resources>
-  <include location="resource.qrc"/>
   <include location="resource.qrc"/>
   <include location="../../_Resource/resource.qrc"/>
  </resources>
