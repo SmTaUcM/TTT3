@@ -718,8 +718,14 @@ class TTT3(QMainWindow):
            data\batch\povray.bat and invisible.vbs are delete after POV-Ray is closed.
            The "uniform" agrument takes "dress", "duty or "helmet which is dependant on which button has been pressed."'''
 
-        # Create the '..data\batch' directory if it doesn't already exist.
         try:
+            # Remove old uniform files.
+            try:
+                os.remove("data\\%s.png" % uniform)
+            except FileNotFoundError:
+                pass
+
+            # Create the '..data\batch' directory if it doesn't already exist.
             os.mkdir("data\\batch")
         except WindowsError:
             pass  # Direcory already exists.
@@ -1764,7 +1770,10 @@ class TTT3(QMainWindow):
 
             # All other ribbons.
             else:
-                self.awards[name]["upgrades"] = []
+                if self.ribbonConfig.get(ribbon, "type") == "multiRibbon":
+                    self.awards[name]["upgrades"] = [name, 0]
+                else:
+                    self.awards[name]["upgrades"] = []
 
                 for option in self.ribbonConfig.options(ribbon):
 
@@ -1887,7 +1896,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.neckRibbonDeconfliction()
 
                 # ----- Multi type medal awards. (GS, SS, BS, PC, ISM)
-            elif award.get("type") == "multi":
+            elif award.get("type") == "multi" or award.get("type") == "multiRibbon":
                 self.gui.lbl_multi_center1.setText(award.get("upgrades")[name])
                 self.gui.lbl_multi_center1.show()
                 self.gui.sb_multi_center1.setValue(award.get("upgrades")[quantity])
@@ -2311,6 +2320,14 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                             awardName = awardName.replace("&range&", str(self.awards.get(award)["upgrades"][quantity]))
                             ribbonObjects.append("P_r&NUM& texture { %s }" % awardName)
 
+            # Multi type awards.
+            elif self.awards.get(award)["type"] == "multiRibbon":
+                if self.awards.get(award)["upgrades"][quantity] > 0:
+                    for section in self.ribbonConfig.sections():
+                        if self.ribbonConfig.get(section, "name") == award:
+                            awardName = "T_r_" + self.ribbonConfig.get(section, "filename").split(".")[0].lower().replace("-", "_")
+                            ribbonObjects.append("P_r&NUM& texture { %s }" % awardName)
+
         return self.ribbonNumberOrdering(ribbonObjects)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -2673,8 +2690,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         try:
             options = QFileDialog.Options()
             options |= QFileDialog.DontUseNativeDialog
+            if self.name != "Unknown":
+                name = self.name
+            else:
+                name = "untitled"
             fileName, _ = QFileDialog.getSaveFileName(self, "Save uniform settings", os.getcwd() +
-                                                      "\\settings\\untitled.ttt", "*.ttt", options=options)
+                                                      "\\settings\\%s.ttt" % name, "*.ttt", options=options)
             if fileName:
                 if ".ttt" not in fileName:
                     fileName = fileName + ".ttt"
@@ -2842,6 +2863,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                 # Single, Multi and Ranged type awards.
                                 if self.awards.get(award)["type"] == "single" or \
                                    self.awards.get(award)["type"] == "multi" or \
+                                   self.awards.get(award)["type"] == "multiRibbon" or \
                                    self.awards.get(award)["type"] == "ranged":
 
                                     self.awards.get(award)["upgrades"][1] = apiMedalData.get(medal)
