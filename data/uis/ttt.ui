@@ -32,7 +32,7 @@
    <string>TTT 3</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../_Resource/resource.qrc">
+   <iconset resource="resource.qrc">
     <normaloff>:/icons/ttt3.png</normaloff>:/icons/ttt3.png</iconset>
   </property>
   <property name="styleSheet">
@@ -2302,7 +2302,7 @@ QListWidget:!enabled
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../../_Resource/resource.qrc">:/icons/python.png</pixmap>
+       <pixmap resource="resource.qrc">:/icons/python.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -2330,7 +2330,7 @@ QListWidget:!enabled
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../../_Resource/resource.qrc">:/icons/povray.png</pixmap>
+       <pixmap resource="resource.qrc">:/icons/povray.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -2424,7 +2424,7 @@ QListWidget:!enabled
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../../_Resource/resource.qrc">:/icons/Qt_logo.png</pixmap>
+       <pixmap resource="resource.qrc">:/icons/Qt_logo.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -2780,7 +2780,7 @@ QListWidget:!enabled
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../../_Resource/resource.qrc">:/icons/io.png</pixmap>
+       <pixmap resource="resource.qrc">:/icons/io.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -3244,9 +3244,84 @@ QPushButton:!enabled
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <tabstops>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>rb_pos_trn</tabstop>
+  <tabstop>rb_pos_fm</tabstop>
+  <tabstop>rb_pos_fl</tabstop>
+  <tabstop>rb_pos_cmdr</tabstop>
+  <tabstop>rb_pos_wc</tabstop>
+  <tabstop>rb_pos_com</tabstop>
+  <tabstop>rb_pos_tccs</tabstop>
+  <tabstop>rb_pos_ia</tabstop>
+  <tabstop>rb_pos_ca</tabstop>
+  <tabstop>rb_pos_sgcom</tabstop>
+  <tabstop>rb_pos_cs</tabstop>
+  <tabstop>rb_pos_xo</tabstop>
+  <tabstop>rb_pos_fc</tabstop>
+  <tabstop>rb_pos_lr</tabstop>
+  <tabstop>rb_pos_fr</tabstop>
+  <tabstop>rb_rank_ct</tabstop>
+  <tabstop>rb_rank_sl</tabstop>
+  <tabstop>rb_rank_lt</tabstop>
+  <tabstop>rb_rank_lcm</tabstop>
+  <tabstop>rb_rank_cm</tabstop>
+  <tabstop>rb_rank_cpt</tabstop>
+  <tabstop>rb_rank_maj</tabstop>
+  <tabstop>rb_rank_lc</tabstop>
+  <tabstop>rb_rank_col</tabstop>
+  <tabstop>rb_rank_gn</tabstop>
+  <tabstop>rb_rank_ra</tabstop>
+  <tabstop>rb_rank_va</tabstop>
+  <tabstop>rb_rank_ad</tabstop>
+  <tabstop>rb_rank_fa</tabstop>
+  <tabstop>rb_rank_ha</tabstop>
+  <tabstop>rb_rank_sa</tabstop>
+  <tabstop>rb_rank_ga</tabstop>
+  <tabstop>lw_ship</tabstop>
+  <tabstop>lw_wing</tabstop>
+  <tabstop>lw_squad</tabstop>
+  <tabstop>cb_eliteSqn</tabstop>
+  <tabstop>lw_medals</tabstop>
+  <tabstop>cb_singleMedal</tabstop>
+  <tabstop>sb_multi_center1</tabstop>
+  <tabstop>sb_multi_center2</tabstop>
+  <tabstop>sb_multi_center3</tabstop>
+  <tabstop>sb_multi_center4</tabstop>
+  <tabstop>combo_top</tabstop>
+  <tabstop>rb_upgradeable_0</tabstop>
+  <tabstop>rb_upgradeable_1</tabstop>
+  <tabstop>rb_upgradeable_2</tabstop>
+  <tabstop>rb_upgradeable_3</tabstop>
+  <tabstop>rb_upgradeable_4</tabstop>
+  <tabstop>rb_upgradeable_5</tabstop>
+  <tabstop>sb_multi_left1</tabstop>
+  <tabstop>sb_multi_left2</tabstop>
+  <tabstop>sb_multi_left3</tabstop>
+  <tabstop>sb_multi_left4</tabstop>
+  <tabstop>sb_multi_right1</tabstop>
+  <tabstop>sb_multi_right2</tabstop>
+  <tabstop>sb_multi_right3</tabstop>
+  <tabstop>sb_multi_right4</tabstop>
+  <tabstop>cbFCHG</tabstop>
+  <tabstop>btn_browseRoster</tabstop>
+  <tabstop>btn_search</tabstop>
+  <tabstop>sbPin</tabstop>
+  <tabstop>btn_import</tabstop>
+  <tabstop>lw_presets</tabstop>
+  <tabstop>textEdit</tabstop>
+  <tabstop>btn_remember</tabstop>
+  <tabstop>btn_dress</tabstop>
+  <tabstop>btn_duty</tabstop>
+  <tabstop>btn_helmet</tabstop>
+  <tabstop>btn_medals</tabstop>
+  <tabstop>btn_newProf</tabstop>
+  <tabstop>btn_openProf</tabstop>
+  <tabstop>btn_saveProf</tabstop>
+  <tabstop>btn_config</tabstop>
+  <tabstop>btn_exit</tabstop>
+ </tabstops>
  <resources>
-  <include location="resource.qrc"/>
-  <include location="resource.qrc"/>
   <include location="resource.qrc"/>
   <include location="resource.qrc"/>
   <include location="../../_Resource/resource.qrc"/>
