@@ -2987,6 +2987,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.deletePreset(self.gui.lw_presets.currentItem().text())
                 except AttributeError:
                     pass  # User has not clicked on a name.
+
+        if event.key() == Qt.Key_Enter:
+            if self.gui.tabWidget.tabText(self.gui.tabWidget.currentIndex()) == "Import":
+                self.btn_importFunc()
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
