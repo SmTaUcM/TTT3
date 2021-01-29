@@ -14,12 +14,13 @@
 #                                                                      Imports.                                                                      #
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 # Developed using Python v3.8.7 32-bit.
-# External dependancies are commented. Imports with no comments are included with the regular Python installation.
-# Alternatively run "TTT3\Useful Info\Dependancy Installer.bat"
+# External dependencies are commented. Imports with no comments are included with the regular Python installation.
+# Alternatively run "TTT3\Useful Info\Dependency Installer.bat"
 import logging
 import resource
 import sys
 import os
+import subprocess
 import ctypes
 import configparser
 import psutil  # python -m pip install psutil
@@ -230,43 +231,43 @@ class TTT3(QMainWindow):
     def readmeLink(self, event):
         '''Method event for when 'TTT3readme.htm' is clicked on the 'Info' tab.'''
 
-        os.system("start TTT3_readme.htm")
+        subprocess.Popen("start TTT3_readme.htm", shell=True)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
     def ioLink(self, event):
         '''Method event for when 'Internet Office' is clicked on the 'Info' tab.'''
 
-        os.system("start https://ehnet.org/")
+        subprocess.Popen("start https://ehnet.org/", shell=True)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
     def tcpmLink(self, event):
         '''Method event for when 'TIE Corps Pilot Manual' is clicked on the 'Info' tab.'''
 
-        os.system("start https://tc.emperorshammer.org/downloads/TCPM.pdf")
+        subprocess.Popen("start https://tc.emperorshammer.org/downloads/TCPM.pdf", shell=True)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
     def uniformsLink(self, event):
         '''Method event for when 'TIE Corps Personnel Uniforms' is clicked on the 'Info' tab.'''
 
-        os.system("start https://tc.emperorshammer.org/uniforms.php")
+        subprocess.Popen("start https://tc.emperorshammer.org/uniforms.php", shell=True)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
     def pythonLink(self, event):
         '''Method event for when 'Python' is clicked on the 'Info' tab.'''
 
-        os.system("start https://www.python.org/about/")
+        subprocess.Popen("start https://www.python.org/about/", shell=True)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
     def qtLink(self, event):
         '''Method event for when 'QT' is clicked on the 'Info' tab.'''
 
-        os.system("start https://www.qt.io/")
+        subprocess.Popen("start https://www.qt.io/", shell=True)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
     def povrayLink(self, event):
         '''Method event for when 'POV-Ray' is clicked on the 'Info' tab.'''
 
-        os.system("start http://www.povray.org/")
+        subprocess.Popen("start http://www.povray.org/", shell=True)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
     def eeLink(self, event):
@@ -714,24 +715,16 @@ class TTT3(QMainWindow):
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def launchPOVRay(self, uniform):
-        '''Method that dynamically writes data\batch\povray.bat and invisible.vbs to silently launch POV-Ray with the correct paths.
-           data\batch\povray.bat and invisible.vbs are delete after POV-Ray is closed.
-           The "uniform" agrument takes "dress", "duty or "helmet which is dependant on which button has been pressed."'''
+        '''Method that dynamically launches POV-Ray with the correct paths.
+           The "uniform" argument takes "dress", "duty or "helmet" which is dependant on which button has been pressed.'''
 
+        # Remove old uniform files.
         try:
-            # Remove old uniform files.
-            try:
-                os.remove("data\\%s.png" % uniform)
-            except FileNotFoundError:
-                pass
+            os.remove("data\\%s.png" % uniform)
+        except FileNotFoundError:
+            pass
 
-            # Create the '..data\batch' directory if it doesn't already exist.
-            os.mkdir("data\\batch")
-        except WindowsError:
-            pass  # Direcory already exists.
-
-        # Dynamically write the 'data\batch\povray.bat' file.
-            # Set the correct paths based on where TTT3 is located and the TTT3.ini settings file.
+        # Set the correct paths based on where TTT3 is located and the TTT3.ini settings file.
         if not self.fastRendering:
             template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\&TYPE&.pov" +W640 +H853 +Q9 +AM2 +A0.1 +D +F +GA +J1.0 -D /EXIT'
         else:
@@ -746,38 +739,11 @@ class TTT3(QMainWindow):
 
         template = template.replace("&TYPE&", uniform)
 
-        # Write the 'data\batch\povray.bat' file.
-        with open(r"data\batch\povray.bat", "w") as dataFile:
-            dataFile.write(template)
-
-        # Dynamically write the 'data\batch\invisible.vbs' file.
-            # Set the correct paths based on where TTT3 is located.
-        template = [r'Set WshShell = CreateObject("WScript.Shell")' + "\n",
-                    r'WshShell.Run chr(34) & "&PATH&\data\batch\povray.bat" & Chr(34), 0' + "\n",
-                    r'Set WshShell = Nothing']
-        output = []
-
-        for line in template:
-            if "&PATH&" in line:
-                newLine = line.replace("&PATH&", os.getcwd())
-                output.append(newLine)
-            else:
-                output.append(line)
-
-            # Write the 'data\batch\invisible.vbs' file.
-        with open(r"data\batch\invisible.vbs", "w") as dataFile:
-            dataFile.writelines(output)
-
-        # Launch POV-Ray using 'invisible.vbs' which then silently runs 'povray.bat' which then opens POV-Ray and auto renders the uniform.
-        os.system(r"data\batch\invisible.vbs")
+        # Launch POV-Ray
+        pov = subprocess.Popen(template)
 
         # Wait for POV-Ray to close.
-        self.povrayMonitor()
-
-        # Delete invisible.vbs and povray.bat.
-        os.remove(r"data\batch\invisible.vbs")
-        os.remove(r"data\batch\povray.bat")
-        os.removedirs(r"data\batch")
+        self.povrayMonitor(pov.pid)
 
         self.gui.setWindowFlags(self.gui.windowFlags() | Qt.WindowStaysOnBottomHint)
         self.gui.show()
@@ -829,7 +795,7 @@ class TTT3(QMainWindow):
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def povrayMonitor(self):
+    def povrayMonitor(self, pid):
         '''Monitors for POV-Ray running in the background and signals when it has closed.'''
 
         time.sleep(0.1)  # Allow some time for POV-Ray to open.
@@ -838,18 +804,9 @@ class TTT3(QMainWindow):
         while povRunning:
             povRunning = False
 
-            # Get a list of all running processes
-            list = psutil.pids()
-
-            # Go though list and check each processes executeable name for 'pvengine.exe'
-            for i in range(0, len(list)):
-                try:
-                    p = psutil.Process(list[i])
-                    if p.cmdline()[0].find("pvengine64.exe") != -1 or p.cmdline()[0].find("pvengine.exe") != -1:
-                        povRunning = True
-                        break
-                except BaseException:
-                    pass
+            if psutil.pid_exists(pid):
+                povRunning = True
+                time.sleep(0.1)  # Save some CPU cycles
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def convertImage(self, src, ext, dest):
@@ -2514,13 +2471,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def btn_browseRosterFunc(self, event):
         '''Method event for when the 'Browse Fleet Roster' button is clicked on the 'Import' tab.'''
 
-        os.system("start " + self.config.get("TCDB", "roster"))
+        subprocess.Popen("start " + self.config.get("TCDB", "roster"), shell=True)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_searchFunc(self, event):
         '''Method event for when the 'Personnel Search' button is clicked on the 'Import' tab.'''
 
-        os.system("start " + self.config.get("TCDB", "search"))
+        subprocess.Popen("start " + self.config.get("TCDB", "search"), shell=True)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_newProfMethod(self, event):
