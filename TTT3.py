@@ -2201,7 +2201,14 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     # Get all award objRefs.
                     for obj in range(1, 101, 1):
                         try:  # Filtering for medals that do not contain objRefs.
-                            medalObjects.append(self.awards.get(award)["objectRef%s" % obj])
+                            objRef = self.awards.get(award)["objectRef%s" % obj]
+
+                            # GOE / Lighsaber deconfliction.
+                            if objRef == "dagger_left" and self.gui.cb_lightsaber.isChecked() and self.gui.rb_saberLeft.isChecked():
+                                objRef = "dagger_right"
+
+                            # Add the object to our dress.pov file.
+                            medalObjects.append(objRef)
                         except KeyError:
                             break
 
