@@ -150,9 +150,22 @@ class TTT3(QMainWindow):
             self.gui.lw_medals.currentItemChanged.connect(self.medalSelectionLogic)
 
             # ----- 'Miscellaneous' Tab. -----
+            # Set default Misc Options.
+            # Detect and load in lighsaber styles.
+            self.gui.cb_saberStyles.hide()
+            self.loadLighsabers()
+            self.cb_lightsaberFunc()
+            self.gui.cb_lightsaber.setChecked(False)
+            self.gui.rb_daggerLeft.setChecked(True)
 
             # Lightsaber options.
             self.gui.cb_lightsaber.stateChanged.connect(self.cb_lightsaberFunc)
+            self.gui.rb_saberLeft.clicked.connect(self.saberDaggerDeconflict)
+            self.gui.rb_saberRight.clicked.connect(self.saberDaggerDeconflict)
+
+            # GOE Options.
+            self.gui.rb_daggerLeft.clicked.connect(self.daggerSaberDeconflict)
+            self.gui.rb_daggerRight.clicked.connect(self.daggerSaberDeconflict)
 
             # ----- 'Import' Tab. -----
             self.gui.btn_browseRoster.clicked.connect(self.btn_browseRosterFunc)
@@ -350,10 +363,6 @@ class TTT3(QMainWindow):
 
         # Hide the remember button.
         self.gui.btn_remember.hide()
-
-        # Detect and load in lighsaber styles.
-        self.gui.cb_saberStyles.hide()
-        self.loadLighsabers()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def posRBLogic(self):
@@ -2203,8 +2212,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         try:  # Filtering for medals that do not contain objRefs.
                             objRef = self.awards.get(award)["objectRef%s" % obj]
 
-                            # GOE / Lighsaber deconfliction.
-                            if objRef == "dagger_left" and self.gui.cb_lightsaber.isChecked() and self.gui.rb_saberLeft.isChecked():
+                            # GOE left/right mounting.
+                            if objRef == "dagger_left" and self.gui.rb_daggerRight.isChecked():
                                 objRef = "dagger_right"
 
                             # Add the object to our dress.pov file.
@@ -2547,6 +2556,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.gui.rb_pos_trn.setAutoExclusive(True)
             # Ship, Wing and Squadron ListWidgets.
             self.enableWingAndSqnTab(False)
+            # Set default Misc Tab Options.
+            if event != "ImportProfile" and event != "OpenProfile":
+                self.gui.cb_lightsaber.setChecked(False)
+                self.gui.cb_saberStyles.setCurrentIndex(0)
+                self.gui.rb_daggerLeft.setChecked(True)
+                self.gui.rb_saberRight.setChecked(True)
 
             # Disable render buttons.
             self.gui.btn_dress.setEnabled(False)
@@ -2561,7 +2576,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         try:
             # Reset TTTs data.
-            self.btn_newProfMethod(None)
+            self.btn_newProfMethod("OpenProfile")
 
             # Load the saved data file.
             fileName = (self.loadUniformFileDialog())
@@ -2639,6 +2654,18 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         # FCHG.
                     self.gui.cbFCHG.setCurrentText(saveData[9])
 
+                        # Miscellaneous Tab Options.
+                    self.gui.cb_lightsaber.setChecked(saveData[10])
+                    self.gui.cb_saberStyles.setCurrentIndex(saveData[11])
+                    if saveData[12]:
+                        self.gui.rb_saberRight.setChecked(True)
+                    else:
+                        self.gui.rb_saberLeft.setChecked(True)
+                    if saveData[13]:
+                        self.gui.rb_daggerLeft.setChecked(True)
+                    else:
+                        self.gui.rb_daggerRight.setChecked(True)
+
                 else:
                     # Show error message.
                     msg = "%s is not compatible with this version of TTT3.\nPlease save a new profile." % fileName.split("\\")[-1]
@@ -2654,7 +2681,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         try:
             # Collect the data to be saved into a list.
             saveData = (self.saveFileVersion, self.position, self.rank, self.ship, self.wing, self.gui.cb_eliteSqn.isChecked(),
-                        self.sqn, self.awards, self.deconflictNeckRibbons, self.gui.cbFCHG.currentText())
+                        self.sqn, self.awards, self.deconflictNeckRibbons, self.gui.cbFCHG.currentText(), self.gui.cb_lightsaber.isChecked(),
+                        self.gui.cb_saberStyles.currentIndex(), self.gui.rb_saberRight.isChecked(), self.gui.rb_daggerLeft.isChecked())
 
             # Save the data.
             fileName = self.saveUniformFileDialog()
@@ -2716,7 +2744,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         try:
             # Reset TTTs data.
-            self.btn_newProfMethod(None)
+            self.btn_newProfMethod("ImportProfile")
 
             # Read the data.
             try:
@@ -3022,18 +3050,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method to detect and load the number of lightsaber styles within the data folder.'''
 
         # Detect installed saber styles and add them to the GUI.
-        currentSelection = self.gui.cb_saberStyles.currentIndex()
-        self.gui.cb_saberStyles.clear()
         for root, dirs, files in os.walk(os.getcwd() + "\\data\\", topdown=False):
             for name in files:
                 if "saber" in name and "_g.inc" in name:
                     style = name.split("_")[0].replace("saber", "")
                     self.gui.cb_saberStyles.addItem("Style " + style)
-        self.cb_lightsaberFunc()
-        if currentSelection == -1:
-            currentSelection = 0
-        self.gui.cb_saberStyles.setCurrentIndex(currentSelection)
-        self.gui.rb_saberLeft.setChecked(True)
+        self.gui.rb_saberRight.setChecked(True)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_lightsaberFunc(self):
@@ -3046,6 +3068,24 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 item.show()
             else:
                 item.hide()
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def saberDaggerDeconflict(self):
+        '''Method to deconflict the lightsaber and dagger if a saber mounting option is selected.'''
+
+        if self.gui.rb_saberLeft.isChecked():
+            self.gui.rb_daggerRight.setChecked(True)
+        else:
+            self.gui.rb_daggerLeft.setChecked(True)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def daggerSaberDeconflict(self):
+        '''Method to deconflict the dagger and lightsaber if a dagger mounting option is selected.'''
+
+        if self.gui.rb_daggerLeft.isChecked():
+            self.gui.rb_saberRight.setChecked(True)
+        else:
+            self.gui.rb_saberLeft.setChecked(True)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 

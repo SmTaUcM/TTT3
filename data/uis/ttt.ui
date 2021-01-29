@@ -1081,8 +1081,8 @@ QListWidget:!enabled
         <font>
          <family>Arial</family>
          <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
+         <weight>50</weight>
+         <bold>false</bold>
          <underline>true</underline>
         </font>
        </property>
@@ -1958,82 +1958,185 @@ QListWidget:!enabled
         <height>290</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
       <property name="title">
        <string>Dress Uniform</string>
       </property>
-      <widget class="QCheckBox" name="cb_lightsaber">
+      <widget class="QGroupBox" name="gb_saberMounting">
        <property name="geometry">
         <rect>
-         <x>12</x>
-         <y>23</y>
-         <width>91</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Use lightsaber</string>
-       </property>
-      </widget>
-      <widget class="QComboBox" name="cb_saberStyles">
-       <property name="geometry">
-        <rect>
-         <x>130</x>
-         <y>20</y>
-         <width>71</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(211, 211, 211);</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="lbl_saberSide">
-       <property name="geometry">
-        <rect>
-         <x>24</x>
-         <y>50</y>
-         <width>205</width>
-         <height>20</height>
+         <x>10</x>
+         <y>22</y>
+         <width>231</width>
+         <height>101</height>
         </rect>
        </property>
        <property name="font">
         <font>
          <family>Arial</family>
          <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-         <underline>true</underline>
         </font>
        </property>
-       <property name="text">
-        <string>Lightsaber mounted on which side?</string>
+       <property name="title">
+        <string>Lightsaber options:</string>
        </property>
+       <widget class="QRadioButton" name="rb_saberRight">
+        <property name="geometry">
+         <rect>
+          <x>117</x>
+          <y>74</y>
+          <width>101</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Right-handed</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="rb_saberLeft">
+        <property name="geometry">
+         <rect>
+          <x>15</x>
+          <y>74</y>
+          <width>91</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Left-handed</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="cb_saberStyles">
+        <property name="geometry">
+         <rect>
+          <x>139</x>
+          <y>22</y>
+          <width>71</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(211, 211, 211);</string>
+        </property>
+       </widget>
+       <widget class="QCheckBox" name="cb_lightsaber">
+        <property name="geometry">
+         <rect>
+          <x>21</x>
+          <y>25</y>
+          <width>111</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Use lightsaber</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="lbl_saberSide">
+        <property name="geometry">
+         <rect>
+          <x>21</x>
+          <y>53</y>
+          <width>131</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Lightsaber mounting:</string>
+        </property>
+       </widget>
       </widget>
-      <widget class="QRadioButton" name="rb_saberRight">
+      <widget class="QGroupBox" name="gb_daggerMounting">
        <property name="geometry">
         <rect>
-         <x>144</x>
-         <y>73</y>
-         <width>51</width>
-         <height>17</height>
+         <x>10</x>
+         <y>132</y>
+         <width>231</width>
+         <height>51</height>
         </rect>
        </property>
-       <property name="text">
-        <string>Right</string>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+        </font>
        </property>
-      </widget>
-      <widget class="QRadioButton" name="rb_saberLeft">
-       <property name="geometry">
-        <rect>
-         <x>60</x>
-         <y>73</y>
-         <width>51</width>
-         <height>17</height>
-        </rect>
+       <property name="title">
+        <string>GOE dagger mounting:</string>
        </property>
-       <property name="text">
-        <string>Left</string>
-       </property>
+       <widget class="QRadioButton" name="rb_daggerLeft">
+        <property name="geometry">
+         <rect>
+          <x>14</x>
+          <y>23</y>
+          <width>91</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Left-handed</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="rb_daggerRight">
+        <property name="geometry">
+         <rect>
+          <x>116</x>
+          <y>23</y>
+          <width>101</width>
+          <height>17</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Right-handed</string>
+        </property>
+       </widget>
       </widget>
      </widget>
      <widget class="QGroupBox" name="groupBox_8">
@@ -2044,6 +2147,12 @@ QListWidget:!enabled
         <width>255</width>
         <height>143</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>9</pointsize>
+       </font>
       </property>
       <property name="title">
        <string>Duty Uniform</string>
@@ -2057,6 +2166,12 @@ QListWidget:!enabled
         <width>255</width>
         <height>143</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>9</pointsize>
+       </font>
       </property>
       <property name="title">
        <string>Helmet</string>
