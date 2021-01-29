@@ -2815,7 +2815,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                 awardShort = award
                             medalShort = medal.split("-")[0]
 
-                            if medalShort == awardShort or ("CoX" in award and "Co" in medal):
+                            if medalShort == awardShort or ("CoX" == awardShort and "Co" in medalShort):
 
                                 # Single, Multi and Ranged type awards.
                                 if self.awards.get(award)["type"] == "single" or \
@@ -2832,7 +2832,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                     for upgrade in self.awards.get(award)["upgrades"]:
 
                                         try:
-                                            upgradeShort = upgrade[name].split("(")[1].replace(")", "")
+                                            upgradeShort = upgrade[name].replace("(s)", "").split("(")[1].replace(")", "")
                                         except IndexError:
                                             upgradeShort = upgrade[name]
 
