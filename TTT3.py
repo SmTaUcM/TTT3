@@ -2085,8 +2085,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for handling the display and selection logic for neck ribbon deconfliction.'''
 
         quantity = 1
-        if self.awards.get("Imperial Cross (IC)")["upgrades"][quantity] == 1 and \
-                self.awards.get("Grand Order of the Emperor (GOE)")["upgrades"][quantity] == 1:
+        if self.awards.get("Imperial Cross (IC)")["upgrades"][quantity] >= 1 and \
+                self.awards.get("Grand Order of the Emperor (GOE)")["upgrades"][quantity] >= 1:
 
             if self.gui.lw_medals.currentItem().text() == "Grand Order of the Emperor (GOE)" or \
                self.gui.lw_medals.currentItem().text() == "Imperial Cross (IC)":
