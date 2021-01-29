@@ -357,6 +357,7 @@ class TTT3(QMainWindow):
         # Hide 'Medals, Ribbons and FCHG' items.
         self.gui.gb_medals.hide()
         self.hideMedalOptions()
+        self.gui.cbFCHG.setCurrentIndex(0)
 
         # TODO Disabled Helmet UTFN.
         self.gui.btn_helmet.setEnabled(False)
@@ -3003,7 +3004,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def eventFilter(self, source, event):
-        '''Preset list widget contect menu.'''
+        '''Preset list widget context menu.'''
 
         try:
             if (event.type() == QEvent.ContextMenu and source is self.gui.lw_presets):
