@@ -805,8 +805,12 @@ class TTT3(QMainWindow):
         try:
             options = QFileDialog.Options()
             options |= QFileDialog.DontUseNativeDialog
+            if self.name != "Unknown":
+                name = self.name
+            else:
+                name = "untitled"
             saveName, ext = QFileDialog.getSaveFileName(self, "Save Uniform As", "C:\\users\\" +
-                                                        os.getlogin() + "\\Pictures\\untitled", "*.png;;*.jpg;;*.gif;;*.bmp", options=options)
+                                                        os.getlogin() + "\\Pictures\\%s" % name, "*.png;;*.jpg;;*.gif;;*.bmp", options=options)
             ext = ext.replace("*", "")
             if saveName:
                 saveName = saveName.replace(r"/", "\\") + ext
