@@ -39,6 +39,8 @@ import pickle
 import urllib.request
 import json
 # python -m pip install pyinstaller - for compiler.
+#----------------------------------------------------------------------------------------------------------------------------------------------------#
+
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                      Classes.                                                                      #
@@ -147,12 +149,18 @@ class TTT3(QMainWindow):
             # List Widget Connections.
             self.gui.lw_medals.currentItemChanged.connect(self.medalSelectionLogic)
 
+            # ----- 'Miscellaneous' Tab. -----
+
+            # Lightsaber options.
+            self.gui.cb_lightsaber.stateChanged.connect(self.cb_lightsaberFunc)
+
             # ----- 'Import' Tab. -----
             self.gui.btn_browseRoster.clicked.connect(self.btn_browseRosterFunc)
             self.gui.btn_search.clicked.connect(self.btn_searchFunc)
             self.gui.btn_import.clicked.connect(self.btn_importFunc)
             self.gui.btn_remember.clicked.connect(self.btn_rememberFunc)
             self.gui.lw_presets.itemClicked.connect(self.lw_presetsFunc)
+            self.gui.lw_presets.itemDoubleClicked.connect(self.btn_importFunc)
             self.gui.lw_presets.installEventFilter(self)
 
             # ----- Info Tab. -----
@@ -226,49 +234,49 @@ class TTT3(QMainWindow):
             self.loadPinData()
         except Exception as e:
             handleException(e)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def readmeLink(self, event):
         '''Method event for when 'TTT3readme.htm' is clicked on the 'Info' tab.'''
 
         subprocess.Popen("start TTT3_readme.htm", shell=True)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def ioLink(self, event):
         '''Method event for when 'Internet Office' is clicked on the 'Info' tab.'''
 
         subprocess.Popen("start https://ehnet.org/", shell=True)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def tcpmLink(self, event):
         '''Method event for when 'TIE Corps Pilot Manual' is clicked on the 'Info' tab.'''
 
         subprocess.Popen("start https://tc.emperorshammer.org/downloads/TCPM.pdf", shell=True)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def uniformsLink(self, event):
         '''Method event for when 'TIE Corps Personnel Uniforms' is clicked on the 'Info' tab.'''
 
         subprocess.Popen("start https://tc.emperorshammer.org/uniforms.php", shell=True)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def pythonLink(self, event):
         '''Method event for when 'Python' is clicked on the 'Info' tab.'''
 
         subprocess.Popen("start https://www.python.org/about/", shell=True)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def qtLink(self, event):
         '''Method event for when 'QT' is clicked on the 'Info' tab.'''
 
         subprocess.Popen("start https://www.qt.io/", shell=True)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def povrayLink(self, event):
         '''Method event for when 'POV-Ray' is clicked on the 'Info' tab.'''
 
         subprocess.Popen("start http://www.povray.org/", shell=True)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def eeLink(self, event):
         '''Method event for ee.'''
@@ -280,7 +288,7 @@ class TTT3(QMainWindow):
                 self.gui.label_11.setStyleSheet("color: rgb(255, 0, 0);")
         except Exception as e:
             handleException(e)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def devModeLink(self, event):
         '''Method event for ee.'''
@@ -293,7 +301,7 @@ class TTT3(QMainWindow):
                 self.fastRendering = True
         except Exception as e:
             handleException(e)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def closeEvent(self, event):
         '''Method that overloads the self.gui close event and the application.'''
@@ -302,7 +310,7 @@ class TTT3(QMainWindow):
         if os.stat("TTT3 Crash.log").st_size == 0:
             os.remove("TTT3 Crash.log")
         sys.exit()
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def outputCloseEvent(self, event):
         '''Method that overloads the self.output_gui close event and the application.'''
@@ -310,7 +318,7 @@ class TTT3(QMainWindow):
         self.gui.setWindowFlags(self.gui.windowFlags() & ~Qt.WindowStaysOnBottomHint)
         self.gui.show()
         self.output_gui.close()
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def initialGUISetup(self):
         '''Method that sets the application's GUI for initial use.
@@ -342,6 +350,10 @@ class TTT3(QMainWindow):
 
         # Hide the remember button.
         self.gui.btn_remember.hide()
+
+        # Detect and load in lighsaber styles.
+        self.gui.cb_saberStyles.hide()
+        self.loadLighsabers()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def posRBLogic(self):
@@ -662,7 +674,7 @@ class TTT3(QMainWindow):
 
         for rankRadioButton in self.rankRadioButtons[rankMin: rankMax + 1]:  # + 1 because Python doesn't include the last item when indexing.
             rankRadioButton.show()
-        #----------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_dressMethod(self):
         '''Method that is triggered when the 'Dress Uniform' button is clicked.
@@ -1102,8 +1114,6 @@ class TTT3(QMainWindow):
                     self.eeCount = 0
                     self.gui.label_11.setText("AD Turtle Jerrar,")
                     self.gui.label_11.setStyleSheet("")
-                else:
-                    povData.append(line.replace("&EE&", ""))
 
             elif "&CLOTH&" in line:
                 povData.append(line.replace("&CLOTH&", "0"))  # TODO createDressPov() OpenGL CLOTH
@@ -1203,11 +1213,12 @@ class TTT3(QMainWindow):
             elif "&FCHGINCLUDE&" in line:
                 if not self.gui.cbFCHG.currentText() == "None (0 Pts)":
                     povData.append(line.replace("&FCHGINCLUDE&", '#include "wing_g.inc"'))
-                else:
-                    povData.append(line.replace("&FCHGINCLUDE&", ""))
 
             elif "&SABERINCLUDE&" in line:
-                povData.append(line.replace("&SABERINCLUDE&", ""))  # TODO SABERINCLUDE
+                if self.gui.cb_lightsaber.isChecked():
+                    style = self.gui.cb_saberStyles.currentText().replace("Style ", "")
+                    include = '#include "saber%s_g.inc"' % style
+                    povData.append(line.replace("&SABERINCLUDE&", include))
 
             elif "&MEDALSINCLUDE&" in line:
                 for includeRef in self.buildMedalIncludes():
@@ -1288,7 +1299,14 @@ class TTT3(QMainWindow):
                 # ------------------------------------------------------------
 
             elif "&SABER&" in line:
-                povData.append(line.replace("&SABER&", ""))  # TODO SABER
+                if self.gui.cb_lightsaber.isChecked():
+                    style = self.gui.cb_saberStyles.currentText().replace("Style ", "")
+                    if self.gui.rb_saberLeft.isChecked():
+                        side = "left"
+                    else:
+                        side = "right"
+                    object = 'object { saber%s_%s }' % (style, side)
+                    povData.append(line.replace("&SABER&", object))
 
             elif "&PAD&" in line:
                 if self.rank == "CT":
@@ -2472,13 +2490,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method event for when the 'Browse Fleet Roster' button is clicked on the 'Import' tab.'''
 
         subprocess.Popen("start " + self.config.get("TCDB", "roster"), shell=True)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_searchFunc(self, event):
         '''Method event for when the 'Personnel Search' button is clicked on the 'Import' tab.'''
 
         subprocess.Popen("start " + self.config.get("TCDB", "search"), shell=True)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_newProfMethod(self, event):
         '''Method event for when the 'New Profile' button is clicked.'''
@@ -2529,7 +2547,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_openProfMethod(self, event):
         '''Method event for when the 'Open Profile' button is clicked.'''
@@ -2621,7 +2639,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_saveProfMethod(self, event):
         '''Method event for when the 'Save Profile' button is clicked.'''
@@ -2639,7 +2657,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def saveUniformFileDialog(self):
         '''Method that opens a QT File Save dialog to save a uniform.'''
@@ -2660,7 +2678,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def loadUniformFileDialog(self):
         '''Method that opens a QT File Open dialog to save a uniform.'''
@@ -2879,7 +2897,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def savePinData(self):
         '''Method to save imported PINS.'''
@@ -2895,7 +2913,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def loadPinData(self):
         '''Method to load imported PINS.'''
@@ -2912,7 +2930,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except FileNotFoundError:
             pass  # No pin.dat file is saved.
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def checkForNewPIN(self):
         '''Method to check if a pin has already been saved..'''
@@ -2931,7 +2949,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         else:
             self.gui.btn_remember.show()
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lw_presetsFunc(self):
         '''Method to remember imported PINS.'''
@@ -2943,7 +2961,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def eventFilter(self, source, event):
         '''Preset list widget contect menu.'''
@@ -2963,7 +2981,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def deletePreset(self, name):
         '''Method to remove a reset stored PIN.'''
@@ -2973,7 +2991,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.pinData.pop(self.pinData.index(pin))
         self.savePinData()
         self.loadPinData()
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def keyPressEvent(self, event):
         '''Method to detect keyboard input.'''
@@ -2988,10 +3006,40 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 except AttributeError:
                     pass  # User has not clicked on a name.
 
-        if event.key() == Qt.Key_Enter:
+        if event.key() == Qt.Key_Enter or event.key() == Qt.Key_Return:
             if self.gui.tabWidget.tabText(self.gui.tabWidget.currentIndex()) == "Import":
                 self.btn_importFunc()
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def loadLighsabers(self):
+        '''Method to detect and load the number of lightsaber styles within the data folder.'''
+
+        # Detect installed saber styles and add them to the GUI.
+        currentSelection = self.gui.cb_saberStyles.currentIndex()
+        self.gui.cb_saberStyles.clear()
+        for root, dirs, files in os.walk(os.getcwd() + "\\data\\", topdown=False):
+            for name in files:
+                if "saber" in name and "_g.inc" in name:
+                    style = name.split("_")[0].replace("saber", "")
+                    self.gui.cb_saberStyles.addItem("Style " + style)
+        self.cb_lightsaberFunc()
+        if currentSelection == -1:
+            currentSelection = 0
+        self.gui.cb_saberStyles.setCurrentIndex(currentSelection)
+        self.gui.rb_saberLeft.setChecked(True)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def cb_lightsaberFunc(self):
+        '''Method that triggers when the 'Use Lightsaber' checkbox is selected'''
+
+        saberItems = [self.gui.cb_saberStyles, self.gui.lbl_saberSide, self.gui.rb_saberLeft, self.gui.rb_saberRight]
+
+        for item in saberItems:
+            if self.gui.cb_lightsaber.isChecked():
+                item.show()
+            else:
+                item.hide()
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 

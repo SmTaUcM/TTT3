@@ -134,7 +134,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
 }</string>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>5</number>
     </property>
     <widget class="QWidget" name="tabPosRank">
      <attribute name="title">
@@ -1923,6 +1923,146 @@ QListWidget:!enabled
       <zorder>lbl_multi_left1</zorder>
      </widget>
     </widget>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>Miscellaneous</string>
+     </attribute>
+     <widget class="QLabel" name="label_32">
+      <property name="geometry">
+       <rect>
+        <x>12</x>
+        <y>12</y>
+        <width>131</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>true</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>Miscellaneous</string>
+      </property>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_5">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>34</y>
+        <width>251</width>
+        <height>290</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Dress Uniform</string>
+      </property>
+      <widget class="QCheckBox" name="cb_lightsaber">
+       <property name="geometry">
+        <rect>
+         <x>12</x>
+         <y>23</y>
+         <width>91</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Use lightsaber</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="cb_saberStyles">
+       <property name="geometry">
+        <rect>
+         <x>130</x>
+         <y>20</y>
+         <width>71</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_saberSide">
+       <property name="geometry">
+        <rect>
+         <x>24</x>
+         <y>50</y>
+         <width>205</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+         <underline>true</underline>
+        </font>
+       </property>
+       <property name="text">
+        <string>Lightsaber mounted on which side?</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="rb_saberRight">
+       <property name="geometry">
+        <rect>
+         <x>144</x>
+         <y>73</y>
+         <width>51</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Right</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="rb_saberLeft">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>73</y>
+         <width>51</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Left</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_8">
+      <property name="geometry">
+       <rect>
+        <x>272</x>
+        <y>34</y>
+        <width>255</width>
+        <height>143</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Duty Uniform</string>
+      </property>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_9">
+      <property name="geometry">
+       <rect>
+        <x>273</x>
+        <y>181</y>
+        <width>255</width>
+        <height>143</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Helmet</string>
+      </property>
+     </widget>
+    </widget>
     <widget class="QWidget" name="tabImport">
      <attribute name="title">
       <string>Import</string>
@@ -1940,8 +2080,8 @@ QListWidget:!enabled
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
+        <weight>50</weight>
+        <bold>false</bold>
         <underline>true</underline>
        </font>
       </property>
@@ -2019,8 +2159,8 @@ QListWidget:!enabled
         <font>
          <family>Arial</family>
          <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
+         <weight>50</weight>
+         <bold>false</bold>
          <underline>true</underline>
         </font>
        </property>
@@ -3358,7 +3498,6 @@ QPushButton:!enabled
   <tabstop>btn_exit</tabstop>
  </tabstops>
  <resources>
-  <include location="resource.qrc"/>
   <include location="../../_Resource/resource.qrc"/>
  </resources>
  <connections/>
