@@ -32,7 +32,7 @@
    <string>TTT 3</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../_Resource/resource.qrc">
+   <iconset resource="resource.qrc">
     <normaloff>:/icons/ttt3.png</normaloff>:/icons/ttt3.png</iconset>
   </property>
   <property name="styleSheet">
@@ -1314,6 +1314,9 @@ QListWidget:!enabled
        <property name="styleSheet">
         <string notr="true">background-color: rgb(211, 211, 211);</string>
        </property>
+       <property name="maximum">
+        <number>999</number>
+       </property>
       </widget>
       <widget class="QLabel" name="lbl_multi_center1">
        <property name="geometry">
@@ -1371,6 +1374,9 @@ QListWidget:!enabled
        <property name="styleSheet">
         <string notr="true">background-color: rgb(211, 211, 211);</string>
        </property>
+       <property name="maximum">
+        <number>999</number>
+       </property>
       </widget>
       <widget class="QLabel" name="lbl_multi_center2">
        <property name="geometry">
@@ -1427,6 +1433,9 @@ QListWidget:!enabled
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+       <property name="maximum">
+        <number>999</number>
        </property>
       </widget>
       <widget class="QComboBox" name="combo_top">
@@ -1545,6 +1554,9 @@ QListWidget:!enabled
        <property name="styleSheet">
         <string notr="true">background-color: rgb(211, 211, 211);</string>
        </property>
+       <property name="maximum">
+        <number>999</number>
+       </property>
       </widget>
       <widget class="QLabel" name="lbl_multi_center4">
        <property name="geometry">
@@ -1646,6 +1658,9 @@ QListWidget:!enabled
        <property name="styleSheet">
         <string notr="true">background-color: rgb(211, 211, 211);</string>
        </property>
+       <property name="maximum">
+        <number>999</number>
+       </property>
       </widget>
       <widget class="QLabel" name="lbl_multi_right2">
        <property name="geometry">
@@ -1681,6 +1696,9 @@ QListWidget:!enabled
        <property name="styleSheet">
         <string notr="true">background-color: rgb(211, 211, 211);</string>
        </property>
+       <property name="maximum">
+        <number>999</number>
+       </property>
       </widget>
       <widget class="QSpinBox" name="sb_multi_right3">
        <property name="geometry">
@@ -1693,6 +1711,9 @@ QListWidget:!enabled
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+       <property name="maximum">
+        <number>999</number>
        </property>
       </widget>
       <widget class="QSpinBox" name="sb_multi_right4">
@@ -1707,6 +1728,9 @@ QListWidget:!enabled
        <property name="styleSheet">
         <string notr="true">background-color: rgb(211, 211, 211);</string>
        </property>
+       <property name="maximum">
+        <number>999</number>
+       </property>
       </widget>
       <widget class="QSpinBox" name="sb_multi_left3">
        <property name="geometry">
@@ -1719,6 +1743,9 @@ QListWidget:!enabled
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+       <property name="maximum">
+        <number>999</number>
        </property>
       </widget>
       <widget class="QLabel" name="lbl_multi_left3">
@@ -1802,6 +1829,9 @@ QListWidget:!enabled
        <property name="styleSheet">
         <string notr="true">background-color: rgb(211, 211, 211);</string>
        </property>
+       <property name="maximum">
+        <number>999</number>
+       </property>
       </widget>
       <widget class="QSpinBox" name="sb_multi_left4">
        <property name="geometry">
@@ -1815,6 +1845,9 @@ QListWidget:!enabled
        <property name="styleSheet">
         <string notr="true">background-color: rgb(211, 211, 211);</string>
        </property>
+       <property name="maximum">
+        <number>999</number>
+       </property>
       </widget>
       <widget class="QSpinBox" name="sb_multi_left1">
        <property name="geometry">
@@ -1827,6 +1860,9 @@ QListWidget:!enabled
        </property>
        <property name="styleSheet">
         <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+       <property name="maximum">
+        <number>999</number>
        </property>
       </widget>
       <widget class="QLabel" name="lbl_multi_left1">
@@ -2302,7 +2338,7 @@ QListWidget:!enabled
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../../_Resource/resource.qrc">:/icons/python.png</pixmap>
+       <pixmap resource="resource.qrc">:/icons/python.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -2330,7 +2366,7 @@ QListWidget:!enabled
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../../_Resource/resource.qrc">:/icons/povray.png</pixmap>
+       <pixmap resource="resource.qrc">:/icons/povray.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -2424,7 +2460,7 @@ QListWidget:!enabled
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../../_Resource/resource.qrc">:/icons/Qt_logo.png</pixmap>
+       <pixmap resource="resource.qrc">:/icons/Qt_logo.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -2780,7 +2816,7 @@ QListWidget:!enabled
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../../_Resource/resource.qrc">:/icons/io.png</pixmap>
+       <pixmap resource="resource.qrc">:/icons/io.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
