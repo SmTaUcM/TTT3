@@ -2328,7 +2328,6 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             # Multi type awards.
             elif self.awards.get(award)["type"] == "multiRibbon":
                 if self.awards.get(award)["upgrades"][quantity] > 0:
-                    for section in self.ribbonConfig.sections():
                     awardName = "T_r_" + self.getFilename(award).split(".")[0].lower().replace("-", "_")
                     ribbonObjects.append("P_r&NUM& texture { %s }" % awardName)
 
