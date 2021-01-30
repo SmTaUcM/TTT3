@@ -2751,6 +2751,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             # Reset TTTs data.
             self.btn_newProfMethod("ImportProfile")
 
+            # Write to information box.
+            self.writeToImportTextBox("Importing uniform data...")
+
             # Read the data.
             try:
                 apiData = self.getRetrieveAPIData(self.config.get("TCDB", "api"), str(self.gui.sbPin.value()))
@@ -2904,7 +2907,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.gui.cbFCHG.setCurrentIndex(apiData.get("TTT").get("pilotWings"))
 
                 # Write to information box.
-                msg = "Importing uniform data for {label}\nCallsign '{callsign}'\n{idLine}\n\nImport finished.".format(
+                msg = "Imported uniform data for {label}\nCallsign '{callsign}'\n{idLine}\n\nImport finished.".format(
                     label=apiData.get("label"), callsign=apiData.get("callsign"), idLine=apiData.get("IDLine"))
                 self.writeToImportTextBox(msg)
 
@@ -2923,6 +2926,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         self.gui.textEdit.clear()
         self.gui.textEdit.setPlainText(message)
+        QApplication.processEvents() # Required to refresh the textbox widget.
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_rememberFunc(self):
