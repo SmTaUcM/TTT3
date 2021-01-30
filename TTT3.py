@@ -1787,7 +1787,6 @@ class TTT3(QMainWindow):
             ribbonFile.write(ribbons_g)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def getFilename(self, award):
         '''Method that determines an award's filename from it's abbreviation.'''
         return award.replace("(s)", "").split("(")[1].replace(")", "").lower() + ".gif"
@@ -2668,7 +2667,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         # FCHG.
                     self.gui.cbFCHG.setCurrentText(saveData[9])
 
-                        # Miscellaneous Tab Options.
+                    # Miscellaneous Tab Options.
                     self.gui.cb_dressLightsaber.setChecked(saveData[10])
                     self.gui.cb_dressSaberStyles.setCurrentIndex(saveData[11])
                     if saveData[12]:
@@ -2935,7 +2934,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         self.gui.textEdit.clear()
         self.gui.textEdit.setPlainText(message)
-        QApplication.processEvents() # Required to refresh the textbox widget.
+        QApplication.processEvents()  # Required to refresh the textbox widget.
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_rememberFunc(self):
