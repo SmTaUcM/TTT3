@@ -2499,7 +2499,7 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>Created 2020-07 by</string>
+       <string>Created 2020-21 by</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_10">
@@ -2544,7 +2544,7 @@ QListWidget:!enabled
        <string notr="true">color: rgb(6, 22, 125);</string>
       </property>
       <property name="text">
-       <string>Version: 3.00</string>
+       <string>==VER==</string>
       </property>
      </widget>
      <widget class="QLabel" name="lblDate">
@@ -2568,7 +2568,7 @@ QListWidget:!enabled
        <string notr="true">color: rgb(6, 22, 125);</string>
       </property>
       <property name="text">
-       <string>Date:     July 2020</string>
+       <string>==DATE==</string>
       </property>
      </widget>
      <widget class="QLabel" name="lbl_pic_python">
