@@ -361,6 +361,10 @@ class TTT3(QMainWindow):
 
         # TODO Disabled Helmet UTFN.
         self.gui.btn_helmet.setEnabled(False)
+        self.gui.gb_helmet.setEnabled(False)
+
+        # TODO Disabled Duty Blaster UTFN.
+        self.gui.cb_dutyBlaster.setEnabled(False)
 
         # Hide the remember button.
         self.gui.btn_remember.hide()
