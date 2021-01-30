@@ -2419,7 +2419,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             quantity = 1
 
             # ----- Multi type medal awards. (GS, SS, BS, PC, ISM)
-            if award.get("type") == "multi":
+            if award.get("type") == "multi" or award.get("type") == "multiRibbon":
                 self.awards.get(str(self.gui.lw_medals.currentItem().text()))["upgrades"][quantity] = value
 
             # ----- SubRibbons type ribbon awards. (MoS, MoT, IS, MoC, CoX)
