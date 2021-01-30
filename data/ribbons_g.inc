@@ -166,66 +166,66 @@ texture
 }
 texture { T_unilayer scale 2}
 
-#declare T_r_tc_tcu_bronze =
+#declare T_r_tcu_b =
 texture
 {
-  pigment { image_map { gif ".\ribbons\tc-tcu-bronze.gif" } }
+  pigment { image_map { gif ".\ribbons\tcu-b.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
 
-#declare T_r_tc_tcu_silver =
+#declare T_r_tcu_s =
 texture
 {
-  pigment { image_map { gif ".\ribbons\tc-tcu-silver.gif" } }
+  pigment { image_map { gif ".\ribbons\tcu-s.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
 
-#declare T_r_tc_tcu_gold =
+#declare T_r_tcu_g =
 texture
 {
-  pigment { image_map { gif ".\ribbons\tc-tcu-gold.gif" } }
+  pigment { image_map { gif ".\ribbons\tcu-g.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
 
-#declare T_r_tc_tcu_plat =
+#declare T_r_tcu_p =
 texture
 {
-  pigment { image_map { gif ".\ribbons\tc-tcu-plat.gif" } }
+  pigment { image_map { gif ".\ribbons\tcu-p.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
 
-#declare T_r_tc_mu_bronze =
+#declare T_r_mu_b =
 texture
 {
-  pigment { image_map { gif ".\ribbons\tc-mu-bronze.gif" } }
+  pigment { image_map { gif ".\ribbons\mu-b.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
 
-#declare T_r_tc_mu_silver =
+#declare T_r_mu_s =
 texture
 {
-  pigment { image_map { gif ".\ribbons\tc-mu-silver.gif" } }
+  pigment { image_map { gif ".\ribbons\mu-s.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
 
-#declare T_r_tc_mu_gold =
+#declare T_r_mu_g =
 texture
 {
-  pigment { image_map { gif ".\ribbons\tc-mu-gold.gif" } }
+  pigment { image_map { gif ".\ribbons\mu-g.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
 
-#declare T_r_tc_mu_plat =
+#declare T_r_mu_g =
 texture
 {
-  pigment { image_map { gif ".\ribbons\tc-mu-plat.gif" } }
+  pigment { image_map { gif ".\ribbons\mu-g.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}

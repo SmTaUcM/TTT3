@@ -1780,11 +1780,17 @@ class TTT3(QMainWindow):
                     # Create the required include declarations for 'ribbons_g.inc'
                     if option != "name" and option != "type":
                         # Add the ribbon to ribbons_g.inc
-                        if "filename" in option:
-                            ribbons_g += self.addToRibbonIncludes(self.ribbonConfig.get(ribbon, option))
+                        if "upgrade" in option:
+                            ribbons_g += self.addToRibbonIncludes(self.getFilename(self.ribbonConfig.get(ribbon, option)))
 
         with open("data\\ribbons_g.inc", "w") as ribbonFile:
             ribbonFile.write(ribbons_g)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def getFilename(self, award):
+        '''Method that determines an award's filename from it's abbreviation.'''
+        return award.replace("(s)", "").split("(")[1].replace(")", "").lower() + ".gif"
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def addToRibbonIncludes(self, filename):
@@ -2293,7 +2299,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     if "Medal of Communication (MoC)" == award:
                         highestMOC = ["name", 0]
                         for upgrade in upgrades[::-1]:
-                            if upgrade[1] >= highestMOC[1]:
+                            if upgrade[1] >= 1:
                                 highestMOC = upgrade
                         upgrades = [highestMOC]
 
@@ -2308,10 +2314,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
                 for upgrade in upgrades:  # Medals that don't require reversing.
                     if upgrade[quantity] != 0:
-                        for section in self.ribbonConfig.sections():
-                            for option in self.ribbonConfig.options(section):
-                                if self.ribbonConfig.get(section, option) == upgrade[name] and self.ribbonConfig.get(section, "name") == award:
-                                    awardName = "T_r_" + self.ribbonConfig.get(section, option + "filename").split(".")[0].lower().replace("-", "_")
+                        awardName = "T_r_" + self.getFilename(upgrade[name]).split(".")[0].lower().replace("-", "_")
                         ribbonObjects.append("P_r&NUM& texture { %s }" % awardName)
 
             # Ranged type awards.
@@ -2327,9 +2330,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             elif self.awards.get(award)["type"] == "multiRibbon":
                 if self.awards.get(award)["upgrades"][quantity] > 0:
                     for section in self.ribbonConfig.sections():
-                        if self.ribbonConfig.get(section, "name") == award:
-                            awardName = "T_r_" + self.ribbonConfig.get(section, "filename").split(".")[0].lower().replace("-", "_")
-                            ribbonObjects.append("P_r&NUM& texture { %s }" % awardName)
+                    awardName = "T_r_" + self.getFilename(award).split(".")[0].lower().replace("-", "_")
+                    ribbonObjects.append("P_r&NUM& texture { %s }" % awardName)
 
         return self.ribbonNumberOrdering(ribbonObjects)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
