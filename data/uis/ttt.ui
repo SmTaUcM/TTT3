@@ -2375,7 +2375,7 @@ QListWidget:!enabled
           </font>
          </property>
          <property name="text">
-          <string>Lightsaber mounting:</string>
+          <string>Sidearm mounting:</string>
          </property>
         </widget>
        </widget>
@@ -2387,7 +2387,7 @@ QListWidget:!enabled
        <widget class="QLabel" name="lbl_hemText">
         <property name="geometry">
          <rect>
-          <x>24</x>
+          <x>19</x>
           <y>18</y>
           <width>31</width>
           <height>16</height>
@@ -2406,9 +2406,9 @@ QListWidget:!enabled
        <widget class="QFontComboBox" name="fcb_hemlFont">
         <property name="geometry">
          <rect>
-          <x>59</x>
+          <x>54</x>
           <y>45</y>
-          <width>191</width>
+          <width>200</width>
           <height>22</height>
          </rect>
         </property>
@@ -2628,7 +2628,7 @@ QPushButton:!enabled
        <widget class="QLabel" name="lbl_hemFont">
         <property name="geometry">
          <rect>
-          <x>24</x>
+          <x>19</x>
           <y>48</y>
           <width>31</width>
           <height>16</height>
@@ -2647,9 +2647,9 @@ QPushButton:!enabled
        <widget class="QLineEdit" name="le_helmText">
         <property name="geometry">
          <rect>
-          <x>59</x>
+          <x>54</x>
           <y>16</y>
-          <width>191</width>
+          <width>200</width>
           <height>20</height>
          </rect>
         </property>
