@@ -152,16 +152,16 @@ class TTT3(QMainWindow):
             # ----- 'Miscellaneous' Tab. -----
             # Set default Misc Options.
             # Detect and load in lighsaber styles.
-            self.gui.cb_saberStyles.hide()
+            self.gui.cb_dressSaberStyles.hide()
             self.loadLighsabers()
-            self.cb_lightsaberFunc()
-            self.gui.cb_lightsaber.setChecked(False)
+            self.cb_dressLightsaberFunc()
+            self.gui.cb_dressLightsaber.setChecked(False)
             self.gui.rb_daggerLeft.setChecked(True)
 
             # Lightsaber options.
-            self.gui.cb_lightsaber.stateChanged.connect(self.cb_lightsaberFunc)
-            self.gui.rb_saberLeft.clicked.connect(self.saberDaggerDeconflict)
-            self.gui.rb_saberRight.clicked.connect(self.saberDaggerDeconflict)
+            self.gui.cb_dressLightsaber.stateChanged.connect(self.cb_dressLightsaberFunc)
+            self.gui.rb_dressSaberLeft.clicked.connect(self.saberDaggerDeconflict)
+            self.gui.rb_dressSaberRight.clicked.connect(self.saberDaggerDeconflict)
 
             # GOE Options.
             self.gui.rb_daggerLeft.clicked.connect(self.daggerSaberDeconflict)
@@ -361,10 +361,13 @@ class TTT3(QMainWindow):
 
         # TODO Disabled Helmet UTFN.
         self.gui.btn_helmet.setEnabled(False)
-        self.gui.gb_helmet.setEnabled(False)
+        self.gui.tab_Helm.setEnabled(False)
 
-        # TODO Disabled Duty Blaster UTFN.
-        self.gui.cb_dutyBlaster.setEnabled(False)
+        # TODO Disabled Duty Options UTFN.
+        self.gui.tab_Duty.setEnabled(False)
+
+        # TODO Disabled Dress Lightsaber Customisation.
+        self.gui.btn_dressSaberCustom.setEnabled(False)
 
         # Hide the remember button.
         self.gui.btn_remember.hide()
@@ -1233,8 +1236,8 @@ class TTT3(QMainWindow):
                     povData.append(line.replace("&FCHGINCLUDE&", '#include "wing_g.inc"'))
 
             elif "&SABERINCLUDE&" in line:
-                if self.gui.cb_lightsaber.isChecked():
-                    style = self.gui.cb_saberStyles.currentText().replace("Style ", "")
+                if self.gui.cb_dressLightsaber.isChecked():
+                    style = self.gui.cb_dressSaberStyles.currentText().replace("Style ", "")
                     include = '#include "saber%s_g.inc"' % style
                     povData.append(line.replace("&SABERINCLUDE&", include))
 
@@ -1317,9 +1320,9 @@ class TTT3(QMainWindow):
                 # ------------------------------------------------------------
 
             elif "&SABER&" in line:
-                if self.gui.cb_lightsaber.isChecked():
-                    style = self.gui.cb_saberStyles.currentText().replace("Style ", "")
-                    if self.gui.rb_saberLeft.isChecked():
+                if self.gui.cb_dressLightsaber.isChecked():
+                    style = self.gui.cb_dressSaberStyles.currentText().replace("Style ", "")
+                    if self.gui.rb_dressSaberLeft.isChecked():
                         side = "left"
                     else:
                         side = "right"
@@ -2567,10 +2570,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.enableWingAndSqnTab(False)
             # Set default Misc Tab Options.
             if event != "ImportProfile" and event != "OpenProfile":
-                self.gui.cb_lightsaber.setChecked(False)
-                self.gui.cb_saberStyles.setCurrentIndex(0)
+                self.gui.cb_dressLightsaber.setChecked(False)
+                self.gui.cb_dressSaberStyles.setCurrentIndex(0)
                 self.gui.rb_daggerLeft.setChecked(True)
-                self.gui.rb_saberRight.setChecked(True)
+                self.gui.rb_dressSaberRight.setChecked(True)
 
             # Disable render buttons.
             self.gui.btn_dress.setEnabled(False)
@@ -2664,12 +2667,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.gui.cbFCHG.setCurrentText(saveData[9])
 
                         # Miscellaneous Tab Options.
-                    self.gui.cb_lightsaber.setChecked(saveData[10])
-                    self.gui.cb_saberStyles.setCurrentIndex(saveData[11])
+                    self.gui.cb_dressLightsaber.setChecked(saveData[10])
+                    self.gui.cb_dressSaberStyles.setCurrentIndex(saveData[11])
                     if saveData[12]:
-                        self.gui.rb_saberRight.setChecked(True)
+                        self.gui.rb_dressSaberRight.setChecked(True)
                     else:
-                        self.gui.rb_saberLeft.setChecked(True)
+                        self.gui.rb_dressSaberLeft.setChecked(True)
                     if saveData[13]:
                         self.gui.rb_daggerLeft.setChecked(True)
                     else:
@@ -2690,8 +2693,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         try:
             # Collect the data to be saved into a list.
             saveData = (self.saveFileVersion, self.position, self.rank, self.ship, self.wing, self.gui.cb_eliteSqn.isChecked(),
-                        self.sqn, self.awards, self.deconflictNeckRibbons, self.gui.cbFCHG.currentText(), self.gui.cb_lightsaber.isChecked(),
-                        self.gui.cb_saberStyles.currentIndex(), self.gui.rb_saberRight.isChecked(), self.gui.rb_daggerLeft.isChecked())
+                        self.sqn, self.awards, self.deconflictNeckRibbons, self.gui.cbFCHG.currentText(), self.gui.cb_dressLightsaber.isChecked(),
+                        self.gui.cb_dressSaberStyles.currentIndex(), self.gui.rb_dressSaberRight.isChecked(), self.gui.rb_daggerLeft.isChecked())
 
             # Save the data.
             fileName = self.saveUniformFileDialog()
@@ -3067,17 +3070,18 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             for name in files:
                 if "saber" in name and "_g.inc" in name:
                     style = name.split("_")[0].replace("saber", "")
-                    self.gui.cb_saberStyles.addItem("Style " + style)
-        self.gui.rb_saberRight.setChecked(True)
+                    self.gui.cb_dressSaberStyles.addItem("Style " + style)
+        self.gui.rb_dressSaberRight.setChecked(True)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def cb_lightsaberFunc(self):
+    def cb_dressLightsaberFunc(self):
         '''Method that triggers when the 'Use Lightsaber' checkbox is selected'''
 
-        saberItems = [self.gui.cb_saberStyles, self.gui.lbl_saberSide, self.gui.rb_saberLeft, self.gui.rb_saberRight]
+        saberItems = [self.gui.cb_dressSaberStyles, self.gui.lbl_dressSaberSide, self.gui.rb_dressSaberLeft,
+                      self.gui.rb_dressSaberRight, self.gui.btn_dressSaberCustom]
 
         for item in saberItems:
-            if self.gui.cb_lightsaber.isChecked():
+            if self.gui.cb_dressLightsaber.isChecked():
                 item.show()
             else:
                 item.hide()
@@ -3086,7 +3090,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def saberDaggerDeconflict(self):
         '''Method to deconflict the lightsaber and dagger if a saber mounting option is selected.'''
 
-        if self.gui.rb_saberLeft.isChecked():
+        if self.gui.rb_dressSaberLeft.isChecked():
             self.gui.rb_daggerRight.setChecked(True)
         else:
             self.gui.rb_daggerLeft.setChecked(True)
@@ -3096,9 +3100,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method to deconflict the dagger and lightsaber if a dagger mounting option is selected.'''
 
         if self.gui.rb_daggerLeft.isChecked():
-            self.gui.rb_saberRight.setChecked(True)
+            self.gui.rb_dressSaberRight.setChecked(True)
         else:
-            self.gui.rb_saberLeft.setChecked(True)
+            self.gui.rb_dressSaberLeft.setChecked(True)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 

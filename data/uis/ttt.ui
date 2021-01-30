@@ -1923,75 +1923,33 @@ QListWidget:!enabled
       <zorder>lbl_multi_left1</zorder>
      </widget>
     </widget>
-    <widget class="QWidget" name="tab">
+    <widget class="QWidget" name="tabMisc">
      <attribute name="title">
       <string>Miscellaneous</string>
      </attribute>
-     <widget class="QLabel" name="label_32">
+     <widget class="QTabWidget" name="tw_misc">
       <property name="geometry">
        <rect>
         <x>12</x>
-        <y>12</y>
-        <width>131</width>
-        <height>16</height>
+        <y>10</y>
+        <width>512</width>
+        <height>311</height>
        </rect>
       </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>50</weight>
-        <bold>false</bold>
-        <underline>true</underline>
-       </font>
+      <property name="currentIndex">
+       <number>0</number>
       </property>
-      <property name="text">
-       <string>Miscellaneous</string>
-      </property>
-     </widget>
-     <widget class="QGroupBox" name="gb_dress">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>34</y>
-        <width>251</width>
-        <height>290</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>9</pointsize>
-       </font>
-      </property>
-      <property name="title">
-       <string>Dress Uniform:</string>
-      </property>
-      <widget class="QGroupBox" name="gb_saberMounting">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>22</y>
-         <width>231</width>
-         <height>101</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="title">
-        <string>Lightsaber options:</string>
-       </property>
-       <widget class="QRadioButton" name="rb_saberRight">
+      <widget class="QWidget" name="tab_Dress">
+       <attribute name="title">
+        <string>Dress Uniform</string>
+       </attribute>
+       <widget class="QGroupBox" name="gb_daggerMounting">
         <property name="geometry">
          <rect>
-          <x>117</x>
-          <y>74</y>
-          <width>101</width>
-          <height>17</height>
+          <x>21</x>
+          <y>167</y>
+          <width>231</width>
+          <height>51</height>
          </rect>
         </property>
         <property name="font">
@@ -2000,17 +1958,55 @@ QListWidget:!enabled
           <pointsize>10</pointsize>
          </font>
         </property>
-        <property name="text">
-         <string>Right-handed</string>
+        <property name="title">
+         <string>GOE dagger mounting:</string>
         </property>
+        <widget class="QRadioButton" name="rb_daggerLeft">
+         <property name="geometry">
+          <rect>
+           <x>15</x>
+           <y>23</y>
+           <width>91</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Left-handed</string>
+         </property>
+        </widget>
+        <widget class="QRadioButton" name="rb_daggerRight">
+         <property name="geometry">
+          <rect>
+           <x>117</x>
+           <y>23</y>
+           <width>101</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Right-handed</string>
+         </property>
+        </widget>
        </widget>
-       <widget class="QRadioButton" name="rb_saberLeft">
+       <widget class="QGroupBox" name="gb_dressSaberMounting">
         <property name="geometry">
          <rect>
-          <x>15</x>
-          <y>74</y>
-          <width>91</width>
-          <height>17</height>
+          <x>21</x>
+          <y>15</y>
+          <width>231</width>
+          <height>141</height>
          </rect>
         </property>
         <property name="font">
@@ -2019,17 +2015,133 @@ QListWidget:!enabled
           <pointsize>10</pointsize>
          </font>
         </property>
-        <property name="text">
-         <string>Left-handed</string>
+        <property name="title">
+         <string>Lightsaber options:</string>
         </property>
+        <widget class="QRadioButton" name="rb_dressSaberRight">
+         <property name="geometry">
+          <rect>
+           <x>117</x>
+           <y>74</y>
+           <width>101</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Right-handed</string>
+         </property>
+        </widget>
+        <widget class="QRadioButton" name="rb_dressSaberLeft">
+         <property name="geometry">
+          <rect>
+           <x>15</x>
+           <y>74</y>
+           <width>91</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Left-handed</string>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="cb_dressSaberStyles">
+         <property name="geometry">
+          <rect>
+           <x>137</x>
+           <y>22</y>
+           <width>71</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(211, 211, 211);</string>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="cb_dressLightsaber">
+         <property name="geometry">
+          <rect>
+           <x>15</x>
+           <y>25</y>
+           <width>111</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Use lightsaber</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="lbl_dressSaberSide">
+         <property name="geometry">
+          <rect>
+           <x>16</x>
+           <y>53</y>
+           <width>131</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Lightsaber mounting:</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_dressSaberCustom">
+         <property name="geometry">
+          <rect>
+           <x>55</x>
+           <y>104</y>
+           <width>121</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(211, 211, 211);</string>
+         </property>
+         <property name="text">
+          <string>Customise Lightsaber</string>
+         </property>
+        </widget>
        </widget>
-       <widget class="QComboBox" name="cb_saberStyles">
+      </widget>
+      <widget class="QWidget" name="tab_Duty">
+       <attribute name="title">
+        <string>Duty Uniform</string>
+       </attribute>
+       <widget class="QGroupBox" name="gb_dutySaberMounting">
         <property name="geometry">
          <rect>
-          <x>137</x>
-          <y>22</y>
-          <width>71</width>
-          <height>22</height>
+          <x>21</x>
+          <y>15</y>
+          <width>231</width>
+          <height>141</height>
          </rect>
         </property>
         <property name="font">
@@ -2038,17 +2150,128 @@ QListWidget:!enabled
           <pointsize>10</pointsize>
          </font>
         </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(211, 211, 211);</string>
+        <property name="title">
+         <string>Lightsaber options:</string>
         </property>
+        <widget class="QRadioButton" name="rb_dutySaberRight">
+         <property name="geometry">
+          <rect>
+           <x>117</x>
+           <y>74</y>
+           <width>101</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Right-handed</string>
+         </property>
+        </widget>
+        <widget class="QRadioButton" name="rb_dutySaberLeft">
+         <property name="geometry">
+          <rect>
+           <x>15</x>
+           <y>74</y>
+           <width>91</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Left-handed</string>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="cb_dutySaberStyles">
+         <property name="geometry">
+          <rect>
+           <x>137</x>
+           <y>22</y>
+           <width>71</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(211, 211, 211);</string>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="cb_dutyLightsaber">
+         <property name="geometry">
+          <rect>
+           <x>15</x>
+           <y>25</y>
+           <width>111</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Use lightsaber</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="lbl_dutySaberSide">
+         <property name="geometry">
+          <rect>
+           <x>16</x>
+           <y>53</y>
+           <width>131</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Lightsaber mounting:</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_dutySaberCustom">
+         <property name="geometry">
+          <rect>
+           <x>55</x>
+           <y>104</y>
+           <width>121</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(211, 211, 211);</string>
+         </property>
+         <property name="text">
+          <string>Customise Lightsaber</string>
+         </property>
+        </widget>
        </widget>
-       <widget class="QCheckBox" name="cb_lightsaber">
+       <widget class="QGroupBox" name="gb_dutySidearm">
         <property name="geometry">
          <rect>
-          <x>15</x>
-          <y>25</y>
-          <width>111</width>
-          <height>17</height>
+          <x>21</x>
+          <y>167</y>
+          <width>231</width>
+          <height>105</height>
          </rect>
         </property>
         <property name="font">
@@ -2057,16 +2280,116 @@ QListWidget:!enabled
           <pointsize>10</pointsize>
          </font>
         </property>
-        <property name="text">
-         <string>Use lightsaber</string>
+        <property name="title">
+         <string>Sidearm options:</string>
         </property>
+        <widget class="QRadioButton" name="rb_blasterLeft">
+         <property name="geometry">
+          <rect>
+           <x>15</x>
+           <y>74</y>
+           <width>91</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Left-handed</string>
+         </property>
+        </widget>
+        <widget class="QRadioButton" name="rb_blasterRight">
+         <property name="geometry">
+          <rect>
+           <x>117</x>
+           <y>74</y>
+           <width>101</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Right-handed</string>
+         </property>
+        </widget>
+        <widget class="QComboBox" name="cb_dutyBlasterStyles">
+         <property name="geometry">
+          <rect>
+           <x>137</x>
+           <y>22</y>
+           <width>71</width>
+           <height>22</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(211, 211, 211);</string>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="cb_dutyBlaster">
+         <property name="geometry">
+          <rect>
+           <x>15</x>
+           <y>24</y>
+           <width>101</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Use sidearm</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="lbl_saberSide">
+         <property name="geometry">
+          <rect>
+           <x>16</x>
+           <y>53</y>
+           <width>131</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Lightsaber mounting:</string>
+         </property>
+        </widget>
        </widget>
-       <widget class="QLabel" name="lbl_saberSide">
+      </widget>
+      <widget class="QWidget" name="tab_Helm">
+       <attribute name="title">
+        <string>Pilot Helmet</string>
+       </attribute>
+       <widget class="QLabel" name="lbl_hemText">
         <property name="geometry">
          <rect>
-          <x>16</x>
-          <y>53</y>
-          <width>131</width>
+          <x>24</x>
+          <y>18</y>
+          <width>31</width>
           <height>16</height>
          </rect>
         </property>
@@ -2077,235 +2400,71 @@ QListWidget:!enabled
          </font>
         </property>
         <property name="text">
-         <string>Lightsaber mounting:</string>
+         <string>Text:</string>
         </property>
        </widget>
-      </widget>
-      <widget class="QGroupBox" name="gb_daggerMounting">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>135</y>
-         <width>231</width>
-         <height>51</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="title">
-        <string>GOE dagger mounting:</string>
-       </property>
-       <widget class="QRadioButton" name="rb_daggerLeft">
+       <widget class="QFontComboBox" name="fcb_hemlFont">
         <property name="geometry">
          <rect>
-          <x>15</x>
-          <y>23</y>
-          <width>91</width>
-          <height>17</height>
+          <x>59</x>
+          <y>45</y>
+          <width>191</width>
+          <height>22</height>
          </rect>
         </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Left-handed</string>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(211, 211, 211);</string>
         </property>
        </widget>
-       <widget class="QRadioButton" name="rb_daggerRight">
+       <widget class="QTabWidget" name="tw_hemlLogos">
         <property name="geometry">
          <rect>
-          <x>117</x>
-          <y>23</y>
-          <width>101</width>
-          <height>17</height>
+          <x>19</x>
+          <y>77</y>
+          <width>235</width>
+          <height>101</height>
          </rect>
         </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>10</pointsize>
-         </font>
+        <property name="currentIndex">
+         <number>0</number>
         </property>
-        <property name="text">
-         <string>Right-handed</string>
-        </property>
-       </widget>
-      </widget>
-     </widget>
-     <widget class="QGroupBox" name="gb_duty">
-      <property name="geometry">
-       <rect>
-        <x>272</x>
-        <y>34</y>
-        <width>255</width>
-        <height>55</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>9</pointsize>
-       </font>
-      </property>
-      <property name="title">
-       <string>Duty Uniform:</string>
-      </property>
-      <widget class="QCheckBox" name="cb_dutyBlaster">
-       <property name="geometry">
-        <rect>
-         <x>15</x>
-         <y>22</y>
-         <width>151</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Use sidearm (blaster)</string>
-       </property>
-      </widget>
-     </widget>
-     <widget class="QGroupBox" name="gb_helmet">
-      <property name="geometry">
-       <rect>
-        <x>273</x>
-        <y>102</y>
-        <width>255</width>
-        <height>222</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>9</pointsize>
-       </font>
-      </property>
-      <property name="title">
-       <string>Helmet:</string>
-      </property>
-      <widget class="QLabel" name="lbl_hemText">
-       <property name="geometry">
-        <rect>
-         <x>15</x>
-         <y>22</y>
-         <width>31</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Text:</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="le_helmText">
-       <property name="geometry">
-        <rect>
-         <x>50</x>
-         <y>20</y>
-         <width>191</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QLineEdit
-{
-    background-color: rgb(255, 255, 252);
-}
-
-QLineEdit:!enabled
-{
-	background-color: darkgray;
-}
-
-
-</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="lbl_hemFont">
-       <property name="geometry">
-        <rect>
-         <x>15</x>
-         <y>52</y>
-         <width>31</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Font:</string>
-       </property>
-      </widget>
-      <widget class="QTabWidget" name="tw_hemlLogos">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>80</y>
-         <width>235</width>
-         <height>131</height>
-        </rect>
-       </property>
-       <property name="currentIndex">
-        <number>0</number>
-       </property>
-       <widget class="QWidget" name="tab_2">
-        <attribute name="title">
-         <string>Logo 1</string>
-        </attribute>
-        <widget class="QComboBox" name="cb_hemlLogo1Type">
-         <property name="geometry">
-          <rect>
-           <x>20</x>
-           <y>22</y>
-           <width>191</width>
-           <height>22</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Arial</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background-color: rgb(211, 211, 211);</string>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="btn_helmLogo1Filepath">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="geometry">
-          <rect>
-           <x>189</x>
-           <y>62</y>
-           <width>23</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton
+        <widget class="QWidget" name="tab_8">
+         <attribute name="title">
+          <string>Logo 1</string>
+         </attribute>
+         <widget class="QComboBox" name="cb_hemlLogo1Type">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>10</y>
+            <width>191</width>
+            <height>22</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(211, 211, 211);</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="btn_helmLogo1Filepath">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="geometry">
+           <rect>
+            <x>188</x>
+            <y>40</y>
+            <width>23</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton
 {
     color: #b1b1b1;
     background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:0.4375 rgba(6, 22, 125, 255));
@@ -2334,25 +2493,25 @@ QPushButton:!enabled
     color: gray;
 	background-color: darkgray;
 }</string>
-         </property>
-         <property name="text">
-          <string>...</string>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="le_helmLogo1Filepath">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="geometry">
-          <rect>
-           <x>19</x>
-           <y>64</y>
-           <width>170</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLineEdit
+          </property>
+          <property name="text">
+           <string>...</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="le_helmLogo1Filepath">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>42</y>
+            <width>169</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLineEdit
 {
     background-color: rgb(255, 255, 252);
 }
@@ -2364,27 +2523,73 @@ QLineEdit:!enabled
 
 
 </string>
-         </property>
+          </property>
+         </widget>
         </widget>
-       </widget>
-       <widget class="QWidget" name="tab_3">
-        <attribute name="title">
-         <string>Logo 2</string>
-        </attribute>
-        <widget class="QPushButton" name="btn_helmLogo1Filepath_2">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="geometry">
-          <rect>
-           <x>189</x>
-           <y>62</y>
-           <width>23</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton
+        <widget class="QWidget" name="tab_9">
+         <attribute name="title">
+          <string>Logo 2</string>
+         </attribute>
+         <widget class="QLineEdit" name="le_helmLogo2Filepath">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>42</y>
+            <width>169</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLineEdit
+{
+    background-color: rgb(255, 255, 252);
+}
+
+QLineEdit:!enabled
+{
+	background-color: darkgray;
+}
+
+
+</string>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="cb_hemlLogo2Type">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>10</y>
+            <width>191</width>
+            <height>22</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(211, 211, 211);</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="btn_helmLogo2Filepath">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="geometry">
+           <rect>
+            <x>188</x>
+            <y>40</y>
+            <width>23</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton
 {
     color: #b1b1b1;
     background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:0.4375 rgba(6, 22, 125, 255));
@@ -2413,44 +2618,43 @@ QPushButton:!enabled
     color: gray;
 	background-color: darkgray;
 }</string>
-         </property>
-         <property name="text">
-          <string>...</string>
-         </property>
+          </property>
+          <property name="text">
+           <string>...</string>
+          </property>
+         </widget>
         </widget>
-        <widget class="QComboBox" name="cb_hemlLogo1Type_2">
-         <property name="geometry">
-          <rect>
-           <x>20</x>
-           <y>22</y>
-           <width>191</width>
-           <height>22</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Arial</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background-color: rgb(211, 211, 211);</string>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="le_helmLogo1Filepath_2">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="geometry">
-          <rect>
-           <x>19</x>
-           <y>64</y>
-           <width>170</width>
-           <height>20</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLineEdit
+       </widget>
+       <widget class="QLabel" name="lbl_hemFont">
+        <property name="geometry">
+         <rect>
+          <x>24</x>
+          <y>48</y>
+          <width>31</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Font:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="le_helmText">
+        <property name="geometry">
+         <rect>
+          <x>59</x>
+          <y>16</y>
+          <width>191</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLineEdit
 {
     background-color: rgb(255, 255, 252);
 }
@@ -2462,22 +2666,8 @@ QLineEdit:!enabled
 
 
 </string>
-         </property>
-        </widget>
+        </property>
        </widget>
-      </widget>
-      <widget class="QFontComboBox" name="fontComboBox">
-       <property name="geometry">
-        <rect>
-         <x>50</x>
-         <y>49</y>
-         <width>191</width>
-         <height>22</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(211, 211, 211);</string>
-       </property>
       </widget>
      </widget>
     </widget>
@@ -3914,6 +4104,32 @@ QPushButton:!enabled
   <tabstop>btn_saveProf</tabstop>
   <tabstop>btn_config</tabstop>
   <tabstop>btn_exit</tabstop>
+  <tabstop>tw_misc</tabstop>
+  <tabstop>cb_dressLightsaber</tabstop>
+  <tabstop>cb_dressSaberStyles</tabstop>
+  <tabstop>rb_dressSaberLeft</tabstop>
+  <tabstop>rb_dressSaberRight</tabstop>
+  <tabstop>btn_dressSaberCustom</tabstop>
+  <tabstop>rb_daggerLeft</tabstop>
+  <tabstop>rb_daggerRight</tabstop>
+  <tabstop>cb_dutyLightsaber</tabstop>
+  <tabstop>cb_dutySaberStyles</tabstop>
+  <tabstop>rb_dutySaberLeft</tabstop>
+  <tabstop>rb_dutySaberRight</tabstop>
+  <tabstop>btn_dutySaberCustom</tabstop>
+  <tabstop>cb_dutyBlaster</tabstop>
+  <tabstop>cb_dutyBlasterStyles</tabstop>
+  <tabstop>rb_blasterLeft</tabstop>
+  <tabstop>rb_blasterRight</tabstop>
+  <tabstop>le_helmText</tabstop>
+  <tabstop>fcb_hemlFont</tabstop>
+  <tabstop>tw_hemlLogos</tabstop>
+  <tabstop>cb_hemlLogo1Type</tabstop>
+  <tabstop>le_helmLogo1Filepath</tabstop>
+  <tabstop>btn_helmLogo1Filepath</tabstop>
+  <tabstop>cb_hemlLogo2Type</tabstop>
+  <tabstop>le_helmLogo2Filepath</tabstop>
+  <tabstop>btn_helmLogo2Filepath</tabstop>
  </tabstops>
  <resources>
   <include location="../../_Resource/resource.qrc"/>
