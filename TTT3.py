@@ -225,6 +225,12 @@ class TTT3(QMainWindow):
             self.RANK_OFFSET_RIBBONS_21_TO_24 = ["-25.6240005493164,0.264999985694885,7.68100023269653",
                                                  "50.326000213623,-124.832000732422,230.47900390625"]
 
+            self.RANK_OFFSET_DUTY_LINE = ["-20.74,1.325,9.085",      # Rotate
+                                          "69.846,-125.146,223.304"] # Translate
+
+            self.RANK_OFFSET_DUTY_FLAG = ["-20.74,1.325,9.085",
+                                          "69.846,-124.146,223.304"]
+
             # ----- Configuration variables. -----
             self.config = None
             self.fleetConfig = None
@@ -1439,7 +1445,7 @@ class TTT3(QMainWindow):
             # ----- Light. -----
 
             elif "&LIGHT&" in line:
-                povData.append(line.replace("&LIGHT&", "1448.3, -1613.6, 1042.2"))  # TODO createDressPov() OpenGL BGCOLOUR
+                povData.append(line.replace("&LIGHT&", "1518.5, -647.4, 1750.1"))  # TODO createDressPov() OpenGL BGCOLOUR
 
             elif "&SPOTLIGHTCOLOUR&" in line:
                 povData.append(line.replace("&SPOTLIGHTCOLOUR&", "1, 1, 1"))  # TODO createDressPov() OpenGL SPOTLIGHTCOLOUR
@@ -1472,10 +1478,16 @@ class TTT3(QMainWindow):
                 povData.append(line.replace("&RANK&", self.rank))
 
             elif "&RANKROTATE&" in line:
-                povData.append(line.replace("&RANKROTATE&", self.getRankRotateOffset()))
+                if self.rank in ["CT", "SL", "LT", "LCM", "CM", "CPT", "MAJ", "LC", "COL", "GN"]:
+                    povData.append(line.replace("&RANKROTATE&", self.RANK_OFFSET_DUTY_LINE[0]))
+                else:
+                    povData.append(line.replace("&RANKROTATE&", self.RANK_OFFSET_DUTY_FLAG[0]))
 
             elif "&RANKTRANSLATE&" in line:
-                povData.append(line.replace("&RANKTRANSLATE&", self.getRankTranslateOffset()))
+                if self.rank in ["CT", "SL", "LT", "LCM", "CM", "CPT", "MAJ", "LC", "COL", "GN"]:
+                    povData.append(line.replace("&RANKTRANSLATE&", self.RANK_OFFSET_DUTY_LINE[1]))
+                else:
+                    povData.append(line.replace("&RANKTRANSLATE&", self.RANK_OFFSET_DUTY_FLAG[1]))
 
             # ----- Non-Editable Data. -----
             else:
