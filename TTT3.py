@@ -755,9 +755,9 @@ class TTT3(QMainWindow):
 
         # Set the correct paths based on where TTT3 is located and the TTT3.ini settings file.
         if not self.fastRendering:
-            template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\&TYPE&.pov" +W640 +H853 +Q9 +AM2 +A0.1 +D +F +GA +J1.0 -D /EXIT'
+            template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H853 +Q9 +AM2 +A0.1 +D +F +GA +J1.0 -D /EXIT'
         else:
-            template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\&TYPE&.pov" +W640 +H853 +Q6 -D /EXIT'
+            template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H853 +Q6 -D /EXIT'
         template = template.replace("&TTTPATH&", os.getcwd())
 
         # Apply the path depending on what the user has selected from within the Configuratrion window.
@@ -1112,7 +1112,10 @@ class TTT3(QMainWindow):
             # ----- Light. -----
 
             elif "&LIGHT&" in line:
-                povData.append(line.replace("&LIGHT&", "1448.3, -1613.6, 1042.2"))  # TODO createDressPov() OpenGL BGCOLOUR
+                if self.position == "FC":
+                    povData.append(line.replace("&LIGHT&", "1518.5, -647.4, 1750.1"))  # TODO createDressPov() OpenGL BGCOLOUR
+                else:
+                    povData.append(line.replace("&LIGHT&", "1448.3, -1613.6, 1042.2"))  # TODO createDressPov() OpenGL BGCOLOUR
 
             elif "&SPOTLIGHTCOLOUR&" in line:
                 povData.append(line.replace("&SPOTLIGHTCOLOUR&", "1, 1, 1"))  # TODO createDressPov() OpenGL SPOTLIGHTCOLOUR
@@ -1534,14 +1537,15 @@ class TTT3(QMainWindow):
                 for upgrade in self.awards.get(award)["upgrades"]:
                     if upgrade[quantity] != 0:
                         ribbonCount += 1
+                    if award == "Medal of Communication (MoC)":
+                        break  # Allows for counting of only a sinly MoC award.
 
-            # Ranged type awards.
-            elif self.awards.get(award)["type"] == "ranged":
+            # Ranged and MultiRibbon type awards.
+            elif self.awards.get(award)["type"] == "ranged" or self.awards.get(award)["type"] == "multiRibbon":
                 if self.awards.get(award)["upgrades"][quantity] > 0:
                     for section in self.ribbonConfig.sections():
                         if self.ribbonConfig.get(section, "name") == award:
                             ribbonCount += 1
-
         return ribbonCount
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
