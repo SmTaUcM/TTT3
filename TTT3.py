@@ -30,7 +30,7 @@ import winreg
 from PyQt5 import uic  # python -m pip install pyqt5
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMenu  # python -m pip install pyqt5-tools
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtCore import Qt, QEvent
+from PyQt5.QtCore import Qt, QEvent, pyqtSignal
 from PIL import Image  # python -m pip install pillow
 import cv2  # python -m pip install opencv-python
 import numpy
@@ -52,6 +52,8 @@ import threading
 class TTT3(QMainWindow):
     '''Main object class representing the TTT3 application.'''
 
+    updateProgressBar = pyqtSignal(str, int)
+
     def __init__(self):
         '''Class constructor.'''
 
@@ -66,6 +68,8 @@ class TTT3(QMainWindow):
             # Initialise an instance of a QT Main Window and load our GUI file 'data\uis\ttt.ui'.
             QMainWindow.__init__(self)
             self.gui = uic.loadUi(r"data\uis\ttt.ui")
+            self.gui.pb_update.hide()
+            self.gui.lbl_update.hide()
             self.gui.show()
             self.gui.closeEvent = self.closeEvent
             self.gui.keyPressEvent = self.keyPressEvent
@@ -252,6 +256,7 @@ class TTT3(QMainWindow):
             self.continueRender = True
             self.loadSettings()
             self.loadFleetData()
+            self.updateProgressBar.connect(self.updaterSlot)
             self.update = threading.Thread(target=self.checkForUpdates)
             self.update.start()
             self.initialGUISetup()
@@ -3145,14 +3150,14 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
             # Squadron Patch checks.
             dbSqnList = []
-            self.gui.pb_update.setMaximum(len(self.fleetConfig.get("squadrons")))
-            self.gui.pb_update.setValue(1)
+            self.updateProgressBar.emit("init", len(self.fleetConfig.get("squadrons")))
 
             for squadron in self.fleetConfig.get("squadrons"):
                 dbSqnName = squadron.get("name")
                 dbSqnList.append(dbSqnName)
                 dbPatchURL = squadron.get("uniformData").get("patchURL")
                 dbPatchHash = squadron.get("uniformData").get("patchHash")
+                self.updateProgressBar.emit(dbSqnName, 0)
 
                 for root, dirs, files in os.walk(os.getcwd() + "\\data\\squads\\", topdown=False):
 
@@ -3171,14 +3176,14 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         # Check if exisiting files are up to date using MD5 hashes and if not download new versions.
                         hash = getHash(os.getcwd() + "\\data\\squads\\" + name)
                         if hash != dbPatchHash:
+                            self.updateProgressBar.emit("show", 0)
                             self.downloadPatchFile(dbSqnName, dbPatchURL)
                             break
 
                     # Download missing patches.
                     if not squadFound:
+                        self.updateProgressBar.emit("show", 0)
                         self.downloadPatchFile(dbSqnName, dbPatchURL)
-
-                self.gui.pb_update.setValue(int(self.gui.pb_update.value()) + 1)
 
             # Remove redundant patch files that are no longer in use.
             for root, dirs, files in os.walk(os.getcwd() + "\\data\\squads\\", topdown=False):
@@ -3189,13 +3194,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                             sqnFound = True
                     if not sqnFound:
                         os.remove(os.getcwd() + "\\data\\squads\\" + name)
-
-            self.gui.pb_update.hide()
-            self.gui.lbl_update.hide()
+            self.updateProgressBar.emit("complete", 0)
 
         except urllib3.exceptions.MaxRetryError:
-            self.gui.lbl_update.setText("Sqn Patch Update Error! No Internet Connection!")
-            self.gui.pb_update.setStyleSheet(r"background-color: rgb(170, 0, 0);border-color: rgb(170, 0, 0);text-align: right;")
+            self.updateProgressBar.emit("error", 0)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def downloadPatchFile(self, name, url):
@@ -3228,6 +3230,31 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         with open(filePath, "wb") as imgFile:
             imgFile.write(response.data)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def updaterSlot(self, type, value):
+        '''PyQt Slot for updating the progress bar from an external thread.'''
+
+        if type == "init":
+            self.gui.pb_update.setMaximum(value)
+
+        elif type == "show":
+            self.gui.pb_update.show()
+            self.gui.lbl_update.show()
+
+        elif type == "complete":
+            self.gui.pb_update.hide()
+            self.gui.lbl_update.hide()
+
+        elif type == "error":
+            self.gui.lbl_update.setText("Sqn Patch Update Error! No Internet Connection!")
+            self.gui.pb_update.setStyleSheet(r"background-color: rgb(170, 0, 0);border-color: rgb(170, 0, 0);text-align: right;")
+            self.gui.pb_update.show()
+            self.gui.lbl_update.show()
+
+        else:
+            self.gui.lbl_update.setText("Downloading patch data for %s squadron..." % type)
+            self.gui.pb_update.setValue(int(self.gui.pb_update.value()) + 1)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
