@@ -1087,7 +1087,7 @@ QListWidget:!enabled
         </font>
        </property>
        <property name="text">
-        <string>Pilot Certification Wings:</string>
+        <string>Flight Certification Wings:</string>
        </property>
       </widget>
       <widget class="QComboBox" name="cbFCHG">

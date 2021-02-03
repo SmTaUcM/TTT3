@@ -1,13 +1,13 @@
- ////////////////////////////////////////////////////
-//                                                 //
-//  TIE Corps Dress Uniform                        //
-//  Lighsaber model 4 - SL Braz Ile                //
-//                                                 //
-//  Settings in this file are not affected by TTT  //
-//                                                 //
-////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
+//                                                      //
+//  TIE Corps Dress Uniform                             //
+//  Lighsaber model 4 - SL Braz Ile / AD Turtle Jerrar  //
+//                                                      //
+//  Settings in this file are not affected by TTT       //
+//                                                      //
+//////////////////////////////////////////////////////////
 
-#declare fin_T_test = 
+#declare fin_T_flatmetal = 
 finish 
 {            
   phong 1
@@ -28,8 +28,17 @@ finish
 texture
 {
   pigment { color rgb <0.2,0.2,0.2> }
-  finish  { fin_T_test } 
+  finish  { fin_T_flatmetal } 
 }
+
+// saber4 materials
+#declare T_ButtonOuter = T_gold
+#declare T_ButtonInner = T_silver
+#declare T_Accents = T_gold
+#declare T_Ridges = T_black
+#declare T_Base = T_saber4_metal
+#declare T_Emitter = T_gold
+#declare T_def_mat = T_black
      
 #include "saber4_o.inc";
 #include "saber_metal_o.inc";

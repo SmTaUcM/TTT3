@@ -56,8 +56,8 @@ class TTT3(QMainWindow):
         try:
             # Version info.
             version = "3.00"
-            devVersion = "Alpha 15"
-            date = "28 January 2021"
+            devVersion = "Alpha 16"
+            date = "31 January 2021"
             self.saveFileVersion = 1
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
@@ -226,7 +226,7 @@ class TTT3(QMainWindow):
                                                  "50.326000213623,-124.832000732422,230.47900390625"]
 
             self.RANK_OFFSET_DUTY_LINE = ["-20.74,1.325,9.085",      # Rotate
-                                          "69.846,-125.146,223.304"] # Translate
+                                          "69.846,-125.146,223.304"]  # Translate
 
             self.RANK_OFFSET_DUTY_FLAG = ["-20.74,1.325,9.085",
                                           "69.846,-124.146,223.304"]
@@ -1256,7 +1256,7 @@ class TTT3(QMainWindow):
 
             # ----- Scene. -----
 
-            # Pilot Certification Wings. -------------------------------
+            # Flight Certification Wings (formerly FCHG). -------------------------------
             elif "&FCHG&" in line:
                 if "None" in self.gui.cbFCHG.currentText():
                     pass
