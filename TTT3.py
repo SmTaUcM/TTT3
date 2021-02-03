@@ -38,6 +38,7 @@ import platform
 import pickle
 import urllib.request
 import json
+import hashlib
 # python -m pip install pyinstaller - for compiler.
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -249,6 +250,8 @@ class TTT3(QMainWindow):
             self.fastRendering = False  # Forces POV-Ray to render at a lower quality for quicker rendering during testing.
             self.continueRender = True
             self.loadSettings()
+            self.loadFleetData()
+            self.checkForUpdates()
             self.initialGUISetup()
             self.loadPinData()
         except Exception as e:
@@ -339,6 +342,19 @@ class TTT3(QMainWindow):
         self.output_gui.close()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
+    def loadFleetData(self):
+        '''Method to read in the locally stored fleet data.'''
+
+        # Load 'Wing and Squadron' tab items from 'settings\fleet.ini'.
+        try:
+            with open("settings\\fleet.ini", "r") as fleetConfigFile:
+                fleetData = fleetConfigFile.read()
+            self.fleetConfig = json.loads(fleetData)
+            self.gui.cb_eliteSqn.setEnabled(False)  # TODO No API data for Elite squadrons.
+        except json.JSONDecodeError:
+            pass  # Will cause update to trigger if fleet.ini is corrupted.
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
     def initialGUISetup(self):
         '''Method that sets the application's GUI for initial use.
            This mainly comprises of hiding the correct rank radio buttons.'''
@@ -347,14 +363,9 @@ class TTT3(QMainWindow):
         for rank in self.rankRadioButtons:
             rank.hide()
 
-        # Load 'Wing and Squadron' tab items from 'settings\fleet.ini'.
-        self.fleetConfig = configparser.ConfigParser()
-        self.fleetConfig.read("settings\\fleet.ini")
-
         # Add the Ships to the Ships list view.
-        for ship in self.fleetConfig.options("fleet"):
-            if ship != "count":
-                self.gui.lw_ship.addItem(self.fleetConfig.get("fleet", ship))
+        for ship in self.fleetConfig.get("ships"):
+            self.gui.lw_ship.addItem(ship.get("nameShort"))
 
         # Load Medal and Ribbon data.
         self.loadMedals()
@@ -561,28 +572,8 @@ class TTT3(QMainWindow):
             # Add the Ships to the Ships list view.
             if self.gui.lw_ship.count() == 0:
                 self.gui.lw_ship.clear()
-                for ship in self.fleetConfig.options("fleet"):
-                    if ship != "count":
-                        self.gui.lw_ship.addItem(self.fleetConfig.get("fleet", ship))
-
-            # Populate the 'Wing' List Widget with the Wings for the selected Ship.
-            try:
-                if self.gui.lw_wing.count() == 0:
-                    # Populate the 'Wing' List Widget with the Wings for the selected Ship.
-                    for wing in self.fleetConfig.options(str(self.gui.lw_ship.currentItem().text())):
-                        self.gui.lw_wing.addItem(self.fleetConfig.get(str(self.gui.lw_ship.currentItem().text()), wing))
-            except AttributeError:
-                pass
-
-            # Populate the 'Squadron' List Widget with the Squadrons for the selected Wing.
-            try:
-                if self.gui.lw_squad.count() == 0:
-                    # Populate the 'Wing' List Widget with the Wings for the selected Ship.
-                    for squadron in self.fleetConfig.options(str(self.gui.lw_wing.currentItem().text())):
-                        self.gui.lw_squad.addItem(self.fleetConfig.get(str(self.gui.lw_wing.currentItem().text()), squadron))
-            except AttributeError:
-                pass
-
+                for ship in self.fleetConfig.get("ships"):
+                    self.gui.lw_ship.addItem(ship.get("nameShort"))
         else:
             self.gui.cb_eliteSqn.setChecked(False)
             self.gui.lw_ship.clear()
@@ -595,7 +586,7 @@ class TTT3(QMainWindow):
         self.gui.lw_ship.setEnabled(boolEnabled)
         self.gui.lw_wing.setEnabled(boolEnabled)
         self.gui.lw_squad.setEnabled(boolEnabled)
-        self.gui.cb_eliteSqn.setEnabled(boolEnabled)
+# self.gui.cb_eliteSqn.setEnabled(boolEnabled)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def rankRBLogic(self):
@@ -883,7 +874,7 @@ class TTT3(QMainWindow):
         # ----- All other values -----
         self.config_gui.lbl_regPath.setText(self.config.get("POV-Ray", "registry_detected_path"))
         self.config_gui.le_specPath.setText(self.config.get("POV-Ray", "user_specified_path"))
-        self.config_gui.le_backend.setText(self.config.get("TCDB", "api"))
+        self.config_gui.le_backend.setText(self.config.get("TCDB", "pinapi"))
         self.config_gui.le_roster.setText(self.config.get("TCDB", "roster"))
         self.config_gui.le_search.setText(self.config.get("TCDB", "search"))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -977,7 +968,7 @@ class TTT3(QMainWindow):
                 self.config.set("POV-Ray", "registry_detected_path", self.config_gui.lbl_regPath.text())
 
             # All other settings.
-            self.config.set("TCDB", "api", str(self.config_gui.le_backend.text()))
+            self.config.set("TCDB", "pinapi", str(self.config_gui.le_backend.text()))
             self.config.set("TCDB", "roster", str(self.config_gui.le_roster.text()))
             self.config.set("TCDB", "search", str(self.config_gui.le_search.text()))
 
@@ -1606,8 +1597,15 @@ class TTT3(QMainWindow):
                                          "XO", "FC"]:  # Stops Wings and Squadrons showing for COMs and above.
 
                     # Populate the 'Wing' List Widget with the Wings for the selected Ship.
-                    for wing in self.fleetConfig.options(str(self.gui.lw_ship.currentItem().text())):
-                        self.gui.lw_wing.addItem(self.fleetConfig.get(str(self.gui.lw_ship.currentItem().text()), wing))
+                    # Get the ship's ID.
+                    for ship in self.fleetConfig.get("ships"):
+                        if ship.get("nameShort") == self.ship:
+                            shipId = ship.get("id")
+
+                    # Add wings that have the shipId as a parentId.
+                    for wing in self.fleetConfig.get("wings"):
+                        if wing.get("uniformData").get("parentId") == shipId:
+                            self.gui.lw_wing.addItem(wing.get("name"))
                     self.wingSelectionLogic(None)
 
                 else:
@@ -1635,9 +1633,15 @@ class TTT3(QMainWindow):
                 if self.position not in ["WC"]:  # Stops Squadrons showing for WCs.
 
                     # Populate the 'Squadron' List Widget with the Squadrons for the selected Wing.
-                    for squadron in self.fleetConfig.options(str(self.gui.lw_wing.currentItem().text())):
-                        self.gui.lw_squad.addItem(self.fleetConfig.get(str(self.gui.lw_wing.currentItem().text()), squadron))
+                    # Get the wing's ID.
+                    for wing in self.fleetConfig.get("wings"):
+                        if wing.get("name") == self.wing:
+                            wingId = wing.get("id")
 
+                    # Add squadrons that have the wingId as a parentId.
+                    for squad in self.fleetConfig.get("squadrons"):
+                        if squad.get("uniformData").get("parentId") == wingId:
+                            self.gui.lw_squad.addItem(squad.get("name"))
                 else:
                     self.gui.lw_squad.clear()
 
@@ -1665,7 +1669,6 @@ class TTT3(QMainWindow):
 
         try:
             if value == 0:
-
                 # Load and enable the Ship and Wing List Widgets.
                 self.gui.lw_ship.setEnabled(True)
                 self.gui.lw_wing.setEnabled(True)
@@ -1677,12 +1680,10 @@ class TTT3(QMainWindow):
                 self.ship = ""
 
                 # Add the Ships to the Ships list view.
-                for ship in self.fleetConfig.options("fleet"):
-                    if ship != "count":
-                        self.gui.lw_ship.addItem(self.fleetConfig.get("fleet", ship))
+                for ship in self.fleetConfig.get("ships"):
+                    self.gui.lw_ship.addItem(ship.get("nameShort"))
 
             elif value == 2:
-
                 # Clear and disable the Ship and Wing List Widgets.
                 self.gui.lw_squad.clear()
                 self.gui.lw_ship.clear()
@@ -1695,8 +1696,9 @@ class TTT3(QMainWindow):
                 self.wing = ""
 
                 # Populate the 'Squadron' List Widget with the Squadrons for the selected Wing.
-                for squadron in self.fleetConfig.options("elites"):
-                    self.gui.lw_squad.addItem(self.fleetConfig.get("elites", squadron))
+                pass  # TODO No API options for Elite squadrons.
+# for squadron in self.fleetConfig.options("elites"):
+##                    self.gui.lw_squad.addItem(self.fleetConfig.get("elites", squadron))
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -2559,7 +2561,6 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.deconflictNeckRibbons = False
 
             # Configuration variables.
-            self.fleetConfig = None
             self.medalConfig = None
             self.ribbonConfig = None
 
@@ -2779,7 +2780,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
             # Read the data.
             try:
-                apiData = self.getRetrieveAPIData(self.config.get("TCDB", "api"), str(self.gui.sbPin.value()))
+                apiData = self.getRetrieveAPIData(self.config.get("TCDB", "pinapi"), str(self.gui.sbPin.value()))
 
                 # Name
                 self.name = apiData.get("label").replace(apiData.get("rankAbbr") + " ", "")
@@ -2870,11 +2871,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 else:
                     self.sqn = ""
 
-                # Elite Squadrons.
-                for item in self.fleetConfig.options("elites"):
-                    squadron = self.fleetConfig.get("elites", item)
-                    if self.sqn == squadron:
-                        self.gui.cb_eliteSqn.setChecked(True)
+# Elite Squadrons.
+# for item in self.fleetConfig.options("elites"):
+##                    squadron = self.fleetConfig.get("elites", item)
+# if self.sqn == squadron:
+# self.gui.cb_eliteSqn.setChecked(True)
+# TODO No API data for Elite Squadrons.
 
                 # Apply the Sqn setting to the GUI.
                 if self.sqn:
@@ -2939,6 +2941,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
             except urllib.error.HTTPError:
                 self.writeToImportTextBox("Invalid PIN number.")
+
+            except urllib.error.URLError:
+                self.writeToImportTextBox("Error! No Internet Connection!")
 
         except Exception as e:
             handleException(e)
@@ -3120,12 +3125,48 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         else:
             self.gui.rb_dressSaberLeft.setChecked(True)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def checkForUpdates(self):
+        '''Method for checking for online updated for TTT.'''
+
+        # Fleet data checks.
+        try:
+            apiFleetData = self.getRetrieveAPIData(self.config.get("TCDB", "fleetapi"), "")
+
+            if self.fleetConfig != apiFleetData:
+                with open(os.getcwd() + "\\settings\\fleet.ini", "w") as fleetDataFile:
+                    fleetDataFile.write(json.dumps(apiFleetData))
+                self.loadFleetData()
+                print("Fleet API Data Updated")
+            else:
+                print("No Fleet API update required.")
+        except urllib.error.URLError:
+            print("\n\nFleet API Error! No Internet Connection!\n\n")
+
+        # Squadron Patch checks.
+        for root, dirs, files in os.walk(os.getcwd() + "\\data\\squads\\", topdown=False):
+            for name in files:
+                if "_mask" not in name:
+                    print(getHash(os.getcwd() + "\\data\\squads\\" + name))
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                      Functions.                                                                    #
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
+def getHash(strSource):
+    '''Method that calculates the MD5 hash for a given source file in string format.'''
+
+    # Read in the source data.
+    with open(strSource, "rb") as srcFile:
+        data = srcFile.read()
+
+    # Get MD5 has of source file and return it.
+    return hashlib.md5(data).hexdigest()
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
 def handleException(exception):
     '''Function that will log all python exceptions to TTT3 Crash.log.'''
 
