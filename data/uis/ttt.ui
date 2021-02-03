@@ -4034,6 +4034,9 @@ QPushButton:!enabled
       <height>15</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
     <property name="value">
      <number>0</number>
     </property>
@@ -4044,9 +4047,9 @@ QPushButton:!enabled
    <widget class="QLabel" name="lbl_update">
     <property name="geometry">
      <rect>
-      <x>206</x>
+      <x>4</x>
       <y>-2</y>
-      <width>201</width>
+      <width>620</width>
       <height>20</height>
      </rect>
     </property>
@@ -4061,6 +4064,9 @@ QPushButton:!enabled
     </property>
     <property name="text">
      <string>Downloading Squadron Patches...</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>

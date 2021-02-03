@@ -3142,63 +3142,61 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 with open(os.getcwd() + "\\settings\\fleet.ini", "w") as fleetDataFile:
                     fleetDataFile.write(json.dumps(apiFleetData))
                 self.loadFleetData()
-                print("Fleet API Data Updated")
-            else:
-                print("No Fleet API update required.")
-        except urllib3.exceptions.MaxRetryError:
-            print("\n\nFleet API Error! No Internet Connection!\n\n")
 
-        # Squadron Patch checks.
-        dbSqnList = []
-        updateCountMax = len(self.fleetConfig.get("squadrons"))
-        self.gui.pb_update.setValue(int(100 / updateCountMax))
+            # Squadron Patch checks.
+            dbSqnList = []
+            updateCountMax = len(self.fleetConfig.get("squadrons"))
+            self.gui.pb_update.setValue(int(100 / updateCountMax))
 
-        for squadron in self.fleetConfig.get("squadrons"):
-            dbSqnName = squadron.get("name")
-            dbSqnList.append(dbSqnName)
-            dbPatchURL = squadron.get("uniformData").get("patchURL")
-            dbPatchHash = squadron.get("uniformData").get("patchHash")
+            for squadron in self.fleetConfig.get("squadrons"):
+                dbSqnName = squadron.get("name")
+                dbSqnList.append(dbSqnName)
+                dbPatchURL = squadron.get("uniformData").get("patchURL")
+                dbPatchHash = squadron.get("uniformData").get("patchHash")
 
+                for root, dirs, files in os.walk(os.getcwd() + "\\data\\squads\\", topdown=False):
+
+                    # Search for patch files that TTT3 doesn't currently have locally at all.
+                    squadFound = False
+
+                    for name in files:
+                        # Filter for missing squadrons.
+                        if dbSqnName in name:
+                            squadFound = True
+
+                        # Delete squad patch masks.
+                        if "_mask" in name:
+                            os.remove(os.getcwd() + "\\data\\squads\\" + name)
+
+                        # Check if exisiting files are up to date using MD5 hashes and if not download new versions.
+                        hash = getHash(os.getcwd() + "\\data\\squads\\" + name)
+                        if hash != dbPatchHash:
+                            self.downloadPatchFile(dbSqnName, dbPatchURL)
+                            break
+
+                    # Download missing patches.
+                    if not squadFound:
+                        self.downloadPatchFile(dbSqnName, dbPatchURL)
+
+                self.gui.pb_update.setValue(int(self.gui.pb_update.value() + (100 / updateCountMax)))
+
+            # Remove redundant patch files that are no longer in use.
             for root, dirs, files in os.walk(os.getcwd() + "\\data\\squads\\", topdown=False):
-
-                # Search for patch files that TTT3 doesn't currently have locally at all.
-                squadFound = False
-
                 for name in files:
-                    # Filter for missing squadrons.
-                    if dbSqnName in name:
-                        squadFound = True
-
-                    # Delete squad patch masks.
-                    if "_mask" in name:
+                    sqnFound = False
+                    for squadron in dbSqnList:
+                        if squadron == name.split(".")[0]:
+                            sqnFound = True
+                    if not sqnFound:
                         os.remove(os.getcwd() + "\\data\\squads\\" + name)
 
-                    # Check if exisiting files are up to date using MD5 hashes and if not download new versions.
-                    hash = getHash(os.getcwd() + "\\data\\squads\\" + name)
-                    if hash != dbPatchHash:
-                        print("Updating patch file for " + dbSqnName)
-                        self.downloadPatchFile(dbSqnName, dbPatchURL)
-                        break
+            self.gui.pb_update.setValue(100)
+            self.gui.pb_update.hide()
+            self.gui.lbl_update.hide()
 
-                # Download missing patches.
-                if not squadFound:
-                    self.downloadPatchFile(dbSqnName, dbPatchURL)
-
-            self.gui.pb_update.setValue(int(self.gui.pb_update.value() + (100 / updateCountMax)))
-
-        # Remove redundant patch files that are no longer in use.
-        for root, dirs, files in os.walk(os.getcwd() + "\\data\\squads\\", topdown=False):
-            for name in files:
-                sqnFound = False
-                for squadron in dbSqnList:
-                    if squadron == name.split(".")[0]:
-                        sqnFound = True
-                if not sqnFound:
-                    os.remove(os.getcwd() + "\\data\\squads\\" + name)
-
-        self.gui.pb_update.setValue(100)
-        self.gui.pb_update.hide()
-        self.gui.lbl_update.hide()
+        except urllib3.exceptions.MaxRetryError:
+            self.gui.lbl_update.setText("Sqn Patch Update Error! No Internet Connection!")
+            self.gui.pb_update.setStyleSheet(r"background-color: rgb(170, 0, 0);border-color: rgb(170, 0, 0);text-align: right;")
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def downloadPatchFile(self, name, url):
