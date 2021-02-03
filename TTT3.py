@@ -3150,6 +3150,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         # Squadron Patch checks.
         dbSqnList = []
+        updateCountMax = len(self.fleetConfig.get("squadrons"))
+        self.gui.pb_update.setValue(int(100 / updateCountMax))
+
         for squadron in self.fleetConfig.get("squadrons"):
             dbSqnName = squadron.get("name")
             dbSqnList.append(dbSqnName)
@@ -3181,6 +3184,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 if not squadFound:
                     self.downloadPatchFile(dbSqnName, dbPatchURL)
 
+            self.gui.pb_update.setValue(int(self.gui.pb_update.value() + (100 / updateCountMax)))
+
         # Remove redundant patch files that are no longer in use.
         for root, dirs, files in os.walk(os.getcwd() + "\\data\\squads\\", topdown=False):
             for name in files:
@@ -3190,10 +3195,21 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         sqnFound = True
                 if not sqnFound:
                     os.remove(os.getcwd() + "\\data\\squads\\" + name)
+
+        self.gui.pb_update.setValue(100)
+        self.gui.pb_update.hide()
+        self.gui.lbl_update.hide()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def downloadPatchFile(self, name, url):
         '''Method for downloading squadron patches.'''
+
+        # Remove duplicate file types.
+        for ext in [".png", ".jpg", ".jpeg", ".gif", ".bmp"]:
+            try:
+                os.remove(os.getcwd() + "\\data\\squads\\" + name + ext)
+            except FileNotFoundError:
+                pass
 
         # Download new patch.
         http = urllib3.PoolManager()
