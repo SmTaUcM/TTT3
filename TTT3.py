@@ -39,6 +39,7 @@ import pickle
 import urllib3
 import json
 import hashlib
+import threading
 # python -m pip install pyinstaller - for compiler.
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -251,7 +252,8 @@ class TTT3(QMainWindow):
             self.continueRender = True
             self.loadSettings()
             self.loadFleetData()
-            self.checkForUpdates()
+            self.update = threading.Thread(target=self.checkForUpdates)
+            self.update.start()
             self.initialGUISetup()
             self.loadPinData()
         except Exception as e:
@@ -1696,9 +1698,9 @@ class TTT3(QMainWindow):
                 self.wing = ""
 
                 # Populate the 'Squadron' List Widget with the Squadrons for the selected Wing.
-                pass  # TODO No API options for Elite squadrons.
+# TODO No API options for Elite squadrons.
 # for squadron in self.fleetConfig.options("elites"):
-##                    self.gui.lw_squad.addItem(self.fleetConfig.get("elites", squadron))
+#   self.gui.lw_squad.addItem(self.fleetConfig.get("elites", squadron))
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -3132,7 +3134,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def checkForUpdates(self):
         '''Method for checking for online updated for TTT.'''
 
-        # Fleet data checks.
+        # Fleet data updates.
         try:
             apiFleetData = self.getRetrieveAPIData(self.config.get("TCDB", "fleetapi"), "")
 
@@ -3147,10 +3149,72 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             print("\n\nFleet API Error! No Internet Connection!\n\n")
 
         # Squadron Patch checks.
+        dbSqnList = []
+        for squadron in self.fleetConfig.get("squadrons"):
+            dbSqnName = squadron.get("name")
+            dbSqnList.append(dbSqnName)
+            dbPatchURL = squadron.get("uniformData").get("patchURL")
+            dbPatchHash = squadron.get("uniformData").get("patchHash")
+
+            for root, dirs, files in os.walk(os.getcwd() + "\\data\\squads\\", topdown=False):
+
+                # Search for patch files that TTT3 doesn't currently have locally at all.
+                squadFound = False
+
+                for name in files:
+                    # Filter for missing squadrons.
+                    if dbSqnName in name:
+                        squadFound = True
+
+                    # Delete squad patch masks.
+                    if "_mask" in name:
+                        os.remove(os.getcwd() + "\\data\\squads\\" + name)
+
+                    # Check if exisiting files are up to date using MD5 hashes and if not download new versions.
+                    hash = getHash(os.getcwd() + "\\data\\squads\\" + name)
+                    if hash != dbPatchHash:
+                        print("Updating patch file for " + dbSqnName)
+                        self.downloadPatchFile(dbSqnName, dbPatchURL)
+                        break
+
+                # Download missing patches.
+                if not squadFound:
+                    self.downloadPatchFile(dbSqnName, dbPatchURL)
+
+        # Remove redundant patch files that are no longer in use.
         for root, dirs, files in os.walk(os.getcwd() + "\\data\\squads\\", topdown=False):
             for name in files:
-                if "_mask" not in name:
-                    print(getHash(os.getcwd() + "\\data\\squads\\" + name))
+                sqnFound = False
+                for squadron in dbSqnList:
+                    if squadron == name.split(".")[0]:
+                        sqnFound = True
+                if not sqnFound:
+                    os.remove(os.getcwd() + "\\data\\squads\\" + name)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def downloadPatchFile(self, name, url):
+        '''Method for downloading squadron patches.'''
+
+        # Download new patch.
+        http = urllib3.PoolManager()
+        response = http.request("GET", url)
+
+        # Detect the file extension.
+        fileType = response.headers.get("Content-Type")
+        if "png" in fileType:
+            ext = ".png"
+        elif "jpeg" in fileType:
+            ext = ".jpg"
+        elif "gif" in fileType:
+            ext = ".gif"
+        else:
+            ext = ""
+
+        # Save the new file.
+        filePath = os.getcwd() + "\\data\\squads\\" + name.title() + ext
+
+        with open(filePath, "wb") as imgFile:
+            imgFile.write(response.data)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
