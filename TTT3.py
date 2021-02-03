@@ -3145,8 +3145,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
             # Squadron Patch checks.
             dbSqnList = []
-            updateCountMax = len(self.fleetConfig.get("squadrons"))
-            self.gui.pb_update.setValue(int(100 / updateCountMax))
+            self.gui.pb_update.setMaximum(len(self.fleetConfig.get("squadrons")))
+            self.gui.pb_update.setValue(1)
 
             for squadron in self.fleetConfig.get("squadrons"):
                 dbSqnName = squadron.get("name")
@@ -3178,7 +3178,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     if not squadFound:
                         self.downloadPatchFile(dbSqnName, dbPatchURL)
 
-                self.gui.pb_update.setValue(int(self.gui.pb_update.value() + (100 / updateCountMax)))
+                self.gui.pb_update.setValue(int(self.gui.pb_update.value()) + 1)
 
             # Remove redundant patch files that are no longer in use.
             for root, dirs, files in os.walk(os.getcwd() + "\\data\\squads\\", topdown=False):
@@ -3190,7 +3190,6 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     if not sqnFound:
                         os.remove(os.getcwd() + "\\data\\squads\\" + name)
 
-            self.gui.pb_update.setValue(100)
             self.gui.pb_update.hide()
             self.gui.lbl_update.hide()
 
