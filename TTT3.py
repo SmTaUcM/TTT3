@@ -36,7 +36,7 @@ import cv2  # python -m pip install opencv-python
 import numpy
 import platform
 import pickle
-import urllib.request
+import urllib3
 import json
 import hashlib
 # python -m pip install pyinstaller - for compiler.
@@ -2762,8 +2762,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def getRetrieveAPIData(self, url, pin):
         '''Method to retrieve TIE Corps Website API returned data and return it as a Python Disctionary.'''
 
-        with urllib.request.urlopen(url + pin) as response:
-            data = json.loads(response.read())
+        http = urllib3.PoolManager()
+        response = http.request("GET", url + pin)
+        data = json.loads(response.data)
 
         return data
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -2782,167 +2783,169 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             try:
                 apiData = self.getRetrieveAPIData(self.config.get("TCDB", "pinapi"), str(self.gui.sbPin.value()))
 
-                # Name
-                self.name = apiData.get("label").replace(apiData.get("rankAbbr") + " ", "")
+                if "error" not in apiData.keys():
 
-                # PIN
-                self.pin = apiData.get("PIN")
+                    # Name
+                    self.name = apiData.get("label").replace(apiData.get("rankAbbr") + " ", "")
 
-                # Rank.
-                self.rank = apiData.get("rankAbbr")
+                    # PIN
+                    self.pin = apiData.get("PIN")
 
-                # Position.
-                if apiData.get("position") == "":
-                    if self.rank in ["CT", "SL", "LT", "LCM", "CM", "CPT", "MAJ", "LC", "COL", "GN"]:
-                        self.position = "LR"
+                    # Rank.
+                    self.rank = apiData.get("rankAbbr")
+
+                    # Position.
+                    if apiData.get("position") == "":
+                        if self.rank in ["CT", "SL", "LT", "LCM", "CM", "CPT", "MAJ", "LC", "COL", "GN"]:
+                            self.position = "LR"
+                        else:
+                            self.position = "FR"
                     else:
-                        self.position = "FR"
-                else:
-                    self.position = apiData.get("TTT").get("position")
+                        self.position = apiData.get("TTT").get("position")
 
-                # Special handling of FC and XO positions.
-                idLine = apiData.get("IDLine")
-                pos = idLine.split("/")[0]
-                if pos == "FC" or pos == "XO":
-                    self.position = pos
+                    # Special handling of FC and XO positions.
+                    idLine = apiData.get("IDLine")
+                    pos = idLine.split("/")[0]
+                    if pos == "FC" or pos == "XO":
+                        self.position = pos
 
-                # Apply the Position setting to the GUI.
-                radioBtns = [self.gui.rb_pos_trn, self.gui.rb_pos_fm, self.gui.rb_pos_fl, self.gui.rb_pos_cmdr,
-                             self.gui.rb_pos_wc, self.gui.rb_pos_com, self.gui.rb_pos_tccs, self.gui.rb_pos_ia,
-                             self.gui.rb_pos_ca, self.gui.rb_pos_sgcom, self.gui.rb_pos_cs, self.gui.rb_pos_xo,
-                             self.gui.rb_pos_fc, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
+                    # Apply the Position setting to the GUI.
+                    radioBtns = [self.gui.rb_pos_trn, self.gui.rb_pos_fm, self.gui.rb_pos_fl, self.gui.rb_pos_cmdr,
+                                 self.gui.rb_pos_wc, self.gui.rb_pos_com, self.gui.rb_pos_tccs, self.gui.rb_pos_ia,
+                                 self.gui.rb_pos_ca, self.gui.rb_pos_sgcom, self.gui.rb_pos_cs, self.gui.rb_pos_xo,
+                                 self.gui.rb_pos_fc, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
 
-                # Apply the Rank setting to the GUI.
-                if self.position:
-                    for radioButton in radioBtns:
-                        if self.position.lower() == radioButton.objectName().replace("rb_pos_", ""):
-                            radioButton.setChecked(True)
-                            break
-                    self.posRBLogic()
-                    self.rank = apiData.get("rankAbbr")  # Added again because self.posRBLogic() sets self.rank to None.
+                    # Apply the Rank setting to the GUI.
+                    if self.position:
+                        for radioButton in radioBtns:
+                            if self.position.lower() == radioButton.objectName().replace("rb_pos_", ""):
+                                radioButton.setChecked(True)
+                                break
+                        self.posRBLogic()
+                        self.rank = apiData.get("rankAbbr")  # Added again because self.posRBLogic() sets self.rank to None.
 
-                radioBtns = [self.gui.rb_rank_ct, self.gui.rb_rank_sl, self.gui.rb_rank_lt, self.gui.rb_rank_lcm,
-                             self.gui.rb_rank_cm, self.gui.rb_rank_cpt, self.gui.rb_rank_maj, self.gui.rb_rank_lc,
-                             self.gui.rb_rank_col, self.gui.rb_rank_gn, self.gui.rb_rank_ra, self.gui.rb_rank_va,
-                             self.gui.rb_rank_ad, self.gui.rb_rank_fa, self.gui.rb_rank_ha, self.gui.rb_rank_sa,
-                             self.gui.rb_rank_ga]
+                    radioBtns = [self.gui.rb_rank_ct, self.gui.rb_rank_sl, self.gui.rb_rank_lt, self.gui.rb_rank_lcm,
+                                 self.gui.rb_rank_cm, self.gui.rb_rank_cpt, self.gui.rb_rank_maj, self.gui.rb_rank_lc,
+                                 self.gui.rb_rank_col, self.gui.rb_rank_gn, self.gui.rb_rank_ra, self.gui.rb_rank_va,
+                                 self.gui.rb_rank_ad, self.gui.rb_rank_fa, self.gui.rb_rank_ha, self.gui.rb_rank_sa,
+                                 self.gui.rb_rank_ga]
 
-                if self.rank:
-                    for radioButton in radioBtns:
-                        if self.rank.lower() == radioButton.objectName().replace("rb_rank_", ""):
-                            radioButton.setChecked(True)
-                            break
-                    self.rankRBLogic()
+                    if self.rank:
+                        for radioButton in radioBtns:
+                            if self.rank.lower() == radioButton.objectName().replace("rb_rank_", ""):
+                                radioButton.setChecked(True)
+                                break
+                        self.rankRBLogic()
 
-                # Ship
-                shipData = apiData.get("ship")
-                if shipData:
-                    self.ship = shipData.get("nameShort")
-                else:
-                    self.ship = ""
+                    # Ship
+                    shipData = apiData.get("ship")
+                    if shipData:
+                        self.ship = shipData.get("nameShort")
+                    else:
+                        self.ship = ""
 
-                # Apply the Ship setting to the GUI.
-                if self.ship:
-                    for row in range(self.gui.lw_ship.count()):
-                        self.gui.lw_ship.setCurrentRow(row)
-                        if self.gui.lw_ship.currentItem().text() == self.ship:
-                            break
-                    self.shipSelectionLogic(None)
+                    # Apply the Ship setting to the GUI.
+                    if self.ship:
+                        for row in range(self.gui.lw_ship.count()):
+                            self.gui.lw_ship.setCurrentRow(row)
+                            if self.gui.lw_ship.currentItem().text() == self.ship:
+                                break
+                        self.shipSelectionLogic(None)
 
-                # Wing.
-                wingData = apiData.get("wing")
-                if wingData:
-                    self.wing = wingData.get("name")
-                else:
-                    self.wing = ""
+                    # Wing.
+                    wingData = apiData.get("wing")
+                    if wingData:
+                        self.wing = wingData.get("name")
+                    else:
+                        self.wing = ""
 
-                # Apply the Wing setting to the GUI.
-                if self.wing:
-                    for row in range(self.gui.lw_wing.count()):
-                        self.gui.lw_wing.setCurrentRow(row)
-                        if self.gui.lw_wing.currentItem().text() == self.wing:
-                            break
-                    self.wingSelectionLogic(None)
+                    # Apply the Wing setting to the GUI.
+                    if self.wing:
+                        for row in range(self.gui.lw_wing.count()):
+                            self.gui.lw_wing.setCurrentRow(row)
+                            if self.gui.lw_wing.currentItem().text() == self.wing:
+                                break
+                        self.wingSelectionLogic(None)
 
-                # Squadron.
-                sqnData = apiData.get("squadron")
-                if sqnData:
-                    self.sqn = sqnData.get("name")
-                else:
-                    self.sqn = ""
+                    # Squadron.
+                    sqnData = apiData.get("squadron")
+                    if sqnData:
+                        self.sqn = sqnData.get("name")
+                    else:
+                        self.sqn = ""
 
 # Elite Squadrons.
 # for item in self.fleetConfig.options("elites"):
-##                    squadron = self.fleetConfig.get("elites", item)
-# if self.sqn == squadron:
-# self.gui.cb_eliteSqn.setChecked(True)
+#   squadron = self.fleetConfig.get("elites", item)
+#   if self.sqn == squadron:
+#       self.gui.cb_eliteSqn.setChecked(True)
 # TODO No API data for Elite Squadrons.
 
-                # Apply the Sqn setting to the GUI.
-                if self.sqn:
-                    for row in range(self.gui.lw_squad.count()):
-                        self.gui.lw_squad.setCurrentRow(row)
-                        if self.gui.lw_squad.currentItem().text() == self.sqn:
-                            break
-                    self.squadSelectionLogic(None)
+                    # Apply the Sqn setting to the GUI.
+                    if self.sqn:
+                        for row in range(self.gui.lw_squad.count()):
+                            self.gui.lw_squad.setCurrentRow(row)
+                            if self.gui.lw_squad.currentItem().text() == self.sqn:
+                                break
+                        self.squadSelectionLogic(None)
 
-                # Medals & Ribbons.
-                apiMedalData = apiData.get("medals")
-                name = 0
-                quantity = 1
+                    # Medals & Ribbons.
+                    apiMedalData = apiData.get("medals")
+                    name = 0
+                    quantity = 1
 
-                try:
-                    for medal in apiMedalData.keys():
-                        for award in self.awards:
+                    try:
+                        for medal in apiMedalData.keys():
+                            for award in self.awards:
 
-                            try:
-                                awardShort = award.split("(")[1].replace(")", "")
-                            except IndexError:
-                                awardShort = award
-                            medalShort = medal.split("-")[0]
+                                try:
+                                    awardShort = award.split("(")[1].replace(")", "")
+                                except IndexError:
+                                    awardShort = award
+                                medalShort = medal.split("-")[0]
 
-                            if medalShort == awardShort or ("CoX" == awardShort and "Co" in medalShort):
+                                if medalShort == awardShort or ("CoX" == awardShort and "Co" in medalShort):
 
-                                # Single, Multi and Ranged type awards.
-                                if self.awards.get(award)["type"] == "single" or \
-                                   self.awards.get(award)["type"] == "multi" or \
-                                   self.awards.get(award)["type"] == "multiRibbon" or \
-                                   self.awards.get(award)["type"] == "ranged":
+                                    # Single, Multi and Ranged type awards.
+                                    if self.awards.get(award)["type"] == "single" or \
+                                       self.awards.get(award)["type"] == "multi" or \
+                                       self.awards.get(award)["type"] == "multiRibbon" or \
+                                       self.awards.get(award)["type"] == "ranged":
 
-                                    self.awards.get(award)["upgrades"][1] = apiMedalData.get(medal)
+                                        self.awards.get(award)["upgrades"][1] = apiMedalData.get(medal)
 
-                                # Upgradeable and SubRibbons type awards.
-                                elif self.awards.get(award)["type"] == "upgradeable" or \
-                                        self.awards.get(award)["type"] == "subRibbons":
+                                    # Upgradeable and SubRibbons type awards.
+                                    elif self.awards.get(award)["type"] == "upgradeable" or \
+                                            self.awards.get(award)["type"] == "subRibbons":
 
-                                    for upgrade in self.awards.get(award)["upgrades"]:
+                                        for upgrade in self.awards.get(award)["upgrades"]:
 
-                                        try:
-                                            upgradeShort = upgrade[name].replace("(s)", "").split("(")[1].replace(")", "")
-                                        except IndexError:
-                                            upgradeShort = upgrade[name]
+                                            try:
+                                                upgradeShort = upgrade[name].replace("(s)", "").split("(")[1].replace(")", "")
+                                            except IndexError:
+                                                upgradeShort = upgrade[name]
 
-                                        if medal == upgradeShort:
-                                            index = self.awards.get(award)["upgrades"].index(upgrade)
-                                            self.awards.get(award)["upgrades"][index][quantity] = apiMedalData.get(medal)
-                except AttributeError:
-                    pass  # User has no medals.
+                                            if medal == upgradeShort:
+                                                index = self.awards.get(award)["upgrades"].index(upgrade)
+                                                self.awards.get(award)["upgrades"][index][quantity] = apiMedalData.get(medal)
+                    except AttributeError:
+                        pass  # User has no medals.
 
-                # Pilot Wings.
-                self.gui.cbFCHG.setCurrentIndex(apiData.get("TTT").get("pilotWings"))
+                    # Pilot Wings.
+                    self.gui.cbFCHG.setCurrentIndex(apiData.get("TTT").get("pilotWings"))
 
-                # Write to information box.
-                msg = "Imported uniform data for {label}\nCallsign '{callsign}'\n{idLine}\n\nImport finished.".format(
-                    label=apiData.get("label"), callsign=apiData.get("callsign"), idLine=apiData.get("IDLine"))
-                self.writeToImportTextBox(msg)
+                    # Write to information box.
+                    msg = "Imported uniform data for {label}\nCallsign '{callsign}'\n{idLine}\n\nImport finished.".format(
+                        label=apiData.get("label"), callsign=apiData.get("callsign"), idLine=apiData.get("IDLine"))
+                    self.writeToImportTextBox(msg)
 
-                # PIN number saving.
-                self.checkForNewPIN()
+                    # PIN number saving.
+                    self.checkForNewPIN()
 
-            except urllib.error.HTTPError:
-                self.writeToImportTextBox("Invalid PIN number.")
+                else:
+                    self.writeToImportTextBox(apiData.get("error")["message"])
 
-            except urllib.error.URLError:
+            except urllib3.exceptions.MaxRetryError:
                 self.writeToImportTextBox("Error! No Internet Connection!")
 
         except Exception as e:
@@ -3140,7 +3143,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 print("Fleet API Data Updated")
             else:
                 print("No Fleet API update required.")
-        except urllib.error.URLError:
+        except urllib3.exceptions.MaxRetryError:
             print("\n\nFleet API Error! No Internet Connection!\n\n")
 
         # Squadron Patch checks.
