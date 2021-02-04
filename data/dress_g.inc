@@ -286,23 +286,13 @@ texture
 {
   pigment
   {
-    #if ((file_exists(concat(".\\squads\\", squad, ".png"))) | (file_exists(concat(".\\squads\\", squad, ".png"))))
-      #if (file_exists(concat(".\\squads\\", squad, ".bmp")))
-        image_map
-        {
-          sys concat(".\\squads\\", squad, ".bmp")
-          interpolate 2
-          once
-        }
-      #end
-      #if (file_exists(concat(".\\squads\\", squad, ".png")))
-        image_map
-        {
-          png concat(".\\squads\\", squad, ".png")
-          interpolate 2
-          once
-        }
-      #end
+    #if (file_exists(concat(".\\squads\\", squad, ".png")))
+      image_map
+      {
+        png concat(".\\squads\\", squad, ".png")
+        interpolate 2
+        once
+      }
     #else color rgbt <0, 0, 0, 1>
     #end
   }
@@ -331,10 +321,10 @@ texture { T_patchlayer2 }
 #declare T_patch =
 texture
 {
-  #if (file_exists(concat(".\\squads\\", squad, "_mask.gif")))
+  #if (file_exists(concat(".\\squads\\", squad, "_mask.png")))
   material_map
   {
-    gif concat(".\\squads\\", squad, "_mask.gif")
+    png concat(".\\squads\\", squad, "_mask.png")
     once
     texture
     { //index 0

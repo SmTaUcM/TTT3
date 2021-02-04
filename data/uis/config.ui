@@ -352,7 +352,7 @@ QPushButton:!enabled
       </font>
      </property>
      <property name="text">
-      <string>XML backend:</string>
+      <string>Pilot API:</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="le_backend">
