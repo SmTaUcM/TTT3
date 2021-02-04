@@ -352,14 +352,20 @@ class TTT3(QMainWindow):
     def loadFleetData(self):
         '''Method to read in the locally stored fleet data.'''
 
-        # Load 'Wing and Squadron' tab items from 'settings\fleet.ini'.
+        # Load 'Wing and Squadron' tab items from 'settings\fleet.json'.
         try:
-            with open("settings\\fleet.ini", "r") as fleetConfigFile:
+            with open("settings\\fleet.json", "r") as fleetConfigFile:
                 fleetData = fleetConfigFile.read()
             self.fleetConfig = json.loads(fleetData)
             self.gui.cb_eliteSqn.setEnabled(False)  # TODO No API data for Elite squadrons.
+
         except json.JSONDecodeError:
-            pass  # Will cause update to trigger if fleet.ini is corrupted.
+            pass  # Will cause update to trigger if fleet.json is corrupted.
+
+        except FileNotFoundError:
+            self.fleetConfig = json.loads('{"squadrons" : [{"name" : "NULL"}], "wings" : [{"name" : "NULL"}], "ships" : [{"nameShort" : "NULL"}]}')
+            with open("settings\\fleet.json", "w") as fleetConfigFile:
+                fleetConfigFile.write(json.dumps(self.fleetConfig))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def initialGUISetup(self):
@@ -881,7 +887,8 @@ class TTT3(QMainWindow):
         # ----- All other values -----
         self.config_gui.lbl_regPath.setText(self.config.get("POV-Ray", "registry_detected_path"))
         self.config_gui.le_specPath.setText(self.config.get("POV-Ray", "user_specified_path"))
-        self.config_gui.le_backend.setText(self.config.get("TCDB", "pinapi"))
+        self.config_gui.le_pilotAPI.setText(self.config.get("TCDB", "pinapi"))
+        self.config_gui.le_fleetAPI.setText(self.config.get("TCDB", "fleetapi"))
         self.config_gui.le_roster.setText(self.config.get("TCDB", "roster"))
         self.config_gui.le_search.setText(self.config.get("TCDB", "search"))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -975,7 +982,8 @@ class TTT3(QMainWindow):
                 self.config.set("POV-Ray", "registry_detected_path", self.config_gui.lbl_regPath.text())
 
             # All other settings.
-            self.config.set("TCDB", "pinapi", str(self.config_gui.le_backend.text()))
+            self.config.set("TCDB", "pinapi", str(self.config_gui.le_pilotAPI.text()))
+            self.config.set("TCDB", "fleetapi", str(self.config_gui.le_fleetAPI.text()))
             self.config.set("TCDB", "roster", str(self.config_gui.le_roster.text()))
             self.config.set("TCDB", "search", str(self.config_gui.le_search.text()))
 
@@ -3143,10 +3151,14 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         try:
             apiFleetData = self.getRetrieveAPIData(self.config.get("TCDB", "fleetapi"), "")
 
-            if self.fleetConfig != apiFleetData:
-                with open(os.getcwd() + "\\settings\\fleet.ini", "w") as fleetDataFile:
-                    fleetDataFile.write(json.dumps(apiFleetData))
-                self.loadFleetData()
+            if "error" in apiFleetData.keys():
+                self.updateProgressBar.emit("code400", 0)
+
+            else:
+                if self.fleetConfig != apiFleetData:
+                    with open(os.getcwd() + "\\settings\\fleet.json", "w") as fleetDataFile:
+                        fleetDataFile.write(json.dumps(apiFleetData))
+                    self.loadFleetData()
 
             # Squadron Patch checks.
             dbSqnList = []
@@ -3247,7 +3259,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.gui.lbl_update.hide()
 
         elif type == "error":
-            self.gui.lbl_update.setText("Sqn Patch Update Error! No Internet Connection!")
+            self.gui.lbl_update.setText("Squadron Patch Update Error! No Internet Connection!")
+            self.gui.pb_update.setStyleSheet(r"background-color: rgb(170, 0, 0);border-color: rgb(170, 0, 0);text-align: right;")
+            self.gui.pb_update.show()
+            self.gui.lbl_update.show()
+
+        elif type == "code400":
+            self.gui.lbl_update.setText("Squadron Patch Update Error! Invalid Fleet API setting!")
             self.gui.pb_update.setStyleSheet(r"background-color: rgb(170, 0, 0);border-color: rgb(170, 0, 0);text-align: right;")
             self.gui.pb_update.show()
             self.gui.lbl_update.show()

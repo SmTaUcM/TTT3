@@ -10,19 +10,19 @@
     <x>0</x>
     <y>0</y>
     <width>530</width>
-    <height>320</height>
+    <height>340</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>530</width>
-    <height>320</height>
+    <height>340</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>530</width>
-    <height>320</height>
+    <height>340</height>
    </size>
   </property>
   <property name="contextMenuPolicy">
@@ -47,7 +47,7 @@
     <property name="geometry">
      <rect>
       <x>164</x>
-      <y>277</y>
+      <y>295</y>
       <width>91</width>
       <height>23</height>
      </rect>
@@ -94,7 +94,7 @@ QPushButton:!enabled
     <property name="geometry">
      <rect>
       <x>274</x>
-      <y>277</y>
+      <y>295</y>
       <width>91</width>
       <height>23</height>
      </rect>
@@ -319,9 +319,9 @@ QPushButton:!enabled
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>162</y>
+      <y>154</y>
       <width>511</width>
-      <height>111</height>
+      <height>135</height>
      </rect>
     </property>
     <property name="font">
@@ -355,7 +355,7 @@ QPushButton:!enabled
       <string>Pilot API:</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="le_backend">
+    <widget class="QLineEdit" name="le_pilotAPI">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -386,7 +386,7 @@ QLineEdit:!enabled
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>49</y>
+       <y>75</y>
        <width>81</width>
        <height>20</height>
       </rect>
@@ -408,7 +408,7 @@ QLineEdit:!enabled
      <property name="geometry">
       <rect>
        <x>120</x>
-       <y>49</y>
+       <y>75</y>
        <width>381</width>
        <height>20</height>
       </rect>
@@ -435,7 +435,7 @@ QLineEdit:!enabled
      <property name="geometry">
       <rect>
        <x>120</x>
-       <y>75</y>
+       <y>101</y>
        <width>380</width>
        <height>20</height>
       </rect>
@@ -459,7 +459,7 @@ QLineEdit:!enabled
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>75</y>
+       <y>101</y>
        <width>101</width>
        <height>20</height>
       </rect>
@@ -472,6 +472,52 @@ QLineEdit:!enabled
      </property>
      <property name="text">
       <string>Personnel search:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>49</y>
+       <width>81</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Fleet API:</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="le_fleetAPI">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>49</y>
+       <width>381</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit
+{
+    background-color: rgb(255, 255, 252);
+}
+
+QLineEdit:!enabled
+{
+	background-color: darkgray;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </widget>
