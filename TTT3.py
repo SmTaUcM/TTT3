@@ -1570,7 +1570,11 @@ class TTT3(QMainWindow):
     def createPatchMask(self):
         '''Method that will create a mask file for the desired squadron patch.'''
 
-        fileName = "data\\squads\\{squad}.png".format(squad=self.sqn)
+        for ext in [".png", ".jpg"]:
+            extension = ext
+            fileName = "data\\squads\\{squad}{extension}".format(squad=self.sqn, extension=ext)
+            if os.path.isfile(fileName):
+                break
 
         try:
             # Primary Mask Creation. Requires a transparent background.
@@ -1579,7 +1583,7 @@ class TTT3(QMainWindow):
             # Get mask from alpha channel.
             mask = img[:, :, 3]
             # Save the mask.
-            fileName = fileName.replace(".png", "_mask.png")
+            fileName = fileName.replace(extension, "_mask.png")
             cv2.imwrite(fileName, mask)
 
         except IndexError:  # Bacground likely not transparent. Doesn't need a transparent background but does not work well with high color / shaded patches.
@@ -1593,7 +1597,7 @@ class TTT3(QMainWindow):
                 cv2.drawContours(mask, [c], -1, (0, 0, 0), cv2.FILLED)
             mask = cv2.bitwise_not(mask)
             # Save the mask.
-            fileName = fileName.replace(".png", "_mask.png")
+            fileName = fileName.replace(extension, "_mask.png")
             cv2.imwrite(fileName, mask)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 

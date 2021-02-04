@@ -285,16 +285,24 @@ texture
 texture
 {
   pigment
-  {
-    #if (file_exists(concat(".\\squads\\", squad, ".png")))
+  {   #if (file_exists(concat(".\\squads\\", squad, ".png")))  
       image_map
       {
-        png concat(".\\squads\\", squad, ".png")
-        interpolate 2
-        once
+       png concat(".\\squads\\", squad, ".png")
+       interpolate 2
+       once
       }
-    #else color rgbt <0, 0, 0, 1>
-    #end
+      #else   
+          #if (file_exists(concat(".\\squads\\", squad, ".jpg")))   
+          image_map
+          {
+           jpeg concat(".\\squads\\", squad, ".jpg")
+           interpolate 2
+           once
+	  }
+	  #else color rgbt <0, 0, 0, 1> 
+	  #end
+      #end
   }
   finish  { fin_T_uni }
 }
