@@ -3155,58 +3155,59 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.updateProgressBar.emit("code400", 0)
 
             else:
+                # Update the locally stored flee.json file and load the downloaded settings.
                 if self.fleetConfig != apiFleetData:
                     with open(os.getcwd() + "\\settings\\fleet.json", "w") as fleetDataFile:
                         fleetDataFile.write(json.dumps(apiFleetData))
                     self.loadFleetData()
 
-            # Squadron Patch checks.
-            dbSqnList = []
-            self.updateProgressBar.emit("init", len(self.fleetConfig.get("squadrons")))
+                # Squadron Patch checks.
+                dbSqnList = []
+                self.updateProgressBar.emit("init", len(self.fleetConfig.get("squadrons")))
 
-            for squadron in self.fleetConfig.get("squadrons"):
-                dbSqnName = squadron.get("name")
-                dbSqnList.append(dbSqnName)
-                dbPatchURL = squadron.get("uniformData").get("patchURL")
-                dbPatchHash = squadron.get("uniformData").get("patchHash")
-                self.updateProgressBar.emit(dbSqnName, 0)
+                for squadron in self.fleetConfig.get("squadrons"):
+                    dbSqnName = squadron.get("name")
+                    dbSqnList.append(dbSqnName)
+                    dbPatchURL = squadron.get("uniformData").get("patchURL")
+                    dbPatchHash = squadron.get("uniformData").get("patchHash")
+                    self.updateProgressBar.emit(dbSqnName, 0)
 
-                for root, dirs, files in os.walk(os.getcwd() + "\\data\\squads\\", topdown=False):
+                    for root, dirs, files in os.walk(os.getcwd() + "\\data\\squads\\", topdown=False):
 
-                    # Search for patch files that TTT3 doesn't currently have locally at all.
-                    squadFound = False
+                        # Search for patch files that TTT3 doesn't currently have locally at all.
+                        squadFound = False
 
-                    for name in files:
-                        # Filter for missing squadrons.
-                        if dbSqnName in name:
-                            squadFound = True
+                        for name in files:
+                            # Filter for missing squadrons.
+                            if dbSqnName in name:
+                                squadFound = True
 
-                        # Delete squad patch masks.
-                        if "_mask" in name:
-                            os.remove(os.getcwd() + "\\data\\squads\\" + name)
+                            # Delete squad patch masks.
+                            if "_mask" in name:
+                                os.remove(os.getcwd() + "\\data\\squads\\" + name)
 
-                        # Check if exisiting files are up to date using MD5 hashes and if not download new versions.
-                        hash = getHash(os.getcwd() + "\\data\\squads\\" + name)
-                        if hash != dbPatchHash:
+                            # Check if exisiting files are up to date using MD5 hashes and if not download new versions.
+                            hash = getHash(os.getcwd() + "\\data\\squads\\" + name)
+                            if hash != dbPatchHash:
+                                self.updateProgressBar.emit("show", 0)
+                                self.downloadPatchFile(dbSqnName, dbPatchURL)
+                                break
+
+                        # Download missing patches.
+                        if not squadFound:
                             self.updateProgressBar.emit("show", 0)
                             self.downloadPatchFile(dbSqnName, dbPatchURL)
-                            break
 
-                    # Download missing patches.
-                    if not squadFound:
-                        self.updateProgressBar.emit("show", 0)
-                        self.downloadPatchFile(dbSqnName, dbPatchURL)
-
-            # Remove redundant patch files that are no longer in use.
-            for root, dirs, files in os.walk(os.getcwd() + "\\data\\squads\\", topdown=False):
-                for name in files:
-                    sqnFound = False
-                    for squadron in dbSqnList:
-                        if squadron == name.split(".")[0]:
-                            sqnFound = True
-                    if not sqnFound:
-                        os.remove(os.getcwd() + "\\data\\squads\\" + name)
-            self.updateProgressBar.emit("complete", 0)
+                # Remove redundant patch files that are no longer in use.
+                for root, dirs, files in os.walk(os.getcwd() + "\\data\\squads\\", topdown=False):
+                    for name in files:
+                        sqnFound = False
+                        for squadron in dbSqnList:
+                            if squadron == name.split(".")[0]:
+                                sqnFound = True
+                        if not sqnFound:
+                            os.remove(os.getcwd() + "\\data\\squads\\" + name)
+                self.updateProgressBar.emit("complete", 0)
 
         except urllib3.exceptions.MaxRetryError:
             self.updateProgressBar.emit("error", 0)
