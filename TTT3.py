@@ -36,7 +36,7 @@ import cv2  # python -m pip install opencv-python
 import numpy
 import platform
 import pickle
-import urllib3
+import urllib3  # python -m pip install urllib3
 import json
 import hashlib
 import threading
@@ -408,6 +408,7 @@ class TTT3(QMainWindow):
 
         try:
             # Reset the user's position value.
+            self.enableWingAndSqnTab(False)
             self.position = "NUL"
 
             # Disable the Dress and Duty Uniform buttons.
@@ -467,18 +468,21 @@ class TTT3(QMainWindow):
                     elif radioButton == self.gui.rb_pos_fm:
                         self.showRanks(SL, GN)
                         self.position = "FM"
+                        self.enableWingAndSqnTab(True)
                         break
 
                     # Flight Leader.
                     elif radioButton == self.gui.rb_pos_fl:
                         self.showRanks(LT, GN)
                         self.position = "FL"
+                        self.enableWingAndSqnTab(True)
                         break
 
                     # Squadron Commander.
                     elif radioButton == self.gui.rb_pos_cmdr:
                         self.showRanks(CM, GN)
                         self.position = "CMDR"
+                        self.enableWingAndSqnTab(True)
                         break
 
                     # Wing Commander.
@@ -492,6 +496,7 @@ class TTT3(QMainWindow):
                         self.gui.lw_squad.setEnabled(False)
                         self.gui.lw_squad.clear()
                         self.sqn = ""
+                        self.enableWingAndSqnTab(True)
                         break
 
                     # Commodore.
@@ -508,6 +513,7 @@ class TTT3(QMainWindow):
                         self.gui.lw_squad.setEnabled(False)
                         self.gui.lw_squad.clear()
                         self.sqn = ""
+                        self.enableWingAndSqnTab(True)
                         break
 
                     # TE Corps Command Staff.
@@ -587,6 +593,7 @@ class TTT3(QMainWindow):
                 self.gui.lw_ship.clear()
                 for ship in self.fleetConfig.get("ships"):
                     self.gui.lw_ship.addItem(ship.get("nameShort"))
+
         else:
             self.gui.cb_eliteSqn.setChecked(False)
             self.gui.lw_ship.clear()
@@ -1633,6 +1640,7 @@ color_map
         try:
             # Clear the 'Wing' ListWidget.
             self.gui.lw_wing.clear()
+            self.wing = ""
 
             try:
                 # Save the selected option.
@@ -1670,6 +1678,7 @@ color_map
         try:
             # Clear the 'Squadron' ListWidget.
             self.gui.lw_squad.clear()
+            self.sqn = ""
 
             try:
                 # Save the selected option.
@@ -3216,12 +3225,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                             if "_mask" in name:
                                 os.remove(os.getcwd() + "\\data\\squads\\" + name)
 
-                            # Check if exisiting files are up to date using MD5 hashes and if not download new versions.
-                            hash = getHash(os.getcwd() + "\\data\\squads\\" + name)
-                            if hash != dbPatchHash:
-                                self.updateProgressBar.emit("show", 0)
-                                self.downloadPatchFile(dbSqnName, dbPatchURL)
-                                break
+                            else:
+                                # Check if exisiting files are up to date using MD5 hashes and if not download new versions.
+                                hash = getHash(os.getcwd() + "\\data\\squads\\" + name)
+                                if hash != dbPatchHash:
+                                    self.updateProgressBar.emit("show", 0)
+                                    self.downloadPatchFile(dbSqnName, dbPatchURL)
+                                    break
 
                         # Download missing patches.
                         if not squadFound:
