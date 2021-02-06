@@ -108,7 +108,7 @@ camera
 #declare ship = "&SHIP&";
 #declare wing = "&WING&";
 #declare squad = "&SQUAD&";
-#declare trim = "&TRIMCOLOUR&";
+&TRIMCOLOUR&
   
 #declare mab_gs = &MABGS&;
 #declare mab_ss = &MABSS&;

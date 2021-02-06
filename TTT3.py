@@ -1195,23 +1195,49 @@ class TTT3(QMainWindow):
                     self.createPatchMask()
 
             elif "&TRIMCOLOUR&" in line:
-                if self.gui.cb_eliteSqn.isChecked():
-                    povData.append(line.replace("&TRIMCOLOUR&", "white"))
 
-                elif self.position in ["COM", "TCCS", "IA", "CA", "SGCOM", "CS", "XO", "FC"]:
-                    povData.append(line.replace("&TRIMCOLOUR&", "gold"))
+                if self.wing != "":
+                    # Find the selected wing from fleetConfig.
+                    for wing in self.fleetConfig.get("wings"):
+                        if wing.get("name") == self.wing:
+                            # Get the trim colouring.
+                            trimColour = wing.get("uniformData").get("trimColor")
+                            # Set the trim colouring.
+                            if trimColour:
+                                col0, col1 = trimColour.split(":")
+                                trimLine = """#declare ttt_pcolour =
+color_map
+{
+  [0.0 colour rgb %s]
+  [1.0 colour rgb %s]
+}
+#declare ttt_wingcolour = color rgb %s;""" % (col0, col1, col0)
 
-                elif self.wing == "Wing I":
-                    povData.append(line.replace("&TRIMCOLOUR&", "black"))
+                                povData.append(line.replace("&TRIMCOLOUR&", trimLine))
+                                break
+                            else:
+                                povData.append(line.replace("&TRIMCOLOUR&", ""))
+                                break
+                        else:
+                            povData.append(line.replace("&TRIMCOLOUR&", ""))
 
-                elif self.wing == "Wing II":
-                    povData.append(line.replace("&TRIMCOLOUR&", "red"))
-
-                elif self.wing == "Wing X":
-                    povData.append(line.replace("&TRIMCOLOUR&", "blue"))
+                elif self.ship != "":
+                    # Find the selected ship from fleetConfig.
+                    for ship in self.fleetConfig.get("ships"):
+                        if ship.get("nameShort") == self.ship:
+                            # Get the trim colouring.
+                            trimColour = ship.get("uniformData").get("trimColor")
+                            # Set the trim colouring.
+                            if trimColour:
+                                trimLine = "#declare ttt_wingcolour = color rgb %s;" % (trimColour)
+                                povData.append(line.replace("&TRIMCOLOUR&", trimLine))
+                                break
+                            else:
+                                povData.append(line.replace("&TRIMCOLOUR&", ""))
+                                break
 
                 else:
-                    povData.append(line.replace("&TRIMCOLOUR&", "black"))  # TODO Automate trim colouring so not hard coded.
+                    povData.append(line.replace("&TRIMCOLOUR&", ""))
 
             # ----- Medals. -----
             elif "&MABGS&" in line:
