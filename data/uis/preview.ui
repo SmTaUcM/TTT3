@@ -1694,7 +1694,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>31</x>
-       <y>38</y>
+       <y>43</y>
        <width>16</width>
        <height>201</height>
       </rect>
@@ -1743,7 +1743,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>21</x>
-       <y>24</y>
+       <y>29</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -1756,7 +1756,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>44</x>
-       <y>224</y>
+       <y>229</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -1769,7 +1769,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>67</x>
-       <y>125</y>
+       <y>130</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -1782,7 +1782,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>21</x>
-       <y>125</y>
+       <y>130</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -1795,7 +1795,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>44</x>
-       <y>125</y>
+       <y>130</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -1808,7 +1808,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>54</x>
-       <y>38</y>
+       <y>43</y>
        <width>16</width>
        <height>201</height>
       </rect>
@@ -1854,7 +1854,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>44</x>
-       <y>24</y>
+       <y>29</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -1867,7 +1867,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>8</x>
-       <y>38</y>
+       <y>43</y>
        <width>16</width>
        <height>201</height>
       </rect>
@@ -1913,7 +1913,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>21</x>
-       <y>224</y>
+       <y>229</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -1926,7 +1926,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>67</x>
-       <y>224</y>
+       <y>229</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -1939,7 +1939,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>67</x>
-       <y>24</y>
+       <y>29</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -1952,7 +1952,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>105</x>
-       <y>53</y>
+       <y>58</y>
        <width>47</width>
        <height>13</height>
       </rect>
@@ -1974,7 +1974,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>87</x>
-       <y>68</y>
+       <y>73</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -1996,7 +1996,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>87</x>
-       <y>52</y>
+       <y>57</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -2018,7 +2018,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>87</x>
-       <y>84</y>
+       <y>89</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -2040,7 +2040,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>87</x>
-       <y>34</y>
+       <y>39</y>
        <width>51</width>
        <height>16</height>
       </rect>
@@ -2052,14 +2052,14 @@ QSlider::handle:vertical:hover
       </font>
      </property>
      <property name="text">
-      <string>Position</string>
+      <string>Position:</string>
      </property>
     </widget>
     <widget class="QLabel" name="lbl_LightZ">
      <property name="geometry">
       <rect>
        <x>105</x>
-       <y>85</y>
+       <y>90</y>
        <width>47</width>
        <height>13</height>
       </rect>
@@ -2081,7 +2081,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>105</x>
-       <y>69</y>
+       <y>74</y>
        <width>47</width>
        <height>13</height>
       </rect>

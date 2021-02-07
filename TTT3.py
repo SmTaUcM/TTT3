@@ -28,7 +28,7 @@ import time
 import datetime
 import winreg
 from PyQt5 import uic  # python -m pip install pyqt5
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMenu  # python -m pip install pyqt5-tools
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMenu, QColorDialog  # python -m pip install pyqt5-tools
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt, QEvent, pyqtSignal
 from PIL import Image  # python -m pip install pillow
@@ -763,7 +763,7 @@ class TTT3(QMainWindow):
 
         # Set the correct window title.
         if self.uniform == "dress" or self.uniform == "duty":
-            self.preview.setWindowTitle("TTT3 Rendering Options - " + self.uniform.title() + "Uniform")
+            self.preview.setWindowTitle("TTT3 Rendering Options - " + self.uniform.title() + " Uniform")
         elif self.uniform == "helmet":
             self.preview.setWindowTitle("TTT3 Rendering Options - " + self.uniform.title())
 
@@ -776,6 +776,7 @@ class TTT3(QMainWindow):
         # Connections.
         self.preview.btn_raytrace.clicked.connect(self.launchPOVRay)
         self.preview.btn_preview.clicked.connect(self.renderPreview)
+        self.preview.btn_PaletteSpot.clicked.connect(self.btnPaletteSpotFunc)
 
         # Get a preview uniform render.
         self.renderPreview()
@@ -1512,7 +1513,7 @@ color_map
             position = self.position + "/"
 
         posRankName = position + self.rank + " " + self.name
-        padding = (34 - len(posRankName)) * " "
+        padding = (35 - len(posRankName)) * " "
         posRankName += padding
 
         now = datetime.datetime.now()
@@ -3393,6 +3394,29 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         else:
             self.gui.lbl_update.setText("Downloading patch data for %s squadron..." % type)
             self.gui.pb_update.setValue(int(self.gui.pb_update.value()) + 1)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def btnPaletteSpotFunc(self):
+        '''Method for opening a colour palette dialog.'''
+
+        realRGB, povRGB, hexRGB = self.convertRGB()
+        self.preview.lbl_PaletteSpot.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
+        self.preview.le_PaletteSpot.setText(hexRGB)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def convertRGB(self):
+        '''Method that converts standard RGB and output POV-Ray RGB and HTML Hex RGB values'''
+
+        realRGB = QColorDialog.getColor().getRgb()[:3]
+        povRGB = []
+        hexRGB = "#%02x%02x%02x" % (realRGB[0], realRGB[1], realRGB[2])
+        for color in realRGB:
+            if color != 0:
+                povRGB.append(round(color / float(255), 3))
+            else:
+                povRGB.append(0.0)
+
+        return realRGB, povRGB, hexRGB
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
