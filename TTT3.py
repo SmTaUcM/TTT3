@@ -214,6 +214,8 @@ class TTT3(QMainWindow):
             self.eeCount = 0
             self.devModeCount = 0
             self.deconflictNeckRibbons = False
+            self.spotColour = "1, 1, 1"
+            self.bgColour = "0, 0, 0"
 
             # PovRay Template Constants.
             self.RANK_OFFSET_RIBBONS_00_TO_08 = ["-18.8939990997314,0.351000010967255,7.92899990081787",  # Rotate
@@ -777,6 +779,7 @@ class TTT3(QMainWindow):
         self.preview.btn_raytrace.clicked.connect(self.launchPOVRay)
         self.preview.btn_preview.clicked.connect(self.renderPreview)
         self.preview.btn_PaletteSpot.clicked.connect(self.btnPaletteSpotFunc)
+        self.preview.btn_PaletteBack.clicked.connect(self.btnPaletteBackFunc)
 
         # Get a preview uniform render.
         self.renderPreview()
@@ -787,6 +790,12 @@ class TTT3(QMainWindow):
 
         self.preview.lbl_preview.clear()
         self.preview.lbl_preview.setText("Please wait for preview to load...")
+        if self.uniform == "dress":
+            self.createDressPov()
+        elif self.uniform == "duty":
+            self.createDutyPov()
+        elif self.uniform == "helmet":
+            self.createHelmetPov()
         self.previewImage = threading.Thread(target=self.launchPOVRay, args=(True,))
         self.previewImage.start()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -1206,7 +1215,7 @@ class TTT3(QMainWindow):
 
             # ----- Global. -----
             if "&BGCOLOUR&" in line:
-                povData.append(line.replace("&BGCOLOUR&", "0, 0, 0"))  # TODO createDressPov() BGCOLOUR
+                povData.append(line.replace("&BGCOLOUR&", self.bgColour))
 
             # ----- Light. -----
 
@@ -1217,7 +1226,7 @@ class TTT3(QMainWindow):
                     povData.append(line.replace("&LIGHT&", "1448.3, -1613.6, 1042.2"))  # TODO createDressPov() OpenGL BGCOLOUR
 
             elif "&SPOTLIGHTCOLOUR&" in line:
-                povData.append(line.replace("&SPOTLIGHTCOLOUR&", "1, 1, 1"))  # TODO createDressPov() OpenGL SPOTLIGHTCOLOUR
+                povData.append(line.replace("&SPOTLIGHTCOLOUR&", self.spotColour))
 
             elif "&SHADOWLESS&" in line:
                 povData.append(line.replace("&SHADOWLESS&", ""))  # TODO createDressPov() OpenGL SHADOWLESS
@@ -1559,7 +1568,7 @@ color_map
 
             # ----- Global. -----
             if "&BGCOLOUR&" in line:
-                povData.append(line.replace("&BGCOLOUR&", "0, 0, 0"))  # TODO createDressPov() BGCOLOUR
+                povData.append(line.replace("&BGCOLOUR&", self.bgColour))
 
             # ----- Light. -----
 
@@ -1567,7 +1576,7 @@ color_map
                 povData.append(line.replace("&LIGHT&", "1518.5, -647.4, 1750.1"))  # TODO createDressPov() OpenGL BGCOLOUR
 
             elif "&SPOTLIGHTCOLOUR&" in line:
-                povData.append(line.replace("&SPOTLIGHTCOLOUR&", "1, 1, 1"))  # TODO createDressPov() OpenGL SPOTLIGHTCOLOUR
+                povData.append(line.replace("&SPOTLIGHTCOLOUR&", self.spotColour))
 
             elif "&SHADOWLESS&" in line:
                 povData.append(line.replace("&SHADOWLESS&", ""))  # TODO createDressPov() OpenGL SHADOWLESS Command = shadowless
@@ -1615,6 +1624,12 @@ color_map
         # Write the parsed data to '\data\dress.pov'.
         with open(r"data\duty.pov", "w") as povFile:
             povFile.writelines(povData)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def createHelmetPov(self):
+        r'''Method that loads in '\data\helmet.tpt' parses in the correct uniform data and creates a new 'data\helmet.pov' file.'''
+
+        pass  # TODO Helmet.
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getRankRotateOffset(self):
@@ -3400,21 +3415,32 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for opening a colour palette dialog.'''
 
         realRGB, povRGB, hexRGB = self.convertRGB()
+        self.spotColour = povRGB
         self.preview.lbl_PaletteSpot.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
         self.preview.le_PaletteSpot.setText(hexRGB)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def btnPaletteBackFunc(self):
+        '''Method for opening a colour palette dialog.'''
+
+        realRGB, povRGB, hexRGB = self.convertRGB()
+        self.bgColour = povRGB
+        self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
+        self.preview.le_PaletteBack.setText(hexRGB)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def convertRGB(self):
         '''Method that converts standard RGB and output POV-Ray RGB and HTML Hex RGB values'''
 
         realRGB = QColorDialog.getColor().getRgb()[:3]
-        povRGB = []
         hexRGB = "#%02x%02x%02x" % (realRGB[0], realRGB[1], realRGB[2])
+        povRGB = ""
         for color in realRGB:
             if color != 0:
-                povRGB.append(round(color / float(255), 3))
+                povRGB += str((round(color / float(255), 3))) + ", "
             else:
-                povRGB.append(0.0)
+                povRGB += "0.0, "
+        povRGB = povRGB.rstrip(", ")
 
         return realRGB, povRGB, hexRGB
         #--------------------------------------------------------------------------------------------------------------------------------------------#
