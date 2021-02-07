@@ -1,0 +1,2378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RenderingOptsWindow</class>
+ <widget class="QMainWindow" name="RenderingOptsWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>785</width>
+    <height>605</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>785</width>
+    <height>605</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>785</width>
+    <height>605</height>
+   </size>
+  </property>
+  <property name="contextMenuPolicy">
+   <enum>Qt::NoContextMenu</enum>
+  </property>
+  <property name="windowTitle">
+   <string>TTT3 Rendering Options - </string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../../_Resource/resource.qrc">
+    <normaloff>:/icons/ttt3.png</normaloff>:/icons/ttt3.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(163, 163, 163);
+</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="btn_raytrace">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>645</x>
+      <y>10</y>
+      <width>91</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton
+{
+    color: #b1b1b1;
+    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:0.4375 rgba(6, 22, 125, 255));
+    border-width: 1px;
+    border-color: #1e1e1e;
+    border-style: solid;
+    border-radius: 6;
+    padding: 3px;
+    font-size: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+QPushButton:pressed
+{
+    background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:0, y2:1, stop:0 rgba(0, 0, 0, 255), stop:0.4375 rgba(6, 22, 125, 255));
+}
+
+QPushButton:hover
+{
+    border: 2px solid rgb(208, 208, 208);
+}
+
+QPushButton:!enabled
+{
+     color: gray;
+	background-color: darkgray;
+}</string>
+    </property>
+    <property name="text">
+     <string>Raytrace</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_close">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>645</x>
+      <y>41</y>
+      <width>91</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton
+{
+    color: #b1b1b1;
+    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:0.4375 rgba(6, 22, 125, 255));
+    border-width: 1px;
+    border-color: #1e1e1e;
+    border-style: solid;
+    border-radius: 6;
+    padding: 3px;
+    font-size: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+QPushButton:pressed
+{
+    background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:0, y2:1, stop:0 rgba(0, 0, 0, 255), stop:0.4375 rgba(6, 22, 125, 255));
+}
+
+QPushButton:hover
+{
+    border: 2px solid rgb(208, 208, 208);
+}
+
+QPushButton:!enabled
+{
+     color: gray;
+	background-color: darkgray;
+}</string>
+    </property>
+    <property name="text">
+     <string>Close</string>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="gb_preview">
+    <property name="geometry">
+     <rect>
+      <x>188</x>
+      <y>9</y>
+      <width>410</width>
+      <height>547</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>410</width>
+      <height>547</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>410</width>
+      <height>547</height>
+     </size>
+    </property>
+    <property name="title">
+     <string>POV-Ray preview</string>
+    </property>
+    <widget class="QLabel" name="lbl_preview">
+     <property name="geometry">
+      <rect>
+       <x>12</x>
+       <y>15</y>
+       <width>390</width>
+       <height>520</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>390</width>
+       <height>520</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>390</width>
+       <height>520</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Please wait for preview to load...</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="gb_colours">
+    <property name="geometry">
+     <rect>
+      <x>9</x>
+      <y>64</y>
+      <width>173</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Colours</string>
+    </property>
+    <widget class="QPushButton" name="btn_resetColours">
+     <property name="geometry">
+      <rect>
+       <x>11</x>
+       <y>108</y>
+       <width>151</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(211, 211, 211);</string>
+     </property>
+     <property name="text">
+      <string>Reset to Defaults</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_PaletteSpot">
+     <property name="geometry">
+      <rect>
+       <x>144</x>
+       <y>21</y>
+       <width>20</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(211, 211, 211);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../../_Resource/resource.qrc">
+       <normaloff>:/icons/palette.png</normaloff>:/icons/palette.png</iconset>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_PaletteEnv">
+     <property name="geometry">
+      <rect>
+       <x>144</x>
+       <y>48</y>
+       <width>20</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(211, 211, 211);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../../_Resource/resource.qrc">
+       <normaloff>:/icons/palette.png</normaloff>:/icons/palette.png</iconset>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_PaletteBack">
+     <property name="geometry">
+      <rect>
+       <x>144</x>
+       <y>75</y>
+       <width>20</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(211, 211, 211);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../../_Resource/resource.qrc">
+       <normaloff>:/icons/palette.png</normaloff>:/icons/palette.png</iconset>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="le_PaletteSpot">
+     <property name="geometry">
+      <rect>
+       <x>74</x>
+       <y>21</y>
+       <width>71</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit
+{
+    background-color: rgb(255, 255, 252);
+}
+
+QLineEdit:!enabled
+{
+	background-color: darkgray;
+}
+
+
+</string>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_51">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>24</y>
+       <width>51</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Spot light</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_PaletteSpot">
+     <property name="geometry">
+      <rect>
+       <x>54</x>
+       <y>21</y>
+       <width>20</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_PaletteEnv">
+     <property name="geometry">
+      <rect>
+       <x>54</x>
+       <y>48</y>
+       <width>20</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="le_PaletteEnv">
+     <property name="geometry">
+      <rect>
+       <x>74</x>
+       <y>48</y>
+       <width>71</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit
+{
+    background-color: rgb(255, 255, 252);
+}
+
+QLineEdit:!enabled
+{
+	background-color: darkgray;
+}
+
+
+</string>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_54">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>51</y>
+       <width>51</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Env. light</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_PaletteBack">
+     <property name="geometry">
+      <rect>
+       <x>54</x>
+       <y>74</y>
+       <width>20</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="le_PaletteBack">
+     <property name="geometry">
+      <rect>
+       <x>74</x>
+       <y>74</y>
+       <width>71</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit
+{
+    background-color: rgb(255, 255, 252);
+}
+
+QLineEdit:!enabled
+{
+	background-color: darkgray;
+}
+
+
+</string>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_56">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>77</y>
+       <width>51</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Backgrnd</string>
+     </property>
+    </widget>
+    <zorder>label_54</zorder>
+    <zorder>label_56</zorder>
+    <zorder>btn_resetColours</zorder>
+    <zorder>btn_PaletteSpot</zorder>
+    <zorder>btn_PaletteEnv</zorder>
+    <zorder>btn_PaletteBack</zorder>
+    <zorder>le_PaletteSpot</zorder>
+    <zorder>label_51</zorder>
+    <zorder>lbl_PaletteSpot</zorder>
+    <zorder>lbl_PaletteEnv</zorder>
+    <zorder>le_PaletteEnv</zorder>
+    <zorder>lbl_PaletteBack</zorder>
+    <zorder>le_PaletteBack</zorder>
+   </widget>
+   <widget class="QGroupBox" name="gb_options">
+    <property name="geometry">
+     <rect>
+      <x>604</x>
+      <y>77</y>
+      <width>172</width>
+      <height>181</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>POV-Ray Options</string>
+    </property>
+    <widget class="QPushButton" name="btn_resetCamera_2">
+     <property name="geometry">
+      <rect>
+       <x>11</x>
+       <y>147</y>
+       <width>151</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(211, 211, 211);</string>
+     </property>
+     <property name="text">
+      <string>Reset to Defaults</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_57">
+     <property name="geometry">
+      <rect>
+       <x>8</x>
+       <y>22</y>
+       <width>71</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Resolution:</string>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="sb_Width">
+     <property name="geometry">
+      <rect>
+       <x>79</x>
+       <y>19</y>
+       <width>51</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QSpinBox
+{
+    background-color: rgb(255, 255, 252);
+}
+
+QSpinBox:!enabled
+{
+	background-color: darkgray;
+}
+
+
+</string>
+     </property>
+     <property name="maximum">
+      <number>3360</number>
+     </property>
+     <property name="value">
+      <number>640</number>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="le_Height">
+     <property name="geometry">
+      <rect>
+       <x>128</x>
+       <y>19</y>
+       <width>36</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit
+{
+    background-color: rgb(255, 255, 252);
+}
+
+QLineEdit:!enabled
+{
+	background-color: darkgray;
+}
+
+
+</string>
+     </property>
+     <property name="text">
+      <string>853</string>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_58">
+     <property name="geometry">
+      <rect>
+       <x>8</x>
+       <y>48</y>
+       <width>71</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Quality:</string>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="sb_Quality">
+     <property name="geometry">
+      <rect>
+       <x>79</x>
+       <y>45</y>
+       <width>37</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QSpinBox
+{
+    background-color: rgb(255, 255, 252);
+}
+
+QSpinBox:!enabled
+{
+	background-color: darkgray;
+}
+
+
+</string>
+     </property>
+     <property name="maximum">
+      <number>9</number>
+     </property>
+     <property name="singleStep">
+      <number>9</number>
+     </property>
+     <property name="value">
+      <number>9</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_59">
+     <property name="geometry">
+      <rect>
+       <x>8</x>
+       <y>74</y>
+       <width>71</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Cloth detail:</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="cb_Detail">
+     <property name="geometry">
+      <rect>
+       <x>78</x>
+       <y>70</y>
+       <width>86</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QComboBox
+{
+    background-color: rgb(255, 255, 252);
+}
+
+QComboBox QAbstractItemView
+{
+    background-color: rgb(255, 255, 252);
+}
+
+QComboBox:!enabled
+{
+	background-color: darkgray;
+}
+
+
+</string>
+     </property>
+     <item>
+      <property name="text">
+       <string>Automatic</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>High</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Medium</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Low</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Lowest</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QCheckBox" name="cb_AA">
+     <property name="geometry">
+      <rect>
+       <x>8</x>
+       <y>100</y>
+       <width>81</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Anti-aliasing</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="cb_Shadownless">
+     <property name="geometry">
+      <rect>
+       <x>89</x>
+       <y>101</y>
+       <width>81</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Shadowless</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="cb_Mosaic">
+     <property name="geometry">
+      <rect>
+       <x>8</x>
+       <y>121</y>
+       <width>121</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Mosaic preview mode</string>
+     </property>
+    </widget>
+    <zorder>label_59</zorder>
+    <zorder>btn_resetCamera_2</zorder>
+    <zorder>label_57</zorder>
+    <zorder>sb_Width</zorder>
+    <zorder>le_Height</zorder>
+    <zorder>label_58</zorder>
+    <zorder>sb_Quality</zorder>
+    <zorder>cb_Detail</zorder>
+    <zorder>cb_AA</zorder>
+    <zorder>cb_Shadownless</zorder>
+    <zorder>cb_Mosaic</zorder>
+   </widget>
+   <widget class="QGroupBox" name="gb_camera">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>205</y>
+      <width>173</width>
+      <height>351</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Camera</string>
+    </property>
+    <widget class="QPushButton" name="btn_resetCamera">
+     <property name="geometry">
+      <rect>
+       <x>11</x>
+       <y>317</y>
+       <width>151</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(211, 211, 211);</string>
+     </property>
+     <property name="text">
+      <string>Reset to Defaults</string>
+     </property>
+    </widget>
+    <widget class="QSlider" name="vs_CamX">
+     <property name="geometry">
+      <rect>
+       <x>8</x>
+       <y>97</y>
+       <width>16</width>
+       <height>201</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QSlider::groove:vertical {
+    background: qlineargradient(spread:pad, x1:0.517, y1:1, x2:0.494, y2:0, stop:0 rgba(0, 0, 0, 255), stop:0.607955 rgba(180, 9, 9, 255));
+    position: absolute;
+    left: 4px; right: 4px;
+}
+
+QSlider::handle:vertical {
+    height: 10px;
+    background: qlineargradient(spread:pad, x1:0.79, y1:0.846591, x2:0, y2:0, stop:0 rgba(57, 57, 57, 255), stop:1 rgba(255, 255, 255, 255));
+    margin: 0 -4px;
+}
+
+QSlider::handle:vertical:hover
+{
+    border: 2px solid rgb(208, 208, 208);
+}</string>
+     </property>
+     <property name="minimum">
+      <number>-2000</number>
+     </property>
+     <property name="maximum">
+      <number>2000</number>
+     </property>
+     <property name="value">
+      <number>-261</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="tickPosition">
+      <enum>QSlider::NoTicks</enum>
+     </property>
+     <property name="tickInterval">
+      <number>0</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>21</x>
+       <y>83</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>21</x>
+       <y>283</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>21</x>
+       <y>184</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QSlider" name="vs_CamY">
+     <property name="geometry">
+      <rect>
+       <x>31</x>
+       <y>97</y>
+       <width>16</width>
+       <height>201</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QSlider::groove:vertical {
+    background: qlineargradient(spread:pad, x1:0.517, y1:1, x2:0.494, y2:0, stop:0 rgba(0, 0, 0, 255), stop:0.607955 rgba(54, 180, 9, 255));
+    position: absolute;
+    left: 4px; right: 4px;
+}
+
+QSlider::handle:vertical {
+    height: 10px;
+    background: qlineargradient(spread:pad, x1:0.79, y1:0.846591, x2:0, y2:0, stop:0 rgba(57, 57, 57, 255), stop:1 rgba(255, 255, 255, 255));
+    margin: 0 -4px;
+}
+
+QSlider::handle:vertical:hover
+{
+    border: 2px solid rgb(208, 208, 208);
+}</string>
+     </property>
+     <property name="minimum">
+      <number>-2000</number>
+     </property>
+     <property name="maximum">
+      <number>2000</number>
+     </property>
+     <property name="singleStep">
+      <number>4</number>
+     </property>
+     <property name="value">
+      <number>-1331</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="tickPosition">
+      <enum>QSlider::NoTicks</enum>
+     </property>
+     <property name="tickInterval">
+      <number>0</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>44</x>
+       <y>283</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>44</x>
+       <y>184</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>44</x>
+       <y>83</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_7">
+     <property name="geometry">
+      <rect>
+       <x>67</x>
+       <y>83</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QSlider" name="vs_CamZ">
+     <property name="geometry">
+      <rect>
+       <x>54</x>
+       <y>97</y>
+       <width>16</width>
+       <height>201</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QSlider::groove:vertical {
+    background: qlineargradient(spread:pad, x1:0.517, y1:1, x2:0.494, y2:0, stop:0 rgba(0, 0, 0, 255), stop:0.607955 rgba(9, 28, 180, 255));
+    position: absolute;
+    left: 4px; right: 4px;
+}
+
+QSlider::handle:vertical {
+    height: 10px;
+    background: qlineargradient(spread:pad, x1:0.79, y1:0.846591, x2:0, y2:0, stop:0 rgba(57, 57, 57, 255), stop:1 rgba(255, 255, 255, 255));
+    margin: 0 -4px;
+}
+
+QSlider::handle:vertical:hover
+{
+    border: 2px solid rgb(208, 208, 208);
+}</string>
+     </property>
+     <property name="minimum">
+      <number>-2000</number>
+     </property>
+     <property name="maximum">
+      <number>2000</number>
+     </property>
+     <property name="value">
+      <number>209</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="tickPosition">
+      <enum>QSlider::NoTicks</enum>
+     </property>
+     <property name="tickInterval">
+      <number>0</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_8">
+     <property name="geometry">
+      <rect>
+       <x>67</x>
+       <y>283</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_9">
+     <property name="geometry">
+      <rect>
+       <x>67</x>
+       <y>184</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_CamX">
+     <property name="geometry">
+      <rect>
+       <x>29</x>
+       <y>38</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(170, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string>-261</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_10">
+     <property name="geometry">
+      <rect>
+       <x>11</x>
+       <y>37</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(170, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string>X:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_11">
+     <property name="geometry">
+      <rect>
+       <x>11</x>
+       <y>53</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(19, 104, 0);</string>
+     </property>
+     <property name="text">
+      <string>Y:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_CamY">
+     <property name="geometry">
+      <rect>
+       <x>29</x>
+       <y>54</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(19, 104, 0);</string>
+     </property>
+     <property name="text">
+      <string>-1331</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_23">
+     <property name="geometry">
+      <rect>
+       <x>11</x>
+       <y>69</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(0, 0, 127);</string>
+     </property>
+     <property name="text">
+      <string>Z:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_CamZ">
+     <property name="geometry">
+      <rect>
+       <x>29</x>
+       <y>70</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(0, 0, 127);</string>
+     </property>
+     <property name="text">
+      <string>209</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_24">
+     <property name="geometry">
+      <rect>
+       <x>11</x>
+       <y>19</y>
+       <width>51</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Position:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_LookY">
+     <property name="geometry">
+      <rect>
+       <x>116</x>
+       <y>54</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(19, 104, 0);</string>
+     </property>
+     <property name="text">
+      <string>-13</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_25">
+     <property name="geometry">
+      <rect>
+       <x>98</x>
+       <y>19</y>
+       <width>51</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Look at</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_26">
+     <property name="geometry">
+      <rect>
+       <x>98</x>
+       <y>53</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(19, 104, 0);</string>
+     </property>
+     <property name="text">
+      <string>Y:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_LookX">
+     <property name="geometry">
+      <rect>
+       <x>116</x>
+       <y>38</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(170, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_27">
+     <property name="geometry">
+      <rect>
+       <x>131</x>
+       <y>184</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_28">
+     <property name="geometry">
+      <rect>
+       <x>131</x>
+       <y>83</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_29">
+     <property name="geometry">
+      <rect>
+       <x>154</x>
+       <y>184</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_30">
+     <property name="geometry">
+      <rect>
+       <x>108</x>
+       <y>184</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_31">
+     <property name="geometry">
+      <rect>
+       <x>108</x>
+       <y>283</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_32">
+     <property name="geometry">
+      <rect>
+       <x>154</x>
+       <y>83</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_33">
+     <property name="geometry">
+      <rect>
+       <x>98</x>
+       <y>69</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(0, 0, 127);</string>
+     </property>
+     <property name="text">
+      <string>Z:</string>
+     </property>
+    </widget>
+    <widget class="QSlider" name="vs_LookX">
+     <property name="geometry">
+      <rect>
+       <x>95</x>
+       <y>97</y>
+       <width>16</width>
+       <height>201</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QSlider::groove:vertical {
+    background: qlineargradient(spread:pad, x1:0.517, y1:1, x2:0.494, y2:0, stop:0 rgba(0, 0, 0, 255), stop:0.607955 rgba(180, 9, 9, 255));
+    position: absolute;
+    left: 4px; right: 4px;
+}
+
+QSlider::handle:vertical {
+    height: 10px;
+    background: qlineargradient(spread:pad, x1:0.79, y1:0.846591, x2:0, y2:0, stop:0 rgba(57, 57, 57, 255), stop:1 rgba(255, 255, 255, 255));
+    margin: 0 -4px;
+}
+
+QSlider::handle:vertical:hover
+{
+    border: 2px solid rgb(208, 208, 208);
+}</string>
+     </property>
+     <property name="minimum">
+      <number>-2000</number>
+     </property>
+     <property name="maximum">
+      <number>2000</number>
+     </property>
+     <property name="value">
+      <number>0</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="tickPosition">
+      <enum>QSlider::NoTicks</enum>
+     </property>
+     <property name="tickInterval">
+      <number>0</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_LookZ">
+     <property name="geometry">
+      <rect>
+       <x>116</x>
+       <y>70</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(0, 0, 127);</string>
+     </property>
+     <property name="text">
+      <string>3</string>
+     </property>
+    </widget>
+    <widget class="QSlider" name="vs_LookY">
+     <property name="geometry">
+      <rect>
+       <x>118</x>
+       <y>97</y>
+       <width>16</width>
+       <height>201</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QSlider::groove:vertical {
+    background: qlineargradient(spread:pad, x1:0.517, y1:1, x2:0.494, y2:0, stop:0 rgba(0, 0, 0, 255), stop:0.607955 rgba(54, 180, 9, 255));
+    position: absolute;
+    left: 4px; right: 4px;
+}
+
+QSlider::handle:vertical {
+    height: 10px;
+    background: qlineargradient(spread:pad, x1:0.79, y1:0.846591, x2:0, y2:0, stop:0 rgba(57, 57, 57, 255), stop:1 rgba(255, 255, 255, 255));
+    margin: 0 -4px;
+}
+
+QSlider::handle:vertical:hover
+{
+    border: 2px solid rgb(208, 208, 208);
+}</string>
+     </property>
+     <property name="minimum">
+      <number>-2000</number>
+     </property>
+     <property name="maximum">
+      <number>2000</number>
+     </property>
+     <property name="singleStep">
+      <number>4</number>
+     </property>
+     <property name="value">
+      <number>-13</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="tickPosition">
+      <enum>QSlider::NoTicks</enum>
+     </property>
+     <property name="tickInterval">
+      <number>0</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_34">
+     <property name="geometry">
+      <rect>
+       <x>108</x>
+       <y>83</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_35">
+     <property name="geometry">
+      <rect>
+       <x>98</x>
+       <y>37</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(170, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string>X:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_36">
+     <property name="geometry">
+      <rect>
+       <x>154</x>
+       <y>283</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QSlider" name="vs_LookZ">
+     <property name="geometry">
+      <rect>
+       <x>141</x>
+       <y>97</y>
+       <width>16</width>
+       <height>201</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QSlider::groove:vertical {
+    background: qlineargradient(spread:pad, x1:0.517, y1:1, x2:0.494, y2:0, stop:0 rgba(0, 0, 0, 255), stop:0.607955 rgba(9, 28, 180, 255));
+    position: absolute;
+    left: 4px; right: 4px;
+}
+
+QSlider::handle:vertical {
+    height: 10px;
+    background: qlineargradient(spread:pad, x1:0.79, y1:0.846591, x2:0, y2:0, stop:0 rgba(57, 57, 57, 255), stop:1 rgba(255, 255, 255, 255));
+    margin: 0 -4px;
+}
+
+QSlider::handle:vertical:hover
+{
+    border: 2px solid rgb(208, 208, 208);
+}</string>
+     </property>
+     <property name="minimum">
+      <number>-2000</number>
+     </property>
+     <property name="maximum">
+      <number>2000</number>
+     </property>
+     <property name="value">
+      <number>3</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="tickPosition">
+      <enum>QSlider::NoTicks</enum>
+     </property>
+     <property name="tickInterval">
+      <number>0</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_37">
+     <property name="geometry">
+      <rect>
+       <x>131</x>
+       <y>283</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <zorder>label_30</zorder>
+    <zorder>label_27</zorder>
+    <zorder>label_9</zorder>
+    <zorder>label_6</zorder>
+    <zorder>label_3</zorder>
+    <zorder>btn_resetCamera</zorder>
+    <zorder>vs_CamX</zorder>
+    <zorder>label</zorder>
+    <zorder>label_2</zorder>
+    <zorder>vs_CamY</zorder>
+    <zorder>label_5</zorder>
+    <zorder>label_4</zorder>
+    <zorder>vs_CamZ</zorder>
+    <zorder>label_8</zorder>
+    <zorder>label_7</zorder>
+    <zorder>lbl_CamX</zorder>
+    <zorder>label_10</zorder>
+    <zorder>label_11</zorder>
+    <zorder>lbl_CamY</zorder>
+    <zorder>label_23</zorder>
+    <zorder>lbl_CamZ</zorder>
+    <zorder>label_24</zorder>
+    <zorder>lbl_LookY</zorder>
+    <zorder>label_25</zorder>
+    <zorder>label_26</zorder>
+    <zorder>lbl_LookX</zorder>
+    <zorder>label_29</zorder>
+    <zorder>label_33</zorder>
+    <zorder>vs_LookX</zorder>
+    <zorder>lbl_LookZ</zorder>
+    <zorder>label_34</zorder>
+    <zorder>label_35</zorder>
+    <zorder>label_31</zorder>
+    <zorder>vs_LookY</zorder>
+    <zorder>label_28</zorder>
+    <zorder>label_37</zorder>
+    <zorder>vs_LookZ</zorder>
+    <zorder>label_32</zorder>
+    <zorder>label_36</zorder>
+   </widget>
+   <widget class="QGroupBox" name="gb_light">
+    <property name="geometry">
+     <rect>
+      <x>604</x>
+      <y>258</y>
+      <width>172</width>
+      <height>298</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Light Source</string>
+    </property>
+    <widget class="QPushButton" name="btn_resetLight">
+     <property name="geometry">
+      <rect>
+       <x>11</x>
+       <y>264</y>
+       <width>151</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(211, 211, 211);</string>
+     </property>
+     <property name="text">
+      <string>Reset to Defaults</string>
+     </property>
+    </widget>
+    <widget class="QSlider" name="vs_LightY">
+     <property name="geometry">
+      <rect>
+       <x>31</x>
+       <y>38</y>
+       <width>16</width>
+       <height>201</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QSlider::groove:vertical {
+    background: qlineargradient(spread:pad, x1:0.517, y1:1, x2:0.494, y2:0, stop:0 rgba(0, 0, 0, 255), stop:0.607955 rgba(54, 180, 9, 255));
+    position: absolute;
+    left: 4px; right: 4px;
+}
+
+QSlider::handle:vertical {
+    height: 10px;
+    background: qlineargradient(spread:pad, x1:0.79, y1:0.846591, x2:0, y2:0, stop:0 rgba(57, 57, 57, 255), stop:1 rgba(255, 255, 255, 255));
+    margin: 0 -4px;
+}
+
+QSlider::handle:vertical:hover
+{
+    border: 2px solid rgb(208, 208, 208);
+}</string>
+     </property>
+     <property name="minimum">
+      <number>-2000</number>
+     </property>
+     <property name="maximum">
+      <number>2000</number>
+     </property>
+     <property name="singleStep">
+      <number>4</number>
+     </property>
+     <property name="value">
+      <number>-647</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="tickPosition">
+      <enum>QSlider::NoTicks</enum>
+     </property>
+     <property name="tickInterval">
+      <number>0</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_40">
+     <property name="geometry">
+      <rect>
+       <x>21</x>
+       <y>24</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_41">
+     <property name="geometry">
+      <rect>
+       <x>44</x>
+       <y>224</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_46">
+     <property name="geometry">
+      <rect>
+       <x>67</x>
+       <y>125</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_39">
+     <property name="geometry">
+      <rect>
+       <x>21</x>
+       <y>125</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_42">
+     <property name="geometry">
+      <rect>
+       <x>44</x>
+       <y>125</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QSlider" name="vs_LightZ">
+     <property name="geometry">
+      <rect>
+       <x>54</x>
+       <y>38</y>
+       <width>16</width>
+       <height>201</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QSlider::groove:vertical {
+    background: qlineargradient(spread:pad, x1:0.517, y1:1, x2:0.494, y2:0, stop:0 rgba(0, 0, 0, 255), stop:0.607955 rgba(9, 28, 180, 255));
+    position: absolute;
+    left: 4px; right: 4px;
+}
+
+QSlider::handle:vertical {
+    height: 10px;
+    background: qlineargradient(spread:pad, x1:0.79, y1:0.846591, x2:0, y2:0, stop:0 rgba(57, 57, 57, 255), stop:1 rgba(255, 255, 255, 255));
+    margin: 0 -4px;
+}
+
+QSlider::handle:vertical:hover
+{
+    border: 2px solid rgb(208, 208, 208);
+}</string>
+     </property>
+     <property name="minimum">
+      <number>-2000</number>
+     </property>
+     <property name="maximum">
+      <number>2000</number>
+     </property>
+     <property name="value">
+      <number>1750</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="tickPosition">
+      <enum>QSlider::NoTicks</enum>
+     </property>
+     <property name="tickInterval">
+      <number>0</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_45">
+     <property name="geometry">
+      <rect>
+       <x>44</x>
+       <y>24</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QSlider" name="vs_LightX">
+     <property name="geometry">
+      <rect>
+       <x>8</x>
+       <y>38</y>
+       <width>16</width>
+       <height>201</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QSlider::groove:vertical {
+    background: qlineargradient(spread:pad, x1:0.517, y1:1, x2:0.494, y2:0, stop:0 rgba(0, 0, 0, 255), stop:0.607955 rgba(180, 9, 9, 255));
+    position: absolute;
+    left: 4px; right: 4px;
+}
+
+QSlider::handle:vertical {
+    height: 10px;
+    background: qlineargradient(spread:pad, x1:0.79, y1:0.846591, x2:0, y2:0, stop:0 rgba(57, 57, 57, 255), stop:1 rgba(255, 255, 255, 255));
+    margin: 0 -4px;
+}
+
+QSlider::handle:vertical:hover
+{
+    border: 2px solid rgb(208, 208, 208);
+}</string>
+     </property>
+     <property name="minimum">
+      <number>-2000</number>
+     </property>
+     <property name="maximum">
+      <number>2000</number>
+     </property>
+     <property name="value">
+      <number>1519</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="tickPosition">
+      <enum>QSlider::NoTicks</enum>
+     </property>
+     <property name="tickInterval">
+      <number>0</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_43">
+     <property name="geometry">
+      <rect>
+       <x>21</x>
+       <y>224</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_44">
+     <property name="geometry">
+      <rect>
+       <x>67</x>
+       <y>224</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_38">
+     <property name="geometry">
+      <rect>
+       <x>67</x>
+       <y>24</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>_</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_LightX">
+     <property name="geometry">
+      <rect>
+       <x>105</x>
+       <y>53</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(170, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string>1519</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_50">
+     <property name="geometry">
+      <rect>
+       <x>87</x>
+       <y>68</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(19, 104, 0);</string>
+     </property>
+     <property name="text">
+      <string>Y:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_49">
+     <property name="geometry">
+      <rect>
+       <x>87</x>
+       <y>52</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(170, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string>X:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_48">
+     <property name="geometry">
+      <rect>
+       <x>87</x>
+       <y>84</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(0, 0, 127);</string>
+     </property>
+     <property name="text">
+      <string>Z:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_47">
+     <property name="geometry">
+      <rect>
+       <x>87</x>
+       <y>34</y>
+       <width>51</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Position</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_LightZ">
+     <property name="geometry">
+      <rect>
+       <x>105</x>
+       <y>85</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(0, 0, 127);</string>
+     </property>
+     <property name="text">
+      <string>1750</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbl_LightY">
+     <property name="geometry">
+      <rect>
+       <x>105</x>
+       <y>69</y>
+       <width>47</width>
+       <height>13</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(19, 104, 0);</string>
+     </property>
+     <property name="text">
+      <string>-647</string>
+     </property>
+    </widget>
+    <zorder>btn_resetLight</zorder>
+    <zorder>label_46</zorder>
+    <zorder>label_39</zorder>
+    <zorder>label_42</zorder>
+    <zorder>vs_LightX</zorder>
+    <zorder>label_43</zorder>
+    <zorder>label_40</zorder>
+    <zorder>vs_LightY</zorder>
+    <zorder>label_41</zorder>
+    <zorder>label_45</zorder>
+    <zorder>vs_LightZ</zorder>
+    <zorder>label_44</zorder>
+    <zorder>label_38</zorder>
+    <zorder>lbl_LightX</zorder>
+    <zorder>label_50</zorder>
+    <zorder>label_49</zorder>
+    <zorder>label_48</zorder>
+    <zorder>label_47</zorder>
+    <zorder>lbl_LightZ</zorder>
+    <zorder>lbl_LightY</zorder>
+   </widget>
+   <widget class="QPushButton" name="btn_preview">
+    <property name="geometry">
+     <rect>
+      <x>319</x>
+      <y>562</y>
+      <width>151</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(211, 211, 211);</string>
+    </property>
+    <property name="text">
+     <string>Preview</string>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="gb_profile">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>9</y>
+      <width>172</width>
+      <height>55</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Profile</string>
+    </property>
+    <widget class="QPushButton" name="btn_Load">
+     <property name="geometry">
+      <rect>
+       <x>5</x>
+       <y>20</y>
+       <width>51</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(211, 211, 211);</string>
+     </property>
+     <property name="text">
+      <string>Load</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_Save">
+     <property name="geometry">
+      <rect>
+       <x>61</x>
+       <y>20</y>
+       <width>51</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(211, 211, 211);</string>
+     </property>
+     <property name="text">
+      <string>Save</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_Reset">
+     <property name="geometry">
+      <rect>
+       <x>117</x>
+       <y>20</y>
+       <width>51</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(211, 211, 211);</string>
+     </property>
+     <property name="text">
+      <string>Reset</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <tabstops>
+  <tabstop>btn_raytrace</tabstop>
+  <tabstop>btn_close</tabstop>
+  <tabstop>btn_resetColours</tabstop>
+  <tabstop>vs_CamX</tabstop>
+  <tabstop>btn_resetCamera</tabstop>
+  <tabstop>btn_resetCamera_2</tabstop>
+  <tabstop>btn_resetLight</tabstop>
+  <tabstop>btn_preview</tabstop>
+ </tabstops>
+ <resources>
+  <include location="../../_Resource/resource.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>btn_close</sender>
+   <signal>clicked()</signal>
+   <receiver>RenderingOptsWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>714</x>
+     <y>54</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>749</x>
+     <y>53</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>vs_CamX</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lbl_CamX</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>29</x>
+     <y>324</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>48</x>
+     <y>250</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>vs_CamY</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lbl_CamY</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>53</x>
+     <y>321</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>54</x>
+     <y>263</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>vs_CamZ</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lbl_CamZ</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>78</x>
+     <y>331</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>61</x>
+     <y>276</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>vs_LookX</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lbl_LookX</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>112</x>
+     <y>315</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>127</x>
+     <y>248</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>vs_LookY</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lbl_LookY</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>138</x>
+     <y>309</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>134</x>
+     <y>268</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>vs_LookZ</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lbl_LookZ</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>159</x>
+     <y>308</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>161</x>
+     <y>280</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>vs_LightX</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lbl_LightX</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>624</x>
+     <y>308</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>718</x>
+     <y>323</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>vs_LightY</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lbl_LightY</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>649</x>
+     <y>341</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>717</x>
+     <y>334</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>vs_LightZ</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lbl_LightZ</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>664</x>
+     <y>369</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>713</x>
+     <y>350</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

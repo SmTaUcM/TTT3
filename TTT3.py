@@ -254,6 +254,7 @@ class TTT3(QMainWindow):
             # ----- Application logic. -----
             self.fastRendering = False  # Forces POV-Ray to render at a lower quality for quicker rendering during testing.
             self.continueRender = True
+            self.uniform = None
             self.loadSettings()
             self.loadFleetData()
             self.updateProgressBar.connect(self.updaterSlot)
@@ -344,9 +345,17 @@ class TTT3(QMainWindow):
     def outputCloseEvent(self, event):
         '''Method that overloads the self.output_gui close event and the application.'''
 
+        self.preview.setWindowFlags(self.gui.windowFlags() & ~Qt.WindowStaysOnBottomHint)
+        self.preview.show()
+        self.output_gui.close()
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def previewCloseEvent(self, event):
+        '''Method that overloads the self.output_gui close event and the application.'''
+
         self.gui.setWindowFlags(self.gui.windowFlags() & ~Qt.WindowStaysOnBottomHint)
         self.gui.show()
-        self.output_gui.close()
+        self.preview.close()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def loadFleetData(self):
@@ -716,8 +725,7 @@ class TTT3(QMainWindow):
            directly call 'launchPOVRay' to open up PovRay and render the unirom.'''
 
         try:
-            self.continueRender = True
-
+            self.uniform = "dress"
             # Check to see if the user has made the correct selections for their position and rank.
             if self.position in ["FM", "FL", "CMDR", "WC"] and self.gui.cb_eliteSqn.isChecked() == False:
                 if not self.ship or not self.wing:
@@ -725,7 +733,7 @@ class TTT3(QMainWindow):
                     return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
                 else:
                     self.createDressPov()
-                    self.launchPOVRay("dress")
+                    self.showPreviewGUI()
 
             elif self.gui.cb_eliteSqn.isChecked() and not self.sqn:
                 msg = "Error: As an elite pilot you need to specify a squadron before a dress uniform can be created."
@@ -737,15 +745,49 @@ class TTT3(QMainWindow):
                     return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
                 else:
                     self.createDressPov()
-                    self.launchPOVRay("dress")
+                    self.showPreviewGUI()
 
             # Run PovRay to render a uniform.
             else:
                 self.createDressPov()
-                if self.continueRender:
-                    self.launchPOVRay("dress")
+                self.showPreviewGUI()
         except Exception as e:
             handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def showPreviewGUI(self):
+        '''Method to open the render preview / options GUI.'''
+
+        # Load our GUI file 'data\uis\preview.ui'.
+        self.preview = uic.loadUi(r"data\uis\preview.ui")
+
+        # Set the correct window title.
+        if self.uniform == "dress" or self.uniform == "duty":
+            self.preview.setWindowTitle("TTT3 Rendering Options - " + self.uniform.title() + "Uniform")
+        elif self.uniform == "helmet":
+            self.preview.setWindowTitle("TTT3 Rendering Options - " + self.uniform.title())
+
+        # Show the preview GUI.
+        self.preview.show()
+        self.preview.closeEvent = self.previewCloseEvent
+        self.gui.setWindowFlags(self.gui.windowFlags() | Qt.WindowStaysOnBottomHint)
+        self.gui.show()
+
+        # Connections.
+        self.preview.btn_raytrace.clicked.connect(self.launchPOVRay)
+        self.preview.btn_preview.clicked.connect(self.renderPreview)
+
+        # Get a preview uniform render.
+        self.renderPreview()
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def renderPreview(self):
+        '''Mewthod for rendering a preview image.'''
+
+        self.preview.lbl_preview.clear()
+        self.preview.lbl_preview.setText("Please wait for preview to load...")
+        self.previewImage = threading.Thread(target=self.launchPOVRay, args=(True,))
+        self.previewImage.start()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_dutyMethod(self):
@@ -755,26 +797,30 @@ class TTT3(QMainWindow):
 
         try:
             self.createDutyPov()
-            self.launchPOVRay("duty")
+            self.uniform = "duty"
+            self.showPreviewGUI()
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def launchPOVRay(self, uniform):
+    def launchPOVRay(self, preview=False):
         '''Method that dynamically launches POV-Ray with the correct paths.
            The "uniform" argument takes "dress", "duty or "helmet" which is dependant on which button has been pressed.'''
 
         # Remove old uniform files.
         try:
-            os.remove("data\\%s.png" % uniform)
+            os.remove("data\\%s.png" % self.uniform)
         except FileNotFoundError:
             pass
 
         # Set the correct paths based on where TTT3 is located and the TTT3.ini settings file.
-        if not self.fastRendering:
-            template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H853 +Q9 +AM2 +A0.1 +D +F +GA +J1.0 -D /EXIT'
+        if not preview:
+            if not self.fastRendering:
+                template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H853 +Q9 +AM2 +A0.1 +D +F +GA +J1.0 -D /EXIT'
+            else:
+                template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H853 +Q6 -D /EXIT'
         else:
-            template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H853 +Q6 -D /EXIT'
+            template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W390 +H520 +Q6 -D /EXIT'
         template = template.replace("&TTTPATH&", os.getcwd())
 
         # Apply the path depending on what the user has selected from within the Configuratrion window.
@@ -783,23 +829,52 @@ class TTT3(QMainWindow):
         else:
             template = template.replace("&POVPATH&", self.config.get("POV-Ray", "user_specified_path"))
 
-        template = template.replace("&TYPE&", uniform)
+        template = template.replace("&TYPE&", self.uniform)
 
         # Launch POV-Ray
-        pov = subprocess.Popen(template)
+        if preview:
+            SW_HIDE = 0
+            info = subprocess.STARTUPINFO()
+            info.dwFlags = subprocess.STARTF_USESHOWWINDOW
+            info.wShowWindow = SW_HIDE
+            pov = subprocess.Popen(template, startupinfo=info)
+        else:
+            pov = subprocess.Popen(template)
 
         # Wait for POV-Ray to close.
         self.povrayMonitor(pov.pid)
 
-        self.gui.setWindowFlags(self.gui.windowFlags() | Qt.WindowStaysOnBottomHint)
-        self.gui.show()
-        self.showOutputDialog(uniform)
+        if not preview:
+            # Show the output GUI.
+            self.showOutputDialog(self.uniform)
+        else:
+            self.showPreviewImage()
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def showPreviewImage(self):
+        '''Method to show a preview image in the preview GUI.'''
+
+        # Determine the version of POV-Ray and it's associated file output type.
+        if self.config.get("POV-Ray", "detection_mode") == "registry":
+            if "3.6" in self.config.get("POV-Ray", "registry_detected_path"):
+                ext = ".bmp"
+            else:
+                ext = ".png"
+
+        elif self.config.get("POV-Ray", "detection_mode") == "specific":
+            if "3.6" in self.config.get("POV-Ray", "user_specified_path"):
+                ext = ".bmp"
+            else:
+                ext = ".png"
+
+        self.imagePath = r"data\%s%s" % (self.uniform, ext)
+        self.preview.lbl_preview.setPixmap(QPixmap(self.imagePath))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def showOutputDialog(self, uniform):
         '''Method to display the POV-Ray rendered image.'''
 
-        # Determin the version of POV-Ray and it's associated file output type.
+        # Determine the version of POV-Ray and it's associated file output type.
         if self.config.get("POV-Ray", "detection_mode") == "registry":
             if "3.6" in self.config.get("POV-Ray", "registry_detected_path"):
                 ext = ".bmp"
@@ -822,6 +897,10 @@ class TTT3(QMainWindow):
         self.output_gui.btn_saveAs.clicked.connect(self.btn_saveAsFunc)
         self.output_gui.btn_close.clicked.connect(self.outputCloseEvent)
         self.output_gui.closeEvent = self.outputCloseEvent
+        self.gui.setWindowFlags(self.gui.windowFlags() | Qt.WindowStaysOnBottomHint)
+        self.gui.hide()
+        self.preview.setWindowFlags(self.preview.windowFlags() | Qt.WindowStaysOnBottomHint)
+        self.preview.show()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_saveAsFunc(self):
@@ -1490,7 +1569,7 @@ color_map
                 povData.append(line.replace("&SPOTLIGHTCOLOUR&", "1, 1, 1"))  # TODO createDressPov() OpenGL SPOTLIGHTCOLOUR
 
             elif "&SHADOWLESS&" in line:
-                povData.append(line.replace("&SHADOWLESS&", ""))  # TODO createDressPov() OpenGL SHADOWLESS
+                povData.append(line.replace("&SHADOWLESS&", ""))  # TODO createDressPov() OpenGL SHADOWLESS Command = shadowless
 
             elif "&ENVLIGHTCOLOUR&" in line:
                 povData.append(line.replace("&ENVLIGHTCOLOUR&", "0.501, 0.462, 0.423"))  # TODO createDressPov() OpenGL ENVLIGHTCOLOUR
@@ -3321,6 +3400,21 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                      Functions.                                                                    #
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
+
+def getX(y):
+    '''Function to return an aspect ratio locked value for any given y.'''
+
+    return round(0.75 * float(y))
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+def getY(x):
+    '''Function to return an aspect ratio locked value for any given x.'''
+
+    return round(float(x) / 0.75)
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
 def getHash(strSource):
     '''Method that calculates the MD5 hash for a given source file in string format.'''
 
