@@ -773,6 +773,21 @@ class TTT3(QMainWindow):
         self.gui.setWindowFlags(self.gui.windowFlags() | Qt.WindowStaysOnBottomHint)
         self.gui.show()
 
+        # Apply setttings.
+        # Colours.
+        # Spotlight Colour.
+        realRGB, hexRGB = self.getRGBFromPOV(self.spotColour)
+        self.preview.lbl_PaletteSpot.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
+        self.preview.le_PaletteSpot.setText(hexRGB)
+        # Environment Colour.
+        realRGB, hexRGB = self.getRGBFromPOV(self.envColour)
+        self.preview.lbl_PaletteEnv.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
+        self.preview.le_PaletteEnv.setText(hexRGB)
+        # Background Colour.
+        realRGB, hexRGB = self.getRGBFromPOV(self.bgColour)
+        self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
+        self.preview.le_PaletteBack.setText(hexRGB)
+
         # Connections.
         self.preview.btn_raytrace.clicked.connect(self.launchPOVRay)
         self.preview.btn_preview.clicked.connect(self.renderPreview)
@@ -3453,6 +3468,18 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         povRGB = povRGB.rstrip(", ")
 
         return realRGB, povRGB, hexRGB
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def getRGBFromPOV(self, povRGB):
+        '''Method that returns RGB and Hex RGB from a given POV-Ray RGB value'''
+
+        povRGBList = povRGB.split(",")
+        realRGB = []
+        for colour in povRGBList:
+            realRGB.append(int(float(colour) * 255))
+        hexRGB = "#%02x%02x%02x" % (realRGB[0], realRGB[1], realRGB[2])
+
+        return realRGB, hexRGB
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
