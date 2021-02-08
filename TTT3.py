@@ -3431,34 +3431,47 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def btn_PaletteSpotFunc(self):
         '''Method for opening a colour palette dialog.'''
 
-        realRGB, povRGB, hexRGB = self.convertRGB()
-        self.spotColour = povRGB
-        self.preview.lbl_PaletteSpot.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
-        self.preview.le_PaletteSpot.setText(hexRGB)
+        realRGB, povRGB, hexRGB = self.openColourPicker()
+        if realRGB:
+            self.spotColour = povRGB
+            self.preview.lbl_PaletteSpot.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
+            self.preview.le_PaletteSpot.setText(hexRGB)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_PaletteEnvFunc(self):
         '''Method for opening a colour palette dialog.'''
 
-        realRGB, povRGB, hexRGB = self.convertRGB()
-        self.envColour = povRGB
-        self.preview.lbl_PaletteEnv.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
-        self.preview.le_PaletteEnv.setText(hexRGB)
+        realRGB, povRGB, hexRGB = self.openColourPicker()
+        if realRGB:
+            self.envColour = povRGB
+            self.preview.lbl_PaletteEnv.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
+            self.preview.le_PaletteEnv.setText(hexRGB)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_PaletteBackFunc(self):
         '''Method for opening a colour palette dialog.'''
 
-        realRGB, povRGB, hexRGB = self.convertRGB()
-        self.bgColour = povRGB
-        self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
-        self.preview.le_PaletteBack.setText(hexRGB)
+        realRGB, povRGB, hexRGB = self.openColourPicker()
+        if realRGB:
+            self.bgColour = povRGB
+            self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
+            self.preview.le_PaletteBack.setText(hexRGB)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def convertRGB(self):
+    def openColourPicker(self):
+        '''Method to open the QColorDialog.'''
+
+        colour = QColorDialog.getColor()
+        if colour.isValid():
+            return self.convertRGB(colour)
+        else:
+            return False, None, None
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def convertRGB(self, realRGB):
         '''Method that converts standard RGB and output POV-Ray RGB and HTML Hex RGB values'''
 
-        realRGB = QColorDialog.getColor().getRgb()[:3]
+        realRGB = realRGB.getRgb()[:3]
         hexRGB = "#%02x%02x%02x" % (realRGB[0], realRGB[1], realRGB[2])
         povRGB = ""
         for color in realRGB:
