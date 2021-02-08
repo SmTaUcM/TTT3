@@ -857,7 +857,16 @@ class TTT3(QMainWindow):
         '''Method that dynamically launches POV-Ray with the correct paths.
            The "uniform" argument takes "dress", "duty or "helmet" which is dependant on which button has been pressed.'''
 
-        # Remove old uniform files.
+        # Recreate our *.pov file for final rendering.
+        if not preview:
+            if self.uniform == "dress":
+                self.createDressPov()
+            elif self.uniform == "duty":
+                self.createDutyPov()
+            elif self.uniform == "helmet":
+                self.createHelmetPov()
+
+        # Remove old uniform image files.
         try:
             os.remove("data\\%s.png" % self.uniform)
         except FileNotFoundError:
