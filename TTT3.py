@@ -217,6 +217,8 @@ class TTT3(QMainWindow):
             self.spotColour = "1, 1, 1"
             self.envColour = "0.501, 0.462, 0.423"
             self.bgColour = "0, 0, 0"
+            self.width = 640
+            self.height = 853
 
             # PovRay Template Constants.
             self.RANK_OFFSET_RIBBONS_00_TO_08 = ["-18.8939990997314,0.351000010967255,7.92899990081787",  # Rotate
@@ -787,6 +789,9 @@ class TTT3(QMainWindow):
         realRGB, hexRGB = self.getRGBFromPOV(self.bgColour)
         self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
         self.preview.le_PaletteBack.setText(hexRGB)
+        # Resolution.
+        self.preview.sb_Width.setValue(self.width)
+        self.preview.le_Height.setText(str(self.height))
 
         # Connections.
         self.preview.btn_raytrace.clicked.connect(self.launchPOVRay)
@@ -795,6 +800,8 @@ class TTT3(QMainWindow):
         self.preview.btn_PaletteEnv.clicked.connect(self.btn_PaletteEnvFunc)
         self.preview.btn_PaletteBack.clicked.connect(self.btn_PaletteBackFunc)
         self.preview.btn_resetColours.clicked.connect(self.btn_resetColoursFunc)
+        self.preview.sb_Width.valueChanged.connect(self.sb_previewWidthFunc)
+        self.preview.btn_resetOptions.clicked.connect(self.btn_previreResetOptionsFunc)
 
         # Get a preview uniform render.
         self.renderPreview()
@@ -840,9 +847,11 @@ class TTT3(QMainWindow):
         # Set the correct paths based on where TTT3 is located and the TTT3.ini settings file.
         if not preview:
             if not self.fastRendering:
-                template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H853 +Q9 +AM2 +A0.1 +D +F +GA +J1.0 -D /EXIT'
+                # Normal mode.
+                template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W{width} +H{height} +Q9 +AM2 +A0.1 +D +F +GA +J1.0 -D /EXIT'.format(
+                    width=self.width, height=self.height)
             else:
-                template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H853 +Q6 -D /EXIT'
+                template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H853 +Q6 -D /EXIT'  # Fast render mode.
         else:
             template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W390 +H520 +Q6 -D /EXIT'
         template = template.replace("&TTTPATH&", os.getcwd())
@@ -966,7 +975,7 @@ class TTT3(QMainWindow):
         '''Converts a given .bpf file into .jpg, .gif, .png or .bmp'''
 
         img = Image.open(src)
-        new_img = img.resize((640, 853))
+        new_img = img.resize((self.width, self.height))
         newFilePath = dest.split(".")[0] + ext
         if ext == ".jpg":
             ext = ".jpeg"
@@ -3497,7 +3506,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_resetColoursFunc(self):
-        '''Method for reseting the preview window colour options,'''
+        '''Method for reseting the preview window colour options.'''
 
         self.spotColour = "1, 1, 1"
         self.envColour = "0.501, 0.462, 0.423"
@@ -3515,6 +3524,22 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         realRGB, hexRGB = self.getRGBFromPOV(self.bgColour)
         self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
         self.preview.le_PaletteBack.setText(hexRGB)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def sb_previewWidthFunc(self, value=None):
+        '''Method for handling user input to the preview GUI width spin box.'''
+
+        self.width = value
+        self.height = getY(self.width)
+        self.preview.le_Height.setText(str(self.height))
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def btn_previreResetOptionsFunc(self):
+        '''Method for reseting the preview window options.'''
+
+        self.width = 640
+        self.preview.sb_Width.setValue(self.width)
+        self.sb_previewWidthFunc(self.width)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 

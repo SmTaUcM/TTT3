@@ -182,6 +182,9 @@ QPushButton:!enabled
      <property name="text">
       <string>Please wait for preview to load...</string>
      </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
@@ -505,7 +508,7 @@ QLineEdit:!enabled
     <property name="title">
      <string>POV-Ray Options</string>
     </property>
-    <widget class="QPushButton" name="btn_resetCamera_2">
+    <widget class="QPushButton" name="btn_resetOptions">
      <property name="geometry">
       <rect>
        <x>11</x>
@@ -765,7 +768,7 @@ QComboBox:!enabled
      </property>
     </widget>
     <zorder>label_59</zorder>
-    <zorder>btn_resetCamera_2</zorder>
+    <zorder>btn_resetOptions</zorder>
     <zorder>label_57</zorder>
     <zorder>sb_Width</zorder>
     <zorder>le_Height</zorder>
@@ -2206,7 +2209,7 @@ QSlider::handle:vertical:hover
   <tabstop>btn_resetColours</tabstop>
   <tabstop>vs_CamX</tabstop>
   <tabstop>btn_resetCamera</tabstop>
-  <tabstop>btn_resetCamera_2</tabstop>
+  <tabstop>btn_resetOptions</tabstop>
   <tabstop>btn_resetLight</tabstop>
   <tabstop>btn_preview</tabstop>
  </tabstops>

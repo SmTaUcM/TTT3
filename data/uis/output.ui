@@ -182,6 +182,9 @@ QPushButton:!enabled
      <property name="text">
       <string/>
      </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
     </widget>
    </widget>
    <widget class="QPushButton" name="btn_close">
