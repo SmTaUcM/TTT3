@@ -794,6 +794,7 @@ class TTT3(QMainWindow):
         self.preview.btn_PaletteSpot.clicked.connect(self.btn_PaletteSpotFunc)
         self.preview.btn_PaletteEnv.clicked.connect(self.btn_PaletteEnvFunc)
         self.preview.btn_PaletteBack.clicked.connect(self.btn_PaletteBackFunc)
+        self.preview.btn_resetColours.clicked.connect(self.btn_resetColoursFunc)
 
         # Get a preview uniform render.
         self.renderPreview()
@@ -3480,6 +3481,27 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         hexRGB = "#%02x%02x%02x" % (realRGB[0], realRGB[1], realRGB[2])
 
         return realRGB, hexRGB
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def btn_resetColoursFunc(self):
+        '''Method for reseting the preview window colour options,'''
+
+        self.spotColour = "1, 1, 1"
+        self.envColour = "0.501, 0.462, 0.423"
+        self.bgColour = "0, 0, 0"
+
+        # Spotlight Colour.
+        realRGB, hexRGB = self.getRGBFromPOV(self.spotColour)
+        self.preview.lbl_PaletteSpot.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
+        self.preview.le_PaletteSpot.setText(hexRGB)
+        # Environment Colour.
+        realRGB, hexRGB = self.getRGBFromPOV(self.envColour)
+        self.preview.lbl_PaletteEnv.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
+        self.preview.le_PaletteEnv.setText(hexRGB)
+        # Background Colour.
+        realRGB, hexRGB = self.getRGBFromPOV(self.bgColour)
+        self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
+        self.preview.le_PaletteBack.setText(hexRGB)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
