@@ -215,6 +215,7 @@ class TTT3(QMainWindow):
             self.devModeCount = 0
             self.deconflictNeckRibbons = False
             self.spotColour = "1, 1, 1"
+            self.envColour = "0.501, 0.462, 0.423"
             self.bgColour = "0, 0, 0"
 
             # PovRay Template Constants.
@@ -734,7 +735,6 @@ class TTT3(QMainWindow):
                     msg = "Error: As a pilot you need to specify at least a ship and wing before a dress uniform can be created."
                     return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
                 else:
-                    self.createDressPov()
                     self.showPreviewGUI()
 
             elif self.gui.cb_eliteSqn.isChecked() and not self.sqn:
@@ -746,12 +746,10 @@ class TTT3(QMainWindow):
                     msg = "Error: As a COM you need to specify a ship before a dress uniform can be created."
                     return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
                 else:
-                    self.createDressPov()
                     self.showPreviewGUI()
 
             # Run PovRay to render a uniform.
             else:
-                self.createDressPov()
                 self.showPreviewGUI()
         except Exception as e:
             handleException(e)
@@ -778,8 +776,9 @@ class TTT3(QMainWindow):
         # Connections.
         self.preview.btn_raytrace.clicked.connect(self.launchPOVRay)
         self.preview.btn_preview.clicked.connect(self.renderPreview)
-        self.preview.btn_PaletteSpot.clicked.connect(self.btnPaletteSpotFunc)
-        self.preview.btn_PaletteBack.clicked.connect(self.btnPaletteBackFunc)
+        self.preview.btn_PaletteSpot.clicked.connect(self.btn_PaletteSpotFunc)
+        self.preview.btn_PaletteEnv.clicked.connect(self.btn_PaletteEnvFunc)
+        self.preview.btn_PaletteBack.clicked.connect(self.btn_PaletteBackFunc)
 
         # Get a preview uniform render.
         self.renderPreview()
@@ -806,7 +805,6 @@ class TTT3(QMainWindow):
            directly call 'launchPOVRay' to open up PovRay and render the unirom.'''
 
         try:
-            self.createDutyPov()
             self.uniform = "duty"
             self.showPreviewGUI()
         except Exception as e:
@@ -1228,6 +1226,9 @@ class TTT3(QMainWindow):
             elif "&SPOTLIGHTCOLOUR&" in line:
                 povData.append(line.replace("&SPOTLIGHTCOLOUR&", self.spotColour))
 
+            elif "&ENVLIGHTCOLOUR&" in line:
+                povData.append(line.replace("&ENVLIGHTCOLOUR&", self.envColour))
+
             elif "&SHADOWLESS&" in line:
                 povData.append(line.replace("&SHADOWLESS&", ""))  # TODO createDressPov() OpenGL SHADOWLESS
 
@@ -1582,7 +1583,7 @@ color_map
                 povData.append(line.replace("&SHADOWLESS&", ""))  # TODO createDressPov() OpenGL SHADOWLESS Command = shadowless
 
             elif "&ENVLIGHTCOLOUR&" in line:
-                povData.append(line.replace("&ENVLIGHTCOLOUR&", "0.501, 0.462, 0.423"))  # TODO createDressPov() OpenGL ENVLIGHTCOLOUR
+                povData.append(line.replace("&ENVLIGHTCOLOUR&", self.envColour))
 
             # ----- Camera. -----
 
@@ -3411,7 +3412,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.gui.pb_update.setValue(int(self.gui.pb_update.value()) + 1)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def btnPaletteSpotFunc(self):
+    def btn_PaletteSpotFunc(self):
         '''Method for opening a colour palette dialog.'''
 
         realRGB, povRGB, hexRGB = self.convertRGB()
@@ -3420,7 +3421,16 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         self.preview.le_PaletteSpot.setText(hexRGB)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def btnPaletteBackFunc(self):
+    def btn_PaletteEnvFunc(self):
+        '''Method for opening a colour palette dialog.'''
+
+        realRGB, povRGB, hexRGB = self.convertRGB()
+        self.envColour = povRGB
+        self.preview.lbl_PaletteEnv.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
+        self.preview.le_PaletteEnv.setText(hexRGB)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def btn_PaletteBackFunc(self):
         '''Method for opening a colour palette dialog.'''
 
         realRGB, povRGB, hexRGB = self.convertRGB()

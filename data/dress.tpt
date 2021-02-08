@@ -26,7 +26,7 @@ light_source // main light
   &SHADOWLESS&
 }
 
-#declare env_light = <0.501, 0.462, 0.423>;
+#declare env_light = <&ENVLIGHTCOLOUR&>;
 
 #declare P_light_1 =
 light_source // environmental 1
