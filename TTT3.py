@@ -219,6 +219,11 @@ class TTT3(QMainWindow):
             self.bgColour = "0, 0, 0"
             self.width = 640
             self.height = 853
+            self.quality = 9
+            self.clothDetail = 0
+            self.antiAliasing = True
+            self.shadowless = False
+            self.mosaicPreview = False
 
             # PovRay Template Constants.
             self.RANK_OFFSET_RIBBONS_00_TO_08 = ["-18.8939990997314,0.351000010967255,7.92899990081787",  # Rotate
@@ -737,7 +742,7 @@ class TTT3(QMainWindow):
                     msg = "Error: As a pilot you need to specify at least a ship and wing before a dress uniform can be created."
                     return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
                 else:
-                    self.showPreviewGUI()
+                    self.showPreviewDialog()
 
             elif self.gui.cb_eliteSqn.isChecked() and not self.sqn:
                 msg = "Error: As an elite pilot you need to specify a squadron before a dress uniform can be created."
@@ -748,16 +753,16 @@ class TTT3(QMainWindow):
                     msg = "Error: As a COM you need to specify a ship before a dress uniform can be created."
                     return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
                 else:
-                    self.showPreviewGUI()
+                    self.showPreviewDialog()
 
             # Run PovRay to render a uniform.
             else:
-                self.showPreviewGUI()
+                self.showPreviewDialog()
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def showPreviewGUI(self):
+    def showPreviewDialog(self):
         '''Method to open the render preview / options GUI.'''
 
         # Load our GUI file 'data\uis\preview.ui'.
@@ -789,9 +794,18 @@ class TTT3(QMainWindow):
         realRGB, hexRGB = self.getRGBFromPOV(self.bgColour)
         self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
         self.preview.le_PaletteBack.setText(hexRGB)
+        # POV-Ray Options.
         # Resolution.
         self.preview.sb_Width.setValue(self.width)
         self.preview.le_Height.setText(str(self.height))
+        # Quality.
+        self.preview.sb_Quality.setValue(self.quality)
+        # Cloth.
+        self.preview.cb_Detail.setCurrentIndex(self.clothDetail)
+        # Checkboxes.
+        self.preview.cb_AA.setChecked(self.antiAliasing)
+        self.preview.cb_Shadowless.setChecked(self.shadowless)
+        self.preview.cb_Mosaic.setChecked(self.mosaicPreview)
 
         # Connections.
         self.preview.btn_raytrace.clicked.connect(self.launchPOVRay)
@@ -801,7 +815,12 @@ class TTT3(QMainWindow):
         self.preview.btn_PaletteBack.clicked.connect(self.btn_PaletteBackFunc)
         self.preview.btn_resetColours.clicked.connect(self.btn_resetColoursFunc)
         self.preview.sb_Width.valueChanged.connect(self.sb_previewWidthFunc)
-        self.preview.btn_resetOptions.clicked.connect(self.btn_previreResetOptionsFunc)
+        self.preview.btn_resetOptions.clicked.connect(self.btn_previewResetOptionsFunc)
+        self.preview.sb_Quality.valueChanged.connect(self.sb_previewQualityFunc)
+        self.preview.cb_Detail.currentIndexChanged.connect(self.cb_previewDetailFunc)
+        self.preview.cb_AA.stateChanged.connect(self.cb_previewAAFunc)
+        self.preview.cb_Shadowless.stateChanged.connect(self.cb_previewShadowlessFunc)
+        self.preview.cb_Mosaic.stateChanged.connect(self.cb_previewMosaicFunc)
 
         # Get a preview uniform render.
         self.renderPreview()
@@ -829,7 +848,7 @@ class TTT3(QMainWindow):
 
         try:
             self.uniform = "duty"
-            self.showPreviewGUI()
+            self.showPreviewDialog()
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -848,12 +867,18 @@ class TTT3(QMainWindow):
         if not preview:
             if not self.fastRendering:
                 # Normal mode.
-                template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W{width} +H{height} +Q9 +AM2 +A0.1 +D +F +GA +J1.0 -D /EXIT'.format(
-                    width=self.width, height=self.height)
+                template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W{width} +H{height} +Q{quality} +AM2 +A0.1 +F +GA +J1.0 -D /EXIT'.format(
+                    width=self.width, height=self.height, quality=self.quality)
+                if self.mosaicPreview:
+                    template = template.replace("-D", "+SP64")
+                if not self.antiAliasing:
+                    template = template.replace("+AM2 +A0.1", "-A")
             else:
-                template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H853 +Q6 -D /EXIT'  # Fast render mode.
+                # Fast render mode.
+                template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H853 +Q6 -D /EXIT'
         else:
-            template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W390 +H520 +Q6 -D /EXIT'
+            # Preview Mode.
+            template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W390 +H520 +Q{quality} -A -D /EXIT'.format(quality=self.quality)
         template = template.replace("&TTTPATH&", os.getcwd())
 
         # Apply the path depending on what the user has selected from within the Configuratrion window.
@@ -1255,7 +1280,10 @@ class TTT3(QMainWindow):
                 povData.append(line.replace("&ENVLIGHTCOLOUR&", self.envColour))
 
             elif "&SHADOWLESS&" in line:
-                povData.append(line.replace("&SHADOWLESS&", ""))  # TODO createDressPov() OpenGL SHADOWLESS
+                if self.shadowless:
+                    povData.append(line.replace("&SHADOWLESS&", "shadowless"))
+                else:
+                    povData.append(line.replace("&SHADOWLESS&", ""))
 
             # ----- Camera. -----
 
@@ -1274,7 +1302,7 @@ class TTT3(QMainWindow):
                     self.gui.label_11.setStyleSheet("")
 
             elif "&CLOTH&" in line:
-                povData.append(line.replace("&CLOTH&", "0"))  # TODO createDressPov() OpenGL CLOTH
+                povData.append(line.replace("&CLOTH&", str(self.clothDetail)))
 
             elif "&POSITION&" in line:
                 if self.position == "TRN" or self.position == "LR" or self.position == "FR":
@@ -1605,7 +1633,10 @@ color_map
                 povData.append(line.replace("&SPOTLIGHTCOLOUR&", self.spotColour))
 
             elif "&SHADOWLESS&" in line:
-                povData.append(line.replace("&SHADOWLESS&", ""))  # TODO createDressPov() OpenGL SHADOWLESS Command = shadowless
+                if self.shadowless:
+                    povData.append(line.replace("&SHADOWLESS&", "shadowless"))
+                else:
+                    povData.append(line.replace("&SHADOWLESS&", ""))
 
             elif "&ENVLIGHTCOLOUR&" in line:
                 povData.append(line.replace("&ENVLIGHTCOLOUR&", self.envColour))
@@ -1620,7 +1651,7 @@ color_map
 
             # ----- Basic Info. -----
             elif "&CLOTH&" in line:
-                povData.append(line.replace("&CLOTH&", "0"))  # TODO createDressPov() OpenGL CLOTH
+                povData.append(line.replace("&CLOTH&", str(self.clothDetail)))
 
             elif "&POSITION&" in line:
                 if self.position == "TRN" or self.position == "LR" or self.position == "FR":
@@ -3534,12 +3565,61 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         self.preview.le_Height.setText(str(self.height))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def btn_previreResetOptionsFunc(self):
+    def btn_previewResetOptionsFunc(self):
         '''Method for reseting the preview window options.'''
 
         self.width = 640
         self.preview.sb_Width.setValue(self.width)
         self.sb_previewWidthFunc(self.width)
+        self.quality = 9
+        self.preview.sb_Quality.setValue(self.quality)
+        self.clothDetail = 0
+        self.preview.cb_Detail.setCurrentIndex(self.clothDetail)
+        self.antiAliasing = True
+        self.preview.cb_AA.setChecked(self.antiAliasing)
+        self.shadowless = False
+        self.preview.cb_Shadowless.setChecked(self.shadowless)
+        self.mosaicPreview = False
+        self.preview.cb_Mosaic.setChecked(self.mosaicPreview)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def sb_previewQualityFunc(self, value):
+        '''Method for applying the quality setting withing the preview window.'''
+
+        self.quality = value
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def cb_previewDetailFunc(self, value):
+        '''Method for applying the cloth detail setting withing the preview window.'''
+
+        self.clothDetail = value
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def cb_previewAAFunc(self, value):
+        '''Method for applying the anti aliasing setting withing the preview window.'''
+
+        if value == 2:
+            self.antiAliasing = True
+        else:
+            self.antiAliasing = False
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def cb_previewShadowlessFunc(self, value):
+        '''Method for applying the shadowless setting withing the preview window.'''
+
+        if value == 2:
+            self.shadowless = True
+        else:
+            self.shadowless = False
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def cb_previewMosaicFunc(self, value):
+        '''Method for applying the mosaic preview mode setting withing the preview window.'''
+
+        if value == 2:
+            self.mosaicPreview = True
+        else:
+            self.mosaicPreview = False
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 

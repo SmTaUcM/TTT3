@@ -649,7 +649,7 @@ QSpinBox:!enabled
       <number>9</number>
      </property>
      <property name="singleStep">
-      <number>9</number>
+      <number>1</number>
      </property>
      <property name="value">
       <number>9</number>
@@ -741,7 +741,7 @@ QComboBox:!enabled
       <string>Anti-aliasing</string>
      </property>
     </widget>
-    <widget class="QCheckBox" name="cb_Shadownless">
+    <widget class="QCheckBox" name="cb_Shadowless">
      <property name="geometry">
       <rect>
        <x>89</x>
@@ -776,7 +776,7 @@ QComboBox:!enabled
     <zorder>sb_Quality</zorder>
     <zorder>cb_Detail</zorder>
     <zorder>cb_AA</zorder>
-    <zorder>cb_Shadownless</zorder>
+    <zorder>cb_Shadowless</zorder>
     <zorder>cb_Mosaic</zorder>
    </widget>
    <widget class="QGroupBox" name="gb_camera">
