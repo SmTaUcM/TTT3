@@ -1268,7 +1268,7 @@ QSlider::handle:vertical:hover
       </font>
      </property>
      <property name="text">
-      <string>Look at</string>
+      <string>Look at:</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_26">

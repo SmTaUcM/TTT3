@@ -4,7 +4,7 @@
 
 
 #version 3.6;
-#declare bg = <&BGCOLOUR&>;
+&BGCOLOUR&
 global_settings
 {
   ambient_light color rgb <0.4, 0.4, 0.4>
@@ -19,7 +19,7 @@ global_settings
 light_source // main light
 {
   <&LIGHT&>
-  colour rgb <&LIGHTCOLOUR&>
+  colour rgb <&SPOTLIGHTCOLOUR&>
   area_light <20, 0, 0>, <0, 0, 20>, 5, 5
   adaptive 1
   jitter

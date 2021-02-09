@@ -85,6 +85,7 @@ class TTT3(QMainWindow):
             # Button Connections.
             self.gui.btn_dress.clicked.connect(self.btn_dressMethod)
             self.gui.btn_duty.clicked.connect(self.btn_dutyMethod)
+            self.gui.btn_helmet.clicked.connect(self.btn_helmetMethod)
             self.gui.btn_newProf.clicked.connect(self.btn_newProfMethod)
             self.gui.btn_openProf.clicked.connect(self.btn_openProfMethod)
             self.gui.btn_saveProf.clicked.connect(self.btn_saveProfMethod)
@@ -234,6 +235,9 @@ class TTT3(QMainWindow):
             self.lightX = 1519
             self.lightY = -647
             self.lightZ = 1750
+            self.widthHelm = 640
+            self.heightHelm = 548
+            self.qualityHelm = 5
 
             # PovRay Template Constants.
             self.RANK_OFFSET_RIBBONS_00_TO_08 = ["-18.8939990997314,0.351000010967255,7.92899990081787",  # Rotate
@@ -418,9 +422,7 @@ class TTT3(QMainWindow):
         self.hideMedalOptions()
         self.gui.cbFCHG.setCurrentIndex(0)
 
-        # TODO Disabled Helmet UTFN.
-        self.gui.btn_helmet.setEnabled(False)
-        self.gui.tab_Helm.setEnabled(False)
+        self.gui.btn_helmet.setEnabled(True)
 
         # TODO Disabled Duty Options UTFN.
         self.gui.tab_Duty.setEnabled(False)
@@ -779,10 +781,7 @@ class TTT3(QMainWindow):
         self.preview = uic.loadUi(r"data\uis\preview.ui")
 
         # Set the correct window title.
-        if self.uniform == "dress" or self.uniform == "duty":
-            self.preview.setWindowTitle("TTT3 Rendering Options - " + self.uniform.title() + " Uniform")
-        elif self.uniform == "helmet":
-            self.preview.setWindowTitle("TTT3 Rendering Options - " + self.uniform.title())
+        self.preview.setWindowTitle("TTT3 Rendering Options - " + self.uniform.title() + " Uniform")
 
         # Show the preview GUI.
         self.preview.show()
@@ -822,6 +821,61 @@ class TTT3(QMainWindow):
         self.preview.btn_Reset.clicked.connect(self.btn_previewResetFunc)
         self.preview.btn_Save.clicked.connect(self.btn_previewSaveFunc)
         self.preview.btn_Load.clicked.connect(self.btn_previewLoadFunc)
+
+        # Get a preview uniform render.
+        self.renderPreview()
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def showPreviewHelmDialog(self):
+        '''Method to open the render preview / options GUI.'''
+
+        # Load our GUI file 'data\uis\preview.ui'.
+        self.preview = uic.loadUi(r"data\uis\previewHelm.ui")
+
+# Set the correct window title.
+# if self.uniform == "dress" or self.uniform == "duty":
+##            self.preview.setWindowTitle("TTT3 Rendering Options - " + self.uniform.title() + " Uniform")
+# elif self.uniform == "helmet":
+##            self.preview.setWindowTitle("TTT3 Rendering Options - Pilot Helmet")
+
+        # Show the preview GUI.
+        self.preview.show()
+        self.preview.closeEvent = self.previewCloseEvent
+        self.gui.setWindowFlags(self.gui.windowFlags() | Qt.WindowStaysOnBottomHint)
+        self.gui.show()
+
+# Apply setttings.
+# self.applyPreviewSettings()
+
+        # Connections.
+        self.preview.btn_raytrace.clicked.connect(self.launchPOVRay)
+# self.preview.btn_preview.clicked.connect(self.renderPreview)
+# self.preview.btn_PaletteSpot.clicked.connect(self.btn_PaletteSpotFunc)
+# self.preview.btn_PaletteEnv.clicked.connect(self.btn_PaletteEnvFunc)
+# self.preview.btn_PaletteBack.clicked.connect(self.btn_PaletteBackFunc)
+# self.preview.btn_resetColours.clicked.connect(self.btn_previewResetColoursFunc)
+# self.preview.sb_Width.valueChanged.connect(self.sb_previewWidthFunc)
+# self.preview.btn_resetOptions.clicked.connect(self.btn_previewResetOptionsFunc)
+# self.preview.sb_Quality.valueChanged.connect(self.sb_previewQualityFunc)
+# self.preview.cb_Detail.currentIndexChanged.connect(self.cb_previewDetailFunc)
+# self.preview.cb_AA.stateChanged.connect(self.cb_previewAAFunc)
+# self.preview.cb_Shadowless.stateChanged.connect(self.cb_previewShadowlessFunc)
+# self.preview.cb_Mosaic.stateChanged.connect(self.cb_previewMosaicFunc)
+# self.preview.cb_TransparentBG.stateChanged.connect(self.cb_previewTransparentFunc)
+# self.preview.vs_CamX.valueChanged.connect(self.vs_previewCamXFunc)
+# self.preview.vs_CamY.valueChanged.connect(self.vs_previewCamYFunc)
+# self.preview.vs_CamZ.valueChanged.connect(self.vs_previewCamZFunc)
+# self.preview.vs_LookX.valueChanged.connect(self.vs_previewLookXFunc)
+# self.preview.vs_LookY.valueChanged.connect(self.vs_previewLookYFunc)
+# self.preview.vs_LookZ.valueChanged.connect(self.vs_previewLookZFunc)
+# self.preview.btn_resetCamera.clicked.connect(self.btn_previewResetCameraFunc)
+# self.preview.vs_LightX.valueChanged.connect(self.vs_previewLightXFunc)
+# self.preview.vs_LightY.valueChanged.connect(self.vs_previewLightYFunc)
+# self.preview.vs_LightZ.valueChanged.connect(self.vs_previewLightZFunc)
+# self.preview.btn_resetLight.clicked.connect(self.btn_previewResetLightFunc)
+# self.preview.btn_Reset.clicked.connect(self.btn_previewResetFunc)
+# self.preview.btn_Save.clicked.connect(self.btn_previewSaveFunc)
+# self.preview.btn_Load.clicked.connect(self.btn_previewLoadFunc)
 
         # Get a preview uniform render.
         self.renderPreview()
@@ -898,6 +952,18 @@ class TTT3(QMainWindow):
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
+    def btn_helmetMethod(self):
+        '''Method that is triggered when the 'Pilot's Helmet' button is clicked.
+           This method will check that the correct selections has been made within TTT3 such as Ship and Squadron and then
+           directly call 'launchPOVRay' to open up PovRay and render the unirom.'''
+
+        try:
+            self.uniform = "helmet"
+            self.showPreviewHelmDialog()
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
     def launchPOVRay(self, preview=False):
         '''Method that dynamically launches POV-Ray with the correct paths.
            The "uniform" argument takes "dress", "duty or "helmet" which is dependant on which button has been pressed.'''
@@ -906,10 +972,27 @@ class TTT3(QMainWindow):
         if not preview:
             if self.uniform == "dress":
                 self.createDressPov()
+
             elif self.uniform == "duty":
                 self.createDutyPov()
+
             elif self.uniform == "helmet":
                 self.createHelmetPov()
+
+        if self.uniform == "dress":
+            width = self.width
+            height = self.height
+            quality = self.quality
+
+        elif self.uniform == "duty":
+            width = self.width
+            height = self.height
+            quality = self.quality
+
+        elif self.uniform == "helmet":
+            width = self.widthHelm
+            height = self.heightHelm
+            quality = self.qualityHelm
 
         # Remove old uniform image files.
         try:
@@ -922,18 +1005,27 @@ class TTT3(QMainWindow):
             if not self.fastRendering:
                 # Normal mode.
                 template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W{width} +H{height} +Q{quality} +AM2 +A0.1 +F +GA +J1.0{trans} -D /EXIT'.format(
-                    width=self.width, height=self.height, quality=self.quality, trans=self.transparentBG)
+                    width=width, height=height, quality=quality, trans=self.transparentBG)
                 if self.mosaicPreview:
                     template = template.replace("-D", "+SP64")
                 if not self.antiAliasing:
                     template = template.replace("+AM2 +A0.1", "-A")
             else:
                 # Fast render mode.
-                template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H853 +Q6{trans} -D /EXIT'.format(trans=self.transparentBG)
+                if self.uniform == "helmet":
+                    template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H548 +Q6{trans} -D /EXIT'.format(trans=self.transparentBG)
+                else:
+                    template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H853 +Q5{trans} -D /EXIT'.format(trans=self.transparentBG)
         else:
             # Preview Mode.
-            template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W390 +H520 +Q{quality}{trans} -A -D /EXIT'.format(
-                quality=self.quality, trans=self.transparentBG)
+            if self.uniform == "helmet":
+                template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W390 +H334 +Q{quality}{trans} -A -D /EXIT'.format(
+                    quality=quality, trans=self.transparentBG)
+                print(str(quality))
+            else:
+                template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W390 +H520 +Q{quality}{trans} -A -D /EXIT'.format(
+                    quality=quality, trans=self.transparentBG)
+
         template = template.replace("&TTTPATH&", os.getcwd())
 
         # Apply the path depending on what the user has selected from within the Configuratrion window.
@@ -1744,7 +1836,138 @@ color_map
     def createHelmetPov(self):
         r'''Method that loads in '\data\helmet.tpt' parses in the correct uniform data and creates a new 'data\helmet.pov' file.'''
 
-        pass  # TODO createHelmetPov() to be implemented.
+        # Read in the template data.
+        with open(r"data\helmet.tpt", "r") as tptFile:
+            template = tptFile.readlines()
+
+        # Header text.
+        position = ""
+        if self.position == "NUL" or self.position is None or self.position == "LR" or self.position == "FR":
+            position = "NIL/"
+        else:
+            position = self.position + "/"
+
+        posName = position + self.name
+        padding = (41 - len(posName)) * " "
+        posName += padding
+
+        now = datetime.datetime.now()
+        timestamp = now.strftime("%Y-%m-%d  %H:%M:%S")
+        padding = (64 - len(timestamp)) * " "
+        timestamp += padding
+
+        version = self.version
+        padding = (59 - len(version)) * " "
+        version += padding
+
+        header = """ ////////////////////////////////////////////////////////////////////
+//                                                                 //
+// EH/TIE Corps Helmet of {posName}//
+//                                                                 //
+// POV Scene file generated by TIECorps Tailoring                  //
+// Tool {version}//
+//                                                                 //
+// {timestamp}//
+//                                                                 //
+// Uniform created by LC Tempest, based on the model by            //
+// Raphael de Bouchony a.k.a Tron (Imperial Officer, SciFi 3D)     //
+//                                                                 //
+// Geometry data POV export by 3DWin5 V 5.6                        //
+// 3dto3d engine by tb-software.com (support@tb-software.com)      //
+// Created by POV Export Plugin 1.2                                //
+//                                                                 //
+// https://www.emperorshammer.org/                                 //
+// https://tc.emperorshammer.org/                                  //
+// https://ehnet.org/                                              //
+// http://www.povray.org/                                          //
+//                                                                 //
+////////////////////////////////////////////////////////////////////
+""".format(posName=posName, version=version, timestamp=timestamp)
+
+        povData = []
+
+        for line in header:
+            povData.append(line)
+
+        # Parse the template data.
+        for line in template:
+
+            # ----- Global. -----
+            if "&BGCOLOUR&" in line:
+##                if not self.transparentBG:
+##                    povData.append(line.replace("&BGCOLOUR&", "#declare bg = <%s>;" % self.bgColour))
+##                else:
+                povData.append(line.replace("&BGCOLOUR&", "#declare bg = <0.270, 0.309, 0.439>;")) # TODO Helmet Background Colour
+
+            # ----- Light. -----
+
+            elif "&LIGHT&" in line:
+                ##                povData.append(line.replace("&LIGHT&", "%s, %s, %s" % (self.lightX, self.lightY, self.lightZ)))
+                povData.append(line.replace("&LIGHT&", "22.44, -50.89, 52.82"))
+
+            elif "&SPOTLIGHTCOLOUR&" in line:
+                povData.append(line.replace("&SPOTLIGHTCOLOUR&", self.spotColour))
+
+            elif "&SHADOWLESS&" in line:
+                if self.shadowless:
+                    povData.append(line.replace("&SHADOWLESS&", "shadowless"))
+                else:
+                    povData.append(line.replace("&SHADOWLESS&", ""))
+
+            # ----- Camera. -----
+
+            elif "&CAMERA&" in line:
+                ##                povData.append(line.replace("&CAMERA&", "%s, %s, %s" % (self.camX, self.camY, self.camZ)))
+                povData.append(line.replace("&CAMERA&", "21.70, -65.19, 31.46"))
+
+            elif "&TARGET&" in line:
+                ##                povData.append(line.replace("&TARGET&", "%s, %s, %s" % (self.lookX, self.lookY, self.lookZ)))
+                povData.append(line.replace("&TARGET&", "-5.68, -4.45, 10.52"))
+
+            # ----- Helmet Settings -----
+            elif "&HELMCOLOUR&" in line:
+                povData.append(line.replace("&HELMCOLOUR&", "0.039, 0.039, 0.039"))  # TODO Helmet Colouring
+
+            elif "&AMBIENT&" in line:
+                povData.append(line.replace("&AMBIENT&", "0.3"))  # TODO Ambient Light
+
+            elif "&SPECULAR&" in line:
+                povData.append(line.replace("&SPECULAR&", "0.5"))  # TODO Specular Light
+
+            elif "&ROUGHNESS&" in line:
+                povData.append(line.replace("&ROUGHNESS&", "0.01"))  # TODO Roughness Light
+
+            elif "&REFLECTION&" in line:
+                povData.append(line.replace("&REFLECTION&", "0.1"))  # TODO Roughness Light
+
+            elif "&POSRANKFILE&" in line:
+                povData.append(line.replace("&POSRANKFILE&", "NIL"))  # TODO Helmet Rank
+
+            elif "&DECOCOLOUR&" in line:
+                povData.append(line.replace("&DECOCOLOUR&", "0.125, 0.125, 0.125"))  # TODO Deco Colour
+
+            elif "&LOGO1STENCIL&" in line:
+                povData.append(line.replace("&LOGO1STENCIL&", r'gif ".\misc\implogo.gif"'))  # TODO Helmet Logo Stencil 1
+
+            elif "&LOGO1PIGMENT&" in line:
+                povData.append(line.replace("&LOGO1PIGMENT&", "color rgb <0.125, 0.125, 0.125>"))  # TODO TODO Helmet Logo 1 Pigment
+
+            elif "&LOGO2STENCIL&" in line:
+                povData.append(line.replace("&LOGO2STENCIL&", r'gif ".\helmet\fallback_mask.gif"'))  # TODO Helmet Logo Stencil 2
+
+            elif "&LOGO2PIGMENT&" in line:
+                povData.append(line.replace("&LOGO2PIGMENT&", r'image_map { png ".\helmet\fallback.png" interpolate 2 }'))  # TODO TODO Helmet Logo 2 Pigment
+
+            elif "&HOMOGENOUS&" in line:
+                povData.append(line.replace("&HOMOGENOUS&", "P_plane"))  # TODO Helmet Homogenous
+
+            # ----- Non-Editable Data. -----
+            else:
+                povData.append(line)
+
+        # Write the parsed data to '\data\dress.pov'.
+        with open(r"data\helmet.pov", "w") as povFile:
+            povFile.writelines(povData)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getRankRotateOffset(self):
