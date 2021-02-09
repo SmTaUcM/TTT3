@@ -225,6 +225,15 @@ class TTT3(QMainWindow):
             self.antiAliasing = True
             self.shadowless = False
             self.mosaicPreview = False
+            self.camX = -261
+            self.camY = -1331
+            self.camZ = 209
+            self.lookX = 0
+            self.lookY = -13
+            self.lookZ = 3
+            self.lightX = 1519
+            self.lightY = -647
+            self.lightZ = 1750
 
             # PovRay Template Constants.
             self.RANK_OFFSET_RIBBONS_00_TO_08 = ["-18.8939990997314,0.351000010967255,7.92899990081787",  # Rotate
@@ -827,6 +836,17 @@ class TTT3(QMainWindow):
         self.preview.cb_Shadowless.stateChanged.connect(self.cb_previewShadowlessFunc)
         self.preview.cb_Mosaic.stateChanged.connect(self.cb_previewMosaicFunc)
         self.preview.cb_TransparentBG.stateChanged.connect(self.cb_previewTransparentFunc)
+        self.preview.vs_CamX.valueChanged.connect(self.vs_previewCamXFunc)
+        self.preview.vs_CamY.valueChanged.connect(self.vs_previewCamYFunc)
+        self.preview.vs_CamZ.valueChanged.connect(self.vs_previewCamZFunc)
+        self.preview.vs_LookX.valueChanged.connect(self.vs_previewLookXFunc)
+        self.preview.vs_LookY.valueChanged.connect(self.vs_previewLookYFunc)
+        self.preview.vs_LookZ.valueChanged.connect(self.vs_previewLookZFunc)
+        self.preview.btn_resetCamera.clicked.connect(self.btn_previewResetCameraFunc)
+        self.preview.vs_LightX.valueChanged.connect(self.vs_previewLightXFunc)
+        self.preview.vs_LightY.valueChanged.connect(self.vs_previewLightYFunc)
+        self.preview.vs_LightZ.valueChanged.connect(self.vs_previewLightZFunc)
+        self.preview.btn_resetLight.clicked.connect(self.btn_previewResetLightFunc)
 
         # Get a preview uniform render.
         self.renderPreview()
@@ -1287,10 +1307,7 @@ class TTT3(QMainWindow):
             # ----- Light. -----
 
             elif "&LIGHT&" in line:
-                if self.position == "FC":
-                    povData.append(line.replace("&LIGHT&", "1518.5, -647.4, 1750.1"))  # TODO createDressPov() OpenGL BGCOLOUR
-                else:
-                    povData.append(line.replace("&LIGHT&", "1448.3, -1613.6, 1042.2"))  # TODO createDressPov() OpenGL BGCOLOUR
+                povData.append(line.replace("&LIGHT&", "%s, %s, %s" % (self.lightX, self.lightY, self.lightZ)))
 
             elif "&SPOTLIGHTCOLOUR&" in line:
                 povData.append(line.replace("&SPOTLIGHTCOLOUR&", self.spotColour))
@@ -1307,10 +1324,10 @@ class TTT3(QMainWindow):
             # ----- Camera. -----
 
             elif "&CAMERA&" in line:
-                povData.append(line.replace("&CAMERA&", "-260.8, -1331.1, 209.0"))  # TODO createDressPov() OpenGL CAMERA
+                povData.append(line.replace("&CAMERA&", "%s, %s, %s" % (self.camX, self.camY, self.camZ)))
 
             elif "&TARGET&" in line:
-                povData.append(line.replace("&TARGET&", "0, -12.8, 2.8"))  # TODO createDressPov() OpenGL TARGET
+                povData.append(line.replace("&TARGET&", "%s, %s, %s" % (self.lookX, self.lookY, self.lookZ)))
 
             # ----- Basic Info. -----
             elif "&EE&" in line:
@@ -1649,7 +1666,7 @@ color_map
             # ----- Light. -----
 
             elif "&LIGHT&" in line:
-                povData.append(line.replace("&LIGHT&", "1518.5, -647.4, 1750.1"))  # TODO createDressPov() OpenGL BGCOLOUR
+                povData.append(line.replace("&LIGHT&", "%s, %s, %s" % (self.lightX, self.lightY, self.lightZ)))
 
             elif "&SPOTLIGHTCOLOUR&" in line:
                 povData.append(line.replace("&SPOTLIGHTCOLOUR&", self.spotColour))
@@ -1666,10 +1683,10 @@ color_map
             # ----- Camera. -----
 
             elif "&CAMERA&" in line:
-                povData.append(line.replace("&CAMERA&", "-260.8, -1331.1, 209.0"))  # TODO createDressPov() OpenGL CAMERA
+                povData.append(line.replace("&CAMERA&", "%s, %s, %s" % (self.camX, self.camY, self.camZ)))
 
             elif "&TARGET&" in line:
-                povData.append(line.replace("&TARGET&", "0, -12.8, 2.8"))  # TODO createDressPov() OpenGL TARGET
+                povData.append(line.replace("&TARGET&", "%s, %s, %s" % (self.lookX, self.lookY, self.lookZ)))
 
             # ----- Basic Info. -----
             elif "&CLOTH&" in line:
@@ -3662,6 +3679,88 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 widget.setEnabled(True)
             bgColour, hex = self.getRGBFromPOV(self.bgColour)
             self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(%s, %s, %s);" % (bgColour[0], bgColour[1], bgColour[2]))
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def vs_previewCamXFunc(self, value):
+        '''Method for applying the camera angle setting within the preview window.'''
+
+        self.camX = value
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def vs_previewCamYFunc(self, value):
+        '''Method for applying the camera angle setting within the preview window.'''
+
+        self.camY = value
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def vs_previewCamZFunc(self, value):
+        '''Method for applying the camera angle setting within the preview window.'''
+
+        self.camZ = value
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def vs_previewLookXFunc(self, value):
+        '''Method for applying the look at angle setting within the preview window.'''
+
+        self.lookX = value
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def vs_previewLookYFunc(self, value):
+        '''Method for applying the look at angle setting within the preview window.'''
+
+        self.lookY = value
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def vs_previewLookZFunc(self, value):
+        '''Method for applying the look at angle setting within the preview window.'''
+
+        self.lookZ = value
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def btn_previewResetCameraFunc(self):
+        '''Method for reseting the preview window camera.'''
+
+        self.camX = -261
+        self.preview.vs_CamX.setValue(self.camX)
+        self.camY = -1331
+        self.preview.vs_CamY.setValue(self.camY)
+        self.camZ = 209
+        self.preview.vs_CamZ.setValue(self.camZ)
+        self.lookX = 0
+        self.preview.vs_LookX.setValue(self.lookX)
+        self.lookY = -13
+        self.preview.vs_LookY.setValue(self.lookY)
+        self.lookZ = 3
+        self.preview.vs_LookZ.setValue(self.lookZ)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def vs_previewLightXFunc(self, value):
+        '''Method for applying the light angle setting within the preview window.'''
+
+        self.lightX = value
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def vs_previewLightYFunc(self, value):
+        '''Method for applying the light angle setting within the preview window.'''
+
+        self.lightY = value
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def vs_previewLightZFunc(self, value):
+        '''Method for applying the light angle setting within the preview window.'''
+
+        self.lightZ = value
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def btn_previewResetLightFunc(self):
+        '''Method for reseting the preview window light source.'''
+
+        self.lightX = 1519
+        self.preview.vs_LightX.setValue(self.lightX)
+        self.lightY = -647
+        self.preview.vs_LightY.setValue(self.lightY)
+        self.lightZ = 1750
+        self.preview.vs_LightZ.setValue(self.lightZ)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 

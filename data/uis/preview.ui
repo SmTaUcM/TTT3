@@ -1668,7 +1668,6 @@ QSlider::handle:vertical:hover
     <zorder>label_29</zorder>
     <zorder>label_33</zorder>
     <zorder>vs_LookX</zorder>
-    <zorder>lbl_LookZ</zorder>
     <zorder>label_34</zorder>
     <zorder>label_35</zorder>
     <zorder>label_31</zorder>
@@ -1678,6 +1677,7 @@ QSlider::handle:vertical:hover
     <zorder>vs_LookZ</zorder>
     <zorder>label_32</zorder>
     <zorder>label_36</zorder>
+    <zorder>lbl_LookZ</zorder>
    </widget>
    <widget class="QGroupBox" name="gb_light">
     <property name="geometry">
