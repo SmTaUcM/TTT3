@@ -166,6 +166,14 @@ texture
 }
 texture { T_unilayer scale 2}
 
+#declare T_r_tua =
+texture
+{
+  pigment { image_map { gif ".\ribbons\tua.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
 #declare T_r_tua_b =
 texture
 {
@@ -190,10 +198,10 @@ texture
 }
 texture { T_unilayer scale 2}
 
-#declare T_r_tua_p =
+#declare T_r_mua =
 texture
 {
-  pigment { image_map { gif ".\ribbons\tua-p.gif" } }
+  pigment { image_map { gif ".\ribbons\mua.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
@@ -218,14 +226,6 @@ texture { T_unilayer scale 2}
 texture
 {
   pigment { image_map { gif ".\ribbons\mua-g.gif" } }
-  finish  { fin_T_uni }
-}
-texture { T_unilayer scale 2}
-
-#declare T_r_mua_p =
-texture
-{
-  pigment { image_map { gif ".\ribbons\mua-p.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}

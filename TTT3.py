@@ -3644,17 +3644,17 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                             if dbSqnName in name:
                                 squadFound = True
 
-                            # Delete squad patch masks.
-                            if "_mask" in name:
-                                os.remove(os.getcwd() + "\\data\\squads\\" + name)
+                                # Delete squad patch masks.
+                                if "_mask" in name:
+                                    os.remove(os.getcwd() + "\\data\\squads\\" + name)
 
-                            else:
-                                # Check if exisiting files are up to date using MD5 hashes and if not download new versions.
-                                hash = getHash(os.getcwd() + "\\data\\squads\\" + name)
-                                if hash != dbPatchHash:
-                                    self.updateProgressBar.emit("show", 0)
-                                    self.downloadPatchFile(dbSqnName, dbPatchURL)
-                                    break
+                                else:
+                                    # Check if exisiting files are up to date using MD5 hashes and if not download new versions.
+                                    hash = getHash(os.getcwd() + "\\data\\squads\\" + name)
+                                    if hash != dbPatchHash:
+                                        self.updateProgressBar.emit("show", 0)
+                                        self.downloadPatchFile(dbSqnName, dbPatchURL)
+                                        break
 
                         # Download missing patches.
                         if not squadFound:
