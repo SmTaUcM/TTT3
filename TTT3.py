@@ -60,8 +60,8 @@ class TTT3(QMainWindow):
         try:
             # Version info.
             version = "3.00"
-            devVersion = "Alpha 16"
-            date = "31 January 2021"
+            devVersion = "Alpha 17"
+            date = "9 February 2021"
             self.saveFileVersion = 1
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
@@ -386,7 +386,7 @@ class TTT3(QMainWindow):
             with open("settings\\fleet.json", "r") as fleetConfigFile:
                 fleetData = fleetConfigFile.read()
             self.fleetConfig = json.loads(fleetData)
-            self.gui.cb_eliteSqn.setEnabled(False)  # TODO No API data for Elite squadrons.
+            self.gui.cb_eliteSqn.setEnabled(False)
 
         except json.JSONDecodeError:
             pass  # Will cause update to trigger if fleet.json is corrupted.
@@ -791,6 +791,45 @@ class TTT3(QMainWindow):
         self.gui.show()
 
         # Apply setttings.
+        self.applyPreviewSettings()
+
+        # Connections.
+        self.preview.btn_raytrace.clicked.connect(self.launchPOVRay)
+        self.preview.btn_preview.clicked.connect(self.renderPreview)
+        self.preview.btn_PaletteSpot.clicked.connect(self.btn_PaletteSpotFunc)
+        self.preview.btn_PaletteEnv.clicked.connect(self.btn_PaletteEnvFunc)
+        self.preview.btn_PaletteBack.clicked.connect(self.btn_PaletteBackFunc)
+        self.preview.btn_resetColours.clicked.connect(self.btn_previewResetColoursFunc)
+        self.preview.sb_Width.valueChanged.connect(self.sb_previewWidthFunc)
+        self.preview.btn_resetOptions.clicked.connect(self.btn_previewResetOptionsFunc)
+        self.preview.sb_Quality.valueChanged.connect(self.sb_previewQualityFunc)
+        self.preview.cb_Detail.currentIndexChanged.connect(self.cb_previewDetailFunc)
+        self.preview.cb_AA.stateChanged.connect(self.cb_previewAAFunc)
+        self.preview.cb_Shadowless.stateChanged.connect(self.cb_previewShadowlessFunc)
+        self.preview.cb_Mosaic.stateChanged.connect(self.cb_previewMosaicFunc)
+        self.preview.cb_TransparentBG.stateChanged.connect(self.cb_previewTransparentFunc)
+        self.preview.vs_CamX.valueChanged.connect(self.vs_previewCamXFunc)
+        self.preview.vs_CamY.valueChanged.connect(self.vs_previewCamYFunc)
+        self.preview.vs_CamZ.valueChanged.connect(self.vs_previewCamZFunc)
+        self.preview.vs_LookX.valueChanged.connect(self.vs_previewLookXFunc)
+        self.preview.vs_LookY.valueChanged.connect(self.vs_previewLookYFunc)
+        self.preview.vs_LookZ.valueChanged.connect(self.vs_previewLookZFunc)
+        self.preview.btn_resetCamera.clicked.connect(self.btn_previewResetCameraFunc)
+        self.preview.vs_LightX.valueChanged.connect(self.vs_previewLightXFunc)
+        self.preview.vs_LightY.valueChanged.connect(self.vs_previewLightYFunc)
+        self.preview.vs_LightZ.valueChanged.connect(self.vs_previewLightZFunc)
+        self.preview.btn_resetLight.clicked.connect(self.btn_previewResetLightFunc)
+        self.preview.btn_Reset.clicked.connect(self.btn_previewResetFunc)
+        self.preview.btn_Save.clicked.connect(self.btn_previewSaveFunc)
+        self.preview.btn_Load.clicked.connect(self.btn_previewLoadFunc)
+
+        # Get a preview uniform render.
+        self.renderPreview()
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def applyPreviewSettings(self):
+        '''Method to apply the currently loaded preview settings.'''
+
         # Colours.
         # Spotlight Colour.
         realRGB, hexRGB = self.getRGBFromPOV(self.spotColour)
@@ -820,36 +859,16 @@ class TTT3(QMainWindow):
             self.preview.cb_TransparentBG.setChecked(True)
         else:
             self.preview.cb_TransparentBG.setChecked(False)
-
-        # Connections.
-        self.preview.btn_raytrace.clicked.connect(self.launchPOVRay)
-        self.preview.btn_preview.clicked.connect(self.renderPreview)
-        self.preview.btn_PaletteSpot.clicked.connect(self.btn_PaletteSpotFunc)
-        self.preview.btn_PaletteEnv.clicked.connect(self.btn_PaletteEnvFunc)
-        self.preview.btn_PaletteBack.clicked.connect(self.btn_PaletteBackFunc)
-        self.preview.btn_resetColours.clicked.connect(self.btn_resetColoursFunc)
-        self.preview.sb_Width.valueChanged.connect(self.sb_previewWidthFunc)
-        self.preview.btn_resetOptions.clicked.connect(self.btn_previewResetOptionsFunc)
-        self.preview.sb_Quality.valueChanged.connect(self.sb_previewQualityFunc)
-        self.preview.cb_Detail.currentIndexChanged.connect(self.cb_previewDetailFunc)
-        self.preview.cb_AA.stateChanged.connect(self.cb_previewAAFunc)
-        self.preview.cb_Shadowless.stateChanged.connect(self.cb_previewShadowlessFunc)
-        self.preview.cb_Mosaic.stateChanged.connect(self.cb_previewMosaicFunc)
-        self.preview.cb_TransparentBG.stateChanged.connect(self.cb_previewTransparentFunc)
-        self.preview.vs_CamX.valueChanged.connect(self.vs_previewCamXFunc)
-        self.preview.vs_CamY.valueChanged.connect(self.vs_previewCamYFunc)
-        self.preview.vs_CamZ.valueChanged.connect(self.vs_previewCamZFunc)
-        self.preview.vs_LookX.valueChanged.connect(self.vs_previewLookXFunc)
-        self.preview.vs_LookY.valueChanged.connect(self.vs_previewLookYFunc)
-        self.preview.vs_LookZ.valueChanged.connect(self.vs_previewLookZFunc)
-        self.preview.btn_resetCamera.clicked.connect(self.btn_previewResetCameraFunc)
-        self.preview.vs_LightX.valueChanged.connect(self.vs_previewLightXFunc)
-        self.preview.vs_LightY.valueChanged.connect(self.vs_previewLightYFunc)
-        self.preview.vs_LightZ.valueChanged.connect(self.vs_previewLightZFunc)
-        self.preview.btn_resetLight.clicked.connect(self.btn_previewResetLightFunc)
-
-        # Get a preview uniform render.
-        self.renderPreview()
+        # Slider Bars
+        self.preview.vs_CamX.setValue(self.camX)
+        self.preview.vs_CamY.setValue(self.camY)
+        self.preview.vs_CamZ.setValue(self.camZ)
+        self.preview.vs_LookX.setValue(self.lookX)
+        self.preview.vs_LookY.setValue(self.lookY)
+        self.preview.vs_LookZ.setValue(self.lookZ)
+        self.preview.vs_LightX.setValue(self.lightX)
+        self.preview.vs_LightY.setValue(self.lightY)
+        self.preview.vs_LightZ.setValue(self.lightZ)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def renderPreview(self):
@@ -987,7 +1006,7 @@ class TTT3(QMainWindow):
         self.output_gui = uic.loadUi(r"data\uis\output.ui")
         self.output_gui.lbl_output.setPixmap(QPixmap(self.imagePath))
         self.output_gui.show()
-        self.output_gui.btn_upload.setEnabled(False)  # TODO Output upload diabled UTFN.
+        self.output_gui.btn_upload.setEnabled(False)  # TODO Upload to TC Database buttton disabled UTFN.
         self.output_gui.btn_saveAs.clicked.connect(self.btn_saveAsFunc)
         self.output_gui.btn_close.clicked.connect(self.outputCloseEvent)
         self.output_gui.closeEvent = self.outputCloseEvent
@@ -1725,7 +1744,7 @@ color_map
     def createHelmetPov(self):
         r'''Method that loads in '\data\helmet.tpt' parses in the correct uniform data and creates a new 'data\helmet.pov' file.'''
 
-        pass  # TODO Helmet.
+        pass  # TODO createHelmetPov() to be implemented.
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getRankRotateOffset(self):
@@ -1939,11 +1958,6 @@ color_map
                 # Remove any prior saved Ship or Wing.
                 self.ship = ""
                 self.wing = ""
-
-                # Populate the 'Squadron' List Widget with the Squadrons for the selected Wing.
-# TODO No API options for Elite squadrons.
-# for squadron in self.fleetConfig.options("elites"):
-#   self.gui.lw_squad.addItem(self.fleetConfig.get("elites", squadron))
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -3119,13 +3133,6 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     else:
                         self.sqn = ""
 
-# Elite Squadrons.
-# for item in self.fleetConfig.options("elites"):
-#   squadron = self.fleetConfig.get("elites", item)
-#   if self.sqn == squadron:
-#       self.gui.cb_eliteSqn.setChecked(True)
-# TODO No API data for Elite Squadrons.
-
                     # Apply the Sqn setting to the GUI.
                     if self.sqn:
                         for row in range(self.gui.lw_squad.count()):
@@ -3316,19 +3323,22 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def keyPressEvent(self, event):
         '''Method to detect keyboard input.'''
 
-        if event.key() == Qt.Key_Escape:
-            self.close()
+        try:
+            if event.key() == Qt.Key_Escape:
+                self.close()
 
-        if event.key() == Qt.Key_Delete:
-            if self.gui.tabWidget.tabText(self.gui.tabWidget.currentIndex()) == "Import":
-                try:
-                    self.deletePreset(self.gui.lw_presets.currentItem().text())
-                except AttributeError:
-                    pass  # User has not clicked on a name.
+            if event.key() == Qt.Key_Delete:
+                if self.gui.tabWidget.tabText(self.gui.tabWidget.currentIndex()) == "Import":
+                    try:
+                        self.deletePreset(self.gui.lw_presets.currentItem().text())
+                    except AttributeError:
+                        pass  # User has not clicked on a name.
 
-        if event.key() == Qt.Key_Enter or event.key() == Qt.Key_Return:
-            if self.gui.tabWidget.tabText(self.gui.tabWidget.currentIndex()) == "Import":
-                self.btn_importFunc()
+            if event.key() == Qt.Key_Enter or event.key() == Qt.Key_Return:
+                if self.gui.tabWidget.tabText(self.gui.tabWidget.currentIndex()) == "Import":
+                    self.btn_importFunc()
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def loadLighsabers(self):
@@ -3346,32 +3356,41 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def cb_dressLightsaberFunc(self):
         '''Method that triggers when the 'Use Lightsaber' checkbox is selected'''
 
-        saberItems = [self.gui.cb_dressSaberStyles, self.gui.lbl_dressSaberSide, self.gui.rb_dressSaberLeft,
-                      self.gui.rb_dressSaberRight, self.gui.btn_dressSaberCustom]
+        try:
+            saberItems = [self.gui.cb_dressSaberStyles, self.gui.lbl_dressSaberSide, self.gui.rb_dressSaberLeft,
+                          self.gui.rb_dressSaberRight, self.gui.btn_dressSaberCustom]
 
-        for item in saberItems:
-            if self.gui.cb_dressLightsaber.isChecked():
-                item.show()
-            else:
-                item.hide()
+            for item in saberItems:
+                if self.gui.cb_dressLightsaber.isChecked():
+                    item.show()
+                else:
+                    item.hide()
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def saberDaggerDeconflict(self):
         '''Method to deconflict the lightsaber and dagger if a saber mounting option is selected.'''
 
-        if self.gui.rb_dressSaberLeft.isChecked():
-            self.gui.rb_daggerRight.setChecked(True)
-        else:
-            self.gui.rb_daggerLeft.setChecked(True)
+        try:
+            if self.gui.rb_dressSaberLeft.isChecked():
+                self.gui.rb_daggerRight.setChecked(True)
+            else:
+                self.gui.rb_daggerLeft.setChecked(True)
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def daggerSaberDeconflict(self):
         '''Method to deconflict the dagger and lightsaber if a dagger mounting option is selected.'''
 
-        if self.gui.rb_daggerLeft.isChecked():
-            self.gui.rb_dressSaberRight.setChecked(True)
-        else:
-            self.gui.rb_dressSaberLeft.setChecked(True)
+        try:
+            if self.gui.rb_daggerLeft.isChecked():
+                self.gui.rb_dressSaberRight.setChecked(True)
+            else:
+                self.gui.rb_dressSaberLeft.setChecked(True)
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def checkForUpdates(self):
@@ -3447,181 +3466,214 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def downloadPatchFile(self, name, url):
         '''Method for downloading squadron patches.'''
 
-        # Remove duplicate file types.
-        for ext in [".png", ".jpg", ".jpeg", ".gif", ".bmp"]:
-            try:
-                os.remove(os.getcwd() + "\\data\\squads\\" + name + ext)
-            except FileNotFoundError:
-                pass
+        try:
+            # Remove duplicate file types.
+            for ext in [".png", ".jpg", ".jpeg", ".gif", ".bmp"]:
+                try:
+                    os.remove(os.getcwd() + "\\data\\squads\\" + name + ext)
+                except FileNotFoundError:
+                    pass
 
-        # Download new patch.
-        http = urllib3.PoolManager()
-        response = http.request("GET", url)
+            # Download new patch.
+            http = urllib3.PoolManager()
+            response = http.request("GET", url)
 
-        # Detect the file extension.
-        fileType = response.headers.get("Content-Type")
-        if "png" in fileType:
-            ext = ".png"
-        elif "jpeg" in fileType:
-            ext = ".jpg"
-        elif "gif" in fileType:
-            ext = ".gif"
-        else:
-            ext = ""
+            # Detect the file extension.
+            fileType = response.headers.get("Content-Type")
+            if "png" in fileType:
+                ext = ".png"
+            elif "jpeg" in fileType:
+                ext = ".jpg"
+            elif "gif" in fileType:
+                ext = ".gif"
+            else:
+                ext = ""
 
-        # Save the new file.
-        filePath = os.getcwd() + "\\data\\squads\\" + name.title() + ext
+            # Save the new file.
+            filePath = os.getcwd() + "\\data\\squads\\" + name.title() + ext
 
-        with open(filePath, "wb") as imgFile:
-            imgFile.write(response.data)
+            with open(filePath, "wb") as imgFile:
+                imgFile.write(response.data)
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def updaterSlot(self, type, value):
         '''PyQt Slot for updating the progress bar from an external thread.'''
 
-        if type == "init":
-            self.gui.pb_update.setMaximum(value)
+        try:
+            if type == "init":
+                self.gui.pb_update.setMaximum(value)
 
-        elif type == "show":
-            self.gui.pb_update.show()
-            self.gui.lbl_update.show()
+            elif type == "show":
+                self.gui.pb_update.show()
+                self.gui.lbl_update.show()
 
-        elif type == "complete":
-            self.gui.pb_update.hide()
-            self.gui.lbl_update.hide()
+            elif type == "complete":
+                self.gui.pb_update.hide()
+                self.gui.lbl_update.hide()
 
-        elif type == "error":
-            self.gui.lbl_update.setText("Squadron Patch Update Error! No Internet Connection!")
-            self.gui.pb_update.setStyleSheet(r"background-color: rgb(170, 0, 0);border-color: rgb(170, 0, 0);text-align: right;")
-            self.gui.pb_update.show()
-            self.gui.lbl_update.show()
+            elif type == "error":
+                self.gui.lbl_update.setText("Squadron Patch Update Error! No Internet Connection!")
+                self.gui.pb_update.setStyleSheet(r"background-color: rgb(170, 0, 0);border-color: rgb(170, 0, 0);text-align: right;")
+                self.gui.pb_update.show()
+                self.gui.lbl_update.show()
 
-        elif type == "code400":
-            self.gui.lbl_update.setText("Squadron Patch Update Error! Invalid Fleet API setting!")
-            self.gui.pb_update.setStyleSheet(r"background-color: rgb(170, 0, 0);border-color: rgb(170, 0, 0);text-align: right;")
-            self.gui.pb_update.show()
-            self.gui.lbl_update.show()
+            elif type == "code400":
+                self.gui.lbl_update.setText("Squadron Patch Update Error! Invalid Fleet API setting!")
+                self.gui.pb_update.setStyleSheet(r"background-color: rgb(170, 0, 0);border-color: rgb(170, 0, 0);text-align: right;")
+                self.gui.pb_update.show()
+                self.gui.lbl_update.show()
 
-        else:
-            self.gui.lbl_update.setText("Downloading patch data for %s squadron..." % type)
-            self.gui.pb_update.setValue(int(self.gui.pb_update.value()) + 1)
+            else:
+                self.gui.lbl_update.setText("Downloading patch data for %s squadron..." % type)
+                self.gui.pb_update.setValue(int(self.gui.pb_update.value()) + 1)
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_PaletteSpotFunc(self):
         '''Method for opening a colour palette dialog.'''
 
-        realRGB, povRGB, hexRGB = self.openColourPicker()
-        if realRGB:
-            self.spotColour = povRGB
-            self.preview.lbl_PaletteSpot.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
-            self.preview.le_PaletteSpot.setText(hexRGB)
+        try:
+            realRGB, povRGB, hexRGB = self.openColourPicker()
+            if realRGB:
+                self.spotColour = povRGB
+                self.preview.lbl_PaletteSpot.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
+                self.preview.le_PaletteSpot.setText(hexRGB)
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_PaletteEnvFunc(self):
         '''Method for opening a colour palette dialog.'''
 
-        realRGB, povRGB, hexRGB = self.openColourPicker()
-        if realRGB:
-            self.envColour = povRGB
-            self.preview.lbl_PaletteEnv.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
-            self.preview.le_PaletteEnv.setText(hexRGB)
+        try:
+            realRGB, povRGB, hexRGB = self.openColourPicker()
+            if realRGB:
+                self.envColour = povRGB
+                self.preview.lbl_PaletteEnv.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
+                self.preview.le_PaletteEnv.setText(hexRGB)
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_PaletteBackFunc(self):
         '''Method for opening a colour palette dialog.'''
 
-        realRGB, povRGB, hexRGB = self.openColourPicker()
-        if realRGB:
-            self.bgColour = povRGB
-            self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
-            self.preview.le_PaletteBack.setText(hexRGB)
+        try:
+            realRGB, povRGB, hexRGB = self.openColourPicker()
+            if realRGB:
+                self.bgColour = povRGB
+                self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
+                self.preview.le_PaletteBack.setText(hexRGB)
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def openColourPicker(self):
         '''Method to open the QColorDialog.'''
 
-        colour = QColorDialog.getColor()
-        if colour.isValid():
-            return self.convertRGB(colour)
-        else:
-            return False, None, None
+        try:
+            colour = QColorDialog.getColor()
+            if colour.isValid():
+                return self.convertRGB(colour)
+            else:
+                return False, None, None
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def convertRGB(self, realRGB):
         '''Method that converts standard RGB and output POV-Ray RGB and HTML Hex RGB values'''
 
-        realRGB = realRGB.getRgb()[:3]
-        hexRGB = "#%02x%02x%02x" % (realRGB[0], realRGB[1], realRGB[2])
-        povRGB = ""
-        for color in realRGB:
-            if color != 0:
-                povRGB += str((round(color / float(255), 3))) + ", "
-            else:
-                povRGB += "0.0, "
-        povRGB = povRGB.rstrip(", ")
+        try:
+            realRGB = realRGB.getRgb()[:3]
+            hexRGB = "#%02x%02x%02x" % (realRGB[0], realRGB[1], realRGB[2])
+            povRGB = ""
+            for color in realRGB:
+                if color != 0:
+                    povRGB += str((round(color / float(255), 3))) + ", "
+                else:
+                    povRGB += "0.0, "
+            povRGB = povRGB.rstrip(", ")
 
-        return realRGB, povRGB, hexRGB
+            return realRGB, povRGB, hexRGB
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getRGBFromPOV(self, povRGB):
         '''Method that returns RGB and Hex RGB from a given POV-Ray RGB value'''
 
-        povRGBList = povRGB.split(",")
-        realRGB = []
-        for colour in povRGBList:
-            realRGB.append(int(float(colour) * 255))
-        hexRGB = "#%02x%02x%02x" % (realRGB[0], realRGB[1], realRGB[2])
+        try:
+            povRGBList = povRGB.split(",")
+            realRGB = []
+            for colour in povRGBList:
+                realRGB.append(int(float(colour) * 255))
+            hexRGB = "#%02x%02x%02x" % (realRGB[0], realRGB[1], realRGB[2])
 
-        return realRGB, hexRGB
+            return realRGB, hexRGB
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def btn_resetColoursFunc(self):
+    def btn_previewResetColoursFunc(self):
         '''Method for reseting the preview window colour options.'''
 
-        self.spotColour = "1, 1, 1"
-        self.envColour = "0.501, 0.462, 0.423"
-        self.bgColour = "0, 0, 0"
+        try:
+            self.spotColour = "1, 1, 1"
+            self.envColour = "0.501, 0.462, 0.423"
+            self.bgColour = "0, 0, 0"
 
-        # Spotlight Colour.
-        realRGB, hexRGB = self.getRGBFromPOV(self.spotColour)
-        self.preview.lbl_PaletteSpot.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
-        self.preview.le_PaletteSpot.setText(hexRGB)
-        # Environment Colour.
-        realRGB, hexRGB = self.getRGBFromPOV(self.envColour)
-        self.preview.lbl_PaletteEnv.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
-        self.preview.le_PaletteEnv.setText(hexRGB)
-        # Background Colour.
-        realRGB, hexRGB = self.getRGBFromPOV(self.bgColour)
-        self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
-        self.preview.le_PaletteBack.setText(hexRGB)
-        self.transparentBG = ""
-        self.preview.cb_TransparentBG.setChecked(False)
+            # Spotlight Colour.
+            realRGB, hexRGB = self.getRGBFromPOV(self.spotColour)
+            self.preview.lbl_PaletteSpot.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
+            self.preview.le_PaletteSpot.setText(hexRGB)
+            # Environment Colour.
+            realRGB, hexRGB = self.getRGBFromPOV(self.envColour)
+            self.preview.lbl_PaletteEnv.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
+            self.preview.le_PaletteEnv.setText(hexRGB)
+            # Background Colour.
+            realRGB, hexRGB = self.getRGBFromPOV(self.bgColour)
+            self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
+            self.preview.le_PaletteBack.setText(hexRGB)
+            self.transparentBG = ""
+            self.preview.cb_TransparentBG.setChecked(False)
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def sb_previewWidthFunc(self, value=None):
         '''Method for handling user input to the preview GUI width spin box.'''
 
-        self.width = value
-        self.height = getY(self.width)
-        self.preview.le_Height.setText(str(self.height))
+        try:
+            self.width = value
+            self.height = getY(self.width)
+            self.preview.le_Height.setText(str(self.height))
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetOptionsFunc(self):
         '''Method for reseting the preview window options.'''
 
-        self.width = 640
-        self.preview.sb_Width.setValue(self.width)
-        self.sb_previewWidthFunc(self.width)
-        self.quality = 9
-        self.preview.sb_Quality.setValue(self.quality)
-        self.clothDetail = 0
-        self.preview.cb_Detail.setCurrentIndex(self.clothDetail)
-        self.antiAliasing = True
-        self.preview.cb_AA.setChecked(self.antiAliasing)
-        self.shadowless = False
-        self.preview.cb_Shadowless.setChecked(self.shadowless)
-        self.mosaicPreview = False
-        self.preview.cb_Mosaic.setChecked(self.mosaicPreview)
+        try:
+            self.width = 640
+            self.preview.sb_Width.setValue(self.width)
+            self.sb_previewWidthFunc(self.width)
+            self.quality = 9
+            self.preview.sb_Quality.setValue(self.quality)
+            self.clothDetail = 0
+            self.preview.cb_Detail.setCurrentIndex(self.clothDetail)
+            self.antiAliasing = True
+            self.preview.cb_AA.setChecked(self.antiAliasing)
+            self.shadowless = False
+            self.preview.cb_Shadowless.setChecked(self.shadowless)
+            self.mosaicPreview = False
+            self.preview.cb_Mosaic.setChecked(self.mosaicPreview)
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def sb_previewQualityFunc(self, value):
@@ -3666,19 +3718,22 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def cb_previewTransparentFunc(self, value):
         '''Method for applying the transparent background setting setting within the preview window.'''
 
-        bgWidgets = [self.preview.lbl_Back, self.preview.lbl_PaletteBack, self.preview.le_PaletteBack, self.preview.btn_PaletteBack]
+        try:
+            bgWidgets = [self.preview.lbl_Back, self.preview.lbl_PaletteBack, self.preview.le_PaletteBack, self.preview.btn_PaletteBack]
 
-        if value == 2:
-            self.transparentBG = " +UA"
-            for widget in bgWidgets:
-                widget.setEnabled(False)
-            self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(211, 211, 211);")
-        else:
-            self.transparentBG = ""
-            for widget in bgWidgets:
-                widget.setEnabled(True)
-            bgColour, hex = self.getRGBFromPOV(self.bgColour)
-            self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(%s, %s, %s);" % (bgColour[0], bgColour[1], bgColour[2]))
+            if value == 2:
+                self.transparentBG = " +UA"
+                for widget in bgWidgets:
+                    widget.setEnabled(False)
+                self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(211, 211, 211);")
+            else:
+                self.transparentBG = ""
+                for widget in bgWidgets:
+                    widget.setEnabled(True)
+                bgColour, hex = self.getRGBFromPOV(self.bgColour)
+                self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(%s, %s, %s);" % (bgColour[0], bgColour[1], bgColour[2]))
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewCamXFunc(self, value):
@@ -3720,18 +3775,21 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def btn_previewResetCameraFunc(self):
         '''Method for reseting the preview window camera.'''
 
-        self.camX = -261
-        self.preview.vs_CamX.setValue(self.camX)
-        self.camY = -1331
-        self.preview.vs_CamY.setValue(self.camY)
-        self.camZ = 209
-        self.preview.vs_CamZ.setValue(self.camZ)
-        self.lookX = 0
-        self.preview.vs_LookX.setValue(self.lookX)
-        self.lookY = -13
-        self.preview.vs_LookY.setValue(self.lookY)
-        self.lookZ = 3
-        self.preview.vs_LookZ.setValue(self.lookZ)
+        try:
+            self.camX = -261
+            self.preview.vs_CamX.setValue(self.camX)
+            self.camY = -1331
+            self.preview.vs_CamY.setValue(self.camY)
+            self.camZ = 209
+            self.preview.vs_CamZ.setValue(self.camZ)
+            self.lookX = 0
+            self.preview.vs_LookX.setValue(self.lookX)
+            self.lookY = -13
+            self.preview.vs_LookY.setValue(self.lookY)
+            self.lookZ = 3
+            self.preview.vs_LookZ.setValue(self.lookZ)
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLightXFunc(self, value):
@@ -3755,12 +3813,120 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def btn_previewResetLightFunc(self):
         '''Method for reseting the preview window light source.'''
 
-        self.lightX = 1519
-        self.preview.vs_LightX.setValue(self.lightX)
-        self.lightY = -647
-        self.preview.vs_LightY.setValue(self.lightY)
-        self.lightZ = 1750
-        self.preview.vs_LightZ.setValue(self.lightZ)
+        try:
+            self.lightX = 1519
+            self.preview.vs_LightX.setValue(self.lightX)
+            self.lightY = -647
+            self.preview.vs_LightY.setValue(self.lightY)
+            self.lightZ = 1750
+            self.preview.vs_LightZ.setValue(self.lightZ)
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def btn_previewResetFunc(self):
+        '''Method to reset all preview window options / profile.'''
+
+        try:
+            self.btn_previewResetColoursFunc()
+            self.btn_previewResetCameraFunc()
+            self.btn_previewResetOptionsFunc()
+            self.btn_previewResetLightFunc()
+            self.renderPreview()
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def btn_previewSaveFunc(self):
+        '''Method for when the preview 'Save' button is clicked.'''
+
+        try:
+            # Collect the data to be saved into a list.
+            saveData = (self.spotColour, self.envColour, self.bgColour, self.transparentBG, self.camX, self.camY, self.camZ,
+                        self.lookX, self.lookY, self.lookZ, self.width, self.height, self.clothDetail, self.antiAliasing,
+                        self.mosaicPreview, self.lightX, self.lightY, self.lightZ)
+
+            # Save the data.
+            fileName = self.savePreviewFileDialog()
+            if fileName:
+                with open(fileName, "wb") as saveFile:
+                    pickle.dump(saveData, saveFile)
+
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def savePreviewFileDialog(self):
+        '''Method that opens a QT File Save dialog to save a preview profile.'''
+
+        try:
+            options = QFileDialog.Options()
+            options |= QFileDialog.DontUseNativeDialog
+            if self.name != "Unknown":
+                name = self.name + " " + self.uniform.title()
+            else:
+                name = "untitled " + self.uniform.title()
+            fileName, _ = QFileDialog.getSaveFileName(self, "Save render settings", os.getcwd() +
+                                                      "\\settings\\%s.pro" % name, "*.pro", options=options)
+            if fileName:
+                if ".pro" not in fileName:
+                    fileName = fileName + ".pro"
+                return fileName
+
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def btn_previewLoadFunc(self):
+        '''Method for when the preview 'Load' button is clicked.'''
+
+        try:
+            # Load the saved data file.
+            fileName = (self.loadPreviewFileDialog())
+            if fileName:
+
+                with open(fileName, "rb") as dataFile:
+                    saveData = pickle.load(dataFile)
+
+                # Apply the loaded settings.
+                self.spotColour = saveData[0]
+                self.envColour = saveData[1]
+                self.bgColour = saveData[2]
+                self.transparentBG = saveData[3]
+                self.camX = saveData[4]
+                self.camY = saveData[5]
+                self.camZ = saveData[6]
+                self.lookX = saveData[7]
+                self.lookY = saveData[8]
+                self.lookZ = saveData[9]
+                self.width = saveData[10]
+                self.height = saveData[11]
+                self.clothDetail = saveData[12]
+                self.antiAliasing = saveData[13]
+                self.mosaicPreview = saveData[14]
+                self.lightX = saveData[15]
+                self.lightY = saveData[16]
+                self.lightZ = saveData[17]
+
+                self.applyPreviewSettings()
+                self.renderPreview()
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def loadPreviewFileDialog(self):
+        '''Method that opens a QT File Open dialog to save a profile.'''
+
+        try:
+            options = QFileDialog.Options()
+            options |= QFileDialog.DontUseNativeDialog
+            fileName, _ = QFileDialog.getOpenFileName(self, "Load render settings", os.getcwd() + "\\settings\\", "*.pro", options=options)
+            if fileName:
+                fileName = fileName.replace(r"/", "\\")
+                return fileName
+
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
