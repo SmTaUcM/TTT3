@@ -218,7 +218,7 @@ class TTT3(QMainWindow):
             self.spotColour = "1, 1, 1"
             self.envColour = "0.501, 0.462, 0.423"
             self.bgColour = "0, 0, 0"
-            self.transparentBG = False
+            self.transparentBG = ""
             self.width = 640
             self.height = 853
             self.quality = 9
@@ -369,7 +369,6 @@ class TTT3(QMainWindow):
     def outputCloseEvent(self, event):
         '''Method that overloads the self.output_gui close event and the application.'''
 
-        self.preview.setWindowFlags(self.gui.windowFlags() & ~Qt.WindowStaysOnBottomHint)
         self.preview.show()
         self.output_gui.close()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -377,7 +376,6 @@ class TTT3(QMainWindow):
     def previewCloseEvent(self, event):
         '''Method that overloads the self.output_gui close event and the application.'''
 
-        self.gui.setWindowFlags(self.gui.windowFlags() & ~Qt.WindowStaysOnBottomHint)
         self.gui.show()
         self.preview.close()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -786,8 +784,7 @@ class TTT3(QMainWindow):
         # Show the preview GUI.
         self.preview.show()
         self.preview.closeEvent = self.previewCloseEvent
-        self.gui.setWindowFlags(self.gui.windowFlags() | Qt.WindowStaysOnBottomHint)
-        self.gui.show()
+        self.gui.hide()
 
         # Apply setttings.
         self.applyPreviewSettings()
@@ -832,17 +829,10 @@ class TTT3(QMainWindow):
         # Load our GUI file 'data\uis\preview.ui'.
         self.preview = uic.loadUi(r"data\uis\previewHelm.ui")
 
-# Set the correct window title.
-# if self.uniform == "dress" or self.uniform == "duty":
-##            self.preview.setWindowTitle("TTT3 Rendering Options - " + self.uniform.title() + " Uniform")
-# elif self.uniform == "helmet":
-##            self.preview.setWindowTitle("TTT3 Rendering Options - Pilot Helmet")
-
         # Show the preview GUI.
         self.preview.show()
         self.preview.closeEvent = self.previewCloseEvent
-        self.gui.setWindowFlags(self.gui.windowFlags() | Qt.WindowStaysOnBottomHint)
-        self.gui.show()
+        self.gui.hide()
 
 # Apply setttings.
 # self.applyPreviewSettings()
@@ -1013,9 +1003,9 @@ class TTT3(QMainWindow):
             else:
                 # Fast render mode.
                 if self.uniform == "helmet":
-                    template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H548 +Q6{trans} -D /EXIT'.format(trans=self.transparentBG)
+                    template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H548 +Q5{trans} -D /EXIT'.format(trans=self.transparentBG)
                 else:
-                    template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H853 +Q5{trans} -D /EXIT'.format(trans=self.transparentBG)
+                    template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H853 +Q6{trans} -D /EXIT'.format(trans=self.transparentBG)
         else:
             # Preview Mode.
             if self.uniform == "helmet":
@@ -1102,10 +1092,7 @@ class TTT3(QMainWindow):
         self.output_gui.btn_saveAs.clicked.connect(self.btn_saveAsFunc)
         self.output_gui.btn_close.clicked.connect(self.outputCloseEvent)
         self.output_gui.closeEvent = self.outputCloseEvent
-        self.gui.setWindowFlags(self.gui.windowFlags() | Qt.WindowStaysOnBottomHint)
-        self.gui.hide()
-        self.preview.setWindowFlags(self.preview.windowFlags() | Qt.WindowStaysOnBottomHint)
-        self.preview.show()
+        self.preview.hide()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_saveAsFunc(self):
@@ -1410,7 +1397,7 @@ class TTT3(QMainWindow):
 
             # ----- Global. -----
             if "&BGCOLOUR&" in line:
-                if not self.transparentBG:
+                if self.transparentBG == "":
                     povData.append(line.replace("&BGCOLOUR&", "#declare bg = <%s>;" % self.bgColour))
                 else:
                     povData.append(line.replace("&BGCOLOUR&", ""))
@@ -1769,7 +1756,7 @@ color_map
 
             # ----- Global. -----
             if "&BGCOLOUR&" in line:
-                if not self.transparentBG:
+                if self.transparentBG == "":
                     povData.append(line.replace("&BGCOLOUR&", "#declare bg = <%s>;" % self.bgColour))
                 else:
                     povData.append(line.replace("&BGCOLOUR&", ""))
@@ -1894,10 +1881,10 @@ color_map
 
             # ----- Global. -----
             if "&BGCOLOUR&" in line:
-##                if not self.transparentBG:
-##                    povData.append(line.replace("&BGCOLOUR&", "#declare bg = <%s>;" % self.bgColour))
-##                else:
-                povData.append(line.replace("&BGCOLOUR&", "#declare bg = <0.270, 0.309, 0.439>;")) # TODO Helmet Background Colour
+                # if self.transparentBG == "":
+                # povData.append(line.replace("&BGCOLOUR&", "#declare bg = <%s>;" % self.bgColour))
+                # else:
+                povData.append(line.replace("&BGCOLOUR&", "#declare bg = <0.270, 0.309, 0.439>;"))  # TODO Helmet Background Colour
 
             # ----- Light. -----
 
@@ -1956,7 +1943,10 @@ color_map
                 povData.append(line.replace("&LOGO2STENCIL&", r'gif ".\helmet\fallback_mask.gif"'))  # TODO Helmet Logo Stencil 2
 
             elif "&LOGO2PIGMENT&" in line:
-                povData.append(line.replace("&LOGO2PIGMENT&", r'image_map { png ".\helmet\fallback.png" interpolate 2 }'))  # TODO TODO Helmet Logo 2 Pigment
+                povData.append(
+                    line.replace(
+                        "&LOGO2PIGMENT&",
+                        r'image_map { png ".\helmet\fallback.png" interpolate 2 }'))  # TODO TODO Helmet Logo 2 Pigment
 
             elif "&HOMOGENOUS&" in line:
                 povData.append(line.replace("&HOMOGENOUS&", "P_plane"))  # TODO Helmet Homogenous
