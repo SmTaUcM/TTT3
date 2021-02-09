@@ -3649,10 +3649,19 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def cb_previewTransparentFunc(self, value):
         '''Method for applying the transparent background setting setting within the preview window.'''
 
+        bgWidgets = [self.preview.lbl_Back, self.preview.lbl_PaletteBack, self.preview.le_PaletteBack, self.preview.btn_PaletteBack]
+
         if value == 2:
             self.transparentBG = " +UA"
+            for widget in bgWidgets:
+                widget.setEnabled(False)
+            self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(211, 211, 211);")
         else:
             self.transparentBG = ""
+            for widget in bgWidgets:
+                widget.setEnabled(True)
+            bgColour, hex = self.getRGBFromPOV(self.bgColour)
+            self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(%s, %s, %s);" % (bgColour[0], bgColour[1], bgColour[2]))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 

@@ -463,7 +463,7 @@ QLineEdit:!enabled
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="label_56">
+    <widget class="QLabel" name="lbl_Back">
      <property name="geometry">
       <rect>
        <x>7</x>
@@ -496,7 +496,7 @@ QLineEdit:!enabled
      </property>
     </widget>
     <zorder>label_54</zorder>
-    <zorder>label_56</zorder>
+    <zorder>lbl_Back</zorder>
     <zorder>btn_resetColours</zorder>
     <zorder>btn_PaletteSpot</zorder>
     <zorder>btn_PaletteEnv</zorder>
