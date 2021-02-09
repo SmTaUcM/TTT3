@@ -217,6 +217,7 @@ class TTT3(QMainWindow):
             self.spotColour = "1, 1, 1"
             self.envColour = "0.501, 0.462, 0.423"
             self.bgColour = "0, 0, 0"
+            self.transparentBG = False
             self.width = 640
             self.height = 853
             self.quality = 9
@@ -806,6 +807,10 @@ class TTT3(QMainWindow):
         self.preview.cb_AA.setChecked(self.antiAliasing)
         self.preview.cb_Shadowless.setChecked(self.shadowless)
         self.preview.cb_Mosaic.setChecked(self.mosaicPreview)
+        if self.transparentBG == " +UA":
+            self.preview.cb_TransparentBG.setChecked(True)
+        else:
+            self.preview.cb_TransparentBG.setChecked(False)
 
         # Connections.
         self.preview.btn_raytrace.clicked.connect(self.launchPOVRay)
@@ -821,6 +826,7 @@ class TTT3(QMainWindow):
         self.preview.cb_AA.stateChanged.connect(self.cb_previewAAFunc)
         self.preview.cb_Shadowless.stateChanged.connect(self.cb_previewShadowlessFunc)
         self.preview.cb_Mosaic.stateChanged.connect(self.cb_previewMosaicFunc)
+        self.preview.cb_TransparentBG.stateChanged.connect(self.cb_previewTransparentFunc)
 
         # Get a preview uniform render.
         self.renderPreview()
@@ -876,18 +882,19 @@ class TTT3(QMainWindow):
         if not preview:
             if not self.fastRendering:
                 # Normal mode.
-                template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W{width} +H{height} +Q{quality} +AM2 +A0.1 +F +GA +J1.0 -D /EXIT'.format(
-                    width=self.width, height=self.height, quality=self.quality)
+                template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W{width} +H{height} +Q{quality} +AM2 +A0.1 +F +GA +J1.0{trans} -D /EXIT'.format(
+                    width=self.width, height=self.height, quality=self.quality, trans=self.transparentBG)
                 if self.mosaicPreview:
                     template = template.replace("-D", "+SP64")
                 if not self.antiAliasing:
                     template = template.replace("+AM2 +A0.1", "-A")
             else:
                 # Fast render mode.
-                template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H853 +Q6 -D /EXIT'
+                template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H853 +Q6{trans} -D /EXIT'.format(trans=self.transparentBG)
         else:
             # Preview Mode.
-            template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W390 +H520 +Q{quality} -A -D /EXIT'.format(quality=self.quality)
+            template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W390 +H520 +Q{quality}{trans} -A -D /EXIT'.format(
+                quality=self.quality, trans=self.transparentBG)
         template = template.replace("&TTTPATH&", os.getcwd())
 
         # Apply the path depending on what the user has selected from within the Configuratrion window.
@@ -1272,7 +1279,10 @@ class TTT3(QMainWindow):
 
             # ----- Global. -----
             if "&BGCOLOUR&" in line:
-                povData.append(line.replace("&BGCOLOUR&", self.bgColour))
+                if not self.transparentBG:
+                    povData.append(line.replace("&BGCOLOUR&", "#declare bg = <%s>;" % self.bgColour))
+                else:
+                    povData.append(line.replace("&BGCOLOUR&", ""))
 
             # ----- Light. -----
 
@@ -1631,7 +1641,10 @@ color_map
 
             # ----- Global. -----
             if "&BGCOLOUR&" in line:
-                povData.append(line.replace("&BGCOLOUR&", self.bgColour))
+                if not self.transparentBG:
+                    povData.append(line.replace("&BGCOLOUR&", "#declare bg = <%s>;" % self.bgColour))
+                else:
+                    povData.append(line.replace("&BGCOLOUR&", ""))
 
             # ----- Light. -----
 
@@ -3564,6 +3577,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         realRGB, hexRGB = self.getRGBFromPOV(self.bgColour)
         self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
         self.preview.le_PaletteBack.setText(hexRGB)
+        self.transparentBG = ""
+        self.preview.cb_TransparentBG.setChecked(False)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def sb_previewWidthFunc(self, value=None):
@@ -3593,19 +3608,19 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def sb_previewQualityFunc(self, value):
-        '''Method for applying the quality setting withing the preview window.'''
+        '''Method for applying the quality setting within the preview window.'''
 
         self.quality = value
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewDetailFunc(self, value):
-        '''Method for applying the cloth detail setting withing the preview window.'''
+        '''Method for applying the cloth detail setting within the preview window.'''
 
         self.clothDetail = value
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewAAFunc(self, value):
-        '''Method for applying the anti aliasing setting withing the preview window.'''
+        '''Method for applying the anti aliasing setting within the preview window.'''
 
         if value == 2:
             self.antiAliasing = True
@@ -3614,7 +3629,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewShadowlessFunc(self, value):
-        '''Method for applying the shadowless setting withing the preview window.'''
+        '''Method for applying the shadowless setting within the preview window.'''
 
         if value == 2:
             self.shadowless = True
@@ -3623,12 +3638,21 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewMosaicFunc(self, value):
-        '''Method for applying the mosaic preview mode setting withing the preview window.'''
+        '''Method for applying the mosaic preview mode setting within the preview window.'''
 
         if value == 2:
             self.mosaicPreview = True
         else:
             self.mosaicPreview = False
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def cb_previewTransparentFunc(self, value):
+        '''Method for applying the transparent background setting setting within the preview window.'''
+
+        if value == 2:
+            self.transparentBG = " +UA"
+        else:
+            self.transparentBG = ""
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 

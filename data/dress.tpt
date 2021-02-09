@@ -4,7 +4,7 @@
 
 
 #version 3.6;
-#declare bg = <&BGCOLOUR&>;
+&BGCOLOUR&
 global_settings
 {       
   ambient_light color rgb <0.5, 0.5, 0.5>
