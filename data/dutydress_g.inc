@@ -11,23 +11,25 @@
 // BACKGROUND
 
 
-light_group
-{
-  light_source
+#if (defined (bg))
+  light_group
   {
-    <1000,1000,1000>
-    colour rgb <1,1,1>
+    light_source
+    {
+      <1000,1000,1000>
+      colour rgb <1,1,1>
+    }
+    sphere
+    {
+      <0,0,0>, 5000
+      pigment { color rgb bg }    
+      finish  { ambient 1 diffuse 1 }
+      no_reflection
+      no_shadow   
+      inverse
+    }  
   }
-  sphere
-  {
-    <0,0,0>, 5000
-    pigment { color rgb bg }    
-    finish  { ambient 1 diffuse 1 }
-    no_reflection
-    no_shadow   
-    inverse
-  }  
-}
+#end
    
 
 // REFLECTION MAP
