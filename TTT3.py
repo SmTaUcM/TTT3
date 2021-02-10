@@ -29,7 +29,7 @@ import datetime
 import winreg
 from PyQt5 import uic  # python -m pip install pyqt5
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMenu, QColorDialog  # python -m pip install pyqt5-tools
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QColor
 from PyQt5.QtCore import Qt, QEvent, pyqtSignal
 from PIL import Image  # python -m pip install pillow
 import cv2  # python -m pip install opencv-python
@@ -215,9 +215,9 @@ class TTT3(QMainWindow):
             self.eeCount = 0
             self.devModeCount = 0
             self.deconflictNeckRibbons = False
-            self.spotColour = "1, 1, 1"
-            self.envColour = "0.501, 0.462, 0.423"
-            self.bgColour = "0, 0, 0"
+            self.spotColour = QColor(255, 255, 255)
+            self.envColour = QColor(128, 118, 108)
+            self.bgColour = QColor(0, 0, 0)
             self.transparentBG = ""
             self.width = 640
             self.height = 853
@@ -876,17 +876,11 @@ class TTT3(QMainWindow):
 
         # Colours.
         # Spotlight Colour.
-        realRGB, hexRGB = self.getRGBFromPOV(self.spotColour)
-        self.preview.lbl_PaletteSpot.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
-        self.preview.le_PaletteSpot.setText(hexRGB)
+        self.colourSelected(self.spotColour, "spotColour", self.preview.lbl_PaletteSpot, self.preview.le_PaletteSpot)
         # Environment Colour.
-        realRGB, hexRGB = self.getRGBFromPOV(self.envColour)
-        self.preview.lbl_PaletteEnv.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
-        self.preview.le_PaletteEnv.setText(hexRGB)
+        self.colourSelected(self.envColour, "envColour", self.preview.lbl_PaletteEnv, self.preview.le_PaletteEnv)
         # Background Colour.
-        realRGB, hexRGB = self.getRGBFromPOV(self.bgColour)
-        self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
-        self.preview.le_PaletteBack.setText(hexRGB)
+        self.colourSelected(self.bgColour, "bgColour", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
         # POV-Ray Options.
         # Resolution.
         self.preview.sb_Width.setValue(self.width)
@@ -901,8 +895,10 @@ class TTT3(QMainWindow):
         self.preview.cb_Mosaic.setChecked(self.mosaicPreview)
         if self.transparentBG == " +UA":
             self.preview.cb_TransparentBG.setChecked(True)
+            self.cb_previewTransparentFunc(2)
         else:
             self.preview.cb_TransparentBG.setChecked(False)
+            self.cb_previewTransparentFunc(0)
         # Slider Bars
         self.preview.vs_CamX.setValue(self.camX)
         self.preview.vs_CamY.setValue(self.camY)
@@ -1011,7 +1007,6 @@ class TTT3(QMainWindow):
             if self.uniform == "helmet":
                 template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W390 +H334 +Q{quality}{trans} -A -D /EXIT'.format(
                     quality=quality, trans=self.transparentBG)
-                print(str(quality))
             else:
                 template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W390 +H520 +Q{quality}{trans} -A -D /EXIT'.format(
                     quality=quality, trans=self.transparentBG)
@@ -1398,7 +1393,7 @@ class TTT3(QMainWindow):
             # ----- Global. -----
             if "&BGCOLOUR&" in line:
                 if self.transparentBG == "":
-                    povData.append(line.replace("&BGCOLOUR&", "#declare bg = <%s>;" % self.bgColour))
+                    povData.append(line.replace("&BGCOLOUR&", "#declare bg = <%s>;" % self.convertToPOVRGB(self.bgColour)))
                 else:
                     povData.append(line.replace("&BGCOLOUR&", ""))
 
@@ -1408,10 +1403,10 @@ class TTT3(QMainWindow):
                 povData.append(line.replace("&LIGHT&", "%s, %s, %s" % (self.lightX, self.lightY, self.lightZ)))
 
             elif "&SPOTLIGHTCOLOUR&" in line:
-                povData.append(line.replace("&SPOTLIGHTCOLOUR&", self.spotColour))
+                povData.append(line.replace("&SPOTLIGHTCOLOUR&", self.convertToPOVRGB(self.spotColour)))
 
             elif "&ENVLIGHTCOLOUR&" in line:
-                povData.append(line.replace("&ENVLIGHTCOLOUR&", self.envColour))
+                povData.append(line.replace("&ENVLIGHTCOLOUR&", self.convertToPOVRGB(self.envColour)))
 
             elif "&SHADOWLESS&" in line:
                 if self.shadowless:
@@ -1757,7 +1752,7 @@ color_map
             # ----- Global. -----
             if "&BGCOLOUR&" in line:
                 if self.transparentBG == "":
-                    povData.append(line.replace("&BGCOLOUR&", "#declare bg = <%s>;" % self.bgColour))
+                    povData.append(line.replace("&BGCOLOUR&", "#declare bg = <%s>;" % self.convertToPOVRGB(self.bgColour)))
                 else:
                     povData.append(line.replace("&BGCOLOUR&", ""))
 
@@ -1767,7 +1762,7 @@ color_map
                 povData.append(line.replace("&LIGHT&", "%s, %s, %s" % (self.lightX, self.lightY, self.lightZ)))
 
             elif "&SPOTLIGHTCOLOUR&" in line:
-                povData.append(line.replace("&SPOTLIGHTCOLOUR&", self.spotColour))
+                povData.append(line.replace("&SPOTLIGHTCOLOUR&", self.convertToPOVRGB(self.spotColour)))
 
             elif "&SHADOWLESS&" in line:
                 if self.shadowless:
@@ -1776,7 +1771,7 @@ color_map
                     povData.append(line.replace("&SHADOWLESS&", ""))
 
             elif "&ENVLIGHTCOLOUR&" in line:
-                povData.append(line.replace("&ENVLIGHTCOLOUR&", self.envColour))
+                povData.append(line.replace("&ENVLIGHTCOLOUR&", self.convertToPOVRGB(self.envColour)))
 
             # ----- Camera. -----
 
@@ -1893,7 +1888,7 @@ color_map
                 povData.append(line.replace("&LIGHT&", "22.44, -50.89, 52.82"))
 
             elif "&SPOTLIGHTCOLOUR&" in line:
-                povData.append(line.replace("&SPOTLIGHTCOLOUR&", self.spotColour))
+                povData.append(line.replace("&SPOTLIGHTCOLOUR&", self.convertToPOVRGB(self.spotColour)))  # TODO Spot Colour
 
             elif "&SHADOWLESS&" in line:
                 if self.shadowless:
@@ -3749,11 +3744,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for opening a colour palette dialog.'''
 
         try:
-            realRGB, povRGB, hexRGB = self.openColourPicker()
-            if realRGB:
-                self.spotColour = povRGB
-                self.preview.lbl_PaletteSpot.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
-                self.preview.le_PaletteSpot.setText(hexRGB)
+            self.openColourPicker(self.spotColour, "spotColour", self.preview.lbl_PaletteSpot, self.preview.le_PaletteSpot)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -3762,11 +3753,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for opening a colour palette dialog.'''
 
         try:
-            realRGB, povRGB, hexRGB = self.openColourPicker()
-            if realRGB:
-                self.envColour = povRGB
-                self.preview.lbl_PaletteEnv.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
-                self.preview.le_PaletteEnv.setText(hexRGB)
+            self.openColourPicker(self.envColour, "envColour", self.preview.lbl_PaletteEnv, self.preview.le_PaletteEnv)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -3775,82 +3762,62 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for opening a colour palette dialog.'''
 
         try:
-            realRGB, povRGB, hexRGB = self.openColourPicker()
-            if realRGB:
-                self.bgColour = povRGB
-                self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
-                self.preview.le_PaletteBack.setText(hexRGB)
+            self.openColourPicker(self.bgColour, "bgColour", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def openColourPicker(self):
+    def openColourPicker(self, colourOption, optionStr, label, lineEdit):
         '''Method to open the QColorDialog.'''
 
         try:
-            colour = QColorDialog.getColor()
-            if colour.isValid():
-                return self.convertRGB(colour)
-            else:
-                return False, None, None
+            # Open the colour picker.
+            self.colourDlg = QColorDialog()
+            self.colourDlg.setCurrentColor(colourOption)
+            self.colourDlg.show()
+            self.colourDlg.currentColorChanged.connect(lambda: self.colourSelected(self.colourDlg.currentColor(), optionStr, label, lineEdit))
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def convertRGB(self, realRGB):
-        '''Method that converts standard RGB and output POV-Ray RGB and HTML Hex RGB values'''
+    def colourSelected(self, colour, optionStr, label, lineEdit):
+        '''Method for handling colour selection from within the ColourPicker.'''
 
-        try:
-            realRGB = realRGB.getRgb()[:3]
-            hexRGB = "#%02x%02x%02x" % (realRGB[0], realRGB[1], realRGB[2])
-            povRGB = ""
-            for color in realRGB:
-                if color != 0:
-                    povRGB += str((round(color / float(255), 3))) + ", "
-                else:
-                    povRGB += "0.0, "
-            povRGB = povRGB.rstrip(", ")
+        # Set the class member.
+        setattr(self, optionStr, colour)
 
-            return realRGB, povRGB, hexRGB
-        except Exception as e:
-            handleException(e)
+        # Conver values.
+        realRGB = getattr(self, optionStr).getRgb()
+        hexRGB = "#%02x%02x%02x" % (realRGB[0], realRGB[1], realRGB[2])
+
+        # Apply values to GUI.
+        label.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
+        lineEdit.setText(hexRGB)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def getRGBFromPOV(self, povRGB):
-        '''Method that returns RGB and Hex RGB from a given POV-Ray RGB value'''
+    def convertToPOVRGB(self, colour):
+        '''Method to convert a QColor RGB item into a POV-Ray RGB Item.'''
 
-        try:
-            povRGBList = povRGB.split(",")
-            realRGB = []
-            for colour in povRGBList:
-                realRGB.append(int(float(colour) * 255))
-            hexRGB = "#%02x%02x%02x" % (realRGB[0], realRGB[1], realRGB[2])
-
-            return realRGB, hexRGB
-        except Exception as e:
-            handleException(e)
+        colourPov = []
+        for col in colour.getRgb()[:3]:
+            colourPov.append(col / 255.0)
+        colourPov = str(tuple(colourPov)).replace("(", "").replace(")", "")
+        return colourPov
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetColoursFunc(self):
         '''Method for reseting the preview window colour options.'''
 
         try:
-            self.spotColour = "1, 1, 1"
-            self.envColour = "0.501, 0.462, 0.423"
-            self.bgColour = "0, 0, 0"
-
+            self.spotColour = QColor(255, 255, 255)
+            self.envColour = QColor(128, 118, 108)
+            self.bgColour = QColor(0, 0, 0)
             # Spotlight Colour.
-            realRGB, hexRGB = self.getRGBFromPOV(self.spotColour)
-            self.preview.lbl_PaletteSpot.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
-            self.preview.le_PaletteSpot.setText(hexRGB)
+            self.colourSelected(self.spotColour, "spotColour", self.preview.lbl_PaletteSpot, self.preview.le_PaletteSpot)
             # Environment Colour.
-            realRGB, hexRGB = self.getRGBFromPOV(self.envColour)
-            self.preview.lbl_PaletteEnv.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
-            self.preview.le_PaletteEnv.setText(hexRGB)
+            self.colourSelected(self.envColour, "envColour", self.preview.lbl_PaletteEnv, self.preview.le_PaletteEnv)
             # Background Colour.
-            realRGB, hexRGB = self.getRGBFromPOV(self.bgColour)
-            self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
-            self.preview.le_PaletteBack.setText(hexRGB)
+            self.colourSelected(self.bgColour, "bgColour", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
             self.transparentBG = ""
             self.preview.cb_TransparentBG.setChecked(False)
         except Exception as e:
@@ -3943,8 +3910,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.transparentBG = ""
                 for widget in bgWidgets:
                     widget.setEnabled(True)
-                bgColour, hex = self.getRGBFromPOV(self.bgColour)
-                self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(%s, %s, %s);" % (bgColour[0], bgColour[1], bgColour[2]))
+                self.colourSelected(self.bgColour, "bgColour", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
