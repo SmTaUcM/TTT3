@@ -1113,8 +1113,9 @@ class TTT3(QMainWindow):
                 name = self.name
             else:
                 name = "untitled"
-            saveName, ext = QFileDialog.getSaveFileName(self, "Save Uniform As", "C:\\users\\" +
-                                                        os.getlogin() + "\\Pictures\\%s" % name, "*.png;;*.jpg;;*.gif;;*.bmp", options=options)
+            saveName, ext = QFileDialog.getSaveFileName(
+                self, "Save Uniform As", "C:\\users\\" + os.getlogin() + "\\Pictures\\%s" %
+                name + "_" + self.uniform.title(), "*.png;;*.jpg;;*.gif;;*.bmp", options=options)
             ext = ext.replace("*", "")
             if saveName:
                 saveName = saveName.replace(r"/", "\\") + ext
@@ -1141,8 +1142,15 @@ class TTT3(QMainWindow):
     def convertImage(self, src, ext, dest):
         '''Converts a given .bpf file into .jpg, .gif, .png or .bmp'''
 
+        if self.uniform == "helmet":
+            width = self.widthHelm
+            height = self.heightHelm
+        else:
+            width = self.width
+            height = self.height
+
         img = Image.open(src)
-        new_img = img.resize((self.width, self.height))
+        new_img = img.resize((width, height))
         newFilePath = dest.split(".")[0] + ext
         if ext == ".jpg":
             ext = ".jpeg"
