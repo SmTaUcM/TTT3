@@ -159,7 +159,7 @@ texture
 {
   material_map
   {
-    gif ".\helmet\nametag.gif"
+    png ".\helmet\nametag.png"
     texture 
     { //index 0
       pigment { color rgbt <0, 0, 0, 1> }

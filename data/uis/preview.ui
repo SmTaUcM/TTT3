@@ -940,7 +940,7 @@ QSlider::handle:vertical:hover
       <number>2000</number>
      </property>
      <property name="singleStep">
-      <number>4</number>
+      <number>1</number>
      </property>
      <property name="value">
       <number>-1331</number>
@@ -1517,7 +1517,7 @@ QSlider::handle:vertical:hover
       <number>2000</number>
      </property>
      <property name="singleStep">
-      <number>4</number>
+      <number>1</number>
      </property>
      <property name="value">
       <number>-13</number>
@@ -1741,7 +1741,7 @@ QSlider::handle:vertical:hover
       <number>2000</number>
      </property>
      <property name="singleStep">
-      <number>4</number>
+      <number>1</number>
      </property>
      <property name="value">
       <number>-647</number>
