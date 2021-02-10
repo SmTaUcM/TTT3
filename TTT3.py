@@ -31,7 +31,7 @@ from PyQt5 import uic  # python -m pip install pyqt5
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMenu, QColorDialog  # python -m pip install pyqt5-tools
 from PyQt5.QtGui import QPixmap, QColor
 from PyQt5.QtCore import Qt, QEvent, pyqtSignal
-from PIL import Image  # python -m pip install pillow
+from PIL import Image, ImageDraw, ImageFont  # python -m pip install pillow
 import cv2  # python -m pip install opencv-python
 import numpy
 import platform
@@ -1838,6 +1838,9 @@ color_map
 
     def createHelmetPov(self):
         r'''Method that loads in '\data\helmet.tpt' parses in the correct uniform data and creates a new 'data\helmet.pov' file.'''
+
+        # Create the Pilot Helmet nametag.
+        self.createHelmetNameTag()
 
         # Read in the template data.
         with open(r"data\helmet.tpt", "r") as tptFile:
@@ -4127,6 +4130,46 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def createHelmetNameTag(self):
+        '''Method for creating nametag.png which is used to diasply the name on the pilot helmet.'''
+
+        # Set the helmet's text.
+        if self.name == "Unknown":
+            text = "EH TC"
+        else:
+            text = self.name
+
+        # Local variables.
+        width, height = 720, 264
+        fontsize = 1  # Starting font size.
+        fnt = ImageFont.truetype("/Library/Fonts/impact.ttf", fontsize)
+        img_fraction = 0.97  # Portion of image width you want text width to be.
+
+        # Create the image.
+        img = Image.new('RGB', (width, height), color=(0, 0, 0))
+        imgOut = ImageDraw.Draw(img)
+
+        # Scale the text font.
+        if len(text) > 6:
+            while fnt.getsize(text)[0] < img_fraction * img.size[0]:
+                # Iterate until the text size is just larger than the criteria.
+                fontsize += 1
+                fnt = ImageFont.truetype("/Library/Fonts/impact.ttf", fontsize)  # TODO Helmet font selection.
+
+            # De-increment to be sure it is less than criteria.
+            fontsize -= 1
+            fnt = ImageFont.truetype("/Library/Fonts/impact.ttf", fontsize)
+
+        else:
+            fontsize = 220
+            fnt = ImageFont.truetype("/Library/Fonts/impact.ttf", fontsize)
+
+        w, h = imgOut.textsize(text, font=fnt)
+        h += int(h * 0.21)
+        imgOut.text(((width - w) / 2, (height - h) / 2), text, font=fnt, fill=(255, 255, 255))
+        img.save(os.getcwd() + "\\data\\helmet\\" + "nametag.png")
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
