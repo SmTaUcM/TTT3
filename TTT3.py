@@ -964,6 +964,9 @@ class TTT3(QMainWindow):
 
             elif self.uniform == "helmet":
                 self.createHelmetPov()
+        else:
+            self.preview.btn_raytrace.setEnabled(False)
+            self.preview.btn_preview.setEnabled(False)
 
         if self.uniform == "dress":
             width = self.width
@@ -1038,6 +1041,8 @@ class TTT3(QMainWindow):
             # Show the output GUI.
             self.showOutputDialog(self.uniform)
         else:
+            self.preview.btn_preview.setEnabled(True)
+            self.preview.btn_raytrace.setEnabled(True)
             self.showPreviewImage()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -1447,7 +1452,6 @@ class TTT3(QMainWindow):
             elif "&EE&" in line:
                 if self.eeCount >= 3:
                     povData.append(line.replace("&EE&", "#declare prae = 1;"))
-                    self.eeCount = 0
                     self.gui.label_11.setText("AD Turtle Jerrar,")
                     self.gui.label_11.setStyleSheet("")
 
@@ -1953,19 +1957,19 @@ color_map
                 povData.append(line.replace("&DECOCOLOUR&", "0.125, 0.125, 0.125"))  # TODO Deco Colour
 
             elif "&LOGO1STENCIL&" in line:
-                povData.append(line.replace("&LOGO1STENCIL&", r'gif ".\misc\implogo.gif"'))  # TODO Helmet Logo Stencil 1
+                povData.append(line.replace("&LOGO1STENCIL&", r'gif "misc/implogo.gif"'))  # TODO Helmet Logo Stencil 1
 
             elif "&LOGO1PIGMENT&" in line:
                 povData.append(line.replace("&LOGO1PIGMENT&", "color rgb <0.125, 0.125, 0.125>"))  # TODO TODO Helmet Logo 1 Pigment
 
             elif "&LOGO2STENCIL&" in line:
-                povData.append(line.replace("&LOGO2STENCIL&", r'gif ".\helmet\fallback_mask.gif"'))  # TODO Helmet Logo Stencil 2
+                povData.append(line.replace("&LOGO2STENCIL&", r'gif "helmet/fallback_mask.gif"'))  # TODO Helmet Logo Stencil 2
 
             elif "&LOGO2PIGMENT&" in line:
                 povData.append(
                     line.replace(
                         "&LOGO2PIGMENT&",
-                        r'image_map { png ".\helmet\fallback.png" interpolate 2 }'))  # TODO TODO Helmet Logo 2 Pigment
+                        r'image_map { png "helmet/fallback.png" interpolate 2 }'))  # TODO TODO Helmet Logo 2 Pigment
 
             elif "&HOMOGENOUS&" in line:
                 povData.append(line.replace("&HOMOGENOUS&", "P_plane"))  # TODO Helmet Homogenous
@@ -2260,7 +2264,7 @@ color_map
             # Ranged ribbons like the OV.
             if self.ribbonConfig.get(ribbon, "type") == "ranged":
 
-                # Create the required inclide declarations for 'ribbons_g.inc'
+                # Create the required include declarations for 'ribbons_g.inc'
                 rangeMin = int(self.ribbonConfig.get(ribbon, "rangeMin"))
                 rangeMax = int(self.ribbonConfig.get(ribbon, "rangeMax"))
 
@@ -2309,7 +2313,7 @@ color_map
         includeTemplate = """#declare T_r_%s =
 texture
 {
-  pigment { image_map { gif ".\\ribbons\\%s" } }
+  pigment { image_map { gif "ribbons/%s" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)

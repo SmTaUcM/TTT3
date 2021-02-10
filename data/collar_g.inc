@@ -121,6 +121,7 @@ finish
   specular 0.4
   roughness 0.1
   reflection 0.05
+  emission 0
 }
 
 #declare pig_T_collar =
@@ -136,13 +137,13 @@ texture
 {
   material_map
   {
-    gif ".\collars\COM.gif"
+    gif "collars/COM.gif"
     once
     interpolate 2
     texture
     { //index 0
       pigment { color rgbt <0, 0, 0, 1> }
-      finish  { ambient 1 }
+      finish  { ambient 1 emission 0 }
     }
     texture
     { //index 1
@@ -152,7 +153,7 @@ texture
       {
         bump_map
         {
-          gif ".\collars\COM.gif"
+          gif "collars/COM.gif"
           once
           bump_size 2
         }
@@ -166,13 +167,13 @@ texture
 {
   material_map
   {
-    gif ".\collars\TCCS.gif"
+    gif "collars/TCCS.gif"
     once
     interpolate 2
     texture
     { //index 0
       pigment { color rgbt <0, 0, 0, 1> }
-      finish  { ambient 1 }
+      finish  { ambient 1 emission 0 }
     }
     texture
     { //index 1
@@ -182,7 +183,7 @@ texture
       {
         bump_map
         {
-          gif ".\collars\TCCS.gif"
+          gif "collars/TCCS.gif"
           once
           bump_size 2
         }
@@ -196,13 +197,13 @@ texture
 {
   material_map
   {
-    gif ".\collars\CA_IA_SGCOM.gif"
+    gif "collars/CA_IA_SGCOM.gif"
     once
     interpolate 2
     texture
     { //index 0
       pigment { color rgbt <0, 0, 0, 1> }
-      finish  { ambient 1 }
+      finish  { ambient 1 emission 0}
     }
     texture
     { //index 1
@@ -212,7 +213,7 @@ texture
       {
         bump_map
         {
-          gif ".\collars\CA_IA_SGCOM.gif"
+          gif "collars/CA_IA_SGCOM.gif"
           once
           bump_size 2
         }
@@ -226,13 +227,13 @@ texture
 {
   material_map
   {
-    gif ".\collars\CS.gif"
+    gif "collars/CS.gif"
     once
     interpolate 2
     texture
     { //index 0
       pigment { color rgbt <0, 0, 0, 1> }
-      finish  { ambient 1 }
+      finish  { ambient 1 emission 0}
     }
     texture
     { //index 1
@@ -242,7 +243,7 @@ texture
       {
         bump_map
         {
-          gif ".\collars\CS.gif"
+          gif "collars/CS.gif"
           once
           bump_size 2
         }
@@ -256,13 +257,13 @@ texture
 {
   material_map
   {
-    gif ".\collars\FC.gif"
+    gif "collars/FC.gif"
     once
     interpolate 2
     texture
     { //index 0
       pigment { color rgbt <0, 0, 0, 1> }
-      finish  { ambient 1 }
+      finish  { ambient 1 emission 0}
     }
     texture
     { //index 1
@@ -272,7 +273,7 @@ texture
       {
         bump_map
         {
-          gif ".\collars\FC.gif"
+          gif "collars/FC.gif"
           once
           bump_size 2
         }

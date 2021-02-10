@@ -38,6 +38,7 @@ finish
   ambient rgb 0.3
   metallic
   specular 0.6
+  emission 0
 }
 
 #declare T_body = 

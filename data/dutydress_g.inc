@@ -23,7 +23,7 @@
     {
       <0,0,0>, 5000
       pigment { color rgb bg }    
-      finish  { ambient 1 diffuse 1 }
+      finish  { ambient 1 diffuse 1 emission 0 }
       no_reflection
       no_shadow   
       inverse
@@ -42,12 +42,12 @@ sphere
   {
     image_map
     {
-      jpeg ".\misc\refmap.jpg" 
+      jpeg "misc/refmap.jpg" 
       map_type 1
       interpolate 2
     }
   }
-  finish  { ambient 1 diffuse 1 }
+  finish  { ambient 1 diffuse 1 emission 0 }
   no_image
   no_shadow   
   inverse
@@ -92,6 +92,7 @@ finish
   ambient 0.3
   diffuse 0.6 
   specular 0.02
+  emission 0
 }   
 
 #declare norm_T_uni = 
@@ -99,7 +100,7 @@ normal
 {
   bump_map
   {
-    jpeg ".\misc\unibump.jpg"
+    jpeg "misc/unibump.jpg"
     bump_size 1.4
   }
 }
@@ -146,8 +147,10 @@ finish
   ambient 0.6
   specular 0.6 
   roughness 0.05 
-  brilliance 5   
+  brilliance 5  
+  emission 0  
   reflection
+  
   {
     0.45
     metallic  
@@ -181,6 +184,7 @@ texture
     ambient 0.3
     diffuse 0.6
     specular 0.2
+	emission 0
   }
 }
 
@@ -197,6 +201,7 @@ finish
   ambient rgb 0.3
   metallic
   specular 0.6
+  emission 0
 }
 
 #declare T_panel = 
@@ -218,6 +223,7 @@ finish
   ambient rgb 0.7
   specular 0.1
   diffuse 0.5
+  emission 0
 }
 
 #declare T_rankblue = 

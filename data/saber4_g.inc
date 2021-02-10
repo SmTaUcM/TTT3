@@ -15,7 +15,8 @@ finish
   ambient 0.6
   specular 0.6 
   roughness 0.05 
-  brilliance 5   
+  brilliance 5 
+  emission 0  
   reflection
   {
     0.1

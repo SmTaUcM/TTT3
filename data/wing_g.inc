@@ -12,7 +12,7 @@
 #declare T_echelon1 =
 texture
 {
-  pigment { image_map { gif ".\wings\01.gif" } }
+  pigment { image_map { gif "wings/01.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
@@ -20,7 +20,7 @@ texture { T_unilayer scale 2}
 #declare T_echelon2 =
 texture
 {
-  pigment { image_map { gif ".\wings\02.gif" } }
+  pigment { image_map { gif "wings/02.gif" } }
   finish  { fin_T_uni }
 }
 
@@ -29,7 +29,7 @@ texture { T_unilayer scale 2}
 #declare T_echelon3 =
 texture
 {
-  pigment { image_map { gif ".\wings\03.gif" } }
+  pigment { image_map { gif "wings/03.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
@@ -37,7 +37,7 @@ texture { T_unilayer scale 2}
 #declare T_echelon4 =
 texture
 {
-  pigment { image_map { gif ".\wings\04.gif" } }
+  pigment { image_map { gif "wings/04.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
@@ -45,7 +45,7 @@ texture { T_unilayer scale 2}
 #declare T_echelon5 =
 texture
 {
-  pigment { image_map { gif ".\wings\05.gif" } }
+  pigment { image_map { gif "wings/05.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
@@ -53,7 +53,7 @@ texture { T_unilayer scale 2}
 #declare T_echelon6 =
 texture
 {
-  pigment { image_map { gif ".\wings\06.gif" } }
+  pigment { image_map { gif "wings/06.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
@@ -61,7 +61,7 @@ texture { T_unilayer scale 2}
 #declare T_echelon7 =
 texture
 {
-  pigment { image_map { gif ".\wings\07.gif" } }
+  pigment { image_map { gif "wings/07.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
@@ -69,7 +69,7 @@ texture { T_unilayer scale 2}
 #declare T_echelon8 =
 texture
 {
-  pigment { image_map { gif ".\wings\08.gif" } }
+  pigment { image_map { gif "wings/08.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
@@ -77,7 +77,7 @@ texture { T_unilayer scale 2}
 #declare T_echelon9 =
 texture
 {
-  pigment { image_map { gif ".\wings\09.gif" } }
+  pigment { image_map { gif "wings/09.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
@@ -85,7 +85,7 @@ texture { T_unilayer scale 2}
 #declare T_echelon10 =
 texture
 {
-  pigment { image_map { gif ".\wings\10.gif" } }
+  pigment { image_map { gif "wings/10.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
@@ -93,7 +93,7 @@ texture { T_unilayer scale 2}
 #declare T_echelon11 =
 texture
 {
-  pigment { image_map { gif ".\wings\11.gif" } }
+  pigment { image_map { gif "wings/11.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
@@ -101,7 +101,7 @@ texture { T_unilayer scale 2}
 #declare T_echelon12 =
 texture
 {
-  pigment { image_map { gif ".\wings\12.gif" } }
+  pigment { image_map { gif "wings/12.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
@@ -109,7 +109,7 @@ texture { T_unilayer scale 2}
 #declare T_echelon13 =
 texture
 {
-  pigment { image_map { gif ".\wings\13.gif" } }
+  pigment { image_map { gif "wings/13.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
@@ -117,7 +117,7 @@ texture { T_unilayer scale 2}
 #declare T_echelon14 =
 texture
 {
-  pigment { image_map { gif ".\wings\14.gif" } }
+  pigment { image_map { gif "wings/14.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
@@ -125,7 +125,7 @@ texture { T_unilayer scale 2}
 #declare T_echelon15 =
 texture
 {
-  pigment { image_map { gif ".\wings\15.gif" } }
+  pigment { image_map { gif "wings/15.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
@@ -133,7 +133,7 @@ texture { T_unilayer scale 2}
 #declare T_echelon16 =
 texture
 {
-  pigment { image_map { gif ".\wings\16.gif" } }
+  pigment { image_map { gif "wings/16.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
@@ -141,7 +141,7 @@ texture { T_unilayer scale 2}
 #declare T_echelon17 =
 texture
 {
-  pigment { image_map { gif ".\wings\17.gif" } }
+  pigment { image_map { gif "wings/17.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
@@ -149,7 +149,7 @@ texture { T_unilayer scale 2}
 #declare T_echelon18 =
 texture
 {
-  pigment { image_map { gif ".\wings\18.gif" } }
+  pigment { image_map { gif "wings/18.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
@@ -157,7 +157,7 @@ texture { T_unilayer scale 2}
 #declare T_echelon19 =
 texture
 {
-  pigment { image_map { gif ".\wings\19.gif" } }
+  pigment { image_map { gif "wings/19.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
@@ -165,7 +165,7 @@ texture { T_unilayer scale 2}
 #declare T_echelon20 =
 texture
 {
-  pigment { image_map { gif ".\wings\20.gif" } }
+  pigment { image_map { gif "wings/20.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
@@ -173,7 +173,7 @@ texture { T_unilayer scale 2}
 #declare T_echelon21 =
 texture
 {
-  pigment { image_map { gif ".\wings\21.gif" } }
+  pigment { image_map { gif "wings/21.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}

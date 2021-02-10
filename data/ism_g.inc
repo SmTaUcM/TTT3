@@ -16,7 +16,7 @@
 #declare T_ism = 
 texture
 {
-  pigment { image_map { gif ".\medals\ism.gif" } }
+  pigment { image_map { gif "medals/ism.gif" } }
   finish  { fin_T_uni } 
 }
 texture { T_unilayer }    

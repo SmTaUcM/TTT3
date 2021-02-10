@@ -3,12 +3,12 @@
 // GLOBAL
 
 
-#version 3.6;
+#version 3.7;
 &BGCOLOUR&
 global_settings
-{       
+{ 
+  assumed_gamma 2  
   ambient_light color rgb <0.5, 0.5, 0.5>
-  charset ascii
 }
 
 

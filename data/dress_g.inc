@@ -17,7 +17,7 @@ normal
 {
   bump_map
   {
-    jpeg ".\misc\unibump.jpg"
+    jpeg "misc/unibump.jpg"
     #if (strcmp (rank, "GA")) bump_size 1.4
     #else bump_size 1
     #end
@@ -65,6 +65,7 @@ finish
   specular 0.3
   roughness 0.2
   reflection 0.1
+  emission 0
 }
 
 #declare norm_T_cuffs =
@@ -87,7 +88,7 @@ texture
     texture
     { //index 0
       pigment { color rgbt <0, 0, 0, 1> }
-      finish  { ambient 1 }
+      finish  { ambient 1 emission 0}
     }
     texture
     { //index 1
@@ -119,6 +120,7 @@ finish
   specular 0.12
   roughness 0.2
   reflection 0.1
+  emission 0
 }
 
 #declare norm_T_trim =
@@ -243,12 +245,12 @@ texture
 {
   material_map
   {
-    gif ".\misc\ehtc.gif"
+    gif "misc/ehtc.gif"
     once
     texture
     { //index 0
       pigment { color rgbt <0, 0, 0, 1> }
-      finish  { ambient 1 }
+      finish  { ambient 1 emission 0 }
     }
     texture
     { //index 1
@@ -337,7 +339,7 @@ texture
     texture
     { //index 0
       pigment { color rgbt <0, 0, 0, 1> }
-      finish  { ambient 1 }
+      finish  { ambient 1 emission 0 }
     }
     texture
     { //index 1
@@ -358,6 +360,7 @@ finish
   ambient 0.3
   metallic
   specular 0.5
+  emission 0
 }
 
 #declare T_blackmetal =
@@ -455,6 +458,7 @@ finish
   ambient 0.3
   specular 0.05
   roughness 0.6
+  emission 0
 }
 
 #declare T_black =
@@ -482,7 +486,7 @@ texture
   {
     image_map
     {
-      gif ".\medals\goe.gif"
+      gif "medals/goe.gif"
     }
   }
   finish  { fin_T_uni }
@@ -496,7 +500,7 @@ texture
   {
     image_map
     {
-      gif ".\medals\ic.gif"
+      gif "medals/ic.gif"
     }
   }
   finish  { fin_T_uni }

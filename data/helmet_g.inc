@@ -21,7 +21,7 @@
   {
     <0,0,0>, 5000
     pigment { color rgb bg }    
-    finish  { ambient 1 diffuse 1}
+    finish  { ambient 1 diffuse 1 emission 0}
     no_reflection
     no_shadow   
     inverse
@@ -66,6 +66,7 @@ texture
     specular 0.70
     roughness 1/60
     reflection 0.25
+	emission 0
   }
 }
 
@@ -92,6 +93,7 @@ texture // hoses
     diffuse 0.4
     phong 0.08
     phong_size 40.0
+	emission 0
   }
 }
 

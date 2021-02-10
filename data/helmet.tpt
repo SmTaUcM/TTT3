@@ -3,12 +3,12 @@
 // GLOBAL
 
 
-#version 3.6;
+#version 3.7;
 &BGCOLOUR&
 global_settings
 {
+  assumed_gamma 2  
   ambient_light color rgb <0.4, 0.4, 0.4>
-  charset ascii       // standard ascii (only 0 to 127 are valid)
 }
 
 
@@ -57,6 +57,7 @@ finish
   specular &SPECULAR&
   roughness &ROUGHNESS&
   reflection &REFLECTION&
+  emission 0
 }
     
 
@@ -65,7 +66,7 @@ texture
 {
   material_map
   {
-    gif ".\helmet\helmet.gif"
+    gif "helmet/helmet.gif"
     texture 
     { //index 0
       pigment { color rgb <0.05, 0.05, 0.05> }
@@ -77,6 +78,7 @@ texture
         roughness 0.025
         reflection 0.3
         brilliance 10
+		emission 0
       }
     }
     texture 
@@ -85,7 +87,7 @@ texture
       {
         image_map
         {
-          sys ".\helmet\helmtex.bmp"
+          sys "helmet/helmtex.bmp"
         }
       }
       finish  { fin_T_helmet } 
@@ -99,11 +101,11 @@ texture
 {
   material_map
   {
-    gif ".\helmet stripes\&POSRANKFILE&.gif"
+    gif "helmet stripes/&POSRANKFILE&.gif"
     texture 
     { //index 0
       pigment { color rgbt <0, 0, 0, 1> }
-      finish  { ambient 1 }
+      finish  { ambient 1 emission 0 }
     }
     texture 
     { //index 1
@@ -123,7 +125,7 @@ texture
     texture 
     { //index 0
       pigment { color rgbt <0, 0, 0, 1> }
-      finish  { ambient 1 }
+      finish  { ambient 1 emission 0 }
     }
     texture 
     { //index 1
@@ -143,7 +145,7 @@ texture
     texture 
     { //index 0
       pigment { color rgbt <0, 0, 0, 1> }
-      finish  { ambient 1 }
+      finish  { ambient 1 emission 0 }
     }
     texture 
     { //index 1
@@ -159,11 +161,11 @@ texture
 {
   material_map
   {
-    png ".\helmet\nametag.png"
+    png "helmet/nametag.png"
     texture 
     { //index 0
       pigment { color rgbt <0, 0, 0, 1> }
-      finish  { ambient 1 }
+      finish  { ambient 1 emission 0 }
     }
     texture 
     { //index 1
