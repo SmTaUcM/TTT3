@@ -3634,17 +3634,24 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         # Fleet data updates.
         try:
+            self.updateMsg = ""
             apiFleetData = self.getRetrieveAPIData(self.config.get("TCDB", "fleetapi"), "")
 
             if "error" in apiFleetData.keys():
                 self.updateProgressBar.emit("code400", 0)
+                self.updateMsg += "Checking for updates failed.\nInvalid connection to www.emperorshammer.org or bad 'fleetapi' TTT3.ini setting.\n"
+                self.updateProgressBar.emit("message", None)
 
             else:
                 # Update the locally stored flee.json file and load the downloaded settings.
+                self.updateMsg += "Successful connection to www.emperorshammer.org...\n"
                 if self.fleetConfig != apiFleetData:
                     with open(os.getcwd() + "\\settings\\fleet.json", "w") as fleetDataFile:
                         fleetDataFile.write(json.dumps(apiFleetData))
                     self.loadFleetData()
+                    self.updateMsg += "New TIE Corps fleet structure successfully downloaded.\n"
+                else:
+                    self.updateMsg += "TIE Corps fleet structure already up to date.\n"
 
                 # Squadron Patch checks.
                 dbSqnList = []
@@ -3677,12 +3684,14 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                     if hash != dbPatchHash:
                                         self.updateProgressBar.emit("show", 0)
                                         self.downloadPatchFile(dbSqnName, dbPatchURL)
+                                        self.updateMsg += "Downloaded updated squadron patch for %s squadron.\n" % dbSqnName
                                         break
 
                         # Download missing patches.
                         if not squadFound:
                             self.updateProgressBar.emit("show", 0)
                             self.downloadPatchFile(dbSqnName, dbPatchURL)
+                            self.updateMsg += "Downloaded new squadron patch for %s squadron.\n" % dbSqnName
 
                 # Remove redundant patch files that are no longer in use.
                 for root, dirs, files in os.walk(os.getcwd() + "\\data\\squads\\", topdown=False):
@@ -3694,9 +3703,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         if not sqnFound:
                             os.remove(os.getcwd() + "\\data\\squads\\" + name)
                 self.updateProgressBar.emit("complete", 0)
+                self.updateProgressBar.emit("message", None)
 
         except urllib3.exceptions.MaxRetryError:
             self.updateProgressBar.emit("error", 0)
+            self.updateMsg += "Checking for updates failed.\nNo internet connection.\n"
+            self.updateProgressBar.emit("message", None)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def downloadPatchFile(self, name, url):
@@ -3760,6 +3772,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.gui.pb_update.setStyleSheet(r"background-color: rgb(170, 0, 0);border-color: rgb(170, 0, 0);text-align: right;")
                 self.gui.pb_update.show()
                 self.gui.lbl_update.show()
+
+            elif type == "message":
+                self.writeToImportTextBox(self.updateMsg)
 
             else:
                 self.gui.lbl_update.setText("Downloading patch data for %s squadron..." % type)
