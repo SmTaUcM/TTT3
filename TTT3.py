@@ -1082,6 +1082,19 @@ class TTT3(QMainWindow):
         # Load our GUI file 'data\uis\output.ui'
         self.output_gui = uic.loadUi(r"data\uis\output.ui")
         self.output_gui.lbl_output.setPixmap(QPixmap(self.imagePath))
+        if self.uniform == "helmet":
+            helmetHeight = 548
+            yOffset = 305
+            self.output_gui.lbl_output.setMinimumHeight(helmetHeight)
+            self.output_gui.lbl_output.setMaximumHeight(helmetHeight)
+            self.output_gui.groupBox.setMinimumHeight(self.output_gui.groupBox.height() - yOffset)
+            self.output_gui.groupBox.setMaximumHeight(self.output_gui.groupBox.height() - yOffset)
+            self.output_gui.setMinimumHeight(self.output_gui.height() - yOffset)
+            self.output_gui.setMaximumHeight(self.output_gui.height() - yOffset)
+            for button in [self.output_gui.btn_saveAs, self.output_gui.btn_upload, self.output_gui.btn_close]:
+                pos = button.pos()
+                pos.setY(pos.y() - yOffset)
+                button.move(pos)
         self.output_gui.show()
         self.output_gui.btn_upload.setEnabled(False)  # TODO Upload to TC Database buttton disabled UTFN.
         self.output_gui.btn_saveAs.clicked.connect(self.btn_saveAsFunc)
