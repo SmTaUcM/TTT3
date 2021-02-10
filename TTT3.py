@@ -408,8 +408,13 @@ class TTT3(QMainWindow):
             rank.hide()
 
         # Add the Ships to the Ships list view.
-        for ship in self.fleetConfig.get("ships"):
-            self.gui.lw_ship.addItem(ship.get("nameShort"))
+        try:
+            for ship in self.fleetConfig.get("ships"):
+                self.gui.lw_ship.addItem(ship.get("nameShort"))
+        except AttributeError:
+            time.sleep(2)  # Allow time for the checkUpdates thread to download a new fleet definition.
+            for ship in self.fleetConfig.get("ships"):
+                self.gui.lw_ship.addItem(ship.get("nameShort"))
 
         # Load Medal and Ribbon data.
         self.loadMedals()
