@@ -193,7 +193,7 @@ object{ P_jawlogo no_shadow }
 object{ P_nametag no_shadow }
 object{ P_hoses }
 object{ P_mohawk no_shadow }
-object{ &HOMOGENOUS& }   
+&HOMOGENOUS&  
  
  
 //TTT3HELMETPOVEOF

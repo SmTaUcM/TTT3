@@ -235,6 +235,7 @@ class TTT3(QMainWindow):
             self.lightX = 1519
             self.lightY = -647
             self.lightZ = 1750
+            self.bgColourHelm = QColor(69, 79, 112)
             self.widthHelm = 640
             self.heightHelm = 548
             self.qualityHelm = 5
@@ -828,7 +829,7 @@ class TTT3(QMainWindow):
         self.renderPreview()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def showPreviewHelmDialog(self):
+    def showPreviewHelmDialog(self):  # Bookmark
         '''Method to open the render preview / options GUI.'''
 
         # Load our GUI file 'data\uis\preview.ui'.
@@ -839,15 +840,15 @@ class TTT3(QMainWindow):
         self.preview.closeEvent = self.previewCloseEvent
         self.gui.hide()
 
-# Apply setttings.
-# self.applyPreviewSettings()
+        # Apply setttings.
+        self.applyPreviewSettings()
 
         # Connections.
         self.preview.btn_raytrace.clicked.connect(self.launchPOVRay)
-# self.preview.btn_preview.clicked.connect(self.renderPreview)
+        self.preview.btn_preview.clicked.connect(self.renderPreview)
 # self.preview.btn_PaletteSpot.clicked.connect(self.btn_PaletteSpotFunc)
 # self.preview.btn_PaletteEnv.clicked.connect(self.btn_PaletteEnvFunc)
-# self.preview.btn_PaletteBack.clicked.connect(self.btn_PaletteBackFunc)
+        self.preview.btn_PaletteBack.clicked.connect(self.btn_PaletteBackFunc)
 # self.preview.btn_resetColours.clicked.connect(self.btn_previewResetColoursFunc)
 # self.preview.sb_Width.valueChanged.connect(self.sb_previewWidthFunc)
 # self.preview.btn_resetOptions.clicked.connect(self.btn_previewResetOptionsFunc)
@@ -856,7 +857,7 @@ class TTT3(QMainWindow):
 # self.preview.cb_AA.stateChanged.connect(self.cb_previewAAFunc)
 # self.preview.cb_Shadowless.stateChanged.connect(self.cb_previewShadowlessFunc)
 # self.preview.cb_Mosaic.stateChanged.connect(self.cb_previewMosaicFunc)
-# self.preview.cb_TransparentBG.stateChanged.connect(self.cb_previewTransparentFunc)
+        self.preview.cb_TransparentBG.stateChanged.connect(self.cb_previewTransparentFunc)
 # self.preview.vs_CamX.valueChanged.connect(self.vs_previewCamXFunc)
 # self.preview.vs_CamY.valueChanged.connect(self.vs_previewCamYFunc)
 # self.preview.vs_CamZ.valueChanged.connect(self.vs_previewCamZFunc)
@@ -879,41 +880,78 @@ class TTT3(QMainWindow):
     def applyPreviewSettings(self):
         '''Method to apply the currently loaded preview settings.'''
 
-        # Colours.
-        # Spotlight Colour.
-        self.colourSelected(self.spotColour, "spotColour", self.preview.lbl_PaletteSpot, self.preview.le_PaletteSpot)
-        # Environment Colour.
-        self.colourSelected(self.envColour, "envColour", self.preview.lbl_PaletteEnv, self.preview.le_PaletteEnv)
-        # Background Colour.
-        self.colourSelected(self.bgColour, "bgColour", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
-        # POV-Ray Options.
-        # Resolution.
-        self.preview.sb_Width.setValue(self.width)
-        self.preview.le_Height.setText(str(self.height))
-        # Quality.
-        self.preview.sb_Quality.setValue(self.quality)
-        # Cloth.
-        self.preview.cb_Detail.setCurrentIndex(self.clothDetail)
-        # Checkboxes.
-        self.preview.cb_AA.setChecked(self.antiAliasing)
-        self.preview.cb_Shadowless.setChecked(self.shadowless)
-        self.preview.cb_Mosaic.setChecked(self.mosaicPreview)
-        if self.transparentBG == " +UA":
-            self.preview.cb_TransparentBG.setChecked(True)
-            self.cb_previewTransparentFunc(2)
-        else:
-            self.preview.cb_TransparentBG.setChecked(False)
-            self.cb_previewTransparentFunc(0)
-        # Slider Bars
-        self.preview.vs_CamX.setValue(self.camX)
-        self.preview.vs_CamY.setValue(self.camY)
-        self.preview.vs_CamZ.setValue(self.camZ)
-        self.preview.vs_LookX.setValue(self.lookX)
-        self.preview.vs_LookY.setValue(self.lookY)
-        self.preview.vs_LookZ.setValue(self.lookZ)
-        self.preview.vs_LightX.setValue(self.lightX)
-        self.preview.vs_LightY.setValue(self.lightY)
-        self.preview.vs_LightZ.setValue(self.lightZ)
+        if self.uniform != "helmet":
+            # Colours.
+            # Spotlight Colour.
+            self.colourSelected(self.spotColour, "spotColour", self.preview.lbl_PaletteSpot, self.preview.le_PaletteSpot)
+            # Environment Colour.
+            self.colourSelected(self.envColour, "envColour", self.preview.lbl_PaletteEnv, self.preview.le_PaletteEnv)
+            # Background Colour.
+            self.colourSelected(self.bgColour, "bgColour", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
+            # POV-Ray Options.
+            # Resolution.
+            self.preview.sb_Width.setValue(self.width)
+            self.preview.le_Height.setText(str(self.height))
+            # Quality.
+            self.preview.sb_Quality.setValue(self.quality)
+            # Cloth.
+            self.preview.cb_Detail.setCurrentIndex(self.clothDetail)
+            # Checkboxes.
+            self.preview.cb_AA.setChecked(self.antiAliasing)
+            self.preview.cb_Shadowless.setChecked(self.shadowless)
+            self.preview.cb_Mosaic.setChecked(self.mosaicPreview)
+            if self.transparentBG == " +UA":
+                self.preview.cb_TransparentBG.setChecked(True)
+                self.cb_previewTransparentFunc(2)
+            else:
+                self.preview.cb_TransparentBG.setChecked(False)
+                self.cb_previewTransparentFunc(0)
+            # Slider Bars
+            self.preview.vs_CamX.setValue(self.camX)
+            self.preview.vs_CamY.setValue(self.camY)
+            self.preview.vs_CamZ.setValue(self.camZ)
+            self.preview.vs_LookX.setValue(self.lookX)
+            self.preview.vs_LookY.setValue(self.lookY)
+            self.preview.vs_LookZ.setValue(self.lookZ)
+            self.preview.vs_LightX.setValue(self.lightX)
+            self.preview.vs_LightY.setValue(self.lightY)
+            self.preview.vs_LightZ.setValue(self.lightZ)
+        else:  # Bookmark
+            # Colours.
+            # Spotlight Colour.
+            ##            self.colourSelected(self.spotColour, "spotColour", self.preview.lbl_PaletteSpot, self.preview.le_PaletteSpot)
+            # Environment Colour.
+            ##            self.colourSelected(self.envColour, "envColour", self.preview.lbl_PaletteEnv, self.preview.le_PaletteEnv)
+            # Background Colour.
+            self.colourSelected(self.bgColourHelm, "bgColourHelm", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
+            # POV-Ray Options.
+            # Resolution.
+# self.preview.sb_Width.setValue(self.width)
+# self.preview.le_Height.setText(str(self.height))
+            # Quality.
+# self.preview.sb_Quality.setValue(self.quality)
+            # Cloth.
+# self.preview.cb_Detail.setCurrentIndex(self.clothDetail)
+            # Checkboxes.
+# self.preview.cb_AA.setChecked(self.antiAliasing)
+# self.preview.cb_Shadowless.setChecked(self.shadowless)
+# self.preview.cb_Mosaic.setChecked(self.mosaicPreview)
+            if self.transparentBG == " +UA":
+                self.preview.cb_TransparentBG.setChecked(True)
+                self.cb_previewTransparentFunc(2)
+            else:
+                self.preview.cb_TransparentBG.setChecked(False)
+                self.cb_previewTransparentFunc(0)
+            # Slider Bars
+# self.preview.vs_CamX.setValue(self.camX)
+# self.preview.vs_CamY.setValue(self.camY)
+# self.preview.vs_CamZ.setValue(self.camZ)
+# self.preview.vs_LookX.setValue(self.lookX)
+# self.preview.vs_LookY.setValue(self.lookY)
+# self.preview.vs_LookZ.setValue(self.lookZ)
+# self.preview.vs_LightX.setValue(self.lightX)
+# self.preview.vs_LightY.setValue(self.lightY)
+# self.preview.vs_LightZ.setValue(self.lightZ)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def renderPreview(self):
@@ -1845,7 +1883,7 @@ color_map
             povFile.writelines(povData)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def createHelmetPov(self):
+    def createHelmetPov(self):  # Bookmark
         r'''Method that loads in '\data\helmet.tpt' parses in the correct uniform data and creates a new 'data\helmet.pov' file.'''
 
         # Create the Pilot Helmet nametag.
@@ -1909,10 +1947,10 @@ color_map
 
             # ----- Global. -----
             if "&BGCOLOUR&" in line:
-                # if self.transparentBG == "":
-                # povData.append(line.replace("&BGCOLOUR&", "#declare bg = <%s>;" % self.bgColour))
-                # else:
-                povData.append(line.replace("&BGCOLOUR&", "#declare bg = <0.270, 0.309, 0.439>;"))  # TODO Helmet Background Colour
+                if self.transparentBG == "":
+                    povData.append(line.replace("&BGCOLOUR&", "#declare bg = <%s>;" % self.convertToPOVRGB(self.bgColourHelm)))
+                else:
+                    povData.append(line.replace("&BGCOLOUR&", ""))
 
             # ----- Light. -----
 
@@ -1977,7 +2015,10 @@ color_map
                         r'image_map { png "helmet/fallback.png" interpolate 2 }'))  # TODO TODO Helmet Logo 2 Pigment
 
             elif "&HOMOGENOUS&" in line:
-                povData.append(line.replace("&HOMOGENOUS&", "P_plane"))  # TODO Helmet Homogenous
+                if self.transparentBG == "":
+                    povData.append(line.replace("&HOMOGENOUS&", "object{ P_plane }"))  # TODO Helmet Homogenous
+                else:
+                    povData.append(line.replace("&HOMOGENOUS&", ""))
 
             # ----- Non-Editable Data. -----
             else:
@@ -3810,7 +3851,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for opening a colour palette dialog.'''
 
         try:
-            self.openColourPicker(self.bgColour, "bgColour", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
+            if self.uniform != "helmet":
+                self.openColourPicker(self.bgColour, "bgColour", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
+            else:
+                self.openColourPicker(self.bgColourHelm, "bgColourHelm", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -3954,11 +3998,16 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 for widget in bgWidgets:
                     widget.setEnabled(False)
                 self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(211, 211, 211);")
+                # TODO Turn off homo for helmet.
             else:
                 self.transparentBG = ""
                 for widget in bgWidgets:
                     widget.setEnabled(True)
-                self.colourSelected(self.bgColour, "bgColour", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
+                if self.uniform != "helmet":
+                    self.colourSelected(self.bgColour, "bgColour", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
+                else:
+                    self.colourSelected(self.bgColourHelm, "bgColourHelm", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
+                # TODO Turn on homo for helmet if previously selected.
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#

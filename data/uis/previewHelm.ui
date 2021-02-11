@@ -821,7 +821,7 @@ QSpinBox:!enabled
       <rect>
        <x>8</x>
        <y>100</y>
-       <width>121</width>
+       <width>151</width>
        <height>17</height>
       </rect>
      </property>
