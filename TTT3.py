@@ -31,7 +31,7 @@ from PyQt5 import uic  # python -m pip install pyqt5
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMenu, QColorDialog  # python -m pip install pyqt5-tools
 from PyQt5.QtGui import QPixmap, QColor
 from PyQt5.QtCore import Qt, QEvent, pyqtSignal
-from PIL import Image, ImageDraw, ImageFont  # python -m pip install pillow
+from PIL import Image, ImageDraw, ImageFont, ImageOps  # python -m pip install pillow
 import cv2  # python -m pip install opencv-python
 import numpy
 import platform
@@ -235,10 +235,11 @@ class TTT3(QMainWindow):
             self.lightX = 1519
             self.lightY = -647
             self.lightZ = 1750
-            self.bgColourHelm = QColor(69, 79, 112)
+            self.helmColour = QColor(10, 10, 10)
+            self.bgColourHelm = QColor(69, 79, 112) # Bookmark
             self.widthHelm = 640
             self.heightHelm = 548
-            self.qualityHelm = 5
+            self.qualityHelm = 9
 
             # PovRay Template Constants.
             self.RANK_OFFSET_RIBBONS_00_TO_08 = ["-18.8939990997314,0.351000010967255,7.92899990081787",  # Rotate
@@ -846,13 +847,13 @@ class TTT3(QMainWindow):
         # Connections.
         self.preview.btn_raytrace.clicked.connect(self.launchPOVRay)
         self.preview.btn_preview.clicked.connect(self.renderPreview)
-# self.preview.btn_PaletteSpot.clicked.connect(self.btn_PaletteSpotFunc)
+        self.preview.btn_PaletteHelm.clicked.connect(self.btn_PaletteHelmFunc)
 # self.preview.btn_PaletteEnv.clicked.connect(self.btn_PaletteEnvFunc)
         self.preview.btn_PaletteBack.clicked.connect(self.btn_PaletteBackFunc)
 # self.preview.btn_resetColours.clicked.connect(self.btn_previewResetColoursFunc)
 # self.preview.sb_Width.valueChanged.connect(self.sb_previewWidthFunc)
 # self.preview.btn_resetOptions.clicked.connect(self.btn_previewResetOptionsFunc)
-# self.preview.sb_Quality.valueChanged.connect(self.sb_previewQualityFunc)
+##        self.preview.sb_Quality.valueChanged.connect(self.sb_previewQualityFunc)
 # self.preview.cb_Detail.currentIndexChanged.connect(self.cb_previewDetailFunc)
 # self.preview.cb_AA.stateChanged.connect(self.cb_previewAAFunc)
 # self.preview.cb_Shadowless.stateChanged.connect(self.cb_previewShadowlessFunc)
@@ -918,8 +919,8 @@ class TTT3(QMainWindow):
             self.preview.vs_LightZ.setValue(self.lightZ)
         else:  # Bookmark
             # Colours.
-            # Spotlight Colour.
-            ##            self.colourSelected(self.spotColour, "spotColour", self.preview.lbl_PaletteSpot, self.preview.le_PaletteSpot)
+            # Helmet Colour.
+            self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
             # Environment Colour.
             ##            self.colourSelected(self.envColour, "envColour", self.preview.lbl_PaletteEnv, self.preview.le_PaletteEnv)
             # Background Colour.
@@ -1045,7 +1046,7 @@ class TTT3(QMainWindow):
             else:
                 # Fast render mode.
                 if self.uniform == "helmet":
-                    template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H548 +Q5{trans} -D /EXIT'.format(trans=self.transparentBG)
+                    template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H548 +Q6{trans} -D /EXIT'.format(trans=self.transparentBG)
                 else:
                     template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H853 +Q6{trans} -D /EXIT'.format(trans=self.transparentBG)
         else:
@@ -1979,7 +1980,8 @@ color_map
 
             # ----- Helmet Settings -----
             elif "&HELMCOLOUR&" in line:
-                povData.append(line.replace("&HELMCOLOUR&", "0.039, 0.039, 0.039"))  # TODO Helmet Colouring
+                self.creatHelmetFaceColour(self.helmColour)
+                povData.append(line.replace("&HELMCOLOUR&", "%s" % self.convertToPOVRGB(self.helmColour)))
 
             elif "&AMBIENT&" in line:
                 povData.append(line.replace("&AMBIENT&", "0.3"))  # TODO Ambient Light
@@ -4244,9 +4246,30 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         imgOut.text(((width - w) / 2, (height - h) / 2), text, font=fnt, fill=(255, 255, 255))
         img.save(os.getcwd() + "\\data\\helmet\\" + "nametag.png")
         #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def btn_PaletteHelmFunc(self):
+        '''Method for opening a colour palette dialog.'''
+
+        try:
+            self.openColourPicker(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def creatHelmetFaceColour(self, colour):
+        '''Method used to create "data\helmet\hemltex.bmp with the user's selected helmet colour.'''
+
+        # creating an image object
+        img = Image.open(os.getcwd() + "\\data\\helmet\\helmtex_m.gif").convert("L")
+
+        # image colorize function
+        rgb = colour.getRgb()[:3]
+        colouredImg = ImageOps.colorize(img, black ="black", white=rgb)
+        colouredImg.save(os.getcwd() + "\\data\\helmet\\helmtex.bmp")
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
-
+# Bookmark
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                      Functions.                                                                    #
 #----------------------------------------------------------------------------------------------------------------------------------------------------#

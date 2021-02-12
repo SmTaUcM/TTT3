@@ -234,7 +234,7 @@ QPushButton:!enabled
       <string>Reset to Defaults</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_PaletteMain">
+    <widget class="QPushButton" name="btn_PaletteHelm">
      <property name="geometry">
       <rect>
        <x>147</x>
@@ -294,7 +294,7 @@ QPushButton:!enabled
        <normaloff>:/icons/palette.png</normaloff>:/icons/palette.png</iconset>
      </property>
     </widget>
-    <widget class="QLineEdit" name="le_PaletteMain">
+    <widget class="QLineEdit" name="le_PaletteHelm">
      <property name="geometry">
       <rect>
        <x>77</x>
@@ -337,10 +337,10 @@ QLineEdit:!enabled
       </font>
      </property>
      <property name="text">
-      <string>Main</string>
+      <string>Helmet</string>
      </property>
     </widget>
-    <widget class="QLabel" name="lbl_PaletteMain">
+    <widget class="QLabel" name="lbl_PaletteHelm">
      <property name="geometry">
       <rect>
        <x>57</x>
@@ -602,12 +602,12 @@ QLineEdit:!enabled
     <zorder>label_54</zorder>
     <zorder>lbl_Back</zorder>
     <zorder>btn_resetColours</zorder>
-    <zorder>btn_PaletteMain</zorder>
+    <zorder>btn_PaletteHelm</zorder>
     <zorder>btn_PaletteDec</zorder>
     <zorder>btn_PaletteBack</zorder>
-    <zorder>le_PaletteMain</zorder>
+    <zorder>le_PaletteHelm</zorder>
     <zorder>label_51</zorder>
-    <zorder>lbl_PaletteMain</zorder>
+    <zorder>lbl_PaletteHelm</zorder>
     <zorder>lbl_PaletteDec</zorder>
     <zorder>le_PaletteDec</zorder>
     <zorder>lbl_PaletteBack</zorder>
@@ -768,13 +768,13 @@ QSpinBox:!enabled
 </string>
      </property>
      <property name="maximum">
-      <number>5</number>
+      <number>9</number>
      </property>
      <property name="singleStep">
       <number>1</number>
      </property>
      <property name="value">
-      <number>5</number>
+      <number>9</number>
      </property>
     </widget>
     <widget class="QCheckBox" name="cb_AA">
