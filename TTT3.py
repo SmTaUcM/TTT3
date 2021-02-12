@@ -236,10 +236,13 @@ class TTT3(QMainWindow):
             self.lightY = -647
             self.lightZ = 1750
             self.helmColour = QColor(10, 10, 10)
-            self.bgColourHelm = QColor(69, 79, 112) # Bookmark
+            self.bgColourHelm = QColor(69, 79, 112)  # Bookmark
+            self.decColour = QColor(32, 32, 32)
+            self.lightColour = QColor(255, 255, 255)
+            self.transparentBGHelm = ""
             self.widthHelm = 640
             self.heightHelm = 548
-            self.qualityHelm = 9
+            self.qualityHelm = 7  # More than 7 creates graphical glitches around the nametag. Suspected due to createHelmetFaceCoulour()
 
             # PovRay Template Constants.
             self.RANK_OFFSET_RIBBONS_00_TO_08 = ["-18.8939990997314,0.351000010967255,7.92899990081787",  # Rotate
@@ -848,12 +851,13 @@ class TTT3(QMainWindow):
         self.preview.btn_raytrace.clicked.connect(self.launchPOVRay)
         self.preview.btn_preview.clicked.connect(self.renderPreview)
         self.preview.btn_PaletteHelm.clicked.connect(self.btn_PaletteHelmFunc)
-# self.preview.btn_PaletteEnv.clicked.connect(self.btn_PaletteEnvFunc)
         self.preview.btn_PaletteBack.clicked.connect(self.btn_PaletteBackFunc)
-# self.preview.btn_resetColours.clicked.connect(self.btn_previewResetColoursFunc)
+        self.preview.btn_PaletteDec.clicked.connect(self.btn_PaletteHelmDecFunc)
+        self.preview.btn_PaletteLight.clicked.connect(self.btn_PaletteHelmLightFunc)
+        self.preview.btn_resetColours.clicked.connect(self.btn_previewResetColoursFunc)
 # self.preview.sb_Width.valueChanged.connect(self.sb_previewWidthFunc)
 # self.preview.btn_resetOptions.clicked.connect(self.btn_previewResetOptionsFunc)
-##        self.preview.sb_Quality.valueChanged.connect(self.sb_previewQualityFunc)
+# self.preview.sb_Quality.valueChanged.connect(self.sb_previewQualityFunc)
 # self.preview.cb_Detail.currentIndexChanged.connect(self.cb_previewDetailFunc)
 # self.preview.cb_AA.stateChanged.connect(self.cb_previewAAFunc)
 # self.preview.cb_Shadowless.stateChanged.connect(self.cb_previewShadowlessFunc)
@@ -921,10 +925,12 @@ class TTT3(QMainWindow):
             # Colours.
             # Helmet Colour.
             self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
-            # Environment Colour.
-            ##            self.colourSelected(self.envColour, "envColour", self.preview.lbl_PaletteEnv, self.preview.le_PaletteEnv)
+            # Decoration Colour.
+            self.colourSelected(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
             # Background Colour.
             self.colourSelected(self.bgColourHelm, "bgColourHelm", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
+            # Light Colour.
+            self.colourSelected(self.lightColour, "lightColour", self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
             # POV-Ray Options.
             # Resolution.
 # self.preview.sb_Width.setValue(self.width)
@@ -937,7 +943,7 @@ class TTT3(QMainWindow):
 # self.preview.cb_AA.setChecked(self.antiAliasing)
 # self.preview.cb_Shadowless.setChecked(self.shadowless)
 # self.preview.cb_Mosaic.setChecked(self.mosaicPreview)
-            if self.transparentBG == " +UA":
+            if self.transparentBGHelm == " +UA":
                 self.preview.cb_TransparentBG.setChecked(True)
                 self.cb_previewTransparentFunc(2)
             else:
@@ -1037,23 +1043,32 @@ class TTT3(QMainWindow):
         if not preview:
             if not self.fastRendering:
                 # Normal mode.
-                template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W{width} +H{height} +Q{quality} +AM2 +A0.1 +F +GA +J1.0{trans} -D /EXIT'.format(
-                    width=width, height=height, quality=quality, trans=self.transparentBG)
-                if self.mosaicPreview:
-                    template = template.replace("-D", "+SP64")
-                if not self.antiAliasing:
-                    template = template.replace("+AM2 +A0.1", "-A")
+                if self.uniform == "helmet":
+                    template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W{width} +H{height} +Q{quality} +AM2 +A0.1 +F +GA +J1.0{trans} -D /EXIT'.format(
+                        width=width, height=height, quality=quality, trans=self.transparentBGHelm)
+                    if self.mosaicPreview:
+                        template = template.replace("-D", "+SP64")
+                    if not self.antiAliasing:
+                        template = template.replace("+AM2 +A0.1", "-A")
+                else:
+                    template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W{width} +H{height} +Q{quality} +AM2 +A0.1 +F +GA +J1.0{trans} -D /EXIT'.format(
+                        width=width, height=height, quality=quality, trans=self.transparentBG)
+                    if self.mosaicPreview:
+                        template = template.replace("-D", "+SP64")
+                    if not self.antiAliasing:
+                        template = template.replace("+AM2 +A0.1", "-A")
             else:
                 # Fast render mode.
                 if self.uniform == "helmet":
                     template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H548 +Q6{trans} -D /EXIT'.format(trans=self.transparentBG)
                 else:
-                    template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H853 +Q6{trans} -D /EXIT'.format(trans=self.transparentBG)
+                    template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W640 +H853 +Q6{trans} -D /EXIT'.format(
+                        trans=self.transparentBGHelm)
         else:
             # Preview Mode.
             if self.uniform == "helmet":
                 template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W390 +H334 +Q{quality}{trans} -A -D /EXIT'.format(
-                    quality=quality, trans=self.transparentBG)
+                    quality=quality, trans=self.transparentBGHelm)
             else:
                 template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W390 +H520 +Q{quality}{trans} -A -D /EXIT'.format(
                     quality=quality, trans=self.transparentBG)
@@ -1948,7 +1963,7 @@ color_map
 
             # ----- Global. -----
             if "&BGCOLOUR&" in line:
-                if self.transparentBG == "":
+                if self.transparentBGHelm == "":
                     povData.append(line.replace("&BGCOLOUR&", "#declare bg = <%s>;" % self.convertToPOVRGB(self.bgColourHelm)))
                 else:
                     povData.append(line.replace("&BGCOLOUR&", ""))
@@ -1960,7 +1975,7 @@ color_map
                 povData.append(line.replace("&LIGHT&", "22.44, -50.89, 52.82"))
 
             elif "&SPOTLIGHTCOLOUR&" in line:
-                povData.append(line.replace("&SPOTLIGHTCOLOUR&", self.convertToPOVRGB(self.spotColour)))  # TODO Spot Colour
+                povData.append(line.replace("&SPOTLIGHTCOLOUR&", self.convertToPOVRGB(self.lightColour)))
 
             elif "&SHADOWLESS&" in line:
                 if self.shadowless:
@@ -1999,15 +2014,15 @@ color_map
                 povData.append(line.replace("&POSRANKFILE&", "NIL"))  # TODO Helmet Rank
 
             elif "&DECOCOLOUR&" in line:
-                povData.append(line.replace("&DECOCOLOUR&", "0.125, 0.125, 0.125"))  # TODO Deco Colour
+                povData.append(line.replace("&DECOCOLOUR&", "%s" % self.convertToPOVRGB(self.decColour)))
 
             elif "&LOGO1STENCIL&" in line:
                 povData.append(line.replace("&LOGO1STENCIL&", r'gif "misc/implogo.gif"'))  # TODO Helmet Logo Stencil 1
 
             elif "&LOGO1PIGMENT&" in line:
-                povData.append(line.replace("&LOGO1PIGMENT&", "color rgb <0.125, 0.125, 0.125>"))  # TODO TODO Helmet Logo 1 Pigment
+                povData.append(line.replace("&LOGO1PIGMENT&", "rgb <%s>" % self.convertToPOVRGB(self.decColour)))
 
-            elif "&LOGO2STENCIL&" in line:
+            elif "&LOGO2STENCIL&" in line:  # TODO if no logo is selected??
                 povData.append(line.replace("&LOGO2STENCIL&", r'gif "helmet/fallback_mask.gif"'))  # TODO Helmet Logo Stencil 2
 
             elif "&LOGO2PIGMENT&" in line:
@@ -2017,7 +2032,7 @@ color_map
                         r'image_map { png "helmet/fallback.png" interpolate 2 }'))  # TODO TODO Helmet Logo 2 Pigment
 
             elif "&HOMOGENOUS&" in line:
-                if self.transparentBG == "":
+                if self.transparentBGHelm == "":
                     povData.append(line.replace("&HOMOGENOUS&", "object{ P_plane }"))  # TODO Helmet Homogenous
                 else:
                     povData.append(line.replace("&HOMOGENOUS&", ""))
@@ -3903,17 +3918,33 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for reseting the preview window colour options.'''
 
         try:
-            self.spotColour = QColor(255, 255, 255)
-            self.envColour = QColor(128, 118, 108)
-            self.bgColour = QColor(0, 0, 0)
-            # Spotlight Colour.
-            self.colourSelected(self.spotColour, "spotColour", self.preview.lbl_PaletteSpot, self.preview.le_PaletteSpot)
-            # Environment Colour.
-            self.colourSelected(self.envColour, "envColour", self.preview.lbl_PaletteEnv, self.preview.le_PaletteEnv)
-            # Background Colour.
-            self.colourSelected(self.bgColour, "bgColour", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
-            self.transparentBG = ""
-            self.preview.cb_TransparentBG.setChecked(False)
+            if self.uniform != "helmet":
+                self.spotColour = QColor(255, 255, 255)
+                self.envColour = QColor(128, 118, 108)
+                self.bgColour = QColor(0, 0, 0)
+                # Spotlight Colour.
+                self.colourSelected(self.spotColour, "spotColour", self.preview.lbl_PaletteSpot, self.preview.le_PaletteSpot)
+                # Environment Colour.
+                self.colourSelected(self.envColour, "envColour", self.preview.lbl_PaletteEnv, self.preview.le_PaletteEnv)
+                # Background Colour.
+                self.colourSelected(self.bgColour, "bgColour", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
+                self.transparentBG = ""
+                self.preview.cb_TransparentBG.setChecked(False)
+            else:
+                self.helmColour = QColor(10, 10, 10)
+                self.bgColourHelm = QColor(69, 79, 112)
+                self.decColour = QColor(32, 32, 32)
+                self.lightColour = QColor(255, 255, 255)
+                # Helmet Colour.
+                self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
+                # Decoration Colour.
+                self.colourSelected(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
+                # Background Colour.
+                self.colourSelected(self.bgColourHelm, "bgColourHelm", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
+                # Light Colour.
+                self.colourSelected(self.lightColour, "lightColour", self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
+                self.transparentBGHelm = ""
+                self.preview.cb_TransparentBG.setChecked(False)  # Bookmark
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -3996,13 +4027,19 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             bgWidgets = [self.preview.lbl_Back, self.preview.lbl_PaletteBack, self.preview.le_PaletteBack, self.preview.btn_PaletteBack]
 
             if value == 2:
-                self.transparentBG = " +UA"
+                if self.uniform != "helmet":
+                    self.transparentBG = " +UA"
+                else:
+                    self.transparentBGHelm = " +UA"
                 for widget in bgWidgets:
                     widget.setEnabled(False)
                 self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(211, 211, 211);")
                 # TODO Turn off homo for helmet.
             else:
-                self.transparentBG = ""
+                if self.uniform != "hemlet":
+                    self.transparentBG = ""
+                else:
+                    self.transparentBGHelm = ""
                 for widget in bgWidgets:
                     widget.setEnabled(True)
                 if self.uniform != "helmet":
@@ -4214,7 +4251,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         if self.name == "Unknown":
             text = "EH TC"
         else:
-            text = self.name
+            text = self.name  # TODO get name from textbox
 
         # Local variables.
         width, height = 720, 264
@@ -4257,22 +4294,42 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def creatHelmetFaceColour(self, colour):
-        '''Method used to create "data\helmet\hemltex.bmp with the user's selected helmet colour.'''
+        r'''Method used to create "data\helmet\hemltex.bmp with the user's selected helmet colour.'''
 
         # creating an image object
         img = Image.open(os.getcwd() + "\\data\\helmet\\helmtex_m.gif").convert("L")
 
         # image colorize function
         rgb = colour.getRgb()[:3]
-        colouredImg = ImageOps.colorize(img, black ="black", white=rgb)
+        colouredImg = ImageOps.colorize(img, black="black", white=rgb)
         colouredImg.save(os.getcwd() + "\\data\\helmet\\helmtex.bmp")
         #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def btn_PaletteHelmDecFunc(self):
+        '''Method for opening a colour palette dialog.'''
+
+        try:
+            self.openColourPicker(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def btn_PaletteHelmLightFunc(self):
+        '''Method for opening a colour palette dialog.'''
+
+        try:
+            self.openColourPicker(self.lightColour, "lightColour", self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 # Bookmark
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                      Functions.                                                                    #
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
+
 
 def getX(y):
     '''Function to return an aspect ratio locked value for any given y.'''
