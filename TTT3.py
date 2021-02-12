@@ -236,7 +236,7 @@ class TTT3(QMainWindow):
             self.lightY = -6474
             self.lightZ = 17501
             self.helmColour = QColor(10, 10, 10)
-            self.bgColourHelm = QColor(69, 79, 112)  # Bookmark
+            self.bgColourHelm = QColor(69, 79, 112)
             self.decColour = QColor(32, 32, 32)
             self.lightColour = QColor(255, 255, 255)
             self.transparentBGHelm = ""
@@ -256,6 +256,11 @@ class TTT3(QMainWindow):
             self.widthHelm = 640
             self.heightHelm = 548
             self.qualityHelm = 7  # More than 7 creates graphical glitches around the nametag. Suspected due to createHelmetFaceCoulour()
+            self.antiAliasingHelm = True
+            self.shadowlessHelm = False
+            self.homoHelm = False
+            self.mosaicPreviewHelm = False
+            # Bookmark
 
             # PovRay Template Constants.
             self.RANK_OFFSET_RIBBONS_00_TO_08 = ["-18.8939990997314,0.351000010967255,7.92899990081787",  # Rotate
@@ -869,7 +874,7 @@ class TTT3(QMainWindow):
         self.preview.btn_PaletteLight.clicked.connect(self.btn_PaletteHelmLightFunc)
         self.preview.cb_TransparentBG.stateChanged.connect(self.cb_previewTransparentFunc)
         self.preview.btn_resetColours.clicked.connect(self.btn_previewResetColoursFunc)
-        self.preview.vs_Ambient.valueChanged.connect(self.vs_previewAmbientFunc)  # Bookmark
+        self.preview.vs_Ambient.valueChanged.connect(self.vs_previewAmbientFunc)
         self.preview.vs_Specular.valueChanged.connect(self.vs_previewSpecularFunc)
         self.preview.vs_Roughness.valueChanged.connect(self.vs_previewRoughnessFunc)
         self.preview.vs_Reflection.valueChanged.connect(self.vs_previewReflectionFunc)
@@ -885,14 +890,13 @@ class TTT3(QMainWindow):
         self.preview.vs_LightY.valueChanged.connect(self.vs_previewLightYFunc)
         self.preview.vs_LightZ.valueChanged.connect(self.vs_previewLightZFunc)
         self.preview.btn_resetLight.clicked.connect(self.btn_previewResetLightFunc)
-
-# self.preview.sb_Width.valueChanged.connect(self.sb_previewWidthFunc)
-# self.preview.btn_resetOptions.clicked.connect(self.btn_previewResetOptionsFunc)
-# self.preview.sb_Quality.valueChanged.connect(self.sb_previewQualityFunc)
-# self.preview.cb_Detail.currentIndexChanged.connect(self.cb_previewDetailFunc)
-# self.preview.cb_AA.stateChanged.connect(self.cb_previewAAFunc)
-# self.preview.cb_Shadowless.stateChanged.connect(self.cb_previewShadowlessFunc)
-# self.preview.cb_Mosaic.stateChanged.connect(self.cb_previewMosaicFunc)
+        self.preview.sb_Width.valueChanged.connect(self.sb_previewWidthFunc)  # Bookmark
+        self.preview.sb_Quality.valueChanged.connect(self.sb_previewQualityFunc)
+        self.preview.cb_AA.stateChanged.connect(self.cb_previewAAFunc)
+        self.preview.cb_Shadowless.stateChanged.connect(self.cb_previewShadowlessFunc)
+        self.preview.cb_Homo.stateChanged.connect(self.cb_previewHomoFunc)
+        self.preview.cb_Mosaic.stateChanged.connect(self.cb_previewMosaicFunc)
+        self.preview.btn_resetOptions.clicked.connect(self.btn_previewResetOptionsFunc)
 
 
 # self.preview.btn_Reset.clicked.connect(self.btn_previewResetFunc)
@@ -963,16 +967,15 @@ class TTT3(QMainWindow):
             self.colourSelected(self.lightColour, "lightColour", self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
             # POV-Ray Options.
             # Resolution.
-# self.preview.sb_Width.setValue(self.width)
-# self.preview.le_Height.setText(str(self.height))
+            self.preview.sb_Width.setValue(self.widthHelm)
+            self.preview.le_Height.setText(str(self.heightHelm))
             # Quality.
-# self.preview.sb_Quality.setValue(self.quality)
-            # Cloth.
-# self.preview.cb_Detail.setCurrentIndex(self.clothDetail)
+            self.preview.sb_Quality.setValue(self.qualityHelm)
             # Checkboxes.
-# self.preview.cb_AA.setChecked(self.antiAliasing)
-# self.preview.cb_Shadowless.setChecked(self.shadowless)
-# self.preview.cb_Mosaic.setChecked(self.mosaicPreview)
+            self.preview.cb_AA.setChecked(self.antiAliasingHelm)
+            self.preview.cb_Shadowless.setChecked(self.shadowlessHelm)
+            self.preview.cb_Homo.setChecked(self.homoHelm)
+            self.preview.cb_Mosaic.setChecked(self.mosaicPreviewHelm)
             if self.transparentBGHelm == " +UA":
                 self.preview.cb_TransparentBG.setChecked(True)
                 self.cb_previewTransparentFunc(2)
@@ -1084,9 +1087,9 @@ class TTT3(QMainWindow):
                 if self.uniform == "helmet":
                     template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W{width} +H{height} +Q{quality} +AM2 +A0.1 +F +GA +J1.0{trans} -D /EXIT'.format(
                         width=width, height=height, quality=quality, trans=self.transparentBGHelm)
-                    if self.mosaicPreview:
+                    if self.mosaicPreviewHelm:
                         template = template.replace("-D", "+SP64")
-                    if not self.antiAliasing:
+                    if not self.antiAliasingHelm:
                         template = template.replace("+AM2 +A0.1", "-A")
                 else:
                     template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W{width} +H{height} +Q{quality} +AM2 +A0.1 +F +GA +J1.0{trans} -D /EXIT'.format(
@@ -2057,7 +2060,7 @@ color_map
                 povData.append(line.replace("&SPOTLIGHTCOLOUR&", self.convertToPOVRGB(self.lightColour)))
 
             elif "&SHADOWLESS&" in line:
-                if self.shadowless:
+                if self.shadowlessHelm:
                     povData.append(line.replace("&SHADOWLESS&", "shadowless"))
                 else:
                     povData.append(line.replace("&SHADOWLESS&", ""))
@@ -2122,7 +2125,10 @@ color_map
 
             elif "&HOMOGENOUS&" in line:
                 if self.transparentBGHelm == "":
-                    povData.append(line.replace("&HOMOGENOUS&", "object{ P_plane }"))  # TODO Helmet Homogenous
+                    if not self.homoHelm:
+                        povData.append(line.replace("&HOMOGENOUS&", "object{ P_plane }"))
+                    else:
+                        povData.append(line.replace("&HOMOGENOUS&", "object{ P_backdrop }"))
                 else:
                     povData.append(line.replace("&HOMOGENOUS&", ""))
 
@@ -4042,9 +4048,14 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for handling user input to the preview GUI width spin box.'''
 
         try:
-            self.width = value
-            self.height = getY(self.width)
-            self.preview.le_Height.setText(str(self.height))
+            if self.uniform != "helmet":
+                self.width = value
+                self.height = getY(self.width)
+                self.preview.le_Height.setText(str(self.height))
+            else:
+                self.widthHelm = value
+                self.heightHelm = getYHelm(self.widthHelm)
+                self.preview.le_Height.setText(str(self.heightHelm))
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4053,19 +4064,34 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for reseting the preview window options.'''
 
         try:
-            self.width = 640
-            self.preview.sb_Width.setValue(self.width)
-            self.sb_previewWidthFunc(self.width)
-            self.quality = 9
-            self.preview.sb_Quality.setValue(self.quality)
-            self.clothDetail = 0
-            self.preview.cb_Detail.setCurrentIndex(self.clothDetail)
-            self.antiAliasing = True
-            self.preview.cb_AA.setChecked(self.antiAliasing)
-            self.shadowless = False
-            self.preview.cb_Shadowless.setChecked(self.shadowless)
-            self.mosaicPreview = False
-            self.preview.cb_Mosaic.setChecked(self.mosaicPreview)
+            if self.uniform != "helmet":
+                self.width = 640
+                self.preview.sb_Width.setValue(self.width)
+                self.sb_previewWidthFunc(self.width)
+                self.quality = 9
+                self.preview.sb_Quality.setValue(self.quality)
+                self.clothDetail = 0
+                self.preview.cb_Detail.setCurrentIndex(self.clothDetail)
+                self.antiAliasing = True
+                self.preview.cb_AA.setChecked(self.antiAliasing)
+                self.shadowless = False
+                self.preview.cb_Shadowless.setChecked(self.shadowless)
+                self.mosaicPreview = False
+                self.preview.cb_Mosaic.setChecked(self.mosaicPreview)
+            else:
+                self.widthHelm = 640
+                self.preview.sb_Width.setValue(self.widthHelm)
+                self.sb_previewWidthFunc(self.widthHelm)
+                self.qualityHelm = 7
+                self.preview.sb_Quality.setValue(self.qualityHelm)
+                self.antiAliasingHelm = True
+                self.preview.cb_AA.setChecked(self.antiAliasingHelm)
+                self.shadowlessHelm = False
+                self.preview.cb_Shadowless.setChecked(self.shadowlessHelm)
+                self.homoHelm = False
+                self.preview.cb_Homo.setChecked(self.homoHelm)
+                self.mosaicPreviewHelm = False
+                self.preview.cb_Mosaic.setChecked(self.mosaicPreviewHelm)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4073,7 +4099,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def sb_previewQualityFunc(self, value):
         '''Method for applying the quality setting within the preview window.'''
 
-        self.quality = value
+        if self.uniform != "helmet":
+            self.quality = value
+        else:
+            self.qualityHelm = value
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewDetailFunc(self, value):
@@ -4085,28 +4114,55 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def cb_previewAAFunc(self, value):
         '''Method for applying the anti aliasing setting within the preview window.'''
 
-        if value == 2:
-            self.antiAliasing = True
+        if self.uniform != "helmet":
+            if value == 2:
+                self.antiAliasing = True
+            else:
+                self.antiAliasing = False
         else:
-            self.antiAliasing = False
+            if value == 2:
+                self.antiAliasingHelm = True
+            else:
+                self.antiAliasingHelm = False
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewShadowlessFunc(self, value):
         '''Method for applying the shadowless setting within the preview window.'''
 
-        if value == 2:
-            self.shadowless = True
+        if self.uniform != "helmet":
+            if value == 2:
+                self.shadowless = True
+            else:
+                self.shadowless = False
         else:
-            self.shadowless = False
+            if value == 2:
+                self.shadowlessHelm = True
+            else:
+                self.shadowlessHelm = False
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewMosaicFunc(self, value):
         '''Method for applying the mosaic preview mode setting within the preview window.'''
 
-        if value == 2:
-            self.mosaicPreview = True
+        if self.uniform != "helmet":
+            if value == 2:
+                self.mosaicPreview = True
+            else:
+                self.mosaicPreview = False
         else:
-            self.mosaicPreview = False
+            if value == 2:
+                self.mosaicPreviewHelm = True
+            else:
+                self.mosaicPreviewHelm = False
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def cb_previewHomoFunc(self, value):
+        '''Method for applying the mosaic preview mode setting within the preview window.'''
+
+        if value == 2:
+            self.homoHelm = True
+        else:
+            self.homoHelm = False
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewTransparentFunc(self, value):
@@ -4120,22 +4176,22 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.transparentBG = " +UA"
                 else:
                     self.transparentBGHelm = " +UA"
+                    self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(211, 211, 211);")
+                    self.preview.cb_Homo.setEnabled(False)
                 for widget in bgWidgets:
                     widget.setEnabled(False)
-                self.preview.lbl_PaletteBack.setStyleSheet("background-color: rgb(211, 211, 211);")
-                # TODO Turn off homo for helmet.
+
             else:
-                if self.uniform != "hemlet":
-                    self.transparentBG = ""
-                else:
-                    self.transparentBGHelm = ""
-                for widget in bgWidgets:
-                    widget.setEnabled(True)
                 if self.uniform != "helmet":
+                    self.transparentBG = ""
                     self.colourSelected(self.bgColour, "bgColour", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
                 else:
+                    self.transparentBGHelm = ""
                     self.colourSelected(self.bgColourHelm, "bgColourHelm", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
-                # TODO Turn on homo for helmet if previously selected.
+                    self.preview.cb_Homo.setEnabled(True)
+                for widget in bgWidgets:
+                    widget.setEnabled(True)
+
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4559,17 +4615,17 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
-def getX(y):
-    '''Function to return an aspect ratio locked value for any given y.'''
+def getYHelm(x):
+    '''Function to return an aspect ratio locked value for any given x.'''
 
-    return round(0.75 * float(y))
+    return round(float(x) / 1.1678)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
 def getY(x):
     '''Function to return an aspect ratio locked value for any given x.'''
 
-    return round(float(x) / 0.75)
+    return round(float(x) / 0.7502)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
