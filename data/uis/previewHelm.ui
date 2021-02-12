@@ -2679,9 +2679,9 @@ QSlider::handle:horizontal:hover
       <widget class="QComboBox" name="cb_hemlLogo1Type">
        <property name="geometry">
         <rect>
-         <x>4</x>
+         <x>3</x>
          <y>6</y>
-         <width>138</width>
+         <width>145</width>
          <height>20</height>
         </rect>
        </property>
@@ -2719,7 +2719,7 @@ QSlider::handle:horizontal:hover
        </property>
        <property name="geometry">
         <rect>
-         <x>121</x>
+         <x>128</x>
          <y>33</y>
          <width>21</width>
          <height>21</height>
@@ -2740,7 +2740,7 @@ QSlider::handle:horizontal:hover
         <rect>
          <x>3</x>
          <y>33</y>
-         <width>119</width>
+         <width>125</width>
          <height>20</height>
         </rect>
        </property>
@@ -2772,7 +2772,7 @@ QLineEdit:!enabled
         <rect>
          <x>3</x>
          <y>33</y>
-         <width>119</width>
+         <width>125</width>
          <height>20</height>
         </rect>
        </property>
@@ -2794,9 +2794,9 @@ QLineEdit:!enabled
       <widget class="QComboBox" name="cb_hemlLogo2Type">
        <property name="geometry">
         <rect>
-         <x>4</x>
+         <x>3</x>
          <y>6</y>
-         <width>138</width>
+         <width>145</width>
          <height>20</height>
         </rect>
        </property>
@@ -2831,7 +2831,7 @@ QLineEdit:!enabled
        </property>
        <property name="geometry">
         <rect>
-         <x>121</x>
+         <x>128</x>
          <y>33</y>
          <width>21</width>
          <height>21</height>
