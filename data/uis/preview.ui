@@ -849,13 +849,13 @@ QSlider::handle:vertical:hover
 }</string>
      </property>
      <property name="minimum">
-      <number>-2000</number>
+      <number>-20000</number>
      </property>
      <property name="maximum">
-      <number>2000</number>
+      <number>20000</number>
      </property>
      <property name="value">
-      <number>-261</number>
+      <number>-2608</number>
      </property>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -934,16 +934,16 @@ QSlider::handle:vertical:hover
 }</string>
      </property>
      <property name="minimum">
-      <number>-2000</number>
+      <number>-20000</number>
      </property>
      <property name="maximum">
-      <number>2000</number>
+      <number>20000</number>
      </property>
      <property name="singleStep">
       <number>1</number>
      </property>
      <property name="value">
-      <number>-1331</number>
+      <number>-13311</number>
      </property>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -1035,13 +1035,13 @@ QSlider::handle:vertical:hover
 }</string>
      </property>
      <property name="minimum">
-      <number>-2000</number>
+      <number>-20000</number>
      </property>
      <property name="maximum">
-      <number>2000</number>
+      <number>20000</number>
      </property>
      <property name="value">
-      <number>209</number>
+      <number>2090</number>
      </property>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -1098,7 +1098,7 @@ QSlider::handle:vertical:hover
       <string notr="true">color: rgb(170, 0, 0);</string>
      </property>
      <property name="text">
-      <string>-261</string>
+      <string>-260.8</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_10">
@@ -1164,7 +1164,7 @@ QSlider::handle:vertical:hover
       <string notr="true">color: rgb(19, 104, 0);</string>
      </property>
      <property name="text">
-      <string>-1331</string>
+      <string>-1331.1</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_23">
@@ -1208,7 +1208,7 @@ QSlider::handle:vertical:hover
       <string notr="true">color: rgb(0, 0, 127);</string>
      </property>
      <property name="text">
-      <string>209</string>
+      <string>209.0</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_24">
@@ -1249,7 +1249,7 @@ QSlider::handle:vertical:hover
       <string notr="true">color: rgb(19, 104, 0);</string>
      </property>
      <property name="text">
-      <string>-13</string>
+      <string>-12.8</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_25">
@@ -1443,10 +1443,10 @@ QSlider::handle:vertical:hover
 }</string>
      </property>
      <property name="minimum">
-      <number>-2000</number>
+      <number>-20000</number>
      </property>
      <property name="maximum">
-      <number>2000</number>
+      <number>20000</number>
      </property>
      <property name="value">
       <number>0</number>
@@ -1480,7 +1480,7 @@ QSlider::handle:vertical:hover
       <string notr="true">color: rgb(0, 0, 127);</string>
      </property>
      <property name="text">
-      <string>3</string>
+      <string>2.8</string>
      </property>
     </widget>
     <widget class="QSlider" name="vs_LookY">
@@ -1511,16 +1511,16 @@ QSlider::handle:vertical:hover
 }</string>
      </property>
      <property name="minimum">
-      <number>-2000</number>
+      <number>-20000</number>
      </property>
      <property name="maximum">
-      <number>2000</number>
+      <number>20000</number>
      </property>
      <property name="singleStep">
       <number>1</number>
      </property>
      <property name="value">
-      <number>-13</number>
+      <number>-128</number>
      </property>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -1608,13 +1608,13 @@ QSlider::handle:vertical:hover
 }</string>
      </property>
      <property name="minimum">
-      <number>-2000</number>
+      <number>-20000</number>
      </property>
      <property name="maximum">
-      <number>2000</number>
+      <number>20000</number>
      </property>
      <property name="value">
-      <number>3</number>
+      <number>28</number>
      </property>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -1735,16 +1735,16 @@ QSlider::handle:vertical:hover
 }</string>
      </property>
      <property name="minimum">
-      <number>-2000</number>
+      <number>-20000</number>
      </property>
      <property name="maximum">
-      <number>2000</number>
+      <number>20000</number>
      </property>
      <property name="singleStep">
       <number>1</number>
      </property>
      <property name="value">
-      <number>-647</number>
+      <number>-6474</number>
      </property>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -1849,13 +1849,13 @@ QSlider::handle:vertical:hover
 }</string>
      </property>
      <property name="minimum">
-      <number>-2000</number>
+      <number>-20000</number>
      </property>
      <property name="maximum">
-      <number>2000</number>
+      <number>20000</number>
      </property>
      <property name="value">
-      <number>1750</number>
+      <number>17501</number>
      </property>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -1908,13 +1908,13 @@ QSlider::handle:vertical:hover
 }</string>
      </property>
      <property name="minimum">
-      <number>-2000</number>
+      <number>-20000</number>
      </property>
      <property name="maximum">
-      <number>2000</number>
+      <number>20000</number>
      </property>
      <property name="value">
-      <number>1519</number>
+      <number>15185</number>
      </property>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -1984,7 +1984,7 @@ QSlider::handle:vertical:hover
       <string notr="true">color: rgb(170, 0, 0);</string>
      </property>
      <property name="text">
-      <string>1519</string>
+      <string>1518.5</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_50">
@@ -2091,7 +2091,7 @@ QSlider::handle:vertical:hover
       <string notr="true">color: rgb(0, 0, 127);</string>
      </property>
      <property name="text">
-      <string>1750</string>
+      <string>1750.1</string>
      </property>
     </widget>
     <widget class="QLabel" name="lbl_LightY">
@@ -2113,7 +2113,7 @@ QSlider::handle:vertical:hover
       <string notr="true">color: rgb(19, 104, 0);</string>
      </property>
      <property name="text">
-      <string>-647</string>
+      <string>-647.4</string>
      </property>
     </widget>
     <zorder>btn_resetLight</zorder>
@@ -2238,156 +2238,12 @@ QSlider::handle:vertical:hover
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>714</x>
-     <y>54</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>749</x>
+     <x>677</x>
      <y>53</y>
     </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>vs_CamX</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lbl_CamX</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>29</x>
-     <y>324</y>
-    </hint>
     <hint type="destinationlabel">
-     <x>48</x>
-     <y>250</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>vs_CamY</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lbl_CamY</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>53</x>
-     <y>321</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>54</x>
-     <y>263</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>vs_CamZ</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lbl_CamZ</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>78</x>
-     <y>331</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>61</x>
-     <y>276</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>vs_LookX</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lbl_LookX</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>112</x>
-     <y>315</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>127</x>
-     <y>248</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>vs_LookY</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lbl_LookY</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>138</x>
-     <y>309</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>134</x>
-     <y>268</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>vs_LookZ</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lbl_LookZ</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>159</x>
-     <y>308</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>161</x>
-     <y>280</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>vs_LightX</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lbl_LightX</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>624</x>
-     <y>308</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>718</x>
-     <y>323</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>vs_LightY</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lbl_LightY</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>649</x>
-     <y>341</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>717</x>
-     <y>334</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>vs_LightZ</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>lbl_LightZ</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>664</x>
-     <y>369</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>713</x>
-     <y>350</y>
+     <x>616</x>
+     <y>33</y>
     </hint>
    </hints>
   </connection>

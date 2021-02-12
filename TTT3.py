@@ -226,15 +226,15 @@ class TTT3(QMainWindow):
             self.antiAliasing = True
             self.shadowless = False
             self.mosaicPreview = False
-            self.camX = -261
-            self.camY = -1331
-            self.camZ = 209
+            self.camX = -2608
+            self.camY = -13311
+            self.camZ = 2090
             self.lookX = 0
-            self.lookY = -13
-            self.lookZ = 3
-            self.lightX = 1519
-            self.lightY = -647
-            self.lightZ = 1750
+            self.lookY = -128
+            self.lookZ = 28
+            self.lightX = 15185
+            self.lightY = -6474
+            self.lightZ = 17501
             self.helmColour = QColor(10, 10, 10)
             self.bgColourHelm = QColor(69, 79, 112)  # Bookmark
             self.decColour = QColor(32, 32, 32)
@@ -913,14 +913,23 @@ class TTT3(QMainWindow):
                 self.cb_previewTransparentFunc(0)
             # Slider Bars
             self.preview.vs_CamX.setValue(self.camX)
+            self.preview.lbl_CamX.setText(self.convertIntToFloatStr(self.camX))
             self.preview.vs_CamY.setValue(self.camY)
+            self.preview.lbl_CamY.setText(self.convertIntToFloatStr(self.camY))
             self.preview.vs_CamZ.setValue(self.camZ)
+            self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(self.camZ))
             self.preview.vs_LookX.setValue(self.lookX)
+            self.preview.lbl_LookX.setText(self.convertIntToFloatStr(self.lookX))
             self.preview.vs_LookY.setValue(self.lookY)
+            self.preview.lbl_LookY.setText(self.convertIntToFloatStr(self.lookY))
             self.preview.vs_LookZ.setValue(self.lookZ)
+            self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(self.lookZ))
             self.preview.vs_LightX.setValue(self.lightX)
+            self.preview.lbl_LightX.setText(self.convertIntToFloatStr(self.lightX))
             self.preview.vs_LightY.setValue(self.lightY)
+            self.preview.lbl_LightY.setText(self.convertIntToFloatStr(self.lightY))
             self.preview.vs_LightZ.setValue(self.lightZ)
+            self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZ))
         else:  # Bookmark
             # Colours.
             # Helmet Colour.
@@ -1485,7 +1494,13 @@ class TTT3(QMainWindow):
             # ----- Light. -----
 
             elif "&LIGHT&" in line:
-                povData.append(line.replace("&LIGHT&", "%s, %s, %s" % (self.lightX, self.lightY, self.lightZ)))
+                povData.append(
+                    line.replace(
+                        "&LIGHT&", "%s, %s, %s" %
+                        (self.convertIntToFloatStr(
+                            self.lightX), self.convertIntToFloatStr(
+                            self.lightY), self.convertIntToFloatStr(
+                            self.lightZ))))
 
             elif "&SPOTLIGHTCOLOUR&" in line:
                 povData.append(line.replace("&SPOTLIGHTCOLOUR&", self.convertToPOVRGB(self.spotColour)))
@@ -1502,10 +1517,22 @@ class TTT3(QMainWindow):
             # ----- Camera. -----
 
             elif "&CAMERA&" in line:
-                povData.append(line.replace("&CAMERA&", "%s, %s, %s" % (self.camX, self.camY, self.camZ)))
+                povData.append(
+                    line.replace(
+                        "&CAMERA&", "%s, %s, %s" %
+                        (self.convertIntToFloatStr(
+                            self.camX), self.convertIntToFloatStr(
+                            self.camY), self.convertIntToFloatStr(
+                            self.camZ))))
 
             elif "&TARGET&" in line:
-                povData.append(line.replace("&TARGET&", "%s, %s, %s" % (self.lookX, self.lookY, self.lookZ)))
+                povData.append(
+                    line.replace(
+                        "&TARGET&", "%s, %s, %s" %
+                        (self.convertIntToFloatStr(
+                            self.lookX), self.convertIntToFloatStr(
+                            self.lookY), self.convertIntToFloatStr(
+                            self.lookZ))))
 
             # ----- Basic Info. -----
             elif "&EE&" in line:
@@ -1843,7 +1870,13 @@ color_map
             # ----- Light. -----
 
             elif "&LIGHT&" in line:
-                povData.append(line.replace("&LIGHT&", "%s, %s, %s" % (self.lightX, self.lightY, self.lightZ)))
+                povData.append(
+                    line.replace(
+                        "&LIGHT&", "%s, %s, %s" %
+                        (self.convertIntToFloatStr(
+                            self.lightX), self.convertIntToFloatStr(
+                            self.lightY), self.convertIntToFloatStr(
+                            self.lightZ))))
 
             elif "&SPOTLIGHTCOLOUR&" in line:
                 povData.append(line.replace("&SPOTLIGHTCOLOUR&", self.convertToPOVRGB(self.spotColour)))
@@ -1860,10 +1893,22 @@ color_map
             # ----- Camera. -----
 
             elif "&CAMERA&" in line:
-                povData.append(line.replace("&CAMERA&", "%s, %s, %s" % (self.camX, self.camY, self.camZ)))
+                povData.append(
+                    line.replace(
+                        "&CAMERA&", "%s, %s, %s" %
+                        (self.convertIntToFloatStr(
+                            self.camX), self.convertIntToFloatStr(
+                            self.camY), self.convertIntToFloatStr(
+                            self.camZ))))
 
             elif "&TARGET&" in line:
-                povData.append(line.replace("&TARGET&", "%s, %s, %s" % (self.lookX, self.lookY, self.lookZ)))
+                povData.append(
+                    line.replace(
+                        "&TARGET&", "%s, %s, %s" %
+                        (self.convertIntToFloatStr(
+                            self.lookX), self.convertIntToFloatStr(
+                            self.lookY), self.convertIntToFloatStr(
+                            self.lookZ))))
 
             # ----- Basic Info. -----
             elif "&CLOTH&" in line:
@@ -1972,7 +2017,7 @@ color_map
 
             elif "&LIGHT&" in line:
                 ##                povData.append(line.replace("&LIGHT&", "%s, %s, %s" % (self.lightX, self.lightY, self.lightZ)))
-                povData.append(line.replace("&LIGHT&", "22.44, -50.89, 52.82"))
+                povData.append(line.replace("&LIGHT&", "22.44, -50.89, 52.82"))  # self.convertIntToFloatStr(
 
             elif "&SPOTLIGHTCOLOUR&" in line:
                 povData.append(line.replace("&SPOTLIGHTCOLOUR&", self.convertToPOVRGB(self.lightColour)))
@@ -4055,54 +4100,66 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for applying the camera angle setting within the preview window.'''
 
         self.camX = value
+        self.preview.lbl_CamX.setText(self.convertIntToFloatStr(value))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewCamYFunc(self, value):
         '''Method for applying the camera angle setting within the preview window.'''
 
         self.camY = value
+        self.preview.lbl_CamY.setText(self.convertIntToFloatStr(value))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewCamZFunc(self, value):
         '''Method for applying the camera angle setting within the preview window.'''
 
         self.camZ = value
+        self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(value))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookXFunc(self, value):
         '''Method for applying the look at angle setting within the preview window.'''
 
         self.lookX = value
+        self.preview.lbl_LookX.setText(self.convertIntToFloatStr(value))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookYFunc(self, value):
         '''Method for applying the look at angle setting within the preview window.'''
 
         self.lookY = value
+        self.preview.lbl_LookY.setText(self.convertIntToFloatStr(value))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookZFunc(self, value):
         '''Method for applying the look at angle setting within the preview window.'''
 
         self.lookZ = value
+        self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(value))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetCameraFunc(self):
         '''Method for reseting the preview window camera.'''
 
         try:
-            self.camX = -261
+            self.camX = -2608
             self.preview.vs_CamX.setValue(self.camX)
-            self.camY = -1331
+            self.preview.lbl_CamX.setText(self.convertIntToFloatStr(self.camX))
+            self.camY = -13311
             self.preview.vs_CamY.setValue(self.camY)
-            self.camZ = 209
+            self.preview.lbl_CamY.setText(self.convertIntToFloatStr(self.camY))
+            self.camZ = 2090
             self.preview.vs_CamZ.setValue(self.camZ)
+            self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(self.camZ))
             self.lookX = 0
             self.preview.vs_LookX.setValue(self.lookX)
-            self.lookY = -13
+            self.preview.lbl_LookX.setText(self.convertIntToFloatStr(self.lookX))
+            self.lookY = -128
             self.preview.vs_LookY.setValue(self.lookY)
-            self.lookZ = 3
+            self.preview.lbl_LookY.setText(self.convertIntToFloatStr(self.lookY))
+            self.lookZ = 28
             self.preview.vs_LookZ.setValue(self.lookZ)
+            self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(self.lookZ))
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4111,30 +4168,36 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for applying the light angle setting within the preview window.'''
 
         self.lightX = value
+        self.preview.lbl_LightX.setText(self.convertIntToFloatStr(value))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLightYFunc(self, value):
         '''Method for applying the light angle setting within the preview window.'''
 
         self.lightY = value
+        self.preview.lbl_LightY.setText(self.convertIntToFloatStr(value))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLightZFunc(self, value):
         '''Method for applying the light angle setting within the preview window.'''
 
         self.lightZ = value
+        self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(value))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetLightFunc(self):
         '''Method for reseting the preview window light source.'''
 
         try:
-            self.lightX = 1519
+            self.lightX = 15185
             self.preview.vs_LightX.setValue(self.lightX)
-            self.lightY = -647
+            self.preview.lbl_LightX.setText(self.convertIntToFloatStr(self.lightX))
+            self.lightY = -6474
             self.preview.vs_LightY.setValue(self.lightY)
-            self.lightZ = 1750
+            self.preview.lbl_LightY.setText(self.convertIntToFloatStr(self.lightY))
+            self.lightZ = 17501
             self.preview.vs_LightZ.setValue(self.lightZ)
+            self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZ))
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4323,6 +4386,11 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
+    def convertIntToFloatStr(self, num):
+        '''Method to convert a integer into a /10 float stgring for the slider values.'''
+
+        return str(round(num / 10, 1))
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 # Bookmark
