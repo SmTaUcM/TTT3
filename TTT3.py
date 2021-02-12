@@ -40,9 +40,6 @@ import urllib3  # python -m pip install urllib3
 import json
 import hashlib
 import threading
-import matplotlib.font_manager as font_manager  # python -m pip install matplotlib
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
-import pygame  # python -m pip install pygame
 # python -m pip install pyinstaller - for compiler.
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -4630,9 +4627,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def fcb_previewHelmFontFunc(self, font):
         '''Method for handling helmet font selection'''
 
-        pygame.font.init()
-        self.fontHelm = font_manager.findfont(font.toString())
+        self.fontHelm = findFont(font.toString().split(",")[0])
         self.fontHelmQFront = font
+        if not self.fontHelm:
+            self.fontHelm = os.environ['WINDIR'] + "\\Fonts\\impact.ttf"
+            self.fontHelmQFront = QFont("impact")
+
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -4640,6 +4640,26 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                      Functions.                                                                    #
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+def findFont(fontName):
+    '''Method to find a font's filepath for a given font name.'''
+
+    fontPath = os.environ['WINDIR'] + "\\Fonts\\"
+
+    aKey = r"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
+    values = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, aKey, 0, winreg.KEY_READ)
+
+    i = 0
+
+    while True:
+        try:
+            if fontName.lower() in fontPath + winreg.EnumValue(values, i)[0].lower():
+                return fontPath + winreg.EnumValue(values, i)[1]
+            else:
+                i += 1
+        except OSError:
+            break
 
 
 def getYHelm(x):
