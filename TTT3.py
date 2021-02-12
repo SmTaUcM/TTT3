@@ -240,6 +240,10 @@ class TTT3(QMainWindow):
             self.decColour = QColor(32, 32, 32)
             self.lightColour = QColor(255, 255, 255)
             self.transparentBGHelm = ""
+            self.ambientHelm = 30
+            self.specularHelm = 50
+            self.roughHelm = 1
+            self.reflectionHelm = 10
             self.widthHelm = 640
             self.heightHelm = 548
             self.qualityHelm = 7  # More than 7 creates graphical glitches around the nametag. Suspected due to createHelmetFaceCoulour()
@@ -833,7 +837,7 @@ class TTT3(QMainWindow):
         self.renderPreview()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def showPreviewHelmDialog(self):  # Bookmark
+    def showPreviewHelmDialog(self):
         '''Method to open the render preview / options GUI.'''
 
         # Load our GUI file 'data\uis\preview.ui'.
@@ -854,7 +858,14 @@ class TTT3(QMainWindow):
         self.preview.btn_PaletteBack.clicked.connect(self.btn_PaletteBackFunc)
         self.preview.btn_PaletteDec.clicked.connect(self.btn_PaletteHelmDecFunc)
         self.preview.btn_PaletteLight.clicked.connect(self.btn_PaletteHelmLightFunc)
+        self.preview.cb_TransparentBG.stateChanged.connect(self.cb_previewTransparentFunc)
         self.preview.btn_resetColours.clicked.connect(self.btn_previewResetColoursFunc)
+        self.preview.vs_Ambient.valueChanged.connect(self.vs_previewAmbientFunc)  # Bookmark
+        self.preview.vs_Specular.valueChanged.connect(self.vs_previewSpecularFunc)
+        self.preview.vs_Roughness.valueChanged.connect(self.vs_previewRoughnessFunc)
+        self.preview.vs_Reflection.valueChanged.connect(self.vs_previewReflectionFunc)
+        self.preview.btn_resetSurfProps.clicked.connect(self.btn_previewResetSurfPropsFunc)
+
 # self.preview.sb_Width.valueChanged.connect(self.sb_previewWidthFunc)
 # self.preview.btn_resetOptions.clicked.connect(self.btn_previewResetOptionsFunc)
 # self.preview.sb_Quality.valueChanged.connect(self.sb_previewQualityFunc)
@@ -862,7 +873,6 @@ class TTT3(QMainWindow):
 # self.preview.cb_AA.stateChanged.connect(self.cb_previewAAFunc)
 # self.preview.cb_Shadowless.stateChanged.connect(self.cb_previewShadowlessFunc)
 # self.preview.cb_Mosaic.stateChanged.connect(self.cb_previewMosaicFunc)
-        self.preview.cb_TransparentBG.stateChanged.connect(self.cb_previewTransparentFunc)
 # self.preview.vs_CamX.valueChanged.connect(self.vs_previewCamXFunc)
 # self.preview.vs_CamY.valueChanged.connect(self.vs_previewCamYFunc)
 # self.preview.vs_CamZ.valueChanged.connect(self.vs_previewCamZFunc)
@@ -913,23 +923,23 @@ class TTT3(QMainWindow):
                 self.cb_previewTransparentFunc(0)
             # Slider Bars
             self.preview.vs_CamX.setValue(self.camX)
-            self.preview.lbl_CamX.setText(self.convertIntToFloatStr(self.camX))
+            self.preview.lbl_CamX.setText(self.convertIntToFloatStr(self.camX, 10))
             self.preview.vs_CamY.setValue(self.camY)
-            self.preview.lbl_CamY.setText(self.convertIntToFloatStr(self.camY))
+            self.preview.lbl_CamY.setText(self.convertIntToFloatStr(self.camY, 10))
             self.preview.vs_CamZ.setValue(self.camZ)
-            self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(self.camZ))
+            self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(self.camZ, 10))
             self.preview.vs_LookX.setValue(self.lookX)
-            self.preview.lbl_LookX.setText(self.convertIntToFloatStr(self.lookX))
+            self.preview.lbl_LookX.setText(self.convertIntToFloatStr(self.lookX, 10))
             self.preview.vs_LookY.setValue(self.lookY)
-            self.preview.lbl_LookY.setText(self.convertIntToFloatStr(self.lookY))
+            self.preview.lbl_LookY.setText(self.convertIntToFloatStr(self.lookY, 10))
             self.preview.vs_LookZ.setValue(self.lookZ)
-            self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(self.lookZ))
+            self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(self.lookZ, 10))
             self.preview.vs_LightX.setValue(self.lightX)
-            self.preview.lbl_LightX.setText(self.convertIntToFloatStr(self.lightX))
+            self.preview.lbl_LightX.setText(self.convertIntToFloatStr(self.lightX, 10))
             self.preview.vs_LightY.setValue(self.lightY)
-            self.preview.lbl_LightY.setText(self.convertIntToFloatStr(self.lightY))
+            self.preview.lbl_LightY.setText(self.convertIntToFloatStr(self.lightY, 10))
             self.preview.vs_LightZ.setValue(self.lightZ)
-            self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZ))
+            self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZ, 10))
         else:  # Bookmark
             # Colours.
             # Helmet Colour.
@@ -959,6 +969,14 @@ class TTT3(QMainWindow):
                 self.preview.cb_TransparentBG.setChecked(False)
                 self.cb_previewTransparentFunc(0)
             # Slider Bars
+            self.preview.vs_Ambient.setValue(self.ambientHelm)
+            self.preview.lbl_Ambient.setText(self.convertIntToFloatStr(self.ambientHelm, 100))
+            self.preview.vs_Specular.setValue(self.specularHelm)
+            self.preview.lbl_Specular.setText(self.convertIntToFloatStr(self.specularHelm, 100))
+            self.preview.vs_Roughness.setValue(self.roughHelm)
+            self.preview.lbl_Roughness.setText(self.convertIntToFloatStr(self.roughHelm, 100))
+            self.preview.vs_Reflection.setValue(self.reflectionHelm)
+            self.preview.lbl_Reflection.setText(self.convertIntToFloatStr(self.reflectionHelm, 100))
 # self.preview.vs_CamX.setValue(self.camX)
 # self.preview.vs_CamY.setValue(self.camY)
 # self.preview.vs_CamZ.setValue(self.camZ)
@@ -1498,9 +1516,9 @@ class TTT3(QMainWindow):
                     line.replace(
                         "&LIGHT&", "%s, %s, %s" %
                         (self.convertIntToFloatStr(
-                            self.lightX), self.convertIntToFloatStr(
-                            self.lightY), self.convertIntToFloatStr(
-                            self.lightZ))))
+                            self.lightX, 10), self.convertIntToFloatStr(
+                            self.lightY, 10), self.convertIntToFloatStr(
+                            self.lightZ, 10))))
 
             elif "&SPOTLIGHTCOLOUR&" in line:
                 povData.append(line.replace("&SPOTLIGHTCOLOUR&", self.convertToPOVRGB(self.spotColour)))
@@ -1521,18 +1539,18 @@ class TTT3(QMainWindow):
                     line.replace(
                         "&CAMERA&", "%s, %s, %s" %
                         (self.convertIntToFloatStr(
-                            self.camX), self.convertIntToFloatStr(
-                            self.camY), self.convertIntToFloatStr(
-                            self.camZ))))
+                            self.camX, 10), self.convertIntToFloatStr(
+                            self.camY, 10), self.convertIntToFloatStr(
+                            self.camZ, 10))))
 
             elif "&TARGET&" in line:
                 povData.append(
                     line.replace(
                         "&TARGET&", "%s, %s, %s" %
                         (self.convertIntToFloatStr(
-                            self.lookX), self.convertIntToFloatStr(
-                            self.lookY), self.convertIntToFloatStr(
-                            self.lookZ))))
+                            self.lookX, 10), self.convertIntToFloatStr(
+                            self.lookY, 10), self.convertIntToFloatStr(
+                            self.lookZ, 10))))
 
             # ----- Basic Info. -----
             elif "&EE&" in line:
@@ -1874,9 +1892,9 @@ color_map
                     line.replace(
                         "&LIGHT&", "%s, %s, %s" %
                         (self.convertIntToFloatStr(
-                            self.lightX), self.convertIntToFloatStr(
-                            self.lightY), self.convertIntToFloatStr(
-                            self.lightZ))))
+                            self.lightX, 10), self.convertIntToFloatStr(
+                            self.lightY, 10), self.convertIntToFloatStr(
+                            self.lightZ, 10))))
 
             elif "&SPOTLIGHTCOLOUR&" in line:
                 povData.append(line.replace("&SPOTLIGHTCOLOUR&", self.convertToPOVRGB(self.spotColour)))
@@ -1897,18 +1915,18 @@ color_map
                     line.replace(
                         "&CAMERA&", "%s, %s, %s" %
                         (self.convertIntToFloatStr(
-                            self.camX), self.convertIntToFloatStr(
-                            self.camY), self.convertIntToFloatStr(
-                            self.camZ))))
+                            self.camX, 10), self.convertIntToFloatStr(
+                            self.camY, 10), self.convertIntToFloatStr(
+                            self.camZ, 10))))
 
             elif "&TARGET&" in line:
                 povData.append(
                     line.replace(
                         "&TARGET&", "%s, %s, %s" %
                         (self.convertIntToFloatStr(
-                            self.lookX), self.convertIntToFloatStr(
-                            self.lookY), self.convertIntToFloatStr(
-                            self.lookZ))))
+                            self.lookX, 10), self.convertIntToFloatStr(
+                            self.lookY, 10), self.convertIntToFloatStr(
+                            self.lookZ, 10))))
 
             # ----- Basic Info. -----
             elif "&CLOTH&" in line:
@@ -2044,16 +2062,16 @@ color_map
                 povData.append(line.replace("&HELMCOLOUR&", "%s" % self.convertToPOVRGB(self.helmColour)))
 
             elif "&AMBIENT&" in line:
-                povData.append(line.replace("&AMBIENT&", "0.3"))  # TODO Ambient Light
+                povData.append(line.replace("&AMBIENT&", "%s" % self.convertIntToFloatStr(self.ambientHelm, 100)))
 
             elif "&SPECULAR&" in line:
-                povData.append(line.replace("&SPECULAR&", "0.5"))  # TODO Specular Light
+                povData.append(line.replace("&SPECULAR&", "%s" % self.convertIntToFloatStr(self.specularHelm, 100)))
 
             elif "&ROUGHNESS&" in line:
-                povData.append(line.replace("&ROUGHNESS&", "0.01"))  # TODO Roughness Light
+                povData.append(line.replace("&ROUGHNESS&", "%s" % self.convertIntToFloatStr(self.roughHelm, 100)))
 
             elif "&REFLECTION&" in line:
-                povData.append(line.replace("&REFLECTION&", "0.1"))  # TODO Roughness Light
+                povData.append(line.replace("&REFLECTION&", "%s" % self.convertIntToFloatStr(self.reflectionHelm, 100)))
 
             elif "&POSRANKFILE&" in line:
                 povData.append(line.replace("&POSRANKFILE&", "NIL"))  # TODO Helmet Rank
@@ -3989,7 +4007,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 # Light Colour.
                 self.colourSelected(self.lightColour, "lightColour", self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
                 self.transparentBGHelm = ""
-                self.preview.cb_TransparentBG.setChecked(False)  # Bookmark
+                self.preview.cb_TransparentBG.setChecked(False)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4100,42 +4118,42 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for applying the camera angle setting within the preview window.'''
 
         self.camX = value
-        self.preview.lbl_CamX.setText(self.convertIntToFloatStr(value))
+        self.preview.lbl_CamX.setText(self.convertIntToFloatStr(value, 10))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewCamYFunc(self, value):
         '''Method for applying the camera angle setting within the preview window.'''
 
         self.camY = value
-        self.preview.lbl_CamY.setText(self.convertIntToFloatStr(value))
+        self.preview.lbl_CamY.setText(self.convertIntToFloatStr(value, 10))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewCamZFunc(self, value):
         '''Method for applying the camera angle setting within the preview window.'''
 
         self.camZ = value
-        self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(value))
+        self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(value, 10))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookXFunc(self, value):
         '''Method for applying the look at angle setting within the preview window.'''
 
         self.lookX = value
-        self.preview.lbl_LookX.setText(self.convertIntToFloatStr(value))
+        self.preview.lbl_LookX.setText(self.convertIntToFloatStr(value, 10))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookYFunc(self, value):
         '''Method for applying the look at angle setting within the preview window.'''
 
         self.lookY = value
-        self.preview.lbl_LookY.setText(self.convertIntToFloatStr(value))
+        self.preview.lbl_LookY.setText(self.convertIntToFloatStr(value, 10))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookZFunc(self, value):
         '''Method for applying the look at angle setting within the preview window.'''
 
         self.lookZ = value
-        self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(value))
+        self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(value, 10))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetCameraFunc(self):
@@ -4144,22 +4162,22 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         try:
             self.camX = -2608
             self.preview.vs_CamX.setValue(self.camX)
-            self.preview.lbl_CamX.setText(self.convertIntToFloatStr(self.camX))
+            self.preview.lbl_CamX.setText(self.convertIntToFloatStr(self.camX, 10))
             self.camY = -13311
             self.preview.vs_CamY.setValue(self.camY)
-            self.preview.lbl_CamY.setText(self.convertIntToFloatStr(self.camY))
+            self.preview.lbl_CamY.setText(self.convertIntToFloatStr(self.camY, 10))
             self.camZ = 2090
             self.preview.vs_CamZ.setValue(self.camZ)
-            self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(self.camZ))
+            self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(self.camZ, 10))
             self.lookX = 0
             self.preview.vs_LookX.setValue(self.lookX)
-            self.preview.lbl_LookX.setText(self.convertIntToFloatStr(self.lookX))
+            self.preview.lbl_LookX.setText(self.convertIntToFloatStr(self.lookX, 10))
             self.lookY = -128
             self.preview.vs_LookY.setValue(self.lookY)
-            self.preview.lbl_LookY.setText(self.convertIntToFloatStr(self.lookY))
+            self.preview.lbl_LookY.setText(self.convertIntToFloatStr(self.lookY, 10))
             self.lookZ = 28
             self.preview.vs_LookZ.setValue(self.lookZ)
-            self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(self.lookZ))
+            self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(self.lookZ, 10))
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4168,21 +4186,21 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for applying the light angle setting within the preview window.'''
 
         self.lightX = value
-        self.preview.lbl_LightX.setText(self.convertIntToFloatStr(value))
+        self.preview.lbl_LightX.setText(self.convertIntToFloatStr(value, 10))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLightYFunc(self, value):
         '''Method for applying the light angle setting within the preview window.'''
 
         self.lightY = value
-        self.preview.lbl_LightY.setText(self.convertIntToFloatStr(value))
+        self.preview.lbl_LightY.setText(self.convertIntToFloatStr(value, 10))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLightZFunc(self, value):
         '''Method for applying the light angle setting within the preview window.'''
 
         self.lightZ = value
-        self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(value))
+        self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(value, 10))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetLightFunc(self):
@@ -4191,13 +4209,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         try:
             self.lightX = 15185
             self.preview.vs_LightX.setValue(self.lightX)
-            self.preview.lbl_LightX.setText(self.convertIntToFloatStr(self.lightX))
+            self.preview.lbl_LightX.setText(self.convertIntToFloatStr(self.lightX, 10))
             self.lightY = -6474
             self.preview.vs_LightY.setValue(self.lightY)
-            self.preview.lbl_LightY.setText(self.convertIntToFloatStr(self.lightY))
+            self.preview.lbl_LightY.setText(self.convertIntToFloatStr(self.lightY, 10))
             self.lightZ = 17501
             self.preview.vs_LightZ.setValue(self.lightZ)
-            self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZ))
+            self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZ, 10))
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4386,11 +4404,60 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def convertIntToFloatStr(self, num):
+    def convertIntToFloatStr(self, num, divisor):
         '''Method to convert a integer into a /10 float stgring for the slider values.'''
 
-        return str(round(num / 10, 1))
+        return str(round(num / float(divisor), str(divisor).count("0")))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def vs_previewAmbientFunc(self, value):
+        '''Method for applying the light angle setting within the preview window.'''
+
+        self.ambientHelm = value
+        self.preview.lbl_Ambient.setText(self.convertIntToFloatStr(value, 100))
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def vs_previewSpecularFunc(self, value):
+        '''Method for applying the light angle setting within the preview window.'''
+
+        self.specularHelm = value
+        self.preview.lbl_Specular.setText(self.convertIntToFloatStr(value, 100))
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def vs_previewRoughnessFunc(self, value):
+        '''Method for applying the light angle setting within the preview window.'''
+
+        self.roughHelm = value
+        self.preview.lbl_Roughness.setText(self.convertIntToFloatStr(value, 100))
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def vs_previewReflectionFunc(self, value):
+        '''Method for applying the light angle setting within the preview window.'''
+
+        self.reflectionHelm = value
+        self.preview.lbl_Reflection.setText(self.convertIntToFloatStr(value, 100))
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def btn_previewResetSurfPropsFunc(self):
+        '''Method for reseting the preview window light source.'''
+
+        try:
+            self.ambientHelm = 30
+            self.preview.lbl_Ambient.setText(self.convertIntToFloatStr(self.ambientHelm, 100))
+            self.preview.vs_Ambient.setValue(self.ambientHelm)
+            self.specularHelm = 50
+            self.preview.lbl_Specular.setText(self.convertIntToFloatStr(self.specularHelm, 100))
+            self.preview.vs_Specular.setValue(self.specularHelm)
+            self.roughHelm = 1
+            self.preview.lbl_Roughness.setText(self.convertIntToFloatStr(self.roughHelm, 100))
+            self.preview.vs_Roughness.setValue(self.roughHelm)
+            self.reflectionHelm = 10
+            self.preview.lbl_Reflection.setText(self.convertIntToFloatStr(self.reflectionHelm, 100))
+            self.preview.vs_Reflection.setValue(self.reflectionHelm)
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 # Bookmark
