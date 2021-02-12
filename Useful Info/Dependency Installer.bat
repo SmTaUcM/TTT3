@@ -8,6 +8,8 @@ python -m pip install opencv-python
 python -m pip install pyinstaller
 python -m pip install --upgrade autopep8
 python -m pip install urllib3
+python -m pip install matplotlib
+python -m pip install pygame
 echo
 echo Installation complete...
 echo

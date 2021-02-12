@@ -29,7 +29,7 @@ import datetime
 import winreg
 from PyQt5 import uic  # python -m pip install pyqt5
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMenu, QColorDialog  # python -m pip install pyqt5-tools
-from PyQt5.QtGui import QPixmap, QColor
+from PyQt5.QtGui import QPixmap, QColor, QFont
 from PyQt5.QtCore import Qt, QEvent, pyqtSignal
 from PIL import Image, ImageDraw, ImageFont, ImageOps  # python -m pip install pillow
 import cv2  # python -m pip install opencv-python
@@ -40,6 +40,9 @@ import urllib3  # python -m pip install urllib3
 import json
 import hashlib
 import threading
+import matplotlib.font_manager as font_manager  # python -m pip install matplotlib
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+import pygame  # python -m pip install pygame
 # python -m pip install pyinstaller - for compiler.
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -260,6 +263,9 @@ class TTT3(QMainWindow):
             self.shadowlessHelm = False
             self.homoHelm = False
             self.mosaicPreviewHelm = False
+            self.nameHelm = "EH TC"
+            self.fontHelmQFront = QFont("impact")
+            self.fontHelm = os.environ['WINDIR'] + "\\Fonts\\impact.ttf"
             # Bookmark
 
             # PovRay Template Constants.
@@ -897,6 +903,8 @@ class TTT3(QMainWindow):
         self.preview.cb_Homo.stateChanged.connect(self.cb_previewHomoFunc)
         self.preview.cb_Mosaic.stateChanged.connect(self.cb_previewMosaicFunc)
         self.preview.btn_resetOptions.clicked.connect(self.btn_previewResetOptionsFunc)
+        self.preview.le_helmText.textChanged.connect(self.le_previewHelmTextFunc)
+        self.preview.fcb_hemlFont.currentFontChanged.connect(self.fcb_previewHelmFontFunc)
 
 
 # self.preview.btn_Reset.clicked.connect(self.btn_previewResetFunc)
@@ -1000,6 +1008,13 @@ class TTT3(QMainWindow):
             self.preview.vs_LightX.setValue(self.lightXHelm)
             self.preview.vs_LightY.setValue(self.lightYHelm)
             self.preview.vs_LightZ.setValue(self.lightZHelm)
+            # Decorations.
+            # Helmet Text.
+            if self.nameHelm == "EH TC":
+                if self.name != "Unknown":
+                    self.nameHelm = self.name.upper()
+            self.preview.le_helmText.setText(self.nameHelm)
+            self.preview.fcb_hemlFont.setCurrentFont(self.fontHelmQFront)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def renderPreview(self):
@@ -4478,15 +4493,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for creating nametag.png which is used to diasply the name on the pilot helmet.'''
 
         # Set the helmet's text.
-        if self.name == "Unknown":
-            text = "EH TC"
-        else:
-            text = self.name  # TODO get name from textbox
+        text = self.nameHelm
+        self.fontHelm
 
         # Local variables.
         width, height = 720, 264
         fontsize = 1  # Starting font size.
-        fnt = ImageFont.truetype("/Library/Fonts/impact.ttf", fontsize)
+        fnt = ImageFont.truetype(self.fontHelm, fontsize)
         img_fraction = 0.97  # Portion of image width you want text width to be.
 
         # Create the image.
@@ -4498,15 +4511,15 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             while fnt.getsize(text)[0] < img_fraction * img.size[0]:
                 # Iterate until the text size is just larger than the criteria.
                 fontsize += 1
-                fnt = ImageFont.truetype("/Library/Fonts/impact.ttf", fontsize)  # TODO Helmet font selection.
+                fnt = ImageFont.truetype(self.fontHelm, fontsize)  # TODO Helmet font selection.
 
             # De-increment to be sure it is less than criteria.
             fontsize -= 1
-            fnt = ImageFont.truetype("/Library/Fonts/impact.ttf", fontsize)
+            fnt = ImageFont.truetype(self.fontHelm, fontsize)
 
         else:
             fontsize = 220
-            fnt = ImageFont.truetype("/Library/Fonts/impact.ttf", fontsize)
+            fnt = ImageFont.truetype(self.fontHelm, fontsize)
 
         w, h = imgOut.textsize(text, font=fnt)
         h += int(h * 0.21)
@@ -4607,6 +4620,20 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
+    def le_previewHelmTextFunc(self, text):
+        '''Method to handle text entry into the Helmet Text textbox.'''
+
+        self.nameHelm = str(self.preview.le_helmText.text()).upper()
+        self.preview.le_helmText.setText(self.nameHelm)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def fcb_previewHelmFontFunc(self, font):
+        '''Method for handling helmet font selection'''
+
+        pygame.font.init()
+        self.fontHelm = font_manager.findfont(font.toString())
+        self.fontHelmQFront = font
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 # Bookmark
