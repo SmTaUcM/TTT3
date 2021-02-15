@@ -1047,8 +1047,11 @@ class TTT3(QMainWindow):
             logo2TypeInt = self.preview.cb_hemlLogo2Type.findText(self.logo2TypeHelm, Qt.MatchExactly | Qt.MatchCaseSensitive)
             self.preview.cb_hemlLogo1Type.setCurrentIndex(logo1TypeInt)
             self.preview.cb_hemlLogo2Type.setCurrentIndex(logo2TypeInt)
-            if self.preview.cb_hemlLogo2Type.currentText() == "":
-                self.preview.cb_hemlLogo2Type.setCurrentIndex(0)
+
+            if self.preview.cb_hemlLogo2Type.currentText() == "":  # If previous setting was 'Squadron Patch' (default) but it's not longer available.
+                self.preview.cb_hemlLogo2Type.setCurrentIndex(1)
+                self.logo2FilepathHelm = os.getcwd() + "\\data\\misc\\tiecorps_logo_new.png"
+
             self.cb_previewHemlLogo1TypeFunc()
             self.cb_previewHemlLogo2TypeFunc()
             self.preview.le_helmLogo1Filepath.setText(self.logo1FilepathHelm)
@@ -4996,29 +4999,29 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def cb_previewPresetCamFunc(self, intIndex):
         '''Method for preview camera presets.'''
 
-        if intIndex == 0 :
+        if intIndex == 0:
             pass
 
         # Top Left.
-        elif intIndex == 1 :
+        elif intIndex == 1:
             self.camX = -10000
             self.camY = -13311
             self.camZ = 10000
 
         # Top Centre.
-        elif intIndex == 2 :
+        elif intIndex == 2:
             self.camX = 0
             self.camY = -13311
             self.camZ = 10000
 
         # Top Right.
-        elif intIndex == 3 :
+        elif intIndex == 3:
             self.camX = 10000
             self.camY = -13311
             self.camZ = 10000
 
         # Middle Left.
-        elif intIndex == 4 :
+        elif intIndex == 4:
             self.camX = -10000
             self.camY = -13311
             self.camZ = 0
@@ -5030,25 +5033,25 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.camZ = 0
 
         # Middle Right.
-        elif intIndex == 6 :
+        elif intIndex == 6:
             self.camX = 10000
             self.camY = -13311
             self.camZ = 0
 
         # Bottom Left.
-        elif intIndex == 7 :
+        elif intIndex == 7:
             self.camX = -10000
             self.camY = -13311
             self.camZ = -10000
 
         # Bottom Centre.
-        elif intIndex == 8 :
+        elif intIndex == 8:
             self.camX = 0
             self.camY = -13311
             self.camZ = -10000
 
         # Bottom Right.
-        elif intIndex == 9 :
+        elif intIndex == 9:
             self.camX = 10000
             self.camY = -13311
             self.camZ = -10000
@@ -5067,29 +5070,29 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def cb_previewPresetCamHelmFunc(self, intIndex):
         '''Method for preview camera presets.'''
 
-        if intIndex == 0 :
+        if intIndex == 0:
             pass
 
         # Top Left.
-        elif intIndex == 1 :
+        elif intIndex == 1:
             self.camXHelm = -5000
             self.camYHelm = -6519
             self.camZHelm = 5000
 
         # Top Centre.
-        elif intIndex == 2 :
+        elif intIndex == 2:
             self.camXHelm = 0
             self.camYHelm = -6519
             self.camZHelm = 5000
 
         # Top Right.
-        elif intIndex == 3 :
+        elif intIndex == 3:
             self.camXHelm = 5000
             self.camYHelm = -6519
             self.camZHelm = 5000
 
         # Middle Left.
-        elif intIndex == 4 :
+        elif intIndex == 4:
             self.camXHelm = -5000
             self.camYHelm = -6519
             self.camZHelm = 0
@@ -5101,25 +5104,25 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.camZHelm = 0
 
         # Middle Right.
-        elif intIndex == 6 :
+        elif intIndex == 6:
             self.camXHelm = 5000
             self.camYHelm = -6519
             self.camZHelm = 0
 
         # Bottom Left.
-        elif intIndex == 7 :
+        elif intIndex == 7:
             self.camXHelm = -5000
             self.camYHelm = -6519
             self.camZHelm = -5000
 
         # Bottom Centre.
-        elif intIndex == 8 :
+        elif intIndex == 8:
             self.camXHelm = 0
             self.camYHelm = -6519
             self.camZHelm = -5000
 
         # Bottom Right.
-        elif intIndex == 9 :
+        elif intIndex == 9:
             self.camXHelm = 5000
             self.camYHelm = -6519
             self.camZHelm = -5000
@@ -5138,29 +5141,29 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def cb_previewPresetLookFunc(self, intIndex):
         '''Method for preview look presets.'''
 
-        if intIndex == 0 :
+        if intIndex == 0:
             pass
 
         # Top Left.
-        elif intIndex == 1 :
+        elif intIndex == 1:
             self.lookX = -2500
             self.lookY = -128
             self.lookZ = 2500
 
         # Top Centre.
-        elif intIndex == 2 :
+        elif intIndex == 2:
             self.lookX = 0
             self.lookY = -128
             self.lookZ = 2500
 
         # Top Right.
-        elif intIndex == 3 :
+        elif intIndex == 3:
             self.lookX = 2500
             self.lookY = -128
             self.lookZ = 2500
 
         # Middle Left.
-        elif intIndex == 4 :
+        elif intIndex == 4:
             self.lookX = -2500
             self.lookY = -128
             self.lookZ = 0
@@ -5172,25 +5175,25 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lookZ = 0
 
         # Middle Right.
-        elif intIndex == 6 :
+        elif intIndex == 6:
             self.lookX = 2500
             self.lookY = -128
             self.lookZ = 0
 
         # Bottom Left.
-        elif intIndex == 7 :
+        elif intIndex == 7:
             self.lookX = -2500
             self.lookY = -128
             self.lookZ = -2500
 
         # Bottom Centre.
-        elif intIndex == 8 :
+        elif intIndex == 8:
             self.lookX = 0
             self.lookY = -128
             self.lookZ = -2500
 
         # Bottom Right.
-        elif intIndex == 9 :
+        elif intIndex == 9:
             self.lookX = 2500
             self.lookY = -128
             self.lookZ = -2500
@@ -5206,33 +5209,32 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.cb_PresetLook.setCurrentIndex(intIndex)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def cb_previewPresetLookHelmFunc(self, intIndex):
         '''Method for preview look presets.'''
 
-        if intIndex == 0 :
+        if intIndex == 0:
             pass
 
         # Top Left.
-        elif intIndex == 1 :
+        elif intIndex == 1:
             self.lookXHelm = -2500
             self.lookYHelm = -445
             self.lookZHelm = 2500
 
         # Top Centre.
-        elif intIndex == 2 :
+        elif intIndex == 2:
             self.lookXHelm = 0
             self.lookYHelm = -445
             self.lookZHelm = 2500
 
         # Top Right.
-        elif intIndex == 3 :
+        elif intIndex == 3:
             self.lookXHelm = 2500
             self.lookYHelm = -445
             self.lookZHelm = 2500
 
         # Middle Left.
-        elif intIndex == 4 :
+        elif intIndex == 4:
             self.lookXHelm = -2500
             self.lookYHelm = -445
             self.lookZHelm = 0
@@ -5244,25 +5246,25 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lookZHelm = 0
 
         # Middle Right.
-        elif intIndex == 6 :
+        elif intIndex == 6:
             self.lookXHelm = 2500
             self.lookYHelm = -445
             self.lookZHelm = 0
 
         # Bottom Left.
-        elif intIndex == 7 :
+        elif intIndex == 7:
             self.lookXHelm = -2500
             self.lookYHelm = -445
             self.lookZHelm = -2500
 
         # Bottom Centre.
-        elif intIndex == 8 :
+        elif intIndex == 8:
             self.lookXHelm = 0
             self.lookYHelm = -445
             self.lookZHelm = -2500
 
         # Bottom Right.
-        elif intIndex == 9 :
+        elif intIndex == 9:
             self.lookXHelm = 2500
             self.lookYHelm = -445
             self.lookZHelm = -2500
@@ -5281,29 +5283,29 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def cb_previewPreseLightFunc(self, intIndex):
         '''Method for preview light presets.'''
 
-        if intIndex == 0 :
+        if intIndex == 0:
             pass
 
         # Top Left.
-        elif intIndex == 1 :
+        elif intIndex == 1:
             self.lightX = -10000
             self.lightY = -6474
             self.lightZ = 10000
 
         # Top Centre.
-        elif intIndex == 2 :
+        elif intIndex == 2:
             self.lightX = 0
             self.lightY = -6474
             self.lightZ = 10000
 
         # Top Right.
-        elif intIndex == 3 :
+        elif intIndex == 3:
             self.lightX = 10000
             self.lightY = -6474
             self.lightZ = 10000
 
         # Middle Left.
-        elif intIndex == 4 :
+        elif intIndex == 4:
             self.lightX = -10000
             self.lightY = -6474
             self.lightZ = 0
@@ -5315,25 +5317,25 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lightZ = 0
 
         # Middle Right.
-        elif intIndex == 6 :
+        elif intIndex == 6:
             self.lightX = 10000
             self.lightY = -6474
             self.lightZ = 0
 
         # Bottom Left.
-        elif intIndex == 7 :
+        elif intIndex == 7:
             self.lightX = -10000
             self.lightY = -6474
             self.lightZ = -10000
 
         # Bottom Centre.
-        elif intIndex == 8 :
+        elif intIndex == 8:
             self.lightX = 0
             self.lightY = -6474
             self.lightZ = -10000
 
         # Bottom Right.
-        elif intIndex == 9 :
+        elif intIndex == 9:
             self.lightX = 10000
             self.lightY = -6474
             self.lightZ = -10000
@@ -5352,29 +5354,29 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def cb_previewPreseLightHelmFunc(self, intIndex):
         '''Method for preview light presets.'''
 
-        if intIndex == 0 :
+        if intIndex == 0:
             pass
 
         # Top Left.
-        elif intIndex == 1 :
+        elif intIndex == 1:
             self.lightXHelm = -5000
             self.lightYHelm = -5089
             self.lightZHelm = 5000
 
         # Top Centre.
-        elif intIndex == 2 :
+        elif intIndex == 2:
             self.lightXHelm = 0
             self.lightYHelm = -5089
             self.lightZHelm = 5000
 
         # Top Right.
-        elif intIndex == 3 :
+        elif intIndex == 3:
             self.lightXHelm = 5000
             self.lightYHelm = -5089
             self.lightZHelm = 5000
 
         # Middle Left.
-        elif intIndex == 4 :
+        elif intIndex == 4:
             self.lightXHelm = -5000
             self.lightYHelm = -5089
             self.lightZHelm = 0
@@ -5386,25 +5388,25 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lightZHelm = 0
 
         # Middle Right.
-        elif intIndex == 6 :
+        elif intIndex == 6:
             self.lightXHelm = 5000
             self.lightYHelm = -5089
             self.lightZHelm = 0
 
         # Bottom Left.
-        elif intIndex == 7 :
+        elif intIndex == 7:
             self.lightXHelm = -5000
             self.lightYHelm = -5089
             self.lightZHelm = -5000
 
         # Bottom Centre.
-        elif intIndex == 8 :
+        elif intIndex == 8:
             self.lightXHelm = 0
             self.lightYHelm = -5089
             self.lightZHelm = -5000
 
         # Bottom Right.
-        elif intIndex == 9 :
+        elif intIndex == 9:
             self.lightXHelm = 5000
             self.lightYHelm = -5089
             self.lightZHelm = -5000
