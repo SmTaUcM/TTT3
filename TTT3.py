@@ -852,6 +852,9 @@ class TTT3(QMainWindow):
         self.preview.btn_Reset.clicked.connect(self.btn_previewResetFunc)
         self.preview.btn_Save.clicked.connect(self.btn_previewSaveFunc)
         self.preview.btn_Load.clicked.connect(self.btn_previewLoadFunc)
+        self.preview.cb_PresetCam.currentIndexChanged.connect(self.cb_previewPresetCamFunc)
+        self.preview.cb_PresetLook.currentIndexChanged.connect(self.cb_previewPresetLookFunc)
+        self.preview.cb_PresetLight.currentIndexChanged.connect(self.cb_previewPreseLightFunc)
 
         # Get a preview uniform render.
         self.renderPreview()
@@ -915,6 +918,9 @@ class TTT3(QMainWindow):
         self.preview.btn_Reset.clicked.connect(self.btn_previewResetFunc)
         self.preview.btn_Save.clicked.connect(self.btn_previewSaveFunc)
         self.preview.btn_Load.clicked.connect(self.btn_previewLoadFunc)
+        self.preview.cb_PresetCam.currentIndexChanged.connect(self.cb_previewPresetCamHelmFunc)
+        self.preview.cb_PresetLook.currentIndexChanged.connect(self.cb_previewPresetLookHelmFunc)
+        self.preview.cb_PresetLight.currentIndexChanged.connect(self.cb_previewPreseLightHelmFunc)
 
         # Get a preview uniform render.
         self.renderPreview()
@@ -1103,11 +1109,15 @@ class TTT3(QMainWindow):
             elif self.uniform == "helmet":
                 self.createHelmetPov()
         else:
+            # Disable widgets to stop user running POV-Ray twice.
             self.preview.btn_raytrace.setEnabled(False)
             self.preview.btn_preview.setEnabled(False)
             self.preview.btn_Load.setEnabled(False)
             self.preview.btn_Save.setEnabled(False)
             self.preview.btn_Reset.setEnabled(False)
+            self.preview.cb_PresetCam.setEnabled(False)
+            self.preview.cb_PresetLook.setEnabled(False)
+            self.preview.cb_PresetLight.setEnabled(False)
 
         if self.uniform == "dress":
             width = self.width
@@ -1191,11 +1201,15 @@ class TTT3(QMainWindow):
             # Show the output GUI.
             self.showOutputDialog(self.uniform)
         else:
+            # Re-enable rendering widgets.
             self.preview.btn_preview.setEnabled(True)
             self.preview.btn_raytrace.setEnabled(True)
             self.preview.btn_Load.setEnabled(True)
             self.preview.btn_Save.setEnabled(True)
             self.preview.btn_Reset.setEnabled(True)
+            self.preview.cb_PresetCam.setEnabled(True)
+            self.preview.cb_PresetLook.setEnabled(True)
+            self.preview.cb_PresetLight.setEnabled(True)
             self.showPreviewImage()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -4376,6 +4390,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         else:
             self.camXHelm = value
             self.preview.lbl_CamX.setText(self.convertIntToFloatStr(value, 100))
+
+        self.preview.cb_PresetCam.setCurrentIndex(0)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewCamYFunc(self, value):
@@ -4387,6 +4403,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         else:
             self.camYHelm = value
             self.preview.lbl_CamY.setText(self.convertIntToFloatStr(value, 100))
+
+        self.preview.cb_PresetCam.setCurrentIndex(0)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewCamZFunc(self, value):
@@ -4398,6 +4416,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         else:
             self.camZHelm = value
             self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(value, 100))
+
+        self.preview.cb_PresetCam.setCurrentIndex(0)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookXFunc(self, value):
@@ -4409,6 +4429,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         else:
             self.lookXHelm = value
             self.preview.lbl_LookX.setText(self.convertIntToFloatStr(value, 100))
+
+        self.preview.cb_PresetLook.setCurrentIndex(0)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookYFunc(self, value):
@@ -4420,6 +4442,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         else:
             self.lookYHelm = value
             self.preview.lbl_LookY.setText(self.convertIntToFloatStr(value, 100))
+
+        self.preview.cb_PresetLook.setCurrentIndex(0)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookZFunc(self, value):
@@ -4431,6 +4455,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         else:
             self.lookZHelm = value
             self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(value, 100))
+
+        self.preview.cb_PresetLook.setCurrentIndex(0)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetCameraFunc(self):
@@ -4488,6 +4514,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         else:
             self.lightXHelm = value
             self.preview.lbl_LightX.setText(self.convertIntToFloatStr(value, 100))
+
+        self.preview.cb_PresetLight.setCurrentIndex(0)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLightYFunc(self, value):
@@ -4499,6 +4527,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         else:
             self.lightYHelm = value
             self.preview.lbl_LightY.setText(self.convertIntToFloatStr(value, 100))
+
+        self.preview.cb_PresetLight.setCurrentIndex(0)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLightZFunc(self, value):
@@ -4510,6 +4540,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         else:
             self.lightZHelm = value
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(value, 100))
+
+        self.preview.cb_PresetLight.setCurrentIndex(0)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetLightFunc(self):
@@ -4960,6 +4992,434 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         self.preview.le_helmLogo1Filepath.setText(self.logo1FilepathHelm)
         self.preview.le_helmLogo2Filepath.setText(self.logo2FilepathHelm)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def cb_previewPresetCamFunc(self, intIndex):
+        '''Method for preview camera presets.'''
+
+        if intIndex == 0 :
+            pass
+
+        # Top Left.
+        elif intIndex == 1 :
+            self.camX = -10000
+            self.camY = -13311
+            self.camZ = 10000
+
+        # Top Centre.
+        elif intIndex == 2 :
+            self.camX = 0
+            self.camY = -13311
+            self.camZ = 10000
+
+        # Top Right.
+        elif intIndex == 3 :
+            self.camX = 10000
+            self.camY = -13311
+            self.camZ = 10000
+
+        # Middle Left.
+        elif intIndex == 4 :
+            self.camX = -10000
+            self.camY = -13311
+            self.camZ = 0
+
+        # Middle Centre.
+        elif intIndex == 5:
+            self.camX = 0
+            self.camY = -13311
+            self.camZ = 0
+
+        # Middle Right.
+        elif intIndex == 6 :
+            self.camX = 10000
+            self.camY = -13311
+            self.camZ = 0
+
+        # Bottom Left.
+        elif intIndex == 7 :
+            self.camX = -10000
+            self.camY = -13311
+            self.camZ = -10000
+
+        # Bottom Centre.
+        elif intIndex == 8 :
+            self.camX = 0
+            self.camY = -13311
+            self.camZ = -10000
+
+        # Bottom Right.
+        elif intIndex == 9 :
+            self.camX = 10000
+            self.camY = -13311
+            self.camZ = -10000
+
+        if intIndex != 0:
+            self.renderPreview()
+            self.preview.vs_CamX.setValue(self.camX)
+            self.preview.lbl_CamX.setText(self.convertIntToFloatStr(self.camX, 10))
+            self.preview.vs_CamY.setValue(self.camY)
+            self.preview.lbl_CamY.setText(self.convertIntToFloatStr(self.camY, 10))
+            self.preview.vs_CamZ.setValue(self.camZ)
+            self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(self.camZ, 10))
+            self.preview.cb_PresetCam.setCurrentIndex(intIndex)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def cb_previewPresetCamHelmFunc(self, intIndex):
+        '''Method for preview camera presets.'''
+
+        if intIndex == 0 :
+            pass
+
+        # Top Left.
+        elif intIndex == 1 :
+            self.camXHelm = -5000
+            self.camYHelm = -6519
+            self.camZHelm = 5000
+
+        # Top Centre.
+        elif intIndex == 2 :
+            self.camXHelm = 0
+            self.camYHelm = -6519
+            self.camZHelm = 5000
+
+        # Top Right.
+        elif intIndex == 3 :
+            self.camXHelm = 5000
+            self.camYHelm = -6519
+            self.camZHelm = 5000
+
+        # Middle Left.
+        elif intIndex == 4 :
+            self.camXHelm = -5000
+            self.camYHelm = -6519
+            self.camZHelm = 0
+
+        # Middle Centre.
+        elif intIndex == 5:
+            self.camXHelm = 0
+            self.camYHelm = -6519
+            self.camZHelm = 0
+
+        # Middle Right.
+        elif intIndex == 6 :
+            self.camXHelm = 5000
+            self.camYHelm = -6519
+            self.camZHelm = 0
+
+        # Bottom Left.
+        elif intIndex == 7 :
+            self.camXHelm = -5000
+            self.camYHelm = -6519
+            self.camZHelm = -5000
+
+        # Bottom Centre.
+        elif intIndex == 8 :
+            self.camXHelm = 0
+            self.camYHelm = -6519
+            self.camZHelm = -5000
+
+        # Bottom Right.
+        elif intIndex == 9 :
+            self.camXHelm = 5000
+            self.camYHelm = -6519
+            self.camZHelm = -5000
+
+        if intIndex != 0:
+            self.renderPreview()
+            self.preview.vs_CamX.setValue(self.camXHelm)
+            self.preview.lbl_CamX.setText(self.convertIntToFloatStr(self.camXHelm, 100))
+            self.preview.vs_CamY.setValue(self.camYHelm)
+            self.preview.lbl_CamY.setText(self.convertIntToFloatStr(self.camYHelm, 100))
+            self.preview.vs_CamZ.setValue(self.camZHelm)
+            self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(self.camZHelm, 100))
+            self.preview.cb_PresetCam.setCurrentIndex(intIndex)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def cb_previewPresetLookFunc(self, intIndex):
+        '''Method for preview look presets.'''
+
+        if intIndex == 0 :
+            pass
+
+        # Top Left.
+        elif intIndex == 1 :
+            self.lookX = -2500
+            self.lookY = -128
+            self.lookZ = 2500
+
+        # Top Centre.
+        elif intIndex == 2 :
+            self.lookX = 0
+            self.lookY = -128
+            self.lookZ = 2500
+
+        # Top Right.
+        elif intIndex == 3 :
+            self.lookX = 2500
+            self.lookY = -128
+            self.lookZ = 2500
+
+        # Middle Left.
+        elif intIndex == 4 :
+            self.lookX = -2500
+            self.lookY = -128
+            self.lookZ = 0
+
+        # Middle Centre.
+        elif intIndex == 5:
+            self.lookX = 0
+            self.lookY = -128
+            self.lookZ = 0
+
+        # Middle Right.
+        elif intIndex == 6 :
+            self.lookX = 2500
+            self.lookY = -128
+            self.lookZ = 0
+
+        # Bottom Left.
+        elif intIndex == 7 :
+            self.lookX = -2500
+            self.lookY = -128
+            self.lookZ = -2500
+
+        # Bottom Centre.
+        elif intIndex == 8 :
+            self.lookX = 0
+            self.lookY = -128
+            self.lookZ = -2500
+
+        # Bottom Right.
+        elif intIndex == 9 :
+            self.lookX = 2500
+            self.lookY = -128
+            self.lookZ = -2500
+
+        if intIndex != 0:
+            self.renderPreview()
+            self.preview.vs_LookX.setValue(self.lookX)
+            self.preview.lbl_LookX.setText(self.convertIntToFloatStr(self.lookX, 10))
+            self.preview.vs_LookY.setValue(self.lookY)
+            self.preview.lbl_LookY.setText(self.convertIntToFloatStr(self.lookY, 10))
+            self.preview.vs_LookZ.setValue(self.lookZ)
+            self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(self.lookZ, 10))
+            self.preview.cb_PresetLook.setCurrentIndex(intIndex)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def cb_previewPresetLookHelmFunc(self, intIndex):
+        '''Method for preview look presets.'''
+
+        if intIndex == 0 :
+            pass
+
+        # Top Left.
+        elif intIndex == 1 :
+            self.lookXHelm = -2500
+            self.lookYHelm = -445
+            self.lookZHelm = 2500
+
+        # Top Centre.
+        elif intIndex == 2 :
+            self.lookXHelm = 0
+            self.lookYHelm = -445
+            self.lookZHelm = 2500
+
+        # Top Right.
+        elif intIndex == 3 :
+            self.lookXHelm = 2500
+            self.lookYHelm = -445
+            self.lookZHelm = 2500
+
+        # Middle Left.
+        elif intIndex == 4 :
+            self.lookXHelm = -2500
+            self.lookYHelm = -445
+            self.lookZHelm = 0
+
+        # Middle Centre.
+        elif intIndex == 5:
+            self.lookXHelm = 0
+            self.lookYHelm = -445
+            self.lookZHelm = 0
+
+        # Middle Right.
+        elif intIndex == 6 :
+            self.lookXHelm = 2500
+            self.lookYHelm = -445
+            self.lookZHelm = 0
+
+        # Bottom Left.
+        elif intIndex == 7 :
+            self.lookXHelm = -2500
+            self.lookYHelm = -445
+            self.lookZHelm = -2500
+
+        # Bottom Centre.
+        elif intIndex == 8 :
+            self.lookXHelm = 0
+            self.lookYHelm = -445
+            self.lookZHelm = -2500
+
+        # Bottom Right.
+        elif intIndex == 9 :
+            self.lookXHelm = 2500
+            self.lookYHelm = -445
+            self.lookZHelm = -2500
+
+        if intIndex != 0:
+            self.renderPreview()
+            self.preview.vs_LookX.setValue(self.lookXHelm)
+            self.preview.lbl_LookX.setText(self.convertIntToFloatStr(self.lookXHelm, 100))
+            self.preview.vs_LookY.setValue(self.lookYHelm)
+            self.preview.lbl_LookY.setText(self.convertIntToFloatStr(self.lookYHelm, 100))
+            self.preview.vs_LookZ.setValue(self.lookZHelm)
+            self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(self.lookZHelm, 100))
+            self.preview.cb_PresetLook.setCurrentIndex(intIndex)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def cb_previewPreseLightFunc(self, intIndex):
+        '''Method for preview light presets.'''
+
+        if intIndex == 0 :
+            pass
+
+        # Top Left.
+        elif intIndex == 1 :
+            self.lightX = -10000
+            self.lightY = -6474
+            self.lightZ = 10000
+
+        # Top Centre.
+        elif intIndex == 2 :
+            self.lightX = 0
+            self.lightY = -6474
+            self.lightZ = 10000
+
+        # Top Right.
+        elif intIndex == 3 :
+            self.lightX = 10000
+            self.lightY = -6474
+            self.lightZ = 10000
+
+        # Middle Left.
+        elif intIndex == 4 :
+            self.lightX = -10000
+            self.lightY = -6474
+            self.lightZ = 0
+
+        # Middle Centre.
+        elif intIndex == 5:
+            self.lightX = 0
+            self.lightY = -6474
+            self.lightZ = 0
+
+        # Middle Right.
+        elif intIndex == 6 :
+            self.lightX = 10000
+            self.lightY = -6474
+            self.lightZ = 0
+
+        # Bottom Left.
+        elif intIndex == 7 :
+            self.lightX = -10000
+            self.lightY = -6474
+            self.lightZ = -10000
+
+        # Bottom Centre.
+        elif intIndex == 8 :
+            self.lightX = 0
+            self.lightY = -6474
+            self.lightZ = -10000
+
+        # Bottom Right.
+        elif intIndex == 9 :
+            self.lightX = 10000
+            self.lightY = -6474
+            self.lightZ = -10000
+
+        if intIndex != 0:
+            self.renderPreview()
+            self.preview.vs_LightX.setValue(self.lightX)
+            self.preview.lbl_LightX.setText(self.convertIntToFloatStr(self.lightX, 10))
+            self.preview.vs_LightY.setValue(self.lightY)
+            self.preview.lbl_LightY.setText(self.convertIntToFloatStr(self.lightY, 10))
+            self.preview.vs_LightZ.setValue(self.lightZ)
+            self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZ, 10))
+            self.preview.cb_PresetLight.setCurrentIndex(intIndex)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def cb_previewPreseLightHelmFunc(self, intIndex):
+        '''Method for preview light presets.'''
+
+        if intIndex == 0 :
+            pass
+
+        # Top Left.
+        elif intIndex == 1 :
+            self.lightXHelm = -5000
+            self.lightYHelm = -5089
+            self.lightZHelm = 5000
+
+        # Top Centre.
+        elif intIndex == 2 :
+            self.lightXHelm = 0
+            self.lightYHelm = -5089
+            self.lightZHelm = 5000
+
+        # Top Right.
+        elif intIndex == 3 :
+            self.lightXHelm = 5000
+            self.lightYHelm = -5089
+            self.lightZHelm = 5000
+
+        # Middle Left.
+        elif intIndex == 4 :
+            self.lightXHelm = -5000
+            self.lightYHelm = -5089
+            self.lightZHelm = 0
+
+        # Middle Centre.
+        elif intIndex == 5:
+            self.lightXHelm = 0
+            self.lightYHelm = -5089
+            self.lightZHelm = 0
+
+        # Middle Right.
+        elif intIndex == 6 :
+            self.lightXHelm = 5000
+            self.lightYHelm = -5089
+            self.lightZHelm = 0
+
+        # Bottom Left.
+        elif intIndex == 7 :
+            self.lightXHelm = -5000
+            self.lightYHelm = -5089
+            self.lightZHelm = -5000
+
+        # Bottom Centre.
+        elif intIndex == 8 :
+            self.lightXHelm = 0
+            self.lightYHelm = -5089
+            self.lightZHelm = -5000
+
+        # Bottom Right.
+        elif intIndex == 9 :
+            self.lightXHelm = 5000
+            self.lightYHelm = -5089
+            self.lightZHelm = -5000
+
+        if intIndex != 0:
+            self.renderPreview()
+            self.preview.vs_LightX.setValue(self.lightXHelm)
+            self.preview.lbl_LightX.setText(self.convertIntToFloatStr(self.lightXHelm, 100))
+            self.preview.vs_LightY.setValue(self.lightYHelm)
+            self.preview.lbl_LightY.setText(self.convertIntToFloatStr(self.lightYHelm, 100))
+            self.preview.vs_LightZ.setValue(self.lightZHelm)
+            self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZHelm, 100))
+            self.preview.cb_PresetLight.setCurrentIndex(intIndex)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 

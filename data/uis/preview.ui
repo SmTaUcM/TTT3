@@ -830,6 +830,12 @@ QComboBox:!enabled
        <height>201</height>
       </rect>
      </property>
+     <property name="toolTip">
+      <string>Rotates the camera around the image Right (+) to Left (-).</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>10000</number>
+     </property>
      <property name="styleSheet">
       <string notr="true">QSlider::groove:vertical {
     background: qlineargradient(spread:pad, x1:0.517, y1:1, x2:0.494, y2:0, stop:0 rgba(0, 0, 0, 255), stop:0.607955 rgba(180, 9, 9, 255));
@@ -914,6 +920,12 @@ QSlider::handle:vertical:hover
        <width>16</width>
        <height>201</height>
       </rect>
+     </property>
+     <property name="toolTip">
+      <string>Zooms the camera In (+) and Out (-).</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>10000</number>
      </property>
      <property name="styleSheet">
       <string notr="true">QSlider::groove:vertical {
@@ -1016,6 +1028,12 @@ QSlider::handle:vertical:hover
        <height>201</height>
       </rect>
      </property>
+     <property name="toolTip">
+      <string>Rotates the camera around the image Top (+) to Bottom (-).</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>10000</number>
+     </property>
      <property name="styleSheet">
       <string notr="true">QSlider::groove:vertical {
     background: qlineargradient(spread:pad, x1:0.517, y1:1, x2:0.494, y2:0, stop:0 rgba(0, 0, 0, 255), stop:0.607955 rgba(9, 28, 180, 255));
@@ -1082,8 +1100,8 @@ QSlider::handle:vertical:hover
     <widget class="QLabel" name="lbl_CamX">
      <property name="geometry">
       <rect>
-       <x>29</x>
-       <y>38</y>
+       <x>26</x>
+       <y>48</y>
        <width>47</width>
        <height>13</height>
       </rect>
@@ -1091,7 +1109,7 @@ QSlider::handle:vertical:hover
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>10</pointsize>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -1105,7 +1123,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>11</x>
-       <y>37</y>
+       <y>47</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -1113,7 +1131,7 @@ QSlider::handle:vertical:hover
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>10</pointsize>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -1127,7 +1145,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>11</x>
-       <y>53</y>
+       <y>61</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -1135,7 +1153,7 @@ QSlider::handle:vertical:hover
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>10</pointsize>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -1148,8 +1166,8 @@ QSlider::handle:vertical:hover
     <widget class="QLabel" name="lbl_CamY">
      <property name="geometry">
       <rect>
-       <x>29</x>
-       <y>54</y>
+       <x>26</x>
+       <y>62</y>
        <width>47</width>
        <height>13</height>
       </rect>
@@ -1157,7 +1175,7 @@ QSlider::handle:vertical:hover
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>10</pointsize>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -1171,7 +1189,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>11</x>
-       <y>69</y>
+       <y>75</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -1179,7 +1197,7 @@ QSlider::handle:vertical:hover
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>10</pointsize>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -1192,8 +1210,8 @@ QSlider::handle:vertical:hover
     <widget class="QLabel" name="lbl_CamZ">
      <property name="geometry">
       <rect>
-       <x>29</x>
-       <y>70</y>
+       <x>26</x>
+       <y>76</y>
        <width>47</width>
        <height>13</height>
       </rect>
@@ -1201,7 +1219,7 @@ QSlider::handle:vertical:hover
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>10</pointsize>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -1215,7 +1233,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>11</x>
-       <y>19</y>
+       <y>33</y>
        <width>51</width>
        <height>16</height>
       </rect>
@@ -1223,7 +1241,7 @@ QSlider::handle:vertical:hover
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>10</pointsize>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="text">
@@ -1233,8 +1251,8 @@ QSlider::handle:vertical:hover
     <widget class="QLabel" name="lbl_LookY">
      <property name="geometry">
       <rect>
-       <x>116</x>
-       <y>54</y>
+       <x>113</x>
+       <y>62</y>
        <width>47</width>
        <height>13</height>
       </rect>
@@ -1242,7 +1260,7 @@ QSlider::handle:vertical:hover
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>10</pointsize>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -1256,7 +1274,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>98</x>
-       <y>19</y>
+       <y>33</y>
        <width>51</width>
        <height>16</height>
       </rect>
@@ -1264,7 +1282,7 @@ QSlider::handle:vertical:hover
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>10</pointsize>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="text">
@@ -1275,7 +1293,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>98</x>
-       <y>53</y>
+       <y>61</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -1283,7 +1301,7 @@ QSlider::handle:vertical:hover
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>10</pointsize>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -1296,8 +1314,8 @@ QSlider::handle:vertical:hover
     <widget class="QLabel" name="lbl_LookX">
      <property name="geometry">
       <rect>
-       <x>116</x>
-       <y>38</y>
+       <x>113</x>
+       <y>48</y>
        <width>47</width>
        <height>13</height>
       </rect>
@@ -1305,7 +1323,7 @@ QSlider::handle:vertical:hover
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>10</pointsize>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -1397,7 +1415,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>98</x>
-       <y>69</y>
+       <y>75</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -1405,7 +1423,7 @@ QSlider::handle:vertical:hover
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>10</pointsize>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -1423,6 +1441,12 @@ QSlider::handle:vertical:hover
        <width>16</width>
        <height>201</height>
       </rect>
+     </property>
+     <property name="toolTip">
+      <string>Pans the camera source Right (+) and Left (-).</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>1000</number>
      </property>
      <property name="styleSheet">
       <string notr="true">QSlider::groove:vertical {
@@ -1464,8 +1488,8 @@ QSlider::handle:vertical:hover
     <widget class="QLabel" name="lbl_LookZ">
      <property name="geometry">
       <rect>
-       <x>116</x>
-       <y>70</y>
+       <x>113</x>
+       <y>76</y>
        <width>47</width>
        <height>13</height>
       </rect>
@@ -1473,7 +1497,7 @@ QSlider::handle:vertical:hover
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>10</pointsize>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -1491,6 +1515,12 @@ QSlider::handle:vertical:hover
        <width>16</width>
        <height>201</height>
       </rect>
+     </property>
+     <property name="toolTip">
+      <string>Pans the camera source Back (+) to Front (-).</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>10000</number>
      </property>
      <property name="styleSheet">
       <string notr="true">QSlider::groove:vertical {
@@ -1549,7 +1579,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>98</x>
-       <y>37</y>
+       <y>47</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -1557,7 +1587,7 @@ QSlider::handle:vertical:hover
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>10</pointsize>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -1588,6 +1618,12 @@ QSlider::handle:vertical:hover
        <width>16</width>
        <height>201</height>
       </rect>
+     </property>
+     <property name="toolTip">
+      <string>Pans the camera source Up (+) and Down (-).</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>10000</number>
      </property>
      <property name="styleSheet">
       <string notr="true">QSlider::groove:vertical {
@@ -1639,6 +1675,142 @@ QSlider::handle:vertical:hover
       <string>_</string>
      </property>
     </widget>
+    <widget class="QComboBox" name="cb_PresetCam">
+     <property name="geometry">
+      <rect>
+       <x>4</x>
+       <y>13</y>
+       <width>81</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(211, 211, 211);</string>
+     </property>
+     <item>
+      <property name="text">
+       <string>No Preset</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Top Left</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Top Centre</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Top Right</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Mid Left</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Mid Centre</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Mid Right</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Btm. Left</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Btm. Centre</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Btm. Right</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QComboBox" name="cb_PresetLook">
+     <property name="geometry">
+      <rect>
+       <x>88</x>
+       <y>13</y>
+       <width>81</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(211, 211, 211);</string>
+     </property>
+     <item>
+      <property name="text">
+       <string>No Preset</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Top Left</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Top Centre</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Top Right</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Mid Left</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Mid Centre</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Mid Right</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Btm. Left</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Btm. Centre</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Btm. Right</string>
+      </property>
+     </item>
+    </widget>
     <zorder>label_30</zorder>
     <zorder>label_27</zorder>
     <zorder>label_9</zorder>
@@ -1678,6 +1850,8 @@ QSlider::handle:vertical:hover
     <zorder>label_32</zorder>
     <zorder>label_36</zorder>
     <zorder>lbl_LookZ</zorder>
+    <zorder>cb_PresetCam</zorder>
+    <zorder>cb_PresetLook</zorder>
    </widget>
    <widget class="QGroupBox" name="gb_light">
     <property name="geometry">
@@ -1715,6 +1889,12 @@ QSlider::handle:vertical:hover
        <width>16</width>
        <height>201</height>
       </rect>
+     </property>
+     <property name="toolTip">
+      <string>Pans the light source Back (+) to Front (-).</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>10000</number>
      </property>
      <property name="styleSheet">
       <string notr="true">QSlider::groove:vertical {
@@ -1830,6 +2010,12 @@ QSlider::handle:vertical:hover
        <height>201</height>
       </rect>
      </property>
+     <property name="toolTip">
+      <string>Pans the light source Up (+) and Down (-).</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>10000</number>
+     </property>
      <property name="styleSheet">
       <string notr="true">QSlider::groove:vertical {
     background: qlineargradient(spread:pad, x1:0.517, y1:1, x2:0.494, y2:0, stop:0 rgba(0, 0, 0, 255), stop:0.607955 rgba(9, 28, 180, 255));
@@ -1888,6 +2074,12 @@ QSlider::handle:vertical:hover
        <width>16</width>
        <height>201</height>
       </rect>
+     </property>
+     <property name="toolTip">
+      <string>Pans the light source Right (+) and Left (-).</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>10000</number>
      </property>
      <property name="styleSheet">
       <string notr="true">QSlider::groove:vertical {
@@ -1968,8 +2160,8 @@ QSlider::handle:vertical:hover
     <widget class="QLabel" name="lbl_LightX">
      <property name="geometry">
       <rect>
-       <x>105</x>
-       <y>71</y>
+       <x>102</x>
+       <y>67</y>
        <width>47</width>
        <height>13</height>
       </rect>
@@ -1977,7 +2169,7 @@ QSlider::handle:vertical:hover
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>10</pointsize>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -1991,7 +2183,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>87</x>
-       <y>86</y>
+       <y>80</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -1999,7 +2191,7 @@ QSlider::handle:vertical:hover
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>10</pointsize>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -2013,7 +2205,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>87</x>
-       <y>70</y>
+       <y>66</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -2021,7 +2213,7 @@ QSlider::handle:vertical:hover
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>10</pointsize>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -2035,7 +2227,7 @@ QSlider::handle:vertical:hover
      <property name="geometry">
       <rect>
        <x>87</x>
-       <y>100</y>
+       <y>94</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -2043,7 +2235,7 @@ QSlider::handle:vertical:hover
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>10</pointsize>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -2065,7 +2257,7 @@ QSlider::handle:vertical:hover
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>10</pointsize>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="text">
@@ -2075,8 +2267,8 @@ QSlider::handle:vertical:hover
     <widget class="QLabel" name="lbl_LightZ">
      <property name="geometry">
       <rect>
-       <x>105</x>
-       <y>103</y>
+       <x>102</x>
+       <y>95</y>
        <width>47</width>
        <height>13</height>
       </rect>
@@ -2084,7 +2276,7 @@ QSlider::handle:vertical:hover
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>10</pointsize>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -2097,8 +2289,8 @@ QSlider::handle:vertical:hover
     <widget class="QLabel" name="lbl_LightY">
      <property name="geometry">
       <rect>
-       <x>105</x>
-       <y>87</y>
+       <x>102</x>
+       <y>81</y>
        <width>47</width>
        <height>13</height>
       </rect>
@@ -2106,7 +2298,7 @@ QSlider::handle:vertical:hover
      <property name="font">
       <font>
        <family>Arial</family>
-       <pointsize>10</pointsize>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -2115,6 +2307,74 @@ QSlider::handle:vertical:hover
      <property name="text">
       <string>-647.4</string>
      </property>
+    </widget>
+    <widget class="QComboBox" name="cb_PresetLight">
+     <property name="geometry">
+      <rect>
+       <x>37</x>
+       <y>23</y>
+       <width>101</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(211, 211, 211);</string>
+     </property>
+     <item>
+      <property name="text">
+       <string>No Preset</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Top Left</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Top Centre</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Top Right</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Middle Left</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Middle Centre</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Middle Right</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Bottom Left</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Bottom Centre</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Bottom Right</string>
+      </property>
+     </item>
     </widget>
     <zorder>btn_resetLight</zorder>
     <zorder>label_46</zorder>
@@ -2136,6 +2396,7 @@ QSlider::handle:vertical:hover
     <zorder>label_47</zorder>
     <zorder>lbl_LightZ</zorder>
     <zorder>lbl_LightY</zorder>
+    <zorder>cb_PresetLight</zorder>
    </widget>
    <widget class="QPushButton" name="btn_preview">
     <property name="geometry">
@@ -2145,6 +2406,9 @@ QSlider::handle:vertical:hover
       <width>151</width>
       <height>23</height>
      </rect>
+    </property>
+    <property name="toolTipDuration">
+     <number>10000</number>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(211, 211, 211);</string>
