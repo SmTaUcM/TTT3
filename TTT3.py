@@ -854,7 +854,7 @@ class TTT3(QMainWindow):
         self.preview.btn_Load.clicked.connect(self.btn_previewLoadFunc)
         self.preview.cb_PresetCam.currentIndexChanged.connect(self.cb_previewPresetCamFunc)
         self.preview.cb_PresetLook.currentIndexChanged.connect(self.cb_previewPresetLookFunc)
-        self.preview.cb_PresetLight.currentIndexChanged.connect(self.cb_previewPreseLightFunc)
+        self.preview.cb_PresetLight.currentIndexChanged.connect(self.cb_previewPresetLightFunc)
 
         # Get a preview uniform render.
         self.renderPreview()
@@ -920,7 +920,7 @@ class TTT3(QMainWindow):
         self.preview.btn_Load.clicked.connect(self.btn_previewLoadFunc)
         self.preview.cb_PresetCam.currentIndexChanged.connect(self.cb_previewPresetCamHelmFunc)
         self.preview.cb_PresetLook.currentIndexChanged.connect(self.cb_previewPresetLookHelmFunc)
-        self.preview.cb_PresetLight.currentIndexChanged.connect(self.cb_previewPreseLightHelmFunc)
+        self.preview.cb_PresetLight.currentIndexChanged.connect(self.cb_previewPresetLightHelmFunc)
 
         # Get a preview uniform render.
         self.renderPreview()
@@ -1121,6 +1121,9 @@ class TTT3(QMainWindow):
             self.preview.cb_PresetCam.setEnabled(False)
             self.preview.cb_PresetLook.setEnabled(False)
             self.preview.cb_PresetLight.setEnabled(False)
+            self.gui.btn_dress.setEnabled(False)
+            self.gui.btn_duty.setEnabled(False)
+            self.gui.btn_helmet.setEnabled(False)
 
         if self.uniform == "dress":
             width = self.width
@@ -1213,6 +1216,9 @@ class TTT3(QMainWindow):
             self.preview.cb_PresetCam.setEnabled(True)
             self.preview.cb_PresetLook.setEnabled(True)
             self.preview.cb_PresetLight.setEnabled(True)
+            self.gui.btn_dress.setEnabled(True)
+            self.gui.btn_duty.setEnabled(True)
+            self.gui.btn_helmet.setEnabled(True)
             self.showPreviewImage()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -5064,7 +5070,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.lbl_CamY.setText(self.convertIntToFloatStr(self.camY, 10))
             self.preview.vs_CamZ.setValue(self.camZ)
             self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(self.camZ, 10))
+            self.preview.cb_PresetCam.currentIndexChanged.disconnect()
             self.preview.cb_PresetCam.setCurrentIndex(intIndex)
+            self.preview.cb_PresetCam.currentIndexChanged.connect(self.cb_previewPresetCamFunc)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewPresetCamHelmFunc(self, intIndex):
@@ -5135,7 +5143,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.lbl_CamY.setText(self.convertIntToFloatStr(self.camYHelm, 100))
             self.preview.vs_CamZ.setValue(self.camZHelm)
             self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(self.camZHelm, 100))
+            self.preview.cb_PresetCam.currentIndexChanged.disconnect()
             self.preview.cb_PresetCam.setCurrentIndex(intIndex)
+            self.preview.cb_PresetCam.currentIndexChanged.connect(self.cb_previewPresetCamHelmFunc)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewPresetLookFunc(self, intIndex):
@@ -5206,7 +5216,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.lbl_LookY.setText(self.convertIntToFloatStr(self.lookY, 10))
             self.preview.vs_LookZ.setValue(self.lookZ)
             self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(self.lookZ, 10))
+            self.preview.cb_PresetLook.currentIndexChanged.disconnect()
             self.preview.cb_PresetLook.setCurrentIndex(intIndex)
+            self.preview.cb_PresetLook.currentIndexChanged.connect(self.cb_previewPresetLookFunc)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewPresetLookHelmFunc(self, intIndex):
@@ -5277,10 +5289,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.lbl_LookY.setText(self.convertIntToFloatStr(self.lookYHelm, 100))
             self.preview.vs_LookZ.setValue(self.lookZHelm)
             self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(self.lookZHelm, 100))
+            self.preview.cb_PresetLook.currentIndexChanged.disconnect()
             self.preview.cb_PresetLook.setCurrentIndex(intIndex)
+            self.preview.cb_PresetLook.currentIndexChanged.connect(self.cb_previewPresetLookHelmFunc)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def cb_previewPreseLightFunc(self, intIndex):
+    def cb_previewPresetLightFunc(self, intIndex):
         '''Method for preview light presets.'''
 
         if intIndex == 0:
@@ -5348,10 +5362,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.lbl_LightY.setText(self.convertIntToFloatStr(self.lightY, 10))
             self.preview.vs_LightZ.setValue(self.lightZ)
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZ, 10))
+            self.preview.cb_PresetLight.currentIndexChanged.disconnect()
             self.preview.cb_PresetLight.setCurrentIndex(intIndex)
+            self.preview.cb_PresetLight.currentIndexChanged.connect(self.cb_previewPresetLightFunc)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def cb_previewPreseLightHelmFunc(self, intIndex):
+    def cb_previewPresetLightHelmFunc(self, intIndex):
         '''Method for preview light presets.'''
 
         if intIndex == 0:
@@ -5419,7 +5435,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.lbl_LightY.setText(self.convertIntToFloatStr(self.lightYHelm, 100))
             self.preview.vs_LightZ.setValue(self.lightZHelm)
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZHelm, 100))
+            self.preview.cb_PresetLight.currentIndexChanged.disconnect()
             self.preview.cb_PresetLight.setCurrentIndex(intIndex)
+            self.preview.cb_PresetLight.currentIndexChanged.connect(self.cb_previewPresetLightHelmFunc)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
