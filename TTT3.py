@@ -263,6 +263,10 @@ class TTT3(QMainWindow):
             self.nameHelm = "EH TC"
             self.fontHelmQFront = QFont("impact")
             self.fontHelm = os.environ['WINDIR'] + "\\Fonts\\impact.ttf"
+            self.logo1TypeHelm = "Image - stencil mask"
+            self.logo2TypeHelm = "Squadron Patch"
+            self.logo1FilepathHelm = os.getcwd() + "\\data\\misc\\implogo.gif"
+            self.logo2FilepathHelm = ""
             # Bookmark
 
             # PovRay Template Constants.
@@ -893,7 +897,7 @@ class TTT3(QMainWindow):
         self.preview.vs_LightY.valueChanged.connect(self.vs_previewLightYFunc)
         self.preview.vs_LightZ.valueChanged.connect(self.vs_previewLightZFunc)
         self.preview.btn_resetLight.clicked.connect(self.btn_previewResetLightFunc)
-        self.preview.sb_Width.valueChanged.connect(self.sb_previewWidthFunc)  # Bookmark
+        self.preview.sb_Width.valueChanged.connect(self.sb_previewWidthFunc)
         self.preview.sb_Quality.valueChanged.connect(self.sb_previewQualityFunc)
         self.preview.cb_AA.stateChanged.connect(self.cb_previewAAFunc)
         self.preview.cb_Shadowless.stateChanged.connect(self.cb_previewShadowlessFunc)
@@ -902,6 +906,13 @@ class TTT3(QMainWindow):
         self.preview.btn_resetOptions.clicked.connect(self.btn_previewResetOptionsFunc)
         self.preview.le_helmText.textChanged.connect(self.le_previewHelmTextFunc)
         self.preview.fcb_hemlFont.currentFontChanged.connect(self.fcb_previewHelmFontFunc)
+        self.preview.cb_hemlLogo1Type.currentIndexChanged.connect(self.cb_previewHemlLogo1TypeFunc)
+        self.preview.cb_hemlLogo2Type.currentIndexChanged.connect(self.cb_previewHemlLogo2TypeFunc)
+        self.preview.btn_helmLogo1Filepath.clicked.connect(lambda: self.getLogoFile(1))
+        self.preview.btn_helmLogo2Filepath.clicked.connect(lambda: self.getLogoFile(2))
+        self.preview.le_helmLogo1Filepath.textChanged.connect(lambda: self.le_previewHelmLogoXFilepathFunc(1))
+        self.preview.le_helmLogo2Filepath.textChanged.connect(lambda: self.le_previewHelmLogoXFilepathFunc(2))
+        # Bookmark
 
 
 # self.preview.btn_Reset.clicked.connect(self.btn_previewResetFunc)
@@ -960,7 +971,7 @@ class TTT3(QMainWindow):
             self.preview.lbl_LightY.setText(self.convertIntToFloatStr(self.lightY, 10))
             self.preview.vs_LightZ.setValue(self.lightZ)
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZ, 10))
-        else:  # Bookmark
+        else:
             # Colours.
             # Helmet Colour.
             self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
@@ -1012,6 +1023,27 @@ class TTT3(QMainWindow):
                     self.nameHelm = self.name.upper()
             self.preview.le_helmText.setText(self.nameHelm)
             self.preview.fcb_hemlFont.setCurrentFont(self.fontHelmQFront)
+            # Logo options.
+            widgets = [self.preview.cb_hemlLogo1Type, self.preview.cb_hemlLogo2Type]
+
+            for widget in widgets:
+                widget.clear()
+                if self.sqn == "":
+                    widget.addItems(["Image - bg. transparent", "Image - stencil mask"])
+                else:
+                    widget.addItems(["Squadron Patch", "Image - bg. transparent", "Image - stencil mask"])
+
+            logo1Type = self.preview.cb_hemlLogo1Type.findText(self.logo1TypeHelm, Qt.MatchExactly | Qt.MatchCaseSensitive)
+            logo2Type = self.preview.cb_hemlLogo2Type.findText(self.logo2TypeHelm, Qt.MatchExactly | Qt.MatchCaseSensitive)
+            self.preview.cb_hemlLogo1Type.setCurrentIndex(logo1Type)
+            self.preview.cb_hemlLogo2Type.setCurrentIndex(logo2Type)
+            if self.preview.cb_hemlLogo2Type.currentText() == "":
+                self.preview.cb_hemlLogo2Type.setCurrentIndex(0)
+            self.cb_previewHemlLogo2TypeFunc()
+
+            self.preview.le_helmLogo1Filepath.setText(self.logo1FilepathHelm)
+            self.preview.le_helmLogo2Filepath.setText(self.logo2FilepathHelm)
+            # bookmark
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def renderPreview(self):
@@ -1626,7 +1658,7 @@ class TTT3(QMainWindow):
 
                 # Create squadron patch mask.
                 if self.sqn != "":
-                    self.createPatchMask()
+                    self.createMask()
 
             elif "&TRIMCOLOUR&" in line:
 
@@ -1988,7 +2020,7 @@ color_map
             povFile.writelines(povData)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def createHelmetPov(self):  # Bookmark
+    def createHelmetPov(self):
         r'''Method that loads in '\data\helmet.tpt' parses in the correct uniform data and creates a new 'data\helmet.pov' file.'''
 
         # Create the Pilot Helmet nametag.
@@ -2115,25 +2147,124 @@ color_map
                 povData.append(line.replace("&REFLECTION&", "%s" % self.convertIntToFloatStr(self.reflectionHelm, 100)))
 
             elif "&POSRANKFILE&" in line:
-                povData.append(line.replace("&POSRANKFILE&", "NIL"))  # TODO Helmet Rank
+                if self.position == "TRN" or self.rank is None or self.rank is None or self.position == "LR" or self.position == "FR":
+                    povData.append(line.replace("&POSRANKFILE&", "NIL"))
+                else:
+                    fileName = self.position + "_" + self.rank
+                    povData.append(line.replace("&POSRANKFILE&", fileName))
 
             elif "&DECOCOLOUR&" in line:
                 povData.append(line.replace("&DECOCOLOUR&", "%s" % self.convertToPOVRGB(self.decColour)))
 
-            elif "&LOGO1STENCIL&" in line:
-                povData.append(line.replace("&LOGO1STENCIL&", r'gif "misc/implogo.gif"'))  # TODO Helmet Logo Stencil 1
+            elif "&LOGO1STENCIL&" in line:  # Bookmark
+                if self.logo1FilepathHelm != "" and self.preview.cb_hemlLogo1Type.currentText() != "Squadron Patch":
+
+                    if self.logo1TypeHelm == "Image - stencil mask":
+                        filePath = self.logo1FilepathHelm.replace("\\", "/")
+                        ext = filePath.split(".")[1]
+                        if ext == "jpg":
+                            ext = "jpeg"
+                        povData.append(line.replace("&LOGO1STENCIL&", r'%s "%s"' % (ext, filePath)))
+
+                    elif self.logo1TypeHelm == "Image - bg. transparent":
+                        self.createMask(self.logo1FilepathHelm)
+                        filePath = self.logo1FilepathHelm.replace("\\", "/")
+                        # Change file path to mask file.
+                        filePath = filePath.split(".")[0] + "_mask.png"
+                        povData.append(line.replace("&LOGO1STENCIL&", r'png "%s"' % (filePath)))
+
+                elif self.logo1TypeHelm == "Squadron Patch":
+                    self.createMask()
+                    ext, filePath = self.findSquadPatch()
+                    ext = ext.replace(".", "")
+                    filePath = filePath.replace("data\\", "").replace("\\", "/")
+                    filePath = filePath.split(".")[0] + "_mask.png"
+                    povData.append(line.replace("&LOGO1STENCIL&", r'%s "%s"' % (ext, filePath)))
+
+                # No image selected.
+                else:
+                    povData.append(line.replace("&LOGO1STENCIL&", r'gif "helmet/fallback_mask.gif"'))
 
             elif "&LOGO1PIGMENT&" in line:
-                povData.append(line.replace("&LOGO1PIGMENT&", "rgb <%s>" % self.convertToPOVRGB(self.decColour)))
+                if self.logo1FilepathHelm != "" and self.preview.cb_hemlLogo1Type.currentText() != "Squadron Patch":
 
-            elif "&LOGO2STENCIL&" in line:  # TODO if no logo is selected??
-                povData.append(line.replace("&LOGO2STENCIL&", r'gif "helmet/fallback_mask.gif"'))  # TODO Helmet Logo Stencil 2
+                    if self.logo1TypeHelm == "Image - stencil mask":
+                        povData.append(line.replace("&LOGO1PIGMENT&", "rgb <%s>" % self.convertToPOVRGB(self.decColour)))
+
+                    elif self.logo1TypeHelm == "Image - bg. transparent":
+                        filePath = self.logo1FilepathHelm.replace("\\", "/")
+                        ext = filePath.split(".")[1]
+                        if ext == "jpg":
+                            ext = "jpeg"
+                        povData.append(line.replace("&LOGO1PIGMENT&", r'image_map { %s "%s" }' % (ext, filePath)))
+
+                elif self.logo1TypeHelm == "Squadron Patch":
+                    ext, filePath = self.findSquadPatch()
+                    ext = ext.replace(".", "")
+                    filePath = filePath.replace("data\\", "").replace("\\", "/")
+                    povData.append(line.replace("&LOGO1PIGMENT&", r'image_map { %s "%s" }' % (ext, filePath)))
+
+                # No image selected.
+                else:
+                    povData.append(
+                        line.replace(
+                            "&LOGO1PIGMENT&",
+                            r'image_map { png "helmet/fallback.png" interpolate 2 }'))
+
+            elif "&LOGO2STENCIL&" in line:
+                if self.logo2FilepathHelm != "" and self.preview.cb_hemlLogo2Type.currentText() != "Squadron Patch":
+
+                    if self.logo2TypeHelm == "Image - stencil mask":
+                        filePath = self.logo2FilepathHelm.replace("\\", "/")
+                        ext = filePath.split(".")[1]
+                        if ext == "jpg":
+                            ext = "jpeg"
+                        povData.append(line.replace("&LOGO2STENCIL&", r'%s "%s"' % (ext, filePath)))
+
+                    elif self.logo2TypeHelm == "Image - bg. transparent":
+                        self.createMask(self.logo2FilepathHelm)
+                        filePath = self.logo2FilepathHelm.replace("\\", "/")
+                        # Change file path to mask file.
+                        filePath = filePath.split(".")[0] + "_mask.png"
+                        povData.append(line.replace("&LOGO2STENCIL&", r'png "%s"' % (filePath)))
+
+                elif self.logo2TypeHelm == "Squadron Patch":
+                    self.createMask()
+                    ext, filePath = self.findSquadPatch()
+                    ext = ext.replace(".", "")
+                    filePath = filePath.replace("data\\", "").replace("\\", "/")
+                    filePath = filePath.split(".")[0] + "_mask.png"
+                    povData.append(line.replace("&LOGO2STENCIL&", r'%s "%s"' % (ext, filePath)))
+
+                # No image selected.
+                else:
+                    povData.append(line.replace("&LOGO2STENCIL&", r'gif "helmet/fallback_mask.gif"'))
 
             elif "&LOGO2PIGMENT&" in line:
-                povData.append(
-                    line.replace(
-                        "&LOGO2PIGMENT&",
-                        r'image_map { png "helmet/fallback.png" interpolate 2 }'))  # TODO TODO Helmet Logo 2 Pigment
+                if self.logo2FilepathHelm != "" and self.preview.cb_hemlLogo2Type.currentText() != "Squadron Patch":
+
+                    if self.logo2TypeHelm == "Image - stencil mask":
+                        povData.append(line.replace("&LOGO2PIGMENT&", "rgb <%s>" % self.convertToPOVRGB(self.decColour)))
+
+                    elif self.logo2TypeHelm == "Image - bg. transparent":
+                        filePath = self.logo2FilepathHelm.replace("\\", "/")
+                        ext = filePath.split(".")[1]
+                        if ext == "jpg":
+                            ext = "jpeg"
+                        povData.append(line.replace("&LOGO2PIGMENT&", r'image_map { %s "%s" }' % (ext, filePath)))
+
+                elif self.logo2TypeHelm == "Squadron Patch":
+                    ext, filePath = self.findSquadPatch()
+                    ext = ext.replace(".", "")
+                    filePath = filePath.replace("data\\", "").replace("\\", "/")
+                    povData.append(line.replace("&LOGO2PIGMENT&", r'image_map { %s "%s" }' % (ext, filePath)))
+
+                # No image selected.
+                else:
+                    povData.append(
+                        line.replace(
+                            "&LOGO2PIGMENT&",
+                            r'image_map { png "helmet/fallback.png" interpolate 2 }'))
 
             elif "&HOMOGENOUS&" in line:
                 if self.transparentBGHelm == "":
@@ -2216,28 +2347,49 @@ color_map
         return ribbonCount
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def createPatchMask(self):
-        '''Method that will create a mask file for the desired squadron patch.'''
+    def findSquadPatch(self):
+        '''Method that retrieves the squadron patch file for the user's selected squadron.'''
 
         for ext in [".png", ".jpg"]:
             extension = ext
             fileName = "data\\squads\\{squad}{extension}".format(squad=self.sqn, extension=ext)
             if os.path.isfile(fileName):
                 break
+        return ext, fileName
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def createMask(self, filepath=None):
+        '''Method that will create a mask file for the desired image.'''
+
+        if not filepath:
+            extension, fileName = self.findSquadPatch()
+        else:
+            fileName = filepath
+            extension = "." + fileName.split(".")[1]
 
         try:
             # Primary Mask Creation. Requires a transparent background.
             # Load image with alpha channel.
             img = cv2.imread(fileName, cv2.IMREAD_UNCHANGED)
+
             # Get mask from alpha channel.
-            mask = img[:, :, 3]
+            try:
+                mask = img[:, :, 3]
+            except TypeError:
+                # Show error message.
+                msg = "%s does not have a transparent background." % fileName.split("\\")[-1]
+                return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+
             # Save the mask.
             fileName = fileName.replace(extension, "_mask.png")
             cv2.imwrite(fileName, mask)
 
-        except IndexError:  # Bacground likely not transparent. Doesn't need a transparent background but does not work well with high color / shaded patches.
+        # Bacground likely not transparent. Doesn't need a transparent background but does not work well with high color / shaded patches.
+        except IndexError:
             # Alternate Mask creation.
+            print(fileName)
             image = cv2.imread(fileName)
+            print(str(image))
             mask = numpy.ones(image.shape, dtype=numpy.uint8) * 255
             gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
             cnts = cv2.findContours(gray, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -4633,6 +4785,80 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.fontHelm = os.environ['WINDIR'] + "\\Fonts\\impact.ttf"
             self.fontHelmQFront = QFont("impact")
 
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def cb_previewHemlLogo1TypeFunc(self):
+        '''Method for handling Decoration Logo ComboBox actions.'''
+
+        if self.preview.cb_hemlLogo1Type.currentText() == "Squadron Patch":
+            self.preview.le_helmLogo1Filepath.setEnabled(False)
+            self.preview.btn_helmLogo1Filepath.setEnabled(False)
+        else:
+            self.preview.le_helmLogo1Filepath.setEnabled(True)
+            self.preview.btn_helmLogo1Filepath.setEnabled(True)
+
+        self.logo1TypeHelm = self.preview.cb_hemlLogo1Type.currentText()
+
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def cb_previewHemlLogo2TypeFunc(self):
+        '''Method for handling Decoration Logo ComboBox actions.'''
+
+        if self.preview.cb_hemlLogo2Type.currentText() == "Squadron Patch":
+            self.preview.le_helmLogo2Filepath.setEnabled(False)
+            self.preview.btn_helmLogo2Filepath.setEnabled(False)
+        else:
+            self.preview.le_helmLogo2Filepath.setEnabled(True)
+            self.preview.btn_helmLogo2Filepath.setEnabled(True)
+
+        self.logo2TypeHelm = self.preview.cb_hemlLogo2Type.currentText()
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def getLogoFile(self, logoNum):
+        '''Method that allows the user to select an image file from a file picker.'''
+
+        try:
+            # Specify the starting directory to open the file picker from.
+            if logoNum == 1:
+                if self.logo1FilepathHelm != "":
+                    path = os.path.dirname(self.logo1FilepathHelm) + "\\"
+                else:
+                    path = "C:\\users\\" + os.getlogin() + "\\Pictures\\"
+            elif logoNum == 2:
+                if self.logo2FilepathHelm != "":
+                    path = os.path.dirname(self.logo2FilepathHelm) + "\\"
+                else:
+                    if self.logo1FilepathHelm != "":
+                        path = os.path.dirname(self.logo1FilepathHelm) + "\\"
+                    else:
+                        path = "C:\\users\\" + os.getlogin() + "\\Pictures\\"
+
+            # Open the file picker.
+            options = QFileDialog.Options()
+            options |= QFileDialog.DontUseNativeDialog
+            fileName, _ = QFileDialog.getOpenFileName(
+                self, "Load texture for helmet logo", path, "All (*.gif *.jpg *.jpeg *.png *.bmp);;GIF Image (*.gif);; JPEG Image (*.jpg *.jpeg);; PNG Image (*.png);; Bitmap (*.bmp)", options=options)
+
+            # Set the chosen file.
+            if fileName:
+                fileName = fileName.replace(r"/", "\\")
+                if logoNum == 1:
+                    self.logo1FilepathHelm = fileName
+                    self.preview.le_helmLogo1Filepath.setText(fileName)
+                elif logoNum == 2:
+                    self.logo2FilepathHelm = fileName
+                    self.preview.le_helmLogo2Filepath.setText(fileName)
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def le_previewHelmLogoXFilepathFunc(self, logoNum):
+        '''Method to handle manual text entry of logo filepaths.'''
+
+        if logoNum == 1:
+            self.logo1FilepathHelm = self.preview.le_helmLogo1Filepath.text()
+        elif logoNum == 2:
+            self.logo2FilepathHelm = self.preview.le_helmLogo2Filepath.text()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
