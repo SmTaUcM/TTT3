@@ -267,7 +267,6 @@ class TTT3(QMainWindow):
             self.logo2TypeHelm = "Squadron Patch"
             self.logo1FilepathHelm = os.getcwd() + "\\data\\misc\\implogo.gif"
             self.logo2FilepathHelm = ""
-            # Bookmark
 
             # PovRay Template Constants.
             self.RANK_OFFSET_RIBBONS_00_TO_08 = ["-18.8939990997314,0.351000010967255,7.92899990081787",  # Rotate
@@ -912,12 +911,10 @@ class TTT3(QMainWindow):
         self.preview.btn_helmLogo2Filepath.clicked.connect(lambda: self.getLogoFile(2))
         self.preview.le_helmLogo1Filepath.textChanged.connect(lambda: self.le_previewHelmLogoXFilepathFunc(1))
         self.preview.le_helmLogo2Filepath.textChanged.connect(lambda: self.le_previewHelmLogoXFilepathFunc(2))
-        # Bookmark
-
-
-# self.preview.btn_Reset.clicked.connect(self.btn_previewResetFunc)
-# self.preview.btn_Save.clicked.connect(self.btn_previewSaveFunc)
-# self.preview.btn_Load.clicked.connect(self.btn_previewLoadFunc)
+        self.preview.btn_resetDecorations.clicked.connect(self.btn_previewResetDecsFunc)
+        self.preview.btn_Reset.clicked.connect(self.btn_previewResetFunc)
+        self.preview.btn_Save.clicked.connect(self.btn_previewSaveFunc)
+        self.preview.btn_Load.clicked.connect(self.btn_previewLoadFunc)
 
         # Get a preview uniform render.
         self.renderPreview()
@@ -981,6 +978,7 @@ class TTT3(QMainWindow):
             self.colourSelected(self.bgColourHelm, "bgColourHelm", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
             # Light Colour.
             self.colourSelected(self.lightColour, "lightColour", self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
+
             # POV-Ray Options.
             # Resolution.
             self.preview.sb_Width.setValue(self.widthHelm)
@@ -1016,6 +1014,7 @@ class TTT3(QMainWindow):
             self.preview.vs_LightX.setValue(self.lightXHelm)
             self.preview.vs_LightY.setValue(self.lightYHelm)
             self.preview.vs_LightZ.setValue(self.lightZHelm)
+
             # Decorations.
             # Helmet Text.
             if self.nameHelm == "EH TC":
@@ -1023,8 +1022,11 @@ class TTT3(QMainWindow):
                     self.nameHelm = self.name.upper()
             self.preview.le_helmText.setText(self.nameHelm)
             self.preview.fcb_hemlFont.setCurrentFont(self.fontHelmQFront)
+
             # Logo options.
             widgets = [self.preview.cb_hemlLogo1Type, self.preview.cb_hemlLogo2Type]
+            logo1Type = self.logo1TypeHelm  # Used to reset user options during the addition of combo box items.
+            logo2Type = self.logo2TypeHelm
 
             for widget in widgets:
                 widget.clear()
@@ -1033,17 +1035,18 @@ class TTT3(QMainWindow):
                 else:
                     widget.addItems(["Squadron Patch", "Image - bg. transparent", "Image - stencil mask"])
 
-            logo1Type = self.preview.cb_hemlLogo1Type.findText(self.logo1TypeHelm, Qt.MatchExactly | Qt.MatchCaseSensitive)
-            logo2Type = self.preview.cb_hemlLogo2Type.findText(self.logo2TypeHelm, Qt.MatchExactly | Qt.MatchCaseSensitive)
-            self.preview.cb_hemlLogo1Type.setCurrentIndex(logo1Type)
-            self.preview.cb_hemlLogo2Type.setCurrentIndex(logo2Type)
+            self.logo1TypeHelm = logo1Type
+            self.logo2TypeHelm = logo2Type
+            logo1TypeInt = self.preview.cb_hemlLogo1Type.findText(self.logo1TypeHelm, Qt.MatchExactly | Qt.MatchCaseSensitive)
+            logo2TypeInt = self.preview.cb_hemlLogo2Type.findText(self.logo2TypeHelm, Qt.MatchExactly | Qt.MatchCaseSensitive)
+            self.preview.cb_hemlLogo1Type.setCurrentIndex(logo1TypeInt)
+            self.preview.cb_hemlLogo2Type.setCurrentIndex(logo2TypeInt)
             if self.preview.cb_hemlLogo2Type.currentText() == "":
                 self.preview.cb_hemlLogo2Type.setCurrentIndex(0)
+            self.cb_previewHemlLogo1TypeFunc()
             self.cb_previewHemlLogo2TypeFunc()
-
             self.preview.le_helmLogo1Filepath.setText(self.logo1FilepathHelm)
             self.preview.le_helmLogo2Filepath.setText(self.logo2FilepathHelm)
-            # bookmark
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def renderPreview(self):
@@ -1102,6 +1105,9 @@ class TTT3(QMainWindow):
         else:
             self.preview.btn_raytrace.setEnabled(False)
             self.preview.btn_preview.setEnabled(False)
+            self.preview.btn_Load.setEnabled(False)
+            self.preview.btn_Save.setEnabled(False)
+            self.preview.btn_Reset.setEnabled(False)
 
         if self.uniform == "dress":
             width = self.width
@@ -1187,6 +1193,9 @@ class TTT3(QMainWindow):
         else:
             self.preview.btn_preview.setEnabled(True)
             self.preview.btn_raytrace.setEnabled(True)
+            self.preview.btn_Load.setEnabled(True)
+            self.preview.btn_Save.setEnabled(True)
+            self.preview.btn_Reset.setEnabled(True)
             self.showPreviewImage()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -2156,7 +2165,7 @@ color_map
             elif "&DECOCOLOUR&" in line:
                 povData.append(line.replace("&DECOCOLOUR&", "%s" % self.convertToPOVRGB(self.decColour)))
 
-            elif "&LOGO1STENCIL&" in line:  # Bookmark
+            elif "&LOGO1STENCIL&" in line:
                 if self.logo1FilepathHelm != "" and self.preview.cb_hemlLogo1Type.currentText() != "Squadron Patch":
 
                     if self.logo1TypeHelm == "Image - stencil mask":
@@ -2387,9 +2396,7 @@ color_map
         # Bacground likely not transparent. Doesn't need a transparent background but does not work well with high color / shaded patches.
         except IndexError:
             # Alternate Mask creation.
-            print(fileName)
             image = cv2.imread(fileName)
-            print(str(image))
             mask = numpy.ones(image.shape, dtype=numpy.uint8) * 255
             gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
             cnts = cv2.findContours(gray, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -4537,11 +4544,20 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method to reset all preview window options / profile.'''
 
         try:
-            self.btn_previewResetColoursFunc()
-            self.btn_previewResetCameraFunc()
-            self.btn_previewResetOptionsFunc()
-            self.btn_previewResetLightFunc()
-            self.renderPreview()
+            if self.uniform != "helmet":
+                self.btn_previewResetColoursFunc()
+                self.btn_previewResetCameraFunc()
+                self.btn_previewResetOptionsFunc()
+                self.btn_previewResetLightFunc()
+                self.renderPreview()
+            else:
+                self.btn_previewResetColoursFunc()
+                self.btn_previewResetSurfPropsFunc()
+                self.btn_previewResetCameraFunc()
+                self.btn_previewResetLightFunc()
+                self.btn_previewResetDecsFunc()
+                self.btn_previewResetOptionsFunc()
+                self.renderPreview()
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4550,10 +4566,19 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for when the preview 'Save' button is clicked.'''
 
         try:
-            # Collect the data to be saved into a list.
-            saveData = (self.spotColour, self.envColour, self.bgColour, self.transparentBG, self.camX, self.camY, self.camZ,
-                        self.lookX, self.lookY, self.lookZ, self.width, self.height, self.clothDetail, self.antiAliasing,
-                        self.mosaicPreview, self.lightX, self.lightY, self.lightZ)
+            if self.uniform != "helmet":
+                # Collect the data to be saved into a list.
+                saveData = (self.spotColour, self.envColour, self.bgColour, self.transparentBG, self.camX, self.camY, self.camZ,
+                            self.lookX, self.lookY, self.lookZ, self.width, self.height, self.clothDetail, self.antiAliasing,
+                            self.mosaicPreview, self.lightX, self.lightY, self.lightZ)
+
+            else:
+                saveData = (self.helmColour, self.decColour, self.bgColourHelm, self.lightColour, self.transparentBGHelm, self.ambientHelm,
+                            self.specularHelm, self.roughHelm, self.reflectionHelm, self.camXHelm, self.camYHelm, self.camZHelm,
+                            self.lookXHelm, self.lookYHelm, self.lookZHelm, self.lightXHelm, self.lightYHelm, self.lightZHelm,
+                            self.fontHelm, self.fontHelmQFront.family(), self.nameHelm, self.logo1FilepathHelm, self.logo1TypeHelm,
+                            self.logo2FilepathHelm, self.logo2TypeHelm, self.mosaicPreviewHelm, self.homoHelm, self.shadowlessHelm,
+                            self.antiAliasingHelm, self.qualityHelm, self.widthHelm, self.heightHelm)
 
             # Save the data.
             fileName = self.savePreviewFileDialog()
@@ -4569,6 +4594,11 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method that opens a QT File Save dialog to save a preview profile.'''
 
         try:
+            if self.uniform != "helmet":
+                ext = ".pro"
+            else:
+                ext = ".helm"
+
             options = QFileDialog.Options()
             options |= QFileDialog.DontUseNativeDialog
             if self.name != "Unknown":
@@ -4576,10 +4606,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             else:
                 name = "untitled " + self.uniform.title()
             fileName, _ = QFileDialog.getSaveFileName(self, "Save render settings", os.getcwd() +
-                                                      "\\settings\\%s.pro" % name, "*.pro", options=options)
+                                                      "\\settings\\%s%s" % (name, ext), "*%s" % ext, options=options)
             if fileName:
-                if ".pro" not in fileName:
-                    fileName = fileName + ".pro"
+                if ext not in fileName:
+                    fileName = fileName + ext
                 return fileName
 
         except Exception as e:
@@ -4597,25 +4627,60 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 with open(fileName, "rb") as dataFile:
                     saveData = pickle.load(dataFile)
 
-                # Apply the loaded settings.
-                self.spotColour = saveData[0]
-                self.envColour = saveData[1]
-                self.bgColour = saveData[2]
-                self.transparentBG = saveData[3]
-                self.camX = saveData[4]
-                self.camY = saveData[5]
-                self.camZ = saveData[6]
-                self.lookX = saveData[7]
-                self.lookY = saveData[8]
-                self.lookZ = saveData[9]
-                self.width = saveData[10]
-                self.height = saveData[11]
-                self.clothDetail = saveData[12]
-                self.antiAliasing = saveData[13]
-                self.mosaicPreview = saveData[14]
-                self.lightX = saveData[15]
-                self.lightY = saveData[16]
-                self.lightZ = saveData[17]
+                if self.uniform != "helmet":
+                    # Apply the loaded settings.
+                    self.spotColour = saveData[0]
+                    self.envColour = saveData[1]
+                    self.bgColour = saveData[2]
+                    self.transparentBG = saveData[3]
+                    self.camX = saveData[4]
+                    self.camY = saveData[5]
+                    self.camZ = saveData[6]
+                    self.lookX = saveData[7]
+                    self.lookY = saveData[8]
+                    self.lookZ = saveData[9]
+                    self.width = saveData[10]
+                    self.height = saveData[11]
+                    self.clothDetail = saveData[12]
+                    self.antiAliasing = saveData[13]
+                    self.mosaicPreview = saveData[14]
+                    self.lightX = saveData[15]
+                    self.lightY = saveData[16]
+                    self.lightZ = saveData[17]
+
+                else:
+                    self.helmColour = saveData[0]
+                    self.decColour = saveData[1]
+                    self.bgColourHelm = saveData[2]
+                    self.lightColour = saveData[3]
+                    self.transparentBGHelm = saveData[4]
+                    self.ambientHelm = saveData[5]
+                    self.specularHelm = saveData[6]
+                    self.roughHelm = saveData[7]
+                    self.reflectionHelm = saveData[8]
+                    self.camXHelm = saveData[9]
+                    self.camYHelm = saveData[10]
+                    self.camZHelm = saveData[11]
+                    self.lookXHelm = saveData[12]
+                    self.lookYHelm = saveData[13]
+                    self.lookZHelm = saveData[14]
+                    self.lightXHelm = saveData[15]
+                    self.lightYHelm = saveData[16]
+                    self.lightZHelm = saveData[17]
+                    self.fontHelm = saveData[18]
+                    self.fontHelmQFront = QFont(saveData[19])
+                    self.nameHelm = saveData[20]
+                    self.logo1FilepathHelm = saveData[21]
+                    self.logo1TypeHelm = saveData[22]
+                    self.logo2FilepathHelm = saveData[23]
+                    self.logo2TypeHelm = saveData[24]
+                    self.mosaicPreviewHelm = saveData[25]
+                    self.homoHelm = saveData[26]
+                    self.shadowlessHelm = saveData[27]
+                    self.antiAliasingHelm = saveData[28]
+                    self.qualityHelm = saveData[29]
+                    self.widthHelm = saveData[30]
+                    self.heightHelm = saveData[31]
 
                 self.applyPreviewSettings()
                 self.renderPreview()
@@ -4627,9 +4692,14 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method that opens a QT File Open dialog to save a profile.'''
 
         try:
+            if self.uniform != "helmet":
+                ext = ".pro"
+            else:
+                ext = ".helm"
+
             options = QFileDialog.Options()
             options |= QFileDialog.DontUseNativeDialog
-            fileName, _ = QFileDialog.getOpenFileName(self, "Load render settings", os.getcwd() + "\\settings\\", "*.pro", options=options)
+            fileName, _ = QFileDialog.getOpenFileName(self, "Load render settings", os.getcwd() + "\\settings\\", "*%s" % ext, options=options)
             if fileName:
                 fileName = fileName.replace(r"/", "\\")
                 return fileName
@@ -4660,7 +4730,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             while fnt.getsize(text)[0] < img_fraction * img.size[0]:
                 # Iterate until the text size is just larger than the criteria.
                 fontsize += 1
-                fnt = ImageFont.truetype(self.fontHelm, fontsize)  # TODO Helmet font selection.
+                fnt = ImageFont.truetype(self.fontHelm, fontsize)
 
             # De-increment to be sure it is less than criteria.
             fontsize -= 1
@@ -4860,9 +4930,39 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         elif logoNum == 2:
             self.logo2FilepathHelm = self.preview.le_helmLogo2Filepath.text()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def btn_previewResetDecsFunc(self):
+        '''Method for restting helmet decorations options.'''
+
+        self.nameHelm = "EH TC"
+        if self.name == "Unknown":
+            self.preview.le_helmText.setText(self.nameHelm)
+        else:
+            self.preview.le_helmText.setText(self.name)
+
+        self.fontHelmQFront = QFont("impact")
+        self.preview.fcb_hemlFont.setCurrentFont(self.fontHelmQFront)
+        self.fontHelm = os.environ['WINDIR'] + "\\Fonts\\impact.ttf"
+
+        self.logo1TypeHelm = "Image - stencil mask"
+        self.logo2TypeHelm = "Squadron Patch"
+        self.logo1FilepathHelm = os.getcwd() + "\\data\\misc\\implogo.gif"
+        self.logo2FilepathHelm = ""
+        logo1Type = self.preview.cb_hemlLogo1Type.findText(self.logo1TypeHelm, Qt.MatchExactly | Qt.MatchCaseSensitive)
+        logo2Type = self.preview.cb_hemlLogo2Type.findText(self.logo2TypeHelm, Qt.MatchExactly | Qt.MatchCaseSensitive)
+        self.preview.cb_hemlLogo1Type.setCurrentIndex(logo1Type)
+        self.preview.cb_hemlLogo2Type.setCurrentIndex(logo2Type)
+        if self.preview.cb_hemlLogo2Type.currentText() == "":
+            self.preview.cb_hemlLogo2Type.setCurrentIndex(0)
+        self.cb_previewHemlLogo1TypeFunc()
+        self.cb_previewHemlLogo2TypeFunc()
+
+        self.preview.le_helmLogo1Filepath.setText(self.logo1FilepathHelm)
+        self.preview.le_helmLogo2Filepath.setText(self.logo2FilepathHelm)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
-# Bookmark
+
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                      Functions.                                                                    #
 #----------------------------------------------------------------------------------------------------------------------------------------------------#

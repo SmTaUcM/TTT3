@@ -2636,7 +2636,7 @@ QSlider::handle:horizontal:hover
     <property name="title">
      <string>Decorations</string>
     </property>
-    <widget class="QPushButton" name="btn_resetOptions_3">
+    <widget class="QPushButton" name="btn_resetDecorations">
      <property name="geometry">
       <rect>
        <x>7</x>
@@ -2758,6 +2758,9 @@ QLineEdit:!enabled
 
 </string>
        </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
       </widget>
      </widget>
      <widget class="QWidget" name="tab_9">
@@ -2789,6 +2792,9 @@ QLineEdit:!enabled
 
 
 </string>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
        </property>
       </widget>
       <widget class="QComboBox" name="cb_hemlLogo2Type">
