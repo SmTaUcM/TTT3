@@ -2156,7 +2156,7 @@ color_map
                 povData.append(line.replace("&REFLECTION&", "%s" % self.convertIntToFloatStr(self.reflectionHelm, 100)))
 
             elif "&POSRANKFILE&" in line:
-                if self.position == "TRN" or self.rank is None or self.rank is None or self.position == "LR" or self.position == "FR":
+                if self.position not in ["FM", "FL", "CMDR", "WC"] or self.rank not in ["SL", "LT", "LCM", "CM", "CPT", "MAJ", "LC", "COL", "GN"]:
                     povData.append(line.replace("&POSRANKFILE&", "NIL"))
                 else:
                     fileName = self.position + "_" + self.rank
