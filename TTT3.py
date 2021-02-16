@@ -235,9 +235,9 @@ class TTT3(QMainWindow):
             self.lightX = 15185
             self.lightY = -6474
             self.lightZ = 17501
-            self.helmColour = QColor(10, 10, 10)
+            self.helmColour = QColor(33, 33, 33)
             self.bgColourHelm = QColor(69, 79, 112)
-            self.decColour = QColor(32, 32, 32)
+            self.decColour = QColor(147, 147, 147)
             self.lightColour = QColor(255, 255, 255)
             self.transparentBGHelm = ""
             self.ambientHelm = 30
