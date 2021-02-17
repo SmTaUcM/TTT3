@@ -2619,7 +2619,7 @@ QSlider::handle:horizontal:hover
       <string>Reflection:</string>
      </property>
     </widget>
-    <widget class="QSlider" name="vs_Ambient">
+    <widget class="Slider" name="vs_Ambient">
      <property name="geometry">
       <rect>
        <x>11</x>
@@ -2670,7 +2670,7 @@ QSlider::handle:horizontal:hover
       <number>0</number>
      </property>
     </widget>
-    <widget class="QSlider" name="vs_Specular">
+    <widget class="Slider" name="vs_Specular">
      <property name="geometry">
       <rect>
        <x>11</x>
@@ -2718,7 +2718,7 @@ QSlider::handle:horizontal:hover
       <number>0</number>
      </property>
     </widget>
-    <widget class="QSlider" name="vs_Roughness">
+    <widget class="Slider" name="vs_Roughness">
      <property name="geometry">
       <rect>
        <x>11</x>
@@ -2766,7 +2766,7 @@ QSlider::handle:horizontal:hover
       <number>0</number>
      </property>
     </widget>
-    <widget class="QSlider" name="vs_Reflection">
+    <widget class="Slider" name="vs_Reflection">
      <property name="geometry">
       <rect>
        <x>11</x>
