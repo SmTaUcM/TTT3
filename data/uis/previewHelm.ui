@@ -190,10 +190,13 @@ QPushButton:!enabled
      </property>
     </widget>
     <widget class="QPushButton" name="btn_preview">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>132</x>
-       <y>377</y>
+       <y>369</y>
        <width>151</width>
        <height>23</height>
       </rect>
@@ -203,6 +206,22 @@ QPushButton:!enabled
      </property>
      <property name="text">
       <string>Preview</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="cb_Refresh">
+     <property name="geometry">
+      <rect>
+       <x>167</x>
+       <y>396</y>
+       <width>81</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Auto-refresh</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
      </property>
     </widget>
    </widget>
@@ -858,7 +877,7 @@ QSpinBox:!enabled
       <string>Reset to Defaults</string>
      </property>
     </widget>
-    <widget class="QSlider" name="vs_CamX">
+    <widget class="Slider" name="vs_CamX">
      <property name="geometry">
       <rect>
        <x>26</x>
@@ -949,7 +968,7 @@ QSlider::handle:horizontal:hover
       <string>|</string>
      </property>
     </widget>
-    <widget class="QSlider" name="vs_CamY">
+    <widget class="Slider" name="vs_CamY">
      <property name="geometry">
       <rect>
        <x>26</x>
@@ -1056,7 +1075,7 @@ QSlider::handle:horizontal:hover
       <string>|</string>
      </property>
     </widget>
-    <widget class="QSlider" name="vs_CamZ">
+    <widget class="Slider" name="vs_CamZ">
      <property name="geometry">
       <rect>
        <x>26</x>
@@ -1392,7 +1411,7 @@ QSlider::handle:horizontal:hover
       <string>Z:</string>
      </property>
     </widget>
-    <widget class="QSlider" name="vs_LookX">
+    <widget class="Slider" name="vs_LookX">
      <property name="geometry">
       <rect>
        <x>259</x>
@@ -1466,7 +1485,7 @@ QSlider::handle:horizontal:hover
       <string>10.52</string>
      </property>
     </widget>
-    <widget class="QSlider" name="vs_LookY">
+    <widget class="Slider" name="vs_LookY">
      <property name="geometry">
       <rect>
        <x>259</x>
@@ -1543,7 +1562,7 @@ QSlider::handle:horizontal:hover
       <string>X:</string>
      </property>
     </widget>
-    <widget class="QSlider" name="vs_LookZ">
+    <widget class="Slider" name="vs_LookZ">
      <property name="geometry">
       <rect>
        <x>259</x>
@@ -1918,7 +1937,7 @@ QSlider::handle:horizontal:hover
       <string>Reset to Defaults</string>
      </property>
     </widget>
-    <widget class="QSlider" name="vs_LightY">
+    <widget class="Slider" name="vs_LightY">
      <property name="geometry">
       <rect>
        <x>35</x>
@@ -1973,7 +1992,7 @@ QSlider::handle:horizontal:hover
       <number>0</number>
      </property>
     </widget>
-    <widget class="QSlider" name="vs_LightZ">
+    <widget class="Slider" name="vs_LightZ">
      <property name="geometry">
       <rect>
        <x>35</x>
@@ -2025,7 +2044,7 @@ QSlider::handle:horizontal:hover
       <number>0</number>
      </property>
     </widget>
-    <widget class="QSlider" name="vs_LightX">
+    <widget class="Slider" name="vs_LightX">
      <property name="geometry">
       <rect>
        <x>35</x>
@@ -3205,6 +3224,13 @@ QLineEdit:!enabled
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Slider</class>
+   <extends>QSlider</extends>
+   <header>Slider.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>btn_raytrace</tabstop>
   <tabstop>btn_close</tabstop>

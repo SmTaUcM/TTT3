@@ -41,6 +41,7 @@ import json
 import hashlib
 import threading
 import queue
+import Slider
 # python -m pip install pyinstaller - for compiler.
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -860,6 +861,34 @@ class TTT3(QMainWindow):
         self.preview.cb_PresetLook.currentIndexChanged.connect(self.cb_previewPresetLookFunc)
         self.preview.cb_PresetLight.currentIndexChanged.connect(self.cb_previewPresetLightFunc)
 
+        # Set widgets to auto update on their mouseReleaseEvent.
+        self.preview.cb_Refresh.stateChanged.connect(self.cb_previewRefreshFunc)
+
+        # Colours.
+        for label in [self.preview.lbl_PaletteSpot, self.preview.lbl_PaletteEnv, self.preview.lbl_PaletteBack]:
+            label.paintEvent = self.previewAutoRefresh
+
+        # Checkboxes.
+        for checkbox in [self.preview.cb_TransparentBG, self.preview.cb_Shadowless]:
+            checkbox.stateChanged.connect(self.previewAutoRefresh)
+
+        # Buttons.
+        for button in [self.preview.btn_resetCamera, self.preview.btn_resetLight]:
+            button.clicked.connect(self.previewAutoRefresh)
+
+        # Spinboxes.
+        for spinbox in [self.preview.sb_Quality]:
+            spinbox.valueChanged.connect(self.previewAutoRefresh)
+
+        # Sliders.
+        for slider in [self.preview.vs_CamX, self.preview.vs_CamY, self.preview.vs_CamZ,
+                       self.preview.vs_LookX, self.preview.vs_LookY, self.preview.vs_LookZ,
+                       self.preview.vs_LightX, self.preview.vs_LightY, self.preview.vs_LightZ]:
+            slider.mouseReleaseEvent = self.previewAutoRefresh
+
+        # ComboBoxes.
+        self.preview.cb_Detail.currentIndexChanged.connect(self.previewAutoRefresh)
+
         # Get a preview uniform render.
         self.renderPreview()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -925,6 +954,40 @@ class TTT3(QMainWindow):
         self.preview.cb_PresetCam.currentIndexChanged.connect(self.cb_previewPresetCamHelmFunc)
         self.preview.cb_PresetLook.currentIndexChanged.connect(self.cb_previewPresetLookHelmFunc)
         self.preview.cb_PresetLight.currentIndexChanged.connect(self.cb_previewPresetLightHelmFunc)
+
+        # Set widgets to auto update on their mouseReleaseEvent.
+        self.preview.cb_Refresh.stateChanged.connect(self.cb_previewRefreshFunc)
+
+        # Colours.
+        for label in [self.preview.lbl_PaletteHelm, self.preview.lbl_PaletteDec, self.preview.lbl_PaletteBack, self.preview.lbl_PaletteLight]:
+            label.paintEvent = self.previewAutoRefresh
+
+        # Checkboxes.
+        for checkbox in [self.preview.cb_TransparentBG, self.preview.cb_Shadowless, self.preview.cb_Homo]:
+            checkbox.stateChanged.connect(self.previewAutoRefresh)
+
+        # Buttons.
+        for button in [self.preview.btn_resetSurfProps, self.preview.btn_resetCamera, self.preview.btn_resetLight]:
+            button.clicked.connect(self.previewAutoRefresh)
+
+        # Spinboxes.
+        for spinbox in [self.preview.sb_Quality]:
+            spinbox.valueChanged.connect(self.previewAutoRefresh)
+
+        # Sliders.
+        for slider in [self.preview.vs_CamX, self.preview.vs_CamY, self.preview.vs_CamZ,
+                       self.preview.vs_LookX, self.preview.vs_LookY, self.preview.vs_LookZ,
+                       self.preview.vs_LightX, self.preview.vs_LightY, self.preview.vs_LightZ,
+                       self.preview.vs_Ambient, self.preview.vs_Specular, self.preview.vs_Roughness, self.preview.vs_Reflection]:
+            slider.mouseReleaseEvent = self.previewAutoRefresh
+
+        # Decorations.
+        self.preview.cb_hemlLogo1Type.currentIndexChanged.connect(self.previewAutoRefresh)
+        self.preview.cb_hemlLogo2Type.currentIndexChanged.connect(self.previewAutoRefresh)
+        self.preview.fcb_hemlFont.currentIndexChanged.connect(self.previewAutoRefresh)
+        self.preview.le_helmLogo1Filepath.textChanged.connect(self.previewAutoRefresh)
+        self.preview.le_helmLogo2Filepath.textChanged.connect(self.previewAutoRefresh)
+        self.preview.le_helmText.editingFinished.connect(self.previewAutoRefresh)
 
         # Get a preview uniform render.
         self.renderPreview()
@@ -4604,8 +4667,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         if self.uniform != "helmet":
             # Collect the data to be saved into a list.
             saveData = (self.spotColour, self.envColour, self.bgColour, self.transparentBG, self.camX, self.camY, self.camZ,
-                        self.lookX, self.lookY, self.lookZ, self.width, self.height, self.clothDetail, self.antiAliasing,
-                        self.mosaicPreview, self.lightX, self.lightY, self.lightZ)
+                        self.lookX, self.lookY, self.lookZ, self.width, self.height, self.quality, self.clothDetail, self.antiAliasing,
+                        self.shadowless, self.mosaicPreview, self.lightX, self.lightY, self.lightZ)
 
         else:
             saveData = (self.helmColour, self.decColour, self.bgColourHelm, self.lightColour, self.transparentBGHelm, self.ambientHelm,
@@ -5443,14 +5506,28 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.cb_PresetLight.currentIndexChanged.connect(self.cb_previewPresetLightHelmFunc)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
+    def previewAutoRefresh(self, event=None):
+        '''Method to handle auto refreshing of the preview windows.'''
+
+        if self.preview.cb_Refresh.isChecked():
+            self.renderPreview()
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def cb_previewRefreshFunc(self):
+        '''Method to handle actions upon selection of the Auto-refresh checkbox.'''
+
+        if self.preview.cb_Refresh.isChecked():
+            self.preview.btn_preview.setEnabled(False)
+            self.renderPreview()
+        else:
+            self.preview.btn_preview.setEnabled(True)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                      Functions.                                                                    #
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
-
-
 def findFont(fontName):
     '''Method to find a font's filepath for a given font name.'''
 

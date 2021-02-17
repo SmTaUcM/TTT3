@@ -821,7 +821,7 @@ QComboBox:!enabled
       <string>Reset to Defaults</string>
      </property>
     </widget>
-    <widget class="QSlider" name="vs_CamX">
+    <widget class="Slider" name="vs_CamX">
      <property name="geometry">
       <rect>
        <x>8</x>
@@ -912,7 +912,7 @@ QSlider::handle:vertical:hover
       <string>_</string>
      </property>
     </widget>
-    <widget class="QSlider" name="vs_CamY">
+    <widget class="Slider" name="vs_CamY">
      <property name="geometry">
       <rect>
        <x>31</x>
@@ -1019,7 +1019,7 @@ QSlider::handle:vertical:hover
       <string>_</string>
      </property>
     </widget>
-    <widget class="QSlider" name="vs_CamZ">
+    <widget class="Slider" name="vs_CamZ">
      <property name="geometry">
       <rect>
        <x>54</x>
@@ -1433,7 +1433,7 @@ QSlider::handle:vertical:hover
       <string>Z:</string>
      </property>
     </widget>
-    <widget class="QSlider" name="vs_LookX">
+    <widget class="Slider" name="vs_LookX">
      <property name="geometry">
       <rect>
        <x>95</x>
@@ -1507,7 +1507,7 @@ QSlider::handle:vertical:hover
       <string>2.8</string>
      </property>
     </widget>
-    <widget class="QSlider" name="vs_LookY">
+    <widget class="Slider" name="vs_LookY">
      <property name="geometry">
       <rect>
        <x>118</x>
@@ -1610,7 +1610,7 @@ QSlider::handle:vertical:hover
       <string>_</string>
      </property>
     </widget>
-    <widget class="QSlider" name="vs_LookZ">
+    <widget class="Slider" name="vs_LookZ">
      <property name="geometry">
       <rect>
        <x>141</x>
@@ -1881,7 +1881,7 @@ QSlider::handle:vertical:hover
       <string>Reset to Defaults</string>
      </property>
     </widget>
-    <widget class="QSlider" name="vs_LightY">
+    <widget class="Slider" name="vs_LightY">
      <property name="geometry">
       <rect>
        <x>31</x>
@@ -2001,7 +2001,7 @@ QSlider::handle:vertical:hover
       <string>_</string>
      </property>
     </widget>
-    <widget class="QSlider" name="vs_LightZ">
+    <widget class="Slider" name="vs_LightZ">
      <property name="geometry">
       <rect>
        <x>54</x>
@@ -2066,7 +2066,7 @@ QSlider::handle:vertical:hover
       <string>_</string>
      </property>
     </widget>
-    <widget class="QSlider" name="vs_LightX">
+    <widget class="Slider" name="vs_LightX">
      <property name="geometry">
       <rect>
        <x>8</x>
@@ -2399,6 +2399,9 @@ QSlider::handle:vertical:hover
     <zorder>cb_PresetLight</zorder>
    </widget>
    <widget class="QPushButton" name="btn_preview">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>319</x>
@@ -2478,9 +2481,32 @@ QSlider::handle:vertical:hover
      </property>
     </widget>
    </widget>
+   <widget class="QCheckBox" name="cb_Refresh">
+    <property name="geometry">
+     <rect>
+      <x>495</x>
+      <y>565</y>
+      <width>81</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Auto-refresh</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Slider</class>
+   <extends>QSlider</extends>
+   <header>Slider.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>btn_raytrace</tabstop>
   <tabstop>btn_close</tabstop>
