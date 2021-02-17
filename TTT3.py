@@ -1158,6 +1158,7 @@ class TTT3(QMainWindow):
             item = self.queue.get()
             self.launchPOVRay(preview=True)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
+
     def btn_dutyMethod(self):
         '''Method that is triggered when the 'Duty Uniform' button is clicked.
            This method will check that the correct selections has been made within TTT3 such as Ship and Squadron and then
@@ -4070,7 +4071,6 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def saberDaggerDeconflict(self):
         '''Method to deconflict the lightsaber and dagger if a saber mounting option is selected.'''
 
@@ -4732,7 +4732,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         self.lookXHelm, self.lookYHelm, self.lookZHelm, self.lightXHelm, self.lightYHelm, self.lightZHelm,
                         self.fontHelm, self.fontHelmQFront.family(), self.nameHelm, self.logo1FilepathHelm, self.logo1TypeHelm,
                         self.logo2FilepathHelm, self.logo2TypeHelm, self.mosaicPreviewHelm, self.homoHelm, self.shadowlessHelm,
-                        self.antiAliasingHelm, self.qualityHelm, self.widthHelm, self.heightHelm)
+                        self.antiAliasingHelm, self.qualityHelm, self.widthHelm, self.heightHelm, self.rank, self.position, self.sqn)
 
         return saveData
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4844,6 +4844,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.qualityHelm = saveData[29]
                     self.widthHelm = saveData[30]
                     self.heightHelm = saveData[31]
+                    self.rank = saveData[32]
+                    self.position = saveData[33]
+                    self.sqn = saveData[34]
 
                 self.applyPreviewSettings()
                 self.renderPreview()
