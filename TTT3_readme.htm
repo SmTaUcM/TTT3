@@ -92,11 +92,11 @@
               [DCRN] {IWATS-CBX-GFX-M/1/2-SM/2/3-TM/1/3-TT}<br>
               RSV/WO Tempest/CD [CoL/SoA/BoMx2/CSS/CDMx2]<br>
               <br>
-              created 2020 - 2020 by<br>
-              CMDR/CM SkyShadow/Epsilon/Wing I/ISDII Hammer<br>
-              BS/PCx2/ISMx3/IS-1GW-2SW-10BW-2GR-1SR-4BR/LoC-Rx4/LoS-CSx9/MoC-2boc/CoB/OV-19E<br>
-              [Paladin] [Trainee] [Private 4th] <br>
-              {TCCORE-MP/2-SM/2/3/4}<br>
+              created 2020 - 2021 by<br>
+              FM/LCM SkyShadow/Sin 3-2/Wing II/ISDII Warrior<br>
+              BSx2/PCx4/ISMx3/IS-2GW-2SW-11BW-2GR-1SR-4BR/LoC-CS-Rx3/LoS-IS-Rx3/MoC-1soc-4boc/CoB/OV-19E<br>
+              [Paladin] [Trainee] [Private 3rd]<br>
+              {TCCORE-MP/2-SM/2/3/4/5}<br>
             </span> <span class="stan"><br>
               For comments/questions please send a mail to: <a href="mailto:io@emperorshammer.org">io@emperorshammer.org</a><br>
               <hr><br>
@@ -324,20 +324,19 @@
               <br>
               <h2>6. Squadron patches</h2>
               <p>In order for a squadron patch to be displayed on the uniform, it
-                must be in BMP or PNG format, it must be in the <i>data/squads</i>
+                must be in BMP, PNG or JPG (by exception) format, it must be in the <i>data/squads</i>
                 directory and it must be named after the squadron (same spelling
                 that it has in TTT3).</p>
               <p>A size of 256 x 256 pixels is recommended, but not enforced.
                 Just make sure it is square because otherwise it will appear
                 distorted.</p>
               <p>You can define transparent areas by alpha channel (PNG format
-                only), by using pure green (RGB 0, 255, 0) or the pixel colour
-                of the leftmost uppermost (0, 0) pixel.
-                TTT3 will auto-generate a b/w mask from it and store it in the
+                only).
+				As a fallback TTT3 will attempt to trace the outline of a non-transparent image.
+                TTT3 will then auto-generate a b/w mask from it and store it in the
                 same directory under <i>originalname</i>_mask.gif. You don't
-                have to care about it, but if you ever modify an existing patch,
-                delete the GIF mask file that belongs to it, because as long as
-                a mask file is in place TTT3 won't generate a new one.</p>
+                have to care about it, and if you ever modify an existing patch,
+                TTT3 will generate a new one.</p>
               <br>
               <br>
               <br>
@@ -362,7 +361,9 @@
               <p></p>The following bugs and/or problems of the TTT3 software are
               known, but not getting fixed anytime soon for some reason or
               another.</p>
-              <p>None currently.</p>
+              <p>
+			  <li>Helmet artifacts seen around the nametag and upper helmet in quality settings above 7.</li>
+			  </p>
               <br>
               <br>
               <br>
