@@ -40,6 +40,7 @@ import urllib3  # python -m pip install urllib3
 import json
 import hashlib
 import threading
+import queue
 # python -m pip install pyinstaller - for compiler.
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -305,11 +306,14 @@ class TTT3(QMainWindow):
             self.imagePath = None
 
             # ----- Application logic. -----
+            self.queue = queue.Queue()
+            threading.Thread(target=self.taskQueuer, daemon=True).start()
             self.fastRendering = False  # Forces POV-Ray to render at a lower quality for quicker rendering during testing.
             self.continueRender = True
             self.uniform = None
             self.loadSettings()
             self.loadFleetData()
+            self.lastRenderData = None
             self.updateProgressBar.connect(self.updaterSlot)
             self.update = threading.Thread(target=self.checkForUpdates)
             self.update.start()
@@ -929,6 +933,9 @@ class TTT3(QMainWindow):
     def applyPreviewSettings(self):
         '''Method to apply the currently loaded preview settings.'''
 
+        # Reset the last cut of the renderData to allow the uniform to be drawn.
+        self.lastRenderData = ()
+
         if self.uniform != "helmet":
             # Colours.
             # Spotlight Colour.
@@ -1061,18 +1068,26 @@ class TTT3(QMainWindow):
     def renderPreview(self):
         '''Mewthod for rendering a preview image.'''
 
-        self.preview.lbl_preview.clear()
-        self.preview.lbl_preview.setText("Please wait for preview to load...")
-        if self.uniform == "dress":
-            self.createDressPov()
-        elif self.uniform == "duty":
-            self.createDutyPov()
-        elif self.uniform == "helmet":
-            self.createHelmetPov()
-        self.previewImage = threading.Thread(target=self.launchPOVRay, args=(True,))
-        self.previewImage.start()
+        if self.getUniformData() != self.lastRenderData:
+            self.lastRenderData = self.getUniformData()
+            self.preview.lbl_preview.clear()
+            self.preview.lbl_preview.setText("Please wait for preview to load...")
+            if self.uniform == "dress":
+                self.createDressPov()
+            elif self.uniform == "duty":
+                self.createDutyPov()
+            elif self.uniform == "helmet":
+                self.createHelmetPov()
+            self.queue.put(None)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
+    def taskQueuer(self):
+        '''Method used to queuing preview requests.'''
+
+        while True:
+            item = self.queue.get()
+            self.launchPOVRay(preview=True)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
     def btn_dutyMethod(self):
         '''Method that is triggered when the 'Duty Uniform' button is clicked.
            This method will check that the correct selections has been made within TTT3 such as Ship and Squadron and then
@@ -1101,6 +1116,9 @@ class TTT3(QMainWindow):
         '''Method that dynamically launches POV-Ray with the correct paths.
            The "uniform" argument takes "dress", "duty or "helmet" which is dependant on which button has been pressed.'''
 
+        self.preview.btn_raytrace.setEnabled(False)
+        QApplication.processEvents()
+
         # Recreate our *.pov file for final rendering.
         if not preview:
             if self.uniform == "dress":
@@ -1111,19 +1129,6 @@ class TTT3(QMainWindow):
 
             elif self.uniform == "helmet":
                 self.createHelmetPov()
-        else:
-            # Disable widgets to stop user running POV-Ray twice.
-            self.preview.btn_raytrace.setEnabled(False)
-            self.preview.btn_preview.setEnabled(False)
-            self.preview.btn_Load.setEnabled(False)
-            self.preview.btn_Save.setEnabled(False)
-            self.preview.btn_Reset.setEnabled(False)
-            self.preview.cb_PresetCam.setEnabled(False)
-            self.preview.cb_PresetLook.setEnabled(False)
-            self.preview.cb_PresetLight.setEnabled(False)
-            self.gui.btn_dress.setEnabled(False)
-            self.gui.btn_duty.setEnabled(False)
-            self.gui.btn_helmet.setEnabled(False)
 
         if self.uniform == "dress":
             width = self.width
@@ -1203,23 +1208,13 @@ class TTT3(QMainWindow):
         # Wait for POV-Ray to close.
         self.povrayMonitor(pov.pid)
 
+        self.preview.btn_raytrace.setEnabled(True)
         if not preview:
             # Show the output GUI.
             self.showOutputDialog(self.uniform)
         else:
-            # Re-enable rendering widgets.
-            self.preview.btn_preview.setEnabled(True)
-            self.preview.btn_raytrace.setEnabled(True)
-            self.preview.btn_Load.setEnabled(True)
-            self.preview.btn_Save.setEnabled(True)
-            self.preview.btn_Reset.setEnabled(True)
-            self.preview.cb_PresetCam.setEnabled(True)
-            self.preview.cb_PresetLook.setEnabled(True)
-            self.preview.cb_PresetLight.setEnabled(True)
-            self.gui.btn_dress.setEnabled(True)
-            self.gui.btn_duty.setEnabled(True)
-            self.gui.btn_helmet.setEnabled(True)
             self.showPreviewImage()
+            self.queue.task_done()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def showPreviewImage(self):
@@ -4603,23 +4598,31 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
+    def getUniformData(self):
+        '''Method that collects all of the user's selections and returns them as a tuple.'''
+
+        if self.uniform != "helmet":
+            # Collect the data to be saved into a list.
+            saveData = (self.spotColour, self.envColour, self.bgColour, self.transparentBG, self.camX, self.camY, self.camZ,
+                        self.lookX, self.lookY, self.lookZ, self.width, self.height, self.clothDetail, self.antiAliasing,
+                        self.mosaicPreview, self.lightX, self.lightY, self.lightZ)
+
+        else:
+            saveData = (self.helmColour, self.decColour, self.bgColourHelm, self.lightColour, self.transparentBGHelm, self.ambientHelm,
+                        self.specularHelm, self.roughHelm, self.reflectionHelm, self.camXHelm, self.camYHelm, self.camZHelm,
+                        self.lookXHelm, self.lookYHelm, self.lookZHelm, self.lightXHelm, self.lightYHelm, self.lightZHelm,
+                        self.fontHelm, self.fontHelmQFront.family(), self.nameHelm, self.logo1FilepathHelm, self.logo1TypeHelm,
+                        self.logo2FilepathHelm, self.logo2TypeHelm, self.mosaicPreviewHelm, self.homoHelm, self.shadowlessHelm,
+                        self.antiAliasingHelm, self.qualityHelm, self.widthHelm, self.heightHelm)
+
+        return saveData
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
     def btn_previewSaveFunc(self):
         '''Method for when the preview 'Save' button is clicked.'''
 
         try:
-            if self.uniform != "helmet":
-                # Collect the data to be saved into a list.
-                saveData = (self.spotColour, self.envColour, self.bgColour, self.transparentBG, self.camX, self.camY, self.camZ,
-                            self.lookX, self.lookY, self.lookZ, self.width, self.height, self.clothDetail, self.antiAliasing,
-                            self.mosaicPreview, self.lightX, self.lightY, self.lightZ)
-
-            else:
-                saveData = (self.helmColour, self.decColour, self.bgColourHelm, self.lightColour, self.transparentBGHelm, self.ambientHelm,
-                            self.specularHelm, self.roughHelm, self.reflectionHelm, self.camXHelm, self.camYHelm, self.camZHelm,
-                            self.lookXHelm, self.lookYHelm, self.lookZHelm, self.lightXHelm, self.lightYHelm, self.lightZHelm,
-                            self.fontHelm, self.fontHelmQFront.family(), self.nameHelm, self.logo1FilepathHelm, self.logo1TypeHelm,
-                            self.logo2FilepathHelm, self.logo2TypeHelm, self.mosaicPreviewHelm, self.homoHelm, self.shadowlessHelm,
-                            self.antiAliasingHelm, self.qualityHelm, self.widthHelm, self.heightHelm)
+            saveData = self.getUniformData()
 
             # Save the data.
             fileName = self.savePreviewFileDialog()

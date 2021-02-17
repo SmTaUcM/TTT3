@@ -1054,7 +1054,7 @@ QListWidget:!enabled
     </widget>
     <widget class="QWidget" name="tabMRF">
      <attribute name="title">
-      <string>Medals, Ribbons and FCHG</string>
+      <string>Medals, Ribbons and Wings</string>
      </attribute>
      <widget class="QGroupBox" name="groupBox_4">
       <property name="geometry">
