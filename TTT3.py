@@ -1136,10 +1136,9 @@ class TTT3(QMainWindow):
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def renderPreview(self):
-        '''Mewthod for rendering a preview image.'''
+        '''Method for rendering a preview image.'''
 
         if self.getUniformData() != self.lastRenderData:
-            self.lastRenderData = self.getUniformData()
             self.preview.lbl_preview.clear()
             self.preview.lbl_preview.setText("Please wait for preview to load...")
             if self.uniform == "dress":
@@ -1148,6 +1147,7 @@ class TTT3(QMainWindow):
                 self.createDutyPov()
             elif self.uniform == "helmet":
                 self.createHelmetPov()
+            self.lastRenderData = self.getUniformData()
             self.queue.put(None)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -4804,12 +4804,14 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.lookZ = saveData[9]
                     self.width = saveData[10]
                     self.height = saveData[11]
-                    self.clothDetail = saveData[12]
-                    self.antiAliasing = saveData[13]
-                    self.mosaicPreview = saveData[14]
-                    self.lightX = saveData[15]
-                    self.lightY = saveData[16]
-                    self.lightZ = saveData[17]
+                    self.quality = saveData[12]
+                    self.clothDetail = saveData[13]
+                    self.antiAliasing = saveData[14]
+                    self.shadowless = saveData[15]
+                    self.mosaicPreview = saveData[16]
+                    self.lightX = saveData[17]
+                    self.lightY = saveData[18]
+                    self.lightZ = saveData[19]
 
                 else:
                     self.helmColour = saveData[0]
@@ -4848,7 +4850,11 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.position = saveData[33]
                     self.sqn = saveData[34]
 
+                oldRefreshSetting = self.preview.cb_Refresh.isChecked()
+                # Turn off auto refresh to prevent applying the loaded settings to trigger multiple refreshes.
+                self.preview.cb_Refresh.setChecked(False)
                 self.applyPreviewSettings()
+                self.preview.cb_Refresh.setChecked(oldRefreshSetting)
                 self.renderPreview()
         except Exception as e:
             handleException(e)
