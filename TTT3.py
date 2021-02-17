@@ -62,8 +62,8 @@ class TTT3(QMainWindow):
         try:
             # Version info.
             version = "3.00"
-            devVersion = "Alpha 18"
-            date = "15 February 2021"
+            devVersion = "Alpha 19"
+            date = "17 February 2021"
             self.saveFileVersion = 1
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
@@ -164,11 +164,15 @@ class TTT3(QMainWindow):
             self.gui.cb_dressSaberStyles.hide()
             self.loadLighsabers()
             self.cb_dressLightsaberFunc()
+            self.cb_dutyLightsaberFunc()
             self.gui.cb_dressLightsaber.setChecked(False)
+            self.gui.cb_dutyLightsaber.setChecked(False)
             self.gui.rb_daggerLeft.setChecked(True)
 
             # Lightsaber options.
             self.gui.cb_dressLightsaber.stateChanged.connect(self.cb_dressLightsaberFunc)
+            self.gui.cb_dutyLightsaber.stateChanged.connect(self.cb_dutyLightsaberFunc)
+            # TODO Duty saber / blaster deconfliction.
             self.gui.rb_dressSaberLeft.clicked.connect(self.saberDaggerDeconflict)
             self.gui.rb_dressSaberRight.clicked.connect(self.saberDaggerDeconflict)
 
@@ -461,11 +465,14 @@ class TTT3(QMainWindow):
 
         self.gui.btn_helmet.setEnabled(True)
 
-        # TODO Disabled Duty Options UTFN.
-        self.gui.tab_Duty.setEnabled(False)
-
         # TODO Disabled Dress Lightsaber Customisation.
         self.gui.btn_dressSaberCustom.setEnabled(False)
+
+        # TODO Disabled Duty Lightsaber Customisation.
+        self.gui.btn_dutySaberCustom.setEnabled(False)
+
+        # TODO Disabled Duty Sidearm Options.
+        self.gui.gb_dutySidearm.setEnabled(False)
 
         # Hide the remember button.
         self.gui.btn_remember.hide()
@@ -2101,6 +2108,22 @@ color_map
                 else:
                     povData.append(line.replace("&RANKTRANSLATE&", self.RANK_OFFSET_DUTY_FLAG[1]))
 
+            elif "&SABERINCLUDE&" in line:
+                if self.gui.cb_dutyLightsaber.isChecked():
+                    style = self.gui.cb_dutySaberStyles.currentText().replace("Style ", "")
+                    include = '#include "saber%s_g.inc"' % style
+                    povData.append(line.replace("&SABERINCLUDE&", include))
+
+            elif "&SABER&" in line:
+                if self.gui.cb_dutyLightsaber.isChecked():
+                    style = self.gui.cb_dutySaberStyles.currentText().replace("Style ", "")
+                    if self.gui.rb_dutySaberLeft.isChecked():
+                        side = "left"
+                    else:
+                        side = "right"
+                    object = 'object { saber%s_%s }' % (style, side)
+                    povData.append(line.replace("&SABER&", object))
+
             # ----- Non-Editable Data. -----
             else:
                 povData.append(line)
@@ -3492,10 +3515,14 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.enableWingAndSqnTab(False)
             # Set default Misc Tab Options.
             if event != "ImportProfile" and event != "OpenProfile":
+                # Dress.
                 self.gui.cb_dressLightsaber.setChecked(False)
                 self.gui.cb_dressSaberStyles.setCurrentIndex(0)
                 self.gui.rb_daggerLeft.setChecked(True)
                 self.gui.rb_dressSaberRight.setChecked(True)
+                # Duty.
+                self.gui.cb_dutyLightsaber.setChecked(False)
+                self.gui.cb_dutySaberStyles.setCurrentIndex(0)
 
             # Disable render buttons.
             self.gui.btn_dress.setEnabled(False)
@@ -3589,6 +3616,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.gui.cbFCHG.setCurrentText(saveData[9])
 
                     # Miscellaneous Tab Options.
+                    # Dress.
                     self.gui.cb_dressLightsaber.setChecked(saveData[10])
                     self.gui.cb_dressSaberStyles.setCurrentIndex(saveData[11])
                     if saveData[12]:
@@ -3599,6 +3627,14 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         self.gui.rb_daggerLeft.setChecked(True)
                     else:
                         self.gui.rb_daggerRight.setChecked(True)
+
+                    # Duty.
+                    self.gui.cb_dutyLightsaber.setChecked(saveData[14])
+                    self.gui.cb_dutySaberStyles.setCurrentIndex(saveData[15])
+                    if saveData[16]:
+                        self.gui.rb_dutySaberRight.setChecked(True)
+                    else:
+                        self.gui.rb_dutySaberLeft.setChecked(True)
 
                 else:
                     # Show error message.
@@ -3616,7 +3652,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             # Collect the data to be saved into a list.
             saveData = (self.saveFileVersion, self.position, self.rank, self.ship, self.wing, self.gui.cb_eliteSqn.isChecked(),
                         self.sqn, self.awards, self.deconflictNeckRibbons, self.gui.cbFCHG.currentText(), self.gui.cb_dressLightsaber.isChecked(),
-                        self.gui.cb_dressSaberStyles.currentIndex(), self.gui.rb_dressSaberRight.isChecked(), self.gui.rb_daggerLeft.isChecked())
+                        self.gui.cb_dressSaberStyles.currentIndex(), self.gui.rb_dressSaberRight.isChecked(), self.gui.rb_daggerLeft.isChecked(),
+                        self.gui.cb_dutyLightsaber.isChecked(), self.gui.cb_dutySaberStyles.currentIndex(), self.gui.rb_dutySaberRight.isChecked())
 
             # Save the data.
             fileName = self.saveUniformFileDialog()
@@ -3996,7 +4033,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 if "saber" in name and "_g.inc" in name:
                     style = name.split("_")[0].replace("saber", "")
                     self.gui.cb_dressSaberStyles.addItem("Style " + style)
+                    self.gui.cb_dutySaberStyles.addItem("Style " + style)
         self.gui.rb_dressSaberRight.setChecked(True)
+        self.gui.rb_dutySaberRight.setChecked(True)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_dressLightsaberFunc(self):
@@ -4014,6 +4053,23 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def cb_dutyLightsaberFunc(self):
+        '''Method that triggers when the 'Use Lightsaber' checkbox is selected'''
+
+        try:
+            saberItems = [self.gui.cb_dutySaberStyles, self.gui.lbl_dutySaberSide, self.gui.rb_dutySaberLeft,
+                          self.gui.rb_dutySaberRight, self.gui.btn_dutySaberCustom]
+
+            for item in saberItems:
+                if self.gui.cb_dutyLightsaber.isChecked():
+                    item.show()
+                else:
+                    item.hide()
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
 
     def saberDaggerDeconflict(self):
         '''Method to deconflict the lightsaber and dagger if a saber mounting option is selected.'''

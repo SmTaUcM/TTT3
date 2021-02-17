@@ -105,6 +105,7 @@ camera
 #include "duty_g.inc"
 #include "cyls_g.inc"
 #include "rank&RANK&_g.inc"
+&SABERINCLUDE&
   
   
 // SCENE
@@ -122,6 +123,7 @@ object { P_seams texture { T_seams } }
 object { P_belt texture { T_belt } }
 object { P_buckle texture { T_buckle } }
 &POSITION&
+&SABER&
  
  
 //TTT3DUTYPOVEOF
