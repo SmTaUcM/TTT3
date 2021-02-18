@@ -5070,12 +5070,40 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         self.fontHelmQFront = font
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
+    def checkForAlpha(self, filepath):
+        '''Method to check if an image has an alpha channel.'''
+
+        # Load image.
+        img = cv2.imread(filepath, cv2.IMREAD_UNCHANGED)
+
+        # Check for alpha channel.
+        try:
+            mask = img[:, :, 3]  # Alpha is present
+            return "True"
+        except TypeError:
+            return False
+        except IndexError:
+            return True
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
     def cb_previewHemlLogo1TypeFunc(self):
         '''Method for handling Decoration Logo ComboBox actions.'''
 
         if self.preview.cb_hemlLogo1Type.currentText() == "Squadron Patch":
             self.preview.le_helmLogo1Filepath.setEnabled(False)
             self.preview.btn_helmLogo1Filepath.setEnabled(False)
+
+        elif self.preview.cb_hemlLogo1Type.currentText() == "Image - bg. transparent":
+            if self.preview.le_helmLogo1Filepath.text() != "":
+                if self.checkForAlpha(self.preview.le_helmLogo1Filepath.text()):
+                    self.logo1TypeHelm = self.preview.cb_hemlLogo1Type.currentText()
+                    return
+                else:
+                    self.logo1TypeHelm = self.preview.cb_hemlLogo1Type.currentText()
+                    self.lastRenderData = self.getUniformData()
+                    # Show error message.
+                    msg = "%s does not have a transparent background." % self.preview.le_helmLogo1Filepath.text().split("\\")[-1]
+                    return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
 
         elif self.preview.cb_hemlLogo1Type.currentText() == "None":
             self.preview.le_helmLogo1Filepath.setEnabled(False)
@@ -5086,7 +5114,6 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.btn_helmLogo1Filepath.setEnabled(True)
 
         self.logo1TypeHelm = self.preview.cb_hemlLogo1Type.currentText()
-
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewHemlLogo2TypeFunc(self):
@@ -5095,6 +5122,18 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         if self.preview.cb_hemlLogo2Type.currentText() == "Squadron Patch":
             self.preview.le_helmLogo2Filepath.setEnabled(False)
             self.preview.btn_helmLogo2Filepath.setEnabled(False)
+
+        elif self.preview.cb_hemlLogo2Type.currentText() == "Image - bg. transparent":
+            if self.preview.le_helmLogo2Filepath.text() != "":
+                if self.checkForAlpha(self.preview.le_helmLogo2Filepath.text()):
+                    self.logo2TypeHelm = self.preview.cb_hemlLogo2Type.currentText()
+                    return
+                else:
+                    self.logo2TypeHelm = self.preview.cb_hemlLogo2Type.currentText()
+                    self.lastRenderData = self.getUniformData()
+                    # Show error message.
+                    msg = "%s does not have a transparent background." % self.preview.le_helmLogo2Filepath.text().split("\\")[-1]
+                    return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
 
         elif self.preview.cb_hemlLogo2Type.currentText() == "None":
             self.preview.le_helmLogo2Filepath.setEnabled(False)
@@ -5135,12 +5174,34 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             # Set the chosen file.
             if fileName:
                 fileName = fileName.replace(r"/", "\\")
+
                 if logoNum == 1:
-                    self.logo1FilepathHelm = fileName
-                    self.preview.le_helmLogo1Filepath.setText(fileName)
+                    if self.preview.cb_hemlLogo1Type.currentText() == "Image - bg. transparent":
+                        if self.checkForAlpha(fileName):
+                            self.createMask(fileName)
+                            self.preview.le_helmLogo1Filepath.setText(fileName)
+                        else:
+                            self.preview.le_helmLogo1Filepath.setText("")
+                            self.lastRenderData = self.getUniformData()
+                            msg = "%s does not have a transparent background." % fileName.split("\\")[-1]
+                            return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+                    else:
+                        self.preview.le_helmLogo1Filepath.setText(fileName)
+
                 elif logoNum == 2:
                     self.logo2FilepathHelm = fileName
-                    self.preview.le_helmLogo2Filepath.setText(fileName)
+                    if self.preview.cb_hemlLogo2Type.currentText() == "Image - bg. transparent":
+                        if self.checkForAlpha(fileName):
+                            self.createMask(fileName)
+                            self.preview.le_helmLogo2Filepath.setText(fileName)
+                        else:
+                            self.preview.le_helmLogo2Filepath.setText("")
+                            self.lastRenderData = self.getUniformData()
+                            msg = "%s does not have a transparent background." % fileName.split("\\")[-1]
+                            return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+                    else:
+                        self.preview.le_helmLogo2Filepath.setText(fileName)
+
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -5167,9 +5228,15 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         self.preview.fcb_helmFont.setCurrentFont(self.fontHelmQFront)
 
         self.logo1TypeHelm = "Image - stencil mask"
-        self.logo2TypeHelm = "Squadron Patch"
         self.logo1FilepathHelm = os.getcwd() + "\\data\\misc\\implogo.gif"
-        self.logo2FilepathHelm = ""
+
+        if self.sqn != "":
+            self.logo2TypeHelm = "Squadron Patch"
+            self.logo2FilepathHelm = ""
+        else:
+            self.logo2TypeHelm = "Image - stencil mask"
+            self.logo2FilepathHelm = os.getcwd() + "\\data\\misc\\tiecorps_logo_new.png"
+
         logo1Type = self.preview.cb_hemlLogo1Type.findText(self.logo1TypeHelm, Qt.MatchExactly | Qt.MatchCaseSensitive)
         logo2Type = self.preview.cb_hemlLogo2Type.findText(self.logo2TypeHelm, Qt.MatchExactly | Qt.MatchCaseSensitive)
         self.preview.cb_hemlLogo1Type.setCurrentIndex(logo1Type)
