@@ -947,7 +947,7 @@ class TTT3(QMainWindow):
         self.preview.cb_Mosaic.stateChanged.connect(self.cb_previewMosaicFunc)
         self.preview.btn_resetOptions.clicked.connect(self.btn_previewResetOptionsFunc)
         self.preview.le_helmText.textChanged.connect(self.le_previewHelmTextFunc)
-        self.preview.fcb_hemlFont.currentFontChanged.connect(self.fcb_previewHelmFontFunc)
+        self.preview.fcb_helmFont.currentFontChanged.connect(self.fcb_previewHelmFontFunc)
         self.preview.cb_hemlLogo1Type.currentIndexChanged.connect(self.cb_previewHemlLogo1TypeFunc)
         self.preview.cb_hemlLogo2Type.currentIndexChanged.connect(self.cb_previewHemlLogo2TypeFunc)
         self.preview.btn_helmLogo1Filepath.clicked.connect(lambda: self.getLogoFile(1))
@@ -991,7 +991,7 @@ class TTT3(QMainWindow):
         # Decorations.
         self.preview.cb_hemlLogo1Type.currentIndexChanged.connect(self.previewAutoRefresh)
         self.preview.cb_hemlLogo2Type.currentIndexChanged.connect(self.previewAutoRefresh)
-        self.preview.fcb_hemlFont.currentIndexChanged.connect(self.previewAutoRefresh)
+        self.preview.fcb_helmFont.currentTextChanged.connect(self.previewAutoRefresh)
         self.preview.le_helmLogo1Filepath.textChanged.connect(self.previewAutoRefresh)
         self.preview.le_helmLogo2Filepath.textChanged.connect(self.previewAutoRefresh)
         self.preview.le_helmText.editingFinished.connect(self.previewAutoRefresh)
@@ -1104,7 +1104,7 @@ class TTT3(QMainWindow):
                 if self.name != "Unknown":
                     self.nameHelm = self.name.upper()
             self.preview.le_helmText.setText(self.nameHelm)
-            self.preview.fcb_hemlFont.setCurrentFont(self.fontHelmQFront)
+            self.preview.fcb_helmFont.setCurrentFont(self.fontHelmQFront)
 
             # Logo options.
             widgets = [self.preview.cb_hemlLogo1Type, self.preview.cb_hemlLogo2Type]
@@ -5145,7 +5145,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.le_helmText.setText(self.name)
 
         self.fontHelmQFront = QFont("impact")
-        self.preview.fcb_hemlFont.setCurrentFont(self.fontHelmQFront)
+        self.preview.fcb_helmFont.setCurrentFont(self.fontHelmQFront)
         self.fontHelm = os.environ['WINDIR'] + "\\Fonts\\impact.ttf"
 
         self.logo1TypeHelm = "Image - stencil mask"
@@ -5627,8 +5627,145 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 def findFont(fontName):
     '''Method to find a font's filepath for a given font name.'''
-
     fontPath = os.environ['WINDIR'] + "\\Fonts\\"
+    fontName = fontName.lower()
+
+    # Name logic.
+    if "adobe" in fontName:
+        fontName = fontName.replace("adobe ", "a").replace(" ", "")
+        if  "bold" in fontName:
+            fontName = fontName.replace("bold", "-bold")
+        else:
+            fontName += "-regular"
+
+    elif "arno" in fontName:
+        fontName = fontName.replace("arno pro", "arnopro").replace(" ", "-")
+
+        if fontName.count("-") == 2:
+            fontName = fontName.replace("-", "").replace("arnopro", "arnopro-")
+        elif fontName == "arnopro":
+                fontName += "-regular"
+
+    elif "bahnschrift" in fontName:
+        fontName = "bahnschrift"
+
+    elif "bell gothic std" in fontName:
+        fontName = fontName.replace("bell gothic std", "bellgothicstd-").replace(" ", "")
+        if "-light" in fontName:
+            fontName = fontName.replace("-light", "")
+
+    elif "bickham script pro" in fontName:
+        fontName = fontName.replace("bickham script pro", "bickhamscriptpro-").replace(" ", "")
+        if fontName == "bickhamscriptpro-":
+            fontName = "bickhamscriptpro-regular"
+
+    elif "birch std" in fontName or "blackoak std" in fontName or "brush script std" in fontName or "giddyup std" in fontName or "hobo std" in fontName or "letter gothic std" in fontName or "mesquite std" in fontName or "ocr a std" in fontName or "orator std" in fontName or "poplar std" in fontName or "prestige elite std" in fontName or "stencil std" in fontName:
+        fontName = fontName.replace(" ", "")
+
+    elif "chaparral pro" in fontName:
+        fontName = fontName.replace("chaparral pro", "chaparralpro-").replace(" ", "")
+        if fontName == "chaparralpro-":
+            fontName = "chaparralpro-regular"
+
+    elif "cooper std" in fontName:
+        if "black" in fontName:
+            fontName = "cooperblackstd"
+        else:
+            fontName = "cooperblackstd-italic"
+
+    elif "charlemagne std" in fontName:
+        fontName = "charlemagnestd-bold"
+
+    elif "eccentric std" in fontName:
+        fontName = fontName.replace(" ", "")
+
+    elif "garamond prem" in fontName:
+        if "garamond premr" in fontName:
+            fontName = fontName.replace("garamond premr pro", "garamondpremrpro-").replace(" ", "")
+        elif "garamond premier pro" in fontName:
+            fontName = "garamondpremrpro"
+
+    elif "hololens" in fontName:
+        fontName = fontName.replace("hololens", "holo")
+
+    elif "kozuka" in fontName:
+        fontName = fontName.replace("kozuka ", "koz")
+        if "gothic " in fontName:
+            fontName = fontName.replace("gothic ", "go")
+        if fontName == "kozgopro":
+            fontName = "kozgopro-regular"
+        elif "mincho " in fontName:
+            fontName = fontName.replace("mincho ", "min")
+        try:
+            if fontName.split(" ")[1] == "b":
+                fontName = fontName.split(" ")[0] + "-bold"
+
+            elif fontName.split(" ")[1] == "el":
+                fontName = fontName.split(" ")[0] + "-extralight"
+
+            elif fontName.split(" ")[1] == "h":
+                fontName = fontName.split(" ")[0] + "-heavy"
+
+            elif fontName.split(" ")[1] == "l":
+                fontName = fontName.split(" ")[0] + "-light"
+
+            elif fontName.split(" ")[1] == "m":
+                fontName = fontName.split(" ")[0] + "-medium"
+
+            elif fontName.split(" ")[1] == "r":
+                fontName = fontName.split(" ")[0] + "-regular"
+        except IndexError:
+            pass
+
+    elif "lithos pro" == fontName:
+        fontName = "lithospro-black"
+
+    elif "lithos pro regular" == fontName:
+        fontName = "lithospro-regular"
+
+    elif "minion pro" in fontName:
+        fontName = fontName.replace("minion pro", "minionpro")
+        if " cond" in fontName:
+            fontName = fontName.replace(" cond", "-boldcn")
+        elif " med" in fontName:
+            fontName = fontName.replace(" med", "-medium")
+        elif " smbd" in fontName:
+            fontName = fontName.replace(" smbd", "-semibold")
+
+    elif "myriad pro" in fontName:
+        fontName = fontName.replace("myriad pro", "myriadpro")
+        if fontName == "mryiadpro":
+            fontName += "-regular"
+        elif " cond" in fontName:
+            fontName = fontName.replace(" cond", "-cond")
+        elif " light" in fontName:
+            fontName = fontName.replace(" light", "-regular")
+
+    elif "nueva std" in fontName:
+        fontName = fontName.replace("nueva std", "nuevastd")
+        if fontName == "nuevastd":
+            fontName += "-boldcond"
+        elif " cond" in fontName:
+            fontName = fontName.replace(" cond", "-cond")
+
+    elif "rog fonts v1.6" == fontName:
+        fontName = "rogfontsv1.6-regular"
+
+    elif "rosewood" in fontName:
+        fontName = "rosewoodstd-regular"
+
+    elif "trajan pro" == fontName:
+        fontName = "trajanpro-regular"
+
+    elif "tekton pro" in fontName:
+        fontName = fontName.replace("tekton pro", "tektonpro")
+        if fontName == "tektonpro":
+            fontName = "tektonpro-bold"
+        elif " cond" in fontName:
+            fontName = fontName.replace(" cond", "-boldcond")
+        elif " ext" in fontName:
+            fontName = fontName.replace(" ext", "-boldext")
+
 
     aKey = r"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
     values = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, aKey, 0, winreg.KEY_READ)
@@ -5637,12 +5774,16 @@ def findFont(fontName):
 
     while True:
         try:
-            if fontName.lower() in fontPath + winreg.EnumValue(values, i)[0].lower():
+            if fontName.lower() == fontPath + winreg.EnumValue(values, i)[0].lower():
+                return fontPath + winreg.EnumValue(values, i)[1]
+
+            elif fontName.lower() in fontPath + winreg.EnumValue(values, i)[0].lower():
                 return fontPath + winreg.EnumValue(values, i)[1]
             else:
                 i += 1
         except OSError:
             break
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
 def getYHelm(x):

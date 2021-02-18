@@ -3203,7 +3203,7 @@ QLineEdit:!enabled
       <string>Text:</string>
      </property>
     </widget>
-    <widget class="QFontComboBox" name="fcb_hemlFont">
+    <widget class="QFontComboBox" name="fcb_helmFont">
      <property name="geometry">
       <rect>
        <x>36</x>
@@ -3214,6 +3214,12 @@ QLineEdit:!enabled
      </property>
      <property name="styleSheet">
       <string notr="true">background-color: rgb(211, 211, 211);</string>
+     </property>
+     <property name="editable">
+      <bool>false</bool>
+     </property>
+     <property name="fontFilters">
+      <set>QFontComboBox::ScalableFonts</set>
      </property>
     </widget>
    </widget>
