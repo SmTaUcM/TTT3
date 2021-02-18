@@ -1114,9 +1114,9 @@ class TTT3(QMainWindow):
             for widget in widgets:
                 widget.clear()
                 if self.sqn == "":
-                    widget.addItems(["Image - bg. transparent", "Image - stencil mask"])
+                    widget.addItems(["Image - bg. transparent", "Image - stencil mask", "None"])
                 else:
-                    widget.addItems(["Squadron Patch", "Image - bg. transparent", "Image - stencil mask"])
+                    widget.addItems(["Squadron Patch", "Image - bg. transparent", "Image - stencil mask", "None"])
 
             self.logo1TypeHelm = logo1Type
             self.logo2TypeHelm = logo2Type
@@ -2287,6 +2287,10 @@ color_map
                         filePath = filePath.split(".")[0] + "_mask.png"
                         povData.append(line.replace("&LOGO1STENCIL&", r'png "%s"' % (filePath)))
 
+                    # None selected.
+                    else:
+                        povData.append(line.replace("&LOGO1STENCIL&", r'gif "helmet/fallback_mask.gif"'))
+
                 elif self.logo1TypeHelm == "Squadron Patch":
                     self.createMask()
                     ext, filePath = self.findSquadPatch()
@@ -2311,6 +2315,13 @@ color_map
                         if ext == "jpg":
                             ext = "jpeg"
                         povData.append(line.replace("&LOGO1PIGMENT&", r'image_map { %s "%s" }' % (ext, filePath)))
+
+                    # None selected.
+                    else:
+                        povData.append(
+                            line.replace(
+                                "&LOGO1PIGMENT&",
+                                r'image_map { png "helmet/fallback.png" interpolate 2 }'))
 
                 elif self.logo1TypeHelm == "Squadron Patch":
                     ext, filePath = self.findSquadPatch()
@@ -2342,6 +2353,10 @@ color_map
                         filePath = filePath.split(".")[0] + "_mask.png"
                         povData.append(line.replace("&LOGO2STENCIL&", r'png "%s"' % (filePath)))
 
+                    # None selected.
+                    else:
+                        povData.append(line.replace("&LOGO2STENCIL&", r'gif "helmet/fallback_mask.gif"'))
+
                 elif self.logo2TypeHelm == "Squadron Patch":
                     self.createMask()
                     ext, filePath = self.findSquadPatch()
@@ -2366,6 +2381,13 @@ color_map
                         if ext == "jpg":
                             ext = "jpeg"
                         povData.append(line.replace("&LOGO2PIGMENT&", r'image_map { %s "%s" }' % (ext, filePath)))
+
+                    # None selected.
+                    else:
+                        povData.append(
+                            line.replace(
+                                "&LOGO2PIGMENT&",
+                                r'image_map { png "helmet/fallback.png" interpolate 2 }'))
 
                 elif self.logo2TypeHelm == "Squadron Patch":
                     ext, filePath = self.findSquadPatch()
@@ -5035,6 +5057,11 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         if self.preview.cb_hemlLogo1Type.currentText() == "Squadron Patch":
             self.preview.le_helmLogo1Filepath.setEnabled(False)
             self.preview.btn_helmLogo1Filepath.setEnabled(False)
+
+        elif self.preview.cb_hemlLogo1Type.currentText() == "None":
+            self.preview.le_helmLogo1Filepath.setEnabled(False)
+            self.preview.btn_helmLogo1Filepath.setEnabled(False)
+
         else:
             self.preview.le_helmLogo1Filepath.setEnabled(True)
             self.preview.btn_helmLogo1Filepath.setEnabled(True)
@@ -5049,6 +5076,11 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         if self.preview.cb_hemlLogo2Type.currentText() == "Squadron Patch":
             self.preview.le_helmLogo2Filepath.setEnabled(False)
             self.preview.btn_helmLogo2Filepath.setEnabled(False)
+
+        elif self.preview.cb_hemlLogo2Type.currentText() == "None":
+            self.preview.le_helmLogo2Filepath.setEnabled(False)
+            self.preview.btn_helmLogo2Filepath.setEnabled(False)
+
         else:
             self.preview.le_helmLogo2Filepath.setEnabled(True)
             self.preview.btn_helmLogo2Filepath.setEnabled(True)
