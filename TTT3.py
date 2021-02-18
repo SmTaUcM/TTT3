@@ -4304,13 +4304,24 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method to open the QColorDialog.'''
 
         try:
+            # Prevent auto-refrsh from spamming changes when picking a colour.
+            oldRefreshSetting = self.preview.cb_Refresh.isChecked()
+            self.preview.cb_Refresh.setChecked(False)
+
             # Open the colour picker.
             self.colourDlg = QColorDialog()
             self.colourDlg.setCurrentColor(colourOption)
             self.colourDlg.show()
             self.colourDlg.currentColorChanged.connect(lambda: self.colourSelected(self.colourDlg.currentColor(), optionStr, label, lineEdit))
+            self.colourDlg.finished.connect(lambda: self.closeColourPicker(oldRefreshSetting))
         except Exception as e:
             handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def closeColourPicker(self, setting):
+        '''Method for closing the colour picker.'''
+
+        self.preview.cb_Refresh.setChecked(setting)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def colourSelected(self, colour, optionStr, label, lineEdit):
@@ -4927,7 +4938,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.painter.setFont(QFont(self.preview.fcb_helmFont.currentFont().family(), fontsize))
                 factor = width / self.painter.fontMetrics().width(text)
             maxWidthSize = fontsize
-        except ZeroDivisionError: # Some fonts don't return a width.
+        except ZeroDivisionError:  # Some fonts don't return a width.
             maxWidthSize = 220
 
         # Determine the maximim height the text can be to fit in the image.
