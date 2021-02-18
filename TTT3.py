@@ -29,8 +29,8 @@ import datetime
 import winreg
 from PyQt5 import uic  # python -m pip install pyqt5
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMenu, QColorDialog  # python -m pip install pyqt5-tools
-from PyQt5.QtGui import QPixmap, QColor, QFont
-from PyQt5.QtCore import Qt, QEvent, pyqtSignal
+from PyQt5.QtGui import QPixmap, QColor, QFont, QImage, QPainter, QPen, QBrush
+from PyQt5.QtCore import Qt, QEvent, pyqtSignal, QSize, QRectF
 from PIL import Image, ImageDraw, ImageFont, ImageOps  # python -m pip install pillow
 import cv2  # python -m pip install opencv-python
 import numpy
@@ -268,7 +268,6 @@ class TTT3(QMainWindow):
             self.mosaicPreviewHelm = False
             self.nameHelm = "EH TC"
             self.fontHelmQFront = QFont("impact")
-            self.fontHelm = os.environ['WINDIR'] + "\\Fonts\\impact.ttf"
             self.logo1TypeHelm = "Image - stencil mask"
             self.logo2TypeHelm = "Squadron Patch"
             self.logo1FilepathHelm = os.getcwd() + "\\data\\misc\\implogo.gif"
@@ -4752,7 +4751,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             saveData = (self.helmColour, self.decColour, self.bgColourHelm, self.lightColour, self.transparentBGHelm, self.ambientHelm,
                         self.specularHelm, self.roughHelm, self.reflectionHelm, self.camXHelm, self.camYHelm, self.camZHelm,
                         self.lookXHelm, self.lookYHelm, self.lookZHelm, self.lightXHelm, self.lightYHelm, self.lightZHelm,
-                        self.fontHelm, self.fontHelmQFront.family(), self.nameHelm, self.logo1FilepathHelm, self.logo1TypeHelm,
+                        self.fontHelmQFront.family(), self.nameHelm, self.logo1FilepathHelm, self.logo1TypeHelm,
                         self.logo2FilepathHelm, self.logo2TypeHelm, self.mosaicPreviewHelm, self.homoHelm, self.shadowlessHelm,
                         self.antiAliasingHelm, self.qualityHelm, self.widthHelm, self.heightHelm, self.rank, self.position, self.sqn)
 
@@ -4854,23 +4853,22 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.lightXHelm = saveData[15]
                     self.lightYHelm = saveData[16]
                     self.lightZHelm = saveData[17]
-                    self.fontHelm = saveData[18]
-                    self.fontHelmQFront = QFont(saveData[19])
-                    self.nameHelm = saveData[20]
-                    self.logo1FilepathHelm = saveData[21]
-                    self.logo1TypeHelm = saveData[22]
-                    self.logo2FilepathHelm = saveData[23]
-                    self.logo2TypeHelm = saveData[24]
-                    self.mosaicPreviewHelm = saveData[25]
-                    self.homoHelm = saveData[26]
-                    self.shadowlessHelm = saveData[27]
-                    self.antiAliasingHelm = saveData[28]
-                    self.qualityHelm = saveData[29]
-                    self.widthHelm = saveData[30]
-                    self.heightHelm = saveData[31]
-                    self.rank = saveData[32]
-                    self.position = saveData[33]
-                    self.sqn = saveData[34]
+                    self.fontHelmQFront = QFont(saveData[18])
+                    self.nameHelm = saveData[19]
+                    self.logo1FilepathHelm = saveData[20]
+                    self.logo1TypeHelm = saveData[21]
+                    self.logo2FilepathHelm = saveData[22]
+                    self.logo2TypeHelm = saveData[23]
+                    self.mosaicPreviewHelm = saveData[24]
+                    self.homoHelm = saveData[25]
+                    self.shadowlessHelm = saveData[26]
+                    self.antiAliasingHelm = saveData[27]
+                    self.qualityHelm = saveData[28]
+                    self.widthHelm = saveData[29]
+                    self.heightHelm = saveData[30]
+                    self.rank = saveData[31]
+                    self.position = saveData[32]
+                    self.sqn = saveData[33]
 
                 oldRefreshSetting = self.preview.cb_Refresh.isChecked()
                 # Turn off auto refresh to prevent applying the loaded settings to trigger multiple refreshes.
@@ -4907,37 +4905,52 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         # Set the helmet's text.
         text = self.nameHelm
-        self.fontHelm
 
         # Local variables.
         width, height = 720, 264
         fontsize = 1  # Starting font size.
-        fnt = ImageFont.truetype(self.fontHelm, fontsize)
-        img_fraction = 0.97  # Portion of image width you want text width to be.
 
-        # Create the image.
-        img = Image.new('RGB', (width, height), color=(0, 0, 0))
-        imgOut = ImageDraw.Draw(img)
+        # QT Method - Image creation.
+        # Create the black image.
+        self.image = QImage(QSize(width, height), QImage.Format_RGB32)
+        self.painter = QPainter(self.image)
+        self.painter.setBrush(QBrush(Qt.green))
+        self.painter.fillRect(QRectF(0, 0, width, height), Qt.black)
+        self.painter.setPen(QPen(Qt.white))
+        self.painter.setFont(QFont(self.preview.fcb_helmFont.currentFont().family(), fontsize))
 
-        # Scale the text font.
-        if len(text) > 6:
-            while fnt.getsize(text)[0] < img_fraction * img.size[0]:
-                # Iterate until the text size is just larger than the criteria.
+        # Determine the maximim width the text can be to fit in the image.
+        try:
+            factor = width / self.painter.fontMetrics().width(text)
+            while factor > 1.06:
                 fontsize += 1
-                fnt = ImageFont.truetype(self.fontHelm, fontsize)
+                self.painter.setFont(QFont(self.preview.fcb_helmFont.currentFont().family(), fontsize))
+                factor = width / self.painter.fontMetrics().width(text)
+            maxWidthSize = fontsize
+        except ZeroDivisionError: # Some fonts don't return a width.
+            maxWidthSize = 220
 
-            # De-increment to be sure it is less than criteria.
-            fontsize -= 1
-            fnt = ImageFont.truetype(self.fontHelm, fontsize)
+        # Determine the maximim height the text can be to fit in the image.
+        fontsize = 1  # Reset to 1 for height calculation.
+        self.painter.setFont(QFont(self.preview.fcb_helmFont.currentFont().family(), fontsize))
+        factor = height / self.painter.fontMetrics().height()
+        while factor > 1:
+            fontsize += 1
+            self.painter.setFont(QFont(self.preview.fcb_helmFont.currentFont().family(), fontsize))
+            factor = height / self.painter.fontMetrics().height()
+        maxHeightFontSize = fontsize
 
+        # Determine which is the largest font size to use based on max height and max width.
+        if maxWidthSize < maxHeightFontSize:
+            fontsize = maxWidthSize
         else:
-            fontsize = 220
-            fnt = ImageFont.truetype(self.fontHelm, fontsize)
+            fontsize = maxHeightFontSize
+        self.painter.setFont(QFont(self.preview.fcb_helmFont.currentFont().family(), fontsize))
 
-        w, h = imgOut.textsize(text, font=fnt)
-        h += int(h * 0.21)
-        imgOut.text(((width - w) / 2, (height - h) / 2), text, font=fnt, fill=(255, 255, 255))
-        img.save(os.getcwd() + "\\data\\helmet\\" + "nametag.png")
+        # Draw the text and save the image.
+        self.painter.drawText(self.image.rect(), Qt.AlignCenter | Qt.AlignVCenter, text)
+        self.painter.end()
+        self.image.save(os.getcwd() + "\\data\\helmet\\" + "nametag.png")
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_PaletteHelmFunc(self):
@@ -5043,12 +5056,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def fcb_previewHelmFontFunc(self, font):
         '''Method for handling helmet font selection'''
 
-        self.fontHelm = findFont(font.toString().split(",")[0])
         self.fontHelmQFront = font
-        if not self.fontHelm:
-            self.fontHelm = os.environ['WINDIR'] + "\\Fonts\\impact.ttf"
-            self.fontHelmQFront = QFont("impact")
-
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewHemlLogo1TypeFunc(self):
@@ -5146,7 +5154,6 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         self.fontHelmQFront = QFont("impact")
         self.preview.fcb_helmFont.setCurrentFont(self.fontHelmQFront)
-        self.fontHelm = os.environ['WINDIR'] + "\\Fonts\\impact.ttf"
 
         self.logo1TypeHelm = "Image - stencil mask"
         self.logo2TypeHelm = "Squadron Patch"
@@ -5625,167 +5632,6 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                      Functions.                                                                    #
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
-def findFont(fontName):
-    '''Method to find a font's filepath for a given font name.'''
-    fontPath = os.environ['WINDIR'] + "\\Fonts\\"
-    fontName = fontName.lower()
-
-    # Name logic.
-    if "adobe" in fontName:
-        fontName = fontName.replace("adobe ", "a").replace(" ", "")
-        if  "bold" in fontName:
-            fontName = fontName.replace("bold", "-bold")
-        else:
-            fontName += "-regular"
-
-    elif "arno" in fontName:
-        fontName = fontName.replace("arno pro", "arnopro").replace(" ", "-")
-
-        if fontName.count("-") == 2:
-            fontName = fontName.replace("-", "").replace("arnopro", "arnopro-")
-        elif fontName == "arnopro":
-                fontName += "-regular"
-
-    elif "bahnschrift" in fontName:
-        fontName = "bahnschrift"
-
-    elif "bell gothic std" in fontName:
-        fontName = fontName.replace("bell gothic std", "bellgothicstd-").replace(" ", "")
-        if "-light" in fontName:
-            fontName = fontName.replace("-light", "")
-
-    elif "bickham script pro" in fontName:
-        fontName = fontName.replace("bickham script pro", "bickhamscriptpro-").replace(" ", "")
-        if fontName == "bickhamscriptpro-":
-            fontName = "bickhamscriptpro-regular"
-
-    elif "birch std" in fontName or "blackoak std" in fontName or "brush script std" in fontName or "giddyup std" in fontName or "hobo std" in fontName or "letter gothic std" in fontName or "mesquite std" in fontName or "ocr a std" in fontName or "orator std" in fontName or "poplar std" in fontName or "prestige elite std" in fontName or "stencil std" in fontName:
-        fontName = fontName.replace(" ", "")
-
-    elif "chaparral pro" in fontName:
-        fontName = fontName.replace("chaparral pro", "chaparralpro-").replace(" ", "")
-        if fontName == "chaparralpro-":
-            fontName = "chaparralpro-regular"
-
-    elif "cooper std" in fontName:
-        if "black" in fontName:
-            fontName = "cooperblackstd"
-        else:
-            fontName = "cooperblackstd-italic"
-
-    elif "charlemagne std" in fontName:
-        fontName = "charlemagnestd-bold"
-
-    elif "eccentric std" in fontName:
-        fontName = fontName.replace(" ", "")
-
-    elif "garamond prem" in fontName:
-        if "garamond premr" in fontName:
-            fontName = fontName.replace("garamond premr pro", "garamondpremrpro-").replace(" ", "")
-        elif "garamond premier pro" in fontName:
-            fontName = "garamondpremrpro"
-
-    elif "hololens" in fontName:
-        fontName = fontName.replace("hololens", "holo")
-
-    elif "kozuka" in fontName:
-        fontName = fontName.replace("kozuka ", "koz")
-        if "gothic " in fontName:
-            fontName = fontName.replace("gothic ", "go")
-        if fontName == "kozgopro":
-            fontName = "kozgopro-regular"
-        elif "mincho " in fontName:
-            fontName = fontName.replace("mincho ", "min")
-        try:
-            if fontName.split(" ")[1] == "b":
-                fontName = fontName.split(" ")[0] + "-bold"
-
-            elif fontName.split(" ")[1] == "el":
-                fontName = fontName.split(" ")[0] + "-extralight"
-
-            elif fontName.split(" ")[1] == "h":
-                fontName = fontName.split(" ")[0] + "-heavy"
-
-            elif fontName.split(" ")[1] == "l":
-                fontName = fontName.split(" ")[0] + "-light"
-
-            elif fontName.split(" ")[1] == "m":
-                fontName = fontName.split(" ")[0] + "-medium"
-
-            elif fontName.split(" ")[1] == "r":
-                fontName = fontName.split(" ")[0] + "-regular"
-        except IndexError:
-            pass
-
-    elif "lithos pro" == fontName:
-        fontName = "lithospro-black"
-
-    elif "lithos pro regular" == fontName:
-        fontName = "lithospro-regular"
-
-    elif "minion pro" in fontName:
-        fontName = fontName.replace("minion pro", "minionpro")
-        if " cond" in fontName:
-            fontName = fontName.replace(" cond", "-boldcn")
-        elif " med" in fontName:
-            fontName = fontName.replace(" med", "-medium")
-        elif " smbd" in fontName:
-            fontName = fontName.replace(" smbd", "-semibold")
-
-    elif "myriad pro" in fontName:
-        fontName = fontName.replace("myriad pro", "myriadpro")
-        if fontName == "mryiadpro":
-            fontName += "-regular"
-        elif " cond" in fontName:
-            fontName = fontName.replace(" cond", "-cond")
-        elif " light" in fontName:
-            fontName = fontName.replace(" light", "-regular")
-
-    elif "nueva std" in fontName:
-        fontName = fontName.replace("nueva std", "nuevastd")
-        if fontName == "nuevastd":
-            fontName += "-boldcond"
-        elif " cond" in fontName:
-            fontName = fontName.replace(" cond", "-cond")
-
-    elif "rog fonts v1.6" == fontName:
-        fontName = "rogfontsv1.6-regular"
-
-    elif "rosewood" in fontName:
-        fontName = "rosewoodstd-regular"
-
-    elif "trajan pro" == fontName:
-        fontName = "trajanpro-regular"
-
-    elif "tekton pro" in fontName:
-        fontName = fontName.replace("tekton pro", "tektonpro")
-        if fontName == "tektonpro":
-            fontName = "tektonpro-bold"
-        elif " cond" in fontName:
-            fontName = fontName.replace(" cond", "-boldcond")
-        elif " ext" in fontName:
-            fontName = fontName.replace(" ext", "-boldext")
-
-
-    aKey = r"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
-    values = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, aKey, 0, winreg.KEY_READ)
-
-    i = 0
-
-    while True:
-        try:
-            if fontName.lower() == fontPath + winreg.EnumValue(values, i)[0].lower():
-                return fontPath + winreg.EnumValue(values, i)[1]
-
-            elif fontName.lower() in fontPath + winreg.EnumValue(values, i)[0].lower():
-                return fontPath + winreg.EnumValue(values, i)[1]
-            else:
-                i += 1
-        except OSError:
-            break
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
-
-
 def getYHelm(x):
     '''Function to return an aspect ratio locked value for any given x.'''
 
