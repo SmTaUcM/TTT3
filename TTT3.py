@@ -5100,6 +5100,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     return
                 else:
                     self.logo1TypeHelm = self.preview.cb_hemlLogo1Type.currentText()
+                    self.preview.le_helmLogo1Filepath.setText("")
+                    self.logo1FilepathHelm = ""
                     self.lastRenderData = self.getUniformData()
                     # Show error message.
                     msg = "%s does not have a transparent background." % self.preview.le_helmLogo1Filepath.text().split("\\")[-1]
@@ -5130,6 +5132,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     return
                 else:
                     self.logo2TypeHelm = self.preview.cb_hemlLogo2Type.currentText()
+                    self.preview.le_helmLogo2Filepath.setText("")
+                    self.logo2FilepathHelm = ""
                     self.lastRenderData = self.getUniformData()
                     # Show error message.
                     msg = "%s does not have a transparent background." % self.preview.le_helmLogo2Filepath.text().split("\\")[-1]
@@ -5182,6 +5186,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                             self.preview.le_helmLogo1Filepath.setText(fileName)
                         else:
                             self.preview.le_helmLogo1Filepath.setText("")
+                            self.logo1FilepathHelm = ""
                             self.lastRenderData = self.getUniformData()
                             msg = "%s does not have a transparent background." % fileName.split("\\")[-1]
                             return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
@@ -5196,6 +5201,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                             self.preview.le_helmLogo2Filepath.setText(fileName)
                         else:
                             self.preview.le_helmLogo2Filepath.setText("")
+                            elf.logo2FilepathHelm = ""
                             self.lastRenderData = self.getUniformData()
                             msg = "%s does not have a transparent background." % fileName.split("\\")[-1]
                             return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
