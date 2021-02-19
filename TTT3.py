@@ -1102,7 +1102,7 @@ class TTT3(QMainWindow):
             # Helmet Text.
             if self.nameHelm == "EH TC":
                 if self.name != "Unknown":
-                    self.nameHelm = self.name.upper()
+                    self.nameHelm = self.name.upper()[:12].rstrip(" ")
             self.preview.le_helmText.setText(self.nameHelm)
             self.preview.fcb_helmFont.setCurrentFont(self.fontHelmQFront)
 
