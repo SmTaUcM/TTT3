@@ -323,6 +323,7 @@ class TTT3(QMainWindow):
             self.update.start()
             self.initialGUISetup()
             self.loadPinData()
+            self.maxedRibbons = False
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -1951,17 +1952,8 @@ color_map
 
             elif "&RIBBONS&" in line:
                 objectRefs = self.buildRibbonObjects()
-
-                # Check to see if the user has selected 24 or less ribbons.
-                if len(objectRefs) > 24:
-                    self.continueRender = False
-                    # Show error message.
-                    msg = "You have selected more than 24 ribbons. Unfortunately TTT3 cannot make a uniform with more than 24 ribbons at this time.\n\n Please select less ribbon awards."
-                    return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
-
-                else:
-                    for objectRef in objectRefs:
-                        povData.append('object { %s }\n' % objectRef)
+                for objectRef in objectRefs:
+                    povData.append('object { %s }\n' % objectRef)
 
             # ----- Non-Editable Data. -----
             else:
@@ -2835,7 +2827,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
             self.hideMedalOptions()
             self.disconnectAllMedalWidgets()
-            self.gui.sb_multi_center2.setRange(0, 99)  # Resets the range if range ribbon/OV was selected.
+            self.gui.sb_multi_center2.setRange(0, 999)  # Resets the range if range ribbon/OV was selected.
 
             name = 0
             quantity = 1
@@ -2952,6 +2944,29 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
+    def checkRibbonCount(self):
+        '''Method to ensure that the user has not selected more than the maxiumum number of allowed ribbons (24)'''
+
+        maxRibbons = 24
+        objectRefs = self.buildRibbonObjects()
+
+        if len(objectRefs) > maxRibbons:
+            self.continueRender = False
+            # Show error message.
+            self.gui.btn_dress.setEnabled(False)
+            self.gui.btn_duty.setEnabled(False)
+            if not self.maxedRibbons:
+                self.maxedRibbons = True
+                msg = "You have selected more than {0} ribbons. Unfortunately TTT3 cannot make a uniform with more than {0} ribbons at this time.\n\n Please select less ribbon awards.".format(
+                    str(maxRibbons))
+                return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+
+        else:
+            self.gui.btn_dress.setEnabled(True)
+            self.gui.btn_duty.setEnabled(True)
+            self.maxedRibbons = False
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
     def cb_singleMedalSelectionLogic(self):
         '''Method that handles the actions once a medal is selected in the 'Medals, Ribbons and FCHG tab.'''
 
@@ -3034,6 +3049,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.gui.lbl_ranged.hide()
                     award.get("upgrades")[quantity] = 0
 
+            # Check to see if the user has selected more than the maximum number of allowed ribbons.
+            if award.get("type") != "single" and award.get("type") != "multi":
+                self.checkRibbonCount()
+
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -3089,6 +3108,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             for upgrade in award.get("upgrades"):
                 upgrade[quantity] = 0
             award.get("upgrades")[widgetCount][quantity] = 1
+
+            # Check to see if the user has selected more than the maximum number of allowed ribbons.
+            self.checkRibbonCount()
+
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -3406,6 +3429,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 spinBox = self.subRibbonAwards[1]
                 self.awards.get(awardName)["upgrades"][quantity] = spinBox.value()
 
+            # Check to see if the user has selected more than the maximum number of allowed ribbons.
+            if award.get("type") != "multi":
+                self.checkRibbonCount()
+
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -3509,6 +3536,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.sqn = ""
             self.awards = {}
             self.deconflictNeckRibbons = False
+            self.maxedRibbons = False
 
             # Configuration variables.
             self.medalConfig = None
@@ -3662,6 +3690,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     # Show error message.
                     msg = "%s is not compatible with this version of TTT3.\nPlease save a new profile." % fileName.split("\\")[-1]
                     return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+
+            # Check to see if the user has selected more than the maximum number of allowed ribbons.
+            self.checkRibbonCount()
 
         except Exception as e:
             handleException(e)
@@ -3898,6 +3929,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
                     # PIN number saving.
                     self.checkForNewPIN()
+
+                    # Check to see if the user has selected more than the maximum number of allowed ribbons.
+                    self.checkRibbonCount()
 
                 else:
                     self.writeToImportTextBox(apiData.get("error")["message"])
