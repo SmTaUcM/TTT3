@@ -31,7 +31,7 @@ from PyQt5 import uic  # python -m pip install pyqt5
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMenu, QColorDialog  # python -m pip install pyqt5-tools
 from PyQt5.QtGui import QPixmap, QColor, QFont, QImage, QPainter, QPen, QBrush
 from PyQt5.QtCore import Qt, QEvent, pyqtSignal, QSize, QRectF
-from PIL import Image, ImageDraw, ImageFont, ImageOps  # python -m pip install pillow
+from PIL import Image, ImageOps  # python -m pip install pillow
 import cv2  # python -m pip install opencv-python
 import numpy
 import platform
@@ -1374,7 +1374,7 @@ class TTT3(QMainWindow):
         self.output_gui.lbl_output.setMaximumHeight(height)
         self.output_gui.lbl_output.setMinimumWidth(width)
         self.output_gui.lbl_output.setMaximumWidth(width)
-        if xOffset < -240: # Prevent the output window from going too small.
+        if xOffset < -240:  # Prevent the output window from going too small.
             xOffset = -240
         self.output_gui.groupBox.setMinimumHeight(self.output_gui.groupBox.height() + yOffset)
         self.output_gui.groupBox.setMaximumHeight(self.output_gui.groupBox.height() + yOffset)
