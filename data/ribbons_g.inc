@@ -14,6 +14,30 @@
 // RIBBONS
 
 
+#declare T_r_mot_bh =
+texture
+{
+  pigment { image_map { gif "ribbons/mot-bh.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_mot_gh =
+texture
+{
+  pigment { image_map { gif "ribbons/mot-gh.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_mot_rh =
+texture
+{
+  pigment { image_map { gif "ribbons/mot-rh.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
 #declare T_r_moi =
 texture
 {
@@ -138,30 +162,6 @@ texture { T_unilayer scale 2}
 texture
 {
   pigment { image_map { gif "ribbons/moc-doc.gif" } }
-  finish  { fin_T_uni }
-}
-texture { T_unilayer scale 2}
-
-#declare T_r_mot_bh =
-texture
-{
-  pigment { image_map { gif "ribbons/mot-bh.gif" } }
-  finish  { fin_T_uni }
-}
-texture { T_unilayer scale 2}
-
-#declare T_r_mot_gh =
-texture
-{
-  pigment { image_map { gif "ribbons/mot-gh.gif" } }
-  finish  { fin_T_uni }
-}
-texture { T_unilayer scale 2}
-
-#declare T_r_mot_rh =
-texture
-{
-  pigment { image_map { gif "ribbons/mot-rh.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
