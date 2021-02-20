@@ -1187,6 +1187,7 @@ class TTT3(QMainWindow):
         '''Method that dynamically launches POV-Ray with the correct paths.
            The "uniform" argument takes "dress", "duty or "helmet" which is dependant on which button has been pressed.'''
 
+        self.lastRenderData = self.getUniformData()
         self.preview.btn_raytrace.setEnabled(False)
         QApplication.processEvents()
 
@@ -1342,12 +1343,65 @@ class TTT3(QMainWindow):
                 pos = button.pos()
                 pos.setY(pos.y() - yOffset)
                 button.move(pos)
+        self.output_gui.lbl_output.installEventFilter(self)
+        self.resizeOutput()
         self.output_gui.show()
         self.output_gui.btn_upload.setEnabled(False)  # TODO Upload to TC Database buttton disabled UTFN.
         self.output_gui.btn_saveAs.clicked.connect(self.btn_saveAsFunc)
         self.output_gui.btn_close.clicked.connect(self.outputCloseEvent)
         self.output_gui.closeEvent = self.outputCloseEvent
         self.preview.hide()
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def resizeOutput(self):
+        '''Method to resize the output window to match the user's height and width settings.'''
+
+        if self.uniform != "helmet":
+            height = self.height
+            width = self.width
+            baseHeight = 853
+            baseWidth = 640
+        else:
+            height = self.heightHelm
+            width = self.widthHelm
+            baseHeight = 548
+            baseWidth = 640
+
+        xOffset = width - baseWidth
+        yOffset = height - baseHeight
+
+        self.output_gui.lbl_output.setMinimumHeight(height)
+        self.output_gui.lbl_output.setMaximumHeight(height)
+        self.output_gui.lbl_output.setMinimumWidth(width)
+        self.output_gui.lbl_output.setMaximumWidth(width)
+        if xOffset < -240: # Prevent the output window from going too small.
+            xOffset = -240
+        self.output_gui.groupBox.setMinimumHeight(self.output_gui.groupBox.height() + yOffset)
+        self.output_gui.groupBox.setMaximumHeight(self.output_gui.groupBox.height() + yOffset)
+        self.output_gui.groupBox.setMinimumWidth(self.output_gui.groupBox.width() + xOffset)
+        self.output_gui.groupBox.setMaximumWidth(self.output_gui.groupBox.width() + xOffset)
+        self.output_gui.setMinimumHeight(self.output_gui.height() + yOffset)
+        self.output_gui.setMaximumHeight(self.output_gui.height() + yOffset)
+        self.output_gui.setMinimumWidth(self.output_gui.width() + xOffset)
+        self.output_gui.setMaximumWidth(self.output_gui.width() + xOffset)
+
+        # Center the image horizontally.
+        pos = self.output_gui.lbl_output.pos()
+        try:
+            pos.setX(round((self.output_gui.groupBox.width() - self.output_gui.lbl_output.width()) / 2))
+        except ZeroDivisionError:
+            pass
+        self.output_gui.lbl_output.move(pos)
+
+        # Place the buttons in the correct place.
+        for button in [self.output_gui.btn_saveAs, self.output_gui.btn_upload, self.output_gui.btn_close]:
+            pos = button.pos()
+            try:
+                pos.setX(pos.x() + round(xOffset / 2))
+            except ZeroDivisionError:
+                pass
+            pos.setY(pos.y() + yOffset)
+            button.move(pos)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_saveAsFunc(self):
@@ -4030,7 +4084,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def eventFilter(self, source, event):
-        '''Preset list widget context menu.'''
+        '''Widget context menus.'''
 
         try:
             if (event.type() == QEvent.ContextMenu and source is self.gui.lw_presets):
@@ -4042,6 +4096,17 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         self.deletePreset(item.text())
                     except AttributeError:
                         pass  # User has not clicked on a name.
+                return True
+
+            elif (event.type() == QEvent.ContextMenu and source is self.output_gui.lbl_output):
+                menu = QMenu()
+                saveAs = menu.addAction("Save As")
+                close = menu.addAction("Close")
+                action = menu.exec_(event.globalPos())
+                if action == saveAs:
+                    self.btn_saveAsFunc()
+                elif action == close:
+                    self.outputCloseEvent(None)
                 return True
             return super(TTT3, self).eventFilter(source, event)
 

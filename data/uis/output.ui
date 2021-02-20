@@ -29,7 +29,7 @@
    <enum>Qt::NoContextMenu</enum>
   </property>
   <property name="windowTitle">
-   <string>TTT3 Uniform Output</string>
+   <string>TTT3 Uniform Output - Right Click to Save/Close</string>
   </property>
   <property name="windowIcon">
    <iconset>
