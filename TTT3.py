@@ -1147,7 +1147,6 @@ class TTT3(QMainWindow):
                 self.createDutyPov()
             elif self.uniform == "helmet":
                 self.createHelmetPov()
-            self.lastRenderData = self.getUniformData()
             self.queue.put(None)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -1156,7 +1155,9 @@ class TTT3(QMainWindow):
 
         while True:
             item = self.queue.get()
-            self.launchPOVRay(preview=True)
+            if self.getUniformData() != self.lastRenderData:
+                self.lastRenderData = self.getUniformData()
+                self.launchPOVRay(preview=True)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_dutyMethod(self):
