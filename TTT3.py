@@ -4466,9 +4466,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.transparentBG = ""
                 self.preview.cb_TransparentBG.setChecked(False)
             else:
-                self.helmColour = QColor(10, 10, 10)
+                self.helmColour = QColor(33, 33, 33)
                 self.bgColourHelm = QColor(69, 79, 112)
-                self.decColour = QColor(32, 32, 32)
+                self.decColour = QColor(147, 147, 147)
                 self.lightColour = QColor(255, 255, 255)
                 # Helmet Colour.
                 self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
