@@ -4646,7 +4646,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.camXHelm = value
             self.preview.lbl_CamX.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetCam.setCurrentIndex(0)
+        self.preview.cb_PresetCam.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewCamYFunc(self, value):
@@ -4659,7 +4659,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.camYHelm = value
             self.preview.lbl_CamY.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetCam.setCurrentIndex(0)
+        self.preview.cb_PresetCam.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewCamZFunc(self, value):
@@ -4672,7 +4672,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.camZHelm = value
             self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetCam.setCurrentIndex(0)
+        self.preview.cb_PresetCam.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookXFunc(self, value):
@@ -4685,7 +4685,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lookXHelm = value
             self.preview.lbl_LookX.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetLook.setCurrentIndex(0)
+        self.preview.cb_PresetLook.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookYFunc(self, value):
@@ -4698,7 +4698,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lookYHelm = value
             self.preview.lbl_LookY.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetLook.setCurrentIndex(0)
+        self.preview.cb_PresetLook.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookZFunc(self, value):
@@ -4711,7 +4711,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lookZHelm = value
             self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetLook.setCurrentIndex(0)
+        self.preview.cb_PresetLook.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetCameraFunc(self):
@@ -4756,6 +4756,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.lookZHelm = 1052
                 self.preview.vs_LookZ.setValue(self.lookZHelm)
                 self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(self.lookZHelm, 100))
+
+            self.preview.cb_PresetCam.setCurrentIndex(0)
+            self.preview.cb_PresetLook.setCurrentIndex(0)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4770,7 +4773,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lightXHelm = value
             self.preview.lbl_LightX.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetLight.setCurrentIndex(0)
+        self.preview.cb_PresetLight.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLightYFunc(self, value):
@@ -4783,7 +4786,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lightYHelm = value
             self.preview.lbl_LightY.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetLight.setCurrentIndex(0)
+        self.preview.cb_PresetLight.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLightZFunc(self, value):
@@ -4796,7 +4799,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lightZHelm = value
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetLight.setCurrentIndex(0)
+        self.preview.cb_PresetLight.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetLightFunc(self):
@@ -4823,6 +4826,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.lightZHelm = 5282
                 self.preview.vs_LightZ.setValue(self.lightZHelm)
                 self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZHelm, 100))
+
+            self.preview.cb_PresetLight.setCurrentIndex(0)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -5360,7 +5365,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for preview camera presets.'''
 
         if intIndex == 0:
-            pass
+            self.camX = -2608
+            self.camY = -13311
+            self.camZ = 2090
 
         # Top Left.
         elif intIndex == 1:
@@ -5416,7 +5423,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.camY = -13311
             self.camZ = -10000
 
-        if intIndex != 0:
+        if intIndex != 10:
             self.renderPreview()
             self.preview.vs_CamX.setValue(self.camX)
             self.preview.lbl_CamX.setText(self.convertIntToFloatStr(self.camX, 10))
@@ -5433,7 +5440,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for preview camera presets.'''
 
         if intIndex == 0:
-            pass
+            self.camXHelm = 2170
+            self.camYHelm = -6519
+            self.camZHelm = 3146
 
         # Top Left.
         elif intIndex == 1:
@@ -5489,7 +5498,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.camYHelm = -6519
             self.camZHelm = -5000
 
-        if intIndex != 0:
+        if intIndex != 10:
             self.renderPreview()
             self.preview.vs_CamX.setValue(self.camXHelm)
             self.preview.lbl_CamX.setText(self.convertIntToFloatStr(self.camXHelm, 100))
@@ -5506,7 +5515,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for preview look presets.'''
 
         if intIndex == 0:
-            pass
+            self.lookX = 0
+            self.lookY = -128
+            self.lookZ = 28
 
         # Top Left.
         elif intIndex == 1:
@@ -5562,7 +5573,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lookY = -128
             self.lookZ = -2500
 
-        if intIndex != 0:
+        if intIndex != 10:
             self.renderPreview()
             self.preview.vs_LookX.setValue(self.lookX)
             self.preview.lbl_LookX.setText(self.convertIntToFloatStr(self.lookX, 10))
@@ -5579,7 +5590,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for preview look presets.'''
 
         if intIndex == 0:
-            pass
+            self.lookXHelm = -568
+            self.lookYHelm = -445
+            self.lookZHelm = 1052
 
         # Top Left.
         elif intIndex == 1:
@@ -5635,7 +5648,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lookYHelm = -445
             self.lookZHelm = -2500
 
-        if intIndex != 0:
+        if intIndex != 10:
             self.renderPreview()
             self.preview.vs_LookX.setValue(self.lookXHelm)
             self.preview.lbl_LookX.setText(self.convertIntToFloatStr(self.lookXHelm, 100))
@@ -5652,7 +5665,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for preview light presets.'''
 
         if intIndex == 0:
-            pass
+            self.lightX = 15185
+            self.lightY = -6474
+            self.lightZ = 17501
 
         # Top Left.
         elif intIndex == 1:
@@ -5708,7 +5723,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lightY = -6474
             self.lightZ = -10000
 
-        if intIndex != 0:
+        if intIndex != 10:
             self.renderPreview()
             self.preview.vs_LightX.setValue(self.lightX)
             self.preview.lbl_LightX.setText(self.convertIntToFloatStr(self.lightX, 10))
@@ -5725,7 +5740,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for preview light presets.'''
 
         if intIndex == 0:
-            pass
+            self.lightXHelm = 2244
+            self.lightYHelm = -5089
+            self.lightZHelm = 5282
 
         # Top Left.
         elif intIndex == 1:
@@ -5781,7 +5798,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lightYHelm = -5089
             self.lightZHelm = -5000
 
-        if intIndex != 0:
+        if intIndex != 10:
             self.renderPreview()
             self.preview.vs_LightX.setValue(self.lightXHelm)
             self.preview.lbl_LightX.setText(self.convertIntToFloatStr(self.lightXHelm, 100))

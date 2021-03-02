@@ -1694,7 +1694,7 @@ QSlider::handle:vertical:hover
      </property>
      <item>
       <property name="text">
-       <string>No Preset</string>
+       <string>Default</string>
       </property>
      </item>
      <item>
@@ -1740,6 +1740,11 @@ QSlider::handle:vertical:hover
      <item>
       <property name="text">
        <string>Btm. Right</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Custom</string>
       </property>
      </item>
     </widget>
@@ -1762,7 +1767,7 @@ QSlider::handle:vertical:hover
      </property>
      <item>
       <property name="text">
-       <string>No Preset</string>
+       <string>Default</string>
       </property>
      </item>
      <item>
@@ -1808,6 +1813,11 @@ QSlider::handle:vertical:hover
      <item>
       <property name="text">
        <string>Btm. Right</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Custom</string>
       </property>
      </item>
     </widget>
@@ -2327,7 +2337,7 @@ QSlider::handle:vertical:hover
      </property>
      <item>
       <property name="text">
-       <string>No Preset</string>
+       <string>Default</string>
       </property>
      </item>
      <item>
@@ -2373,6 +2383,11 @@ QSlider::handle:vertical:hover
      <item>
       <property name="text">
        <string>Bottom Right</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Custom</string>
       </property>
      </item>
     </widget>
