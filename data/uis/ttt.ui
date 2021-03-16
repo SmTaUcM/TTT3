@@ -1584,7 +1584,7 @@ QListWidget:!enabled
        <property name="geometry">
         <rect>
          <x>129</x>
-         <y>198</y>
+         <y>159</y>
          <width>125</width>
          <height>20</height>
         </rect>
@@ -1628,7 +1628,7 @@ QListWidget:!enabled
        <property name="geometry">
         <rect>
          <x>129</x>
-         <y>138</y>
+         <y>112</y>
          <width>125</width>
          <height>20</height>
         </rect>
@@ -1650,7 +1650,7 @@ QListWidget:!enabled
        <property name="geometry">
         <rect>
          <x>171</x>
-         <y>42</y>
+         <y>37</y>
          <width>40</width>
          <height>22</height>
         </rect>
@@ -1666,7 +1666,7 @@ QListWidget:!enabled
        <property name="geometry">
         <rect>
          <x>129</x>
-         <y>78</y>
+         <y>65</y>
          <width>125</width>
          <height>20</height>
         </rect>
@@ -1688,7 +1688,7 @@ QListWidget:!enabled
        <property name="geometry">
         <rect>
          <x>171</x>
-         <y>102</y>
+         <y>84</y>
          <width>40</width>
          <height>22</height>
         </rect>
@@ -1704,7 +1704,7 @@ QListWidget:!enabled
        <property name="geometry">
         <rect>
          <x>171</x>
-         <y>162</y>
+         <y>131</y>
          <width>40</width>
          <height>22</height>
         </rect>
@@ -1720,7 +1720,7 @@ QListWidget:!enabled
        <property name="geometry">
         <rect>
          <x>171</x>
-         <y>222</y>
+         <y>178</y>
          <width>40</width>
          <height>22</height>
         </rect>
@@ -1736,7 +1736,7 @@ QListWidget:!enabled
        <property name="geometry">
         <rect>
          <x>45</x>
-         <y>162</y>
+         <y>131</y>
          <width>40</width>
          <height>22</height>
         </rect>
@@ -1752,7 +1752,7 @@ QListWidget:!enabled
        <property name="geometry">
         <rect>
          <x>3</x>
-         <y>138</y>
+         <y>112</y>
          <width>125</width>
          <height>20</height>
         </rect>
@@ -1774,7 +1774,7 @@ QListWidget:!enabled
        <property name="geometry">
         <rect>
          <x>3</x>
-         <y>198</y>
+         <y>159</y>
          <width>125</width>
          <height>20</height>
         </rect>
@@ -1799,7 +1799,7 @@ QListWidget:!enabled
        <property name="geometry">
         <rect>
          <x>3</x>
-         <y>78</y>
+         <y>65</y>
          <width>125</width>
          <height>20</height>
         </rect>
@@ -1821,7 +1821,7 @@ QListWidget:!enabled
        <property name="geometry">
         <rect>
          <x>45</x>
-         <y>102</y>
+         <y>84</y>
          <width>40</width>
          <height>22</height>
         </rect>
@@ -1837,7 +1837,7 @@ QListWidget:!enabled
        <property name="geometry">
         <rect>
          <x>45</x>
-         <y>222</y>
+         <y>178</y>
          <width>40</width>
          <height>22</height>
         </rect>
@@ -1853,7 +1853,7 @@ QListWidget:!enabled
        <property name="geometry">
         <rect>
          <x>45</x>
-         <y>42</y>
+         <y>37</y>
          <width>40</width>
          <height>22</height>
         </rect>
@@ -1870,6 +1870,85 @@ QListWidget:!enabled
         <rect>
          <x>3</x>
          <y>18</y>
+         <width>125</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>==NULL==</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="sb_multi_right5">
+       <property name="geometry">
+        <rect>
+         <x>171</x>
+         <y>225</y>
+         <width>40</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+       <property name="maximum">
+        <number>999</number>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="sb_multi_left5">
+       <property name="geometry">
+        <rect>
+         <x>45</x>
+         <y>225</y>
+         <width>40</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(211, 211, 211);</string>
+       </property>
+       <property name="maximum">
+        <number>999</number>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_multi_left5">
+       <property name="geometry">
+        <rect>
+         <x>3</x>
+         <y>206</y>
+         <width>125</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>==NULL==</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="wordWrap">
+        <bool>false</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lbl_multi_right5">
+       <property name="geometry">
+        <rect>
+         <x>129</x>
+         <y>206</y>
          <width>125</width>
          <height>20</height>
         </rect>
@@ -1921,6 +2000,10 @@ QListWidget:!enabled
       <zorder>sb_multi_left4</zorder>
       <zorder>sb_multi_left1</zorder>
       <zorder>lbl_multi_left1</zorder>
+      <zorder>lbl_multi_left5</zorder>
+      <zorder>lbl_multi_right5</zorder>
+      <zorder>sb_multi_left5</zorder>
+      <zorder>sb_multi_right5</zorder>
      </widget>
     </widget>
     <widget class="QWidget" name="tabMisc">
@@ -3838,10 +3921,12 @@ QPushButton:!enabled
   <tabstop>sb_multi_left2</tabstop>
   <tabstop>sb_multi_left3</tabstop>
   <tabstop>sb_multi_left4</tabstop>
+  <tabstop>sb_multi_left5</tabstop>
   <tabstop>sb_multi_right1</tabstop>
   <tabstop>sb_multi_right2</tabstop>
   <tabstop>sb_multi_right3</tabstop>
   <tabstop>sb_multi_right4</tabstop>
+  <tabstop>sb_multi_right5</tabstop>
   <tabstop>cbFCHG</tabstop>
   <tabstop>btn_browseRoster</tabstop>
   <tabstop>btn_search</tabstop>

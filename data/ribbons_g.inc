@@ -230,6 +230,14 @@ texture
 }
 texture { T_unilayer scale 2}
 
+#declare T_r_is_cw =
+texture
+{
+  pigment { image_map { gif "ribbons/is-cw.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
 #declare T_r_is_bw =
 texture
 {
@@ -258,6 +266,14 @@ texture { T_unilayer scale 2}
 texture
 {
   pigment { image_map { gif "ribbons/is-pw.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_is_cr =
+texture
+{
+  pigment { image_map { gif "ribbons/is-cr.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}

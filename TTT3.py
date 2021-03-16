@@ -2844,10 +2844,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         self.gui.lbl_multi_left2.hide()
         self.gui.lbl_multi_left3.hide()
         self.gui.lbl_multi_left4.hide()
+        self.gui.lbl_multi_left5.hide()
         self.gui.sb_multi_left1.hide()
         self.gui.sb_multi_left2.hide()
         self.gui.sb_multi_left3.hide()
         self.gui.sb_multi_left4.hide()
+        self.gui.sb_multi_left5.hide()
 
         self.gui.lbl_multi_center1.hide()
         self.gui.lbl_multi_center2.hide()
@@ -2862,10 +2864,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         self.gui.lbl_multi_right2.hide()
         self.gui.lbl_multi_right3.hide()
         self.gui.lbl_multi_right4.hide()
+        self.gui.lbl_multi_right5.hide()
         self.gui.sb_multi_right1.hide()
         self.gui.sb_multi_right2.hide()
         self.gui.sb_multi_right3.hide()
         self.gui.sb_multi_right4.hide()
+        self.gui.sb_multi_right5.hide()
 
         # Ranged type award.
         self.gui.lbl_ranged.hide()
@@ -2952,14 +2956,14 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     spinFunctions = [self.sb_multi_center1Logic, self.sb_multi_center2Logic, self.sb_multi_center3Logic, self.sb_multi_center4Logic]
                     spinFunctions = spinFunctions[: subRibbonNum]
                 else:
-                    spinBoxes = [self.gui.sb_multi_left1, self.gui.sb_multi_left2, self.gui.sb_multi_left3, self.gui.sb_multi_left4,
-                                 self.gui.sb_multi_right1, self.gui.sb_multi_right2, self.gui.sb_multi_right3, self.gui.sb_multi_right4]
+                    spinBoxes = [self.gui.sb_multi_left1, self.gui.sb_multi_left2, self.gui.sb_multi_left3, self.gui.sb_multi_left4, self.gui.sb_multi_left5,
+                                 self.gui.sb_multi_right1, self.gui.sb_multi_right2, self.gui.sb_multi_right3, self.gui.sb_multi_right4, self.gui.sb_multi_right5]
                     spinBoxes = spinBoxes[: subRibbonNum]
-                    spinLabels = [self.gui.lbl_multi_left1, self.gui.lbl_multi_left2, self.gui.lbl_multi_left3, self.gui.lbl_multi_left4,
-                                  self.gui.lbl_multi_right1, self.gui.lbl_multi_right2, self.gui.lbl_multi_right3, self.gui.lbl_multi_right4]
+                    spinLabels = [self.gui.lbl_multi_left1, self.gui.lbl_multi_left2, self.gui.lbl_multi_left3, self.gui.lbl_multi_left4, self.gui.lbl_multi_left5,
+                                  self.gui.lbl_multi_right1, self.gui.lbl_multi_right2, self.gui.lbl_multi_right3, self.gui.lbl_multi_right4, self.gui.lbl_multi_right5]
                     spinLabels = spinLabels[: subRibbonNum]
-                    spinFunctions = [self.sb_multi_left1Logic, self.sb_multi_left2Logic, self.sb_multi_left3Logic, self.sb_multi_left4Logic,
-                                     self.sb_multi_right1Logic, self.sb_multi_right2Logic, self.sb_multi_right3Logic, self.sb_multi_right4Logic]
+                    spinFunctions = [self.sb_multi_left1Logic, self.sb_multi_left2Logic, self.sb_multi_left3Logic, self.sb_multi_left4Logic, self.sb_multi_left5Logic,
+                                     self.sb_multi_right1Logic, self.sb_multi_right2Logic, self.sb_multi_right3Logic, self.sb_multi_right4Logic, self.sb_multi_right5Logic]
                     spinFunctions = spinFunctions[: subRibbonNum]
 
                 # Show the required spinboxes.
@@ -3337,8 +3341,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     upgrades = self.awards.get(award)["upgrades"][::-1]
 
                     if "Iron Star (IS)" == award:  # Re-Sorting of IS-XW and US-XR.
-                        half1 = upgrades[0: 4]
-                        half2 = upgrades[4:]
+                        half1 = upgrades[0: 5]
+                        half2 = upgrades[5:]
                         upgrades = half2 + half1
 
                     if "Medal of Communication (MoC)" == award:
@@ -3444,9 +3448,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.combo_topConnected = False
 
         # SpinBoxes.
-        spinBoxes = [self.gui.sb_multi_left1, self.gui.sb_multi_left2, self.gui.sb_multi_left3, self.gui.sb_multi_left4,
+        spinBoxes = [self.gui.sb_multi_left1, self.gui.sb_multi_left2, self.gui.sb_multi_left3, self.gui.sb_multi_left4, self.gui.sb_multi_left5,
                      self.gui.sb_multi_center1, self.gui.sb_multi_center2, self.gui.sb_multi_center3, self.gui.sb_multi_center4,
-                     self.gui.sb_multi_right1, self.gui.sb_multi_right2, self.gui.sb_multi_right3, self.gui.sb_multi_right4]
+                     self.gui.sb_multi_right1, self.gui.sb_multi_right2, self.gui.sb_multi_right3, self.gui.sb_multi_right4, self.gui.sb_multi_right5]
 
         for spinBox in spinBoxes:
             try:
@@ -3540,28 +3544,40 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         self.sb_masterLogic(3, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def sb_multi_right1Logic(self, value):
+    def sb_multi_left5Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(4, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def sb_multi_right2Logic(self, value):
+    def sb_multi_right1Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(5, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def sb_multi_right3Logic(self, value):
+    def sb_multi_right2Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(6, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def sb_multi_right4Logic(self, value):
+    def sb_multi_right3Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(7, value)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def sb_multi_right4Logic(self, value):
+        '''Method for handling the Center Bottom spinbox logic.'''
+
+        self.sb_masterLogic(8, value)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def sb_multi_right5Logic(self, value):
+        '''Method for handling the Center Bottom spinbox logic.'''
+
+        self.sb_masterLogic(9, value)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_browseRosterFunc(self, event):
