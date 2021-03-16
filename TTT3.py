@@ -3021,8 +3021,11 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
 
         else:
-            self.gui.btn_dress.setEnabled(True)
-            self.gui.btn_duty.setEnabled(True)
+            self.maxedRibbons = False
+
+            if self.rank:
+                self.gui.btn_dress.setEnabled(True)
+                self.gui.btn_duty.setEnabled(True)
             self.maxedRibbons = False
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
