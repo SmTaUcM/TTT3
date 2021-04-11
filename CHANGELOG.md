@@ -28,10 +28,11 @@ the IC neck ribbon along with the dagger to represet receipt of the GOE.
 - Implemented the Legion of Skirmish.
 - Added new TIE Corps awards: TIE Corps Commander's Unit Award and TIE Corps Meritorious Unit Award.
 - Added ribbon for display of the Letter of Achievement.
-- Added two additional lightsaber models.  Lightsabers may be disuplayed on both the duty and dress
+- Added two additional lightsaber models.  Lightsabers may be displayed on both the duty and dress
 uniforms for members that have achieved the rank of Sith Knight.
 - Added viewer after successful uniform render, which allows saving the finished uniform to a
 user-specific location.
+- Implemented the Iron Star - Copper Wings and Copper Ribbon.
 
 ### Changed
 - Improved appearance of wing devices on ribbons (IS, DFC, etc.).

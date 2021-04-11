@@ -2031,7 +2031,7 @@ QListWidget:!enabled
          <rect>
           <x>21</x>
           <y>167</y>
-          <width>231</width>
+          <width>461</width>
           <height>51</height>
          </rect>
         </property>
@@ -2088,7 +2088,7 @@ QListWidget:!enabled
          <rect>
           <x>21</x>
           <y>15</y>
-          <width>231</width>
+          <width>461</width>
           <height>141</height>
          </rect>
         </property>
@@ -2212,6 +2212,28 @@ QListWidget:!enabled
           <string>Customise Lightsaber</string>
          </property>
         </widget>
+        <widget class="QLabel" name="label_34">
+         <property name="geometry">
+          <rect>
+           <x>240</x>
+           <y>25</y>
+           <width>181</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lightsabers may be worn by pilots having achieved the rank of Sith Knight in the Emperor's Hammer Dark Brotherhood.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
        </widget>
       </widget>
       <widget class="QWidget" name="tab_Duty">
@@ -2223,7 +2245,7 @@ QListWidget:!enabled
          <rect>
           <x>21</x>
           <y>15</y>
-          <width>231</width>
+          <width>461</width>
           <height>141</height>
          </rect>
         </property>
@@ -2347,13 +2369,35 @@ QListWidget:!enabled
           <string>Customise Lightsaber</string>
          </property>
         </widget>
+        <widget class="QLabel" name="label_33">
+         <property name="geometry">
+          <rect>
+           <x>240</x>
+           <y>25</y>
+           <width>181</width>
+           <height>61</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lightsabers may be worn by pilots having achieved the rank of Sith Knight in the Emperor's Hammer Dark Brotherhood.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
        </widget>
        <widget class="QGroupBox" name="gb_dutySidearm">
         <property name="geometry">
          <rect>
           <x>21</x>
           <y>167</y>
-          <width>231</width>
+          <width>461</width>
           <height>105</height>
          </rect>
         </property>
@@ -2670,16 +2714,16 @@ QListWidget:!enabled
      <widget class="QLabel" name="label_4">
       <property name="geometry">
        <rect>
-        <x>50</x>
-        <y>10</y>
-        <width>461</width>
+        <x>10</x>
+        <y>0</y>
+        <width>511</width>
         <height>31</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>Arial</family>
-        <pointsize>18</pointsize>
+        <pointsize>16</pointsize>
         <weight>50</weight>
         <bold>false</bold>
         <underline>true</underline>
@@ -2689,7 +2733,7 @@ QListWidget:!enabled
        <string notr="true">color: rgb(6, 22, 125);</string>
       </property>
       <property name="text">
-       <string>Welcome to TIE Corps Tailoring Tool 3.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Welcome to TIE Corps Tailoring Tool 3&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_5">
@@ -2697,7 +2741,7 @@ QListWidget:!enabled
        <rect>
         <x>10</x>
         <y>50</y>
-        <width>361</width>
+        <width>471</width>
         <height>20</height>
        </rect>
       </property>
@@ -2708,15 +2752,15 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>TTT is a tool to create Emperor's Hammer TIE Corps uniforms.</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;TTT is a tool to create Emperor's Hammer and TIE Corps uniforms.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_6">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>68</y>
-        <width>121</width>
+        <y>90</y>
+        <width>191</width>
         <height>20</height>
        </rect>
       </property>
@@ -2727,14 +2771,14 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>Created 2001-07 by</string>
+       <string>on the previous work of</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_7">
       <property name="geometry">
        <rect>
-        <x>127</x>
-        <y>68</y>
+        <x>148</x>
+        <y>90</y>
         <width>81</width>
         <height>20</height>
        </rect>
@@ -2748,7 +2792,7 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>LC Tempest</string>
+       <string>LC Tempest.</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_8">
@@ -2774,7 +2818,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>86</y>
+        <y>75</y>
         <width>121</width>
         <height>20</height>
        </rect>
@@ -2786,14 +2830,14 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>Created 2020-21 by</string>
+       <string>Created 2021 by</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_10">
       <property name="geometry">
        <rect>
-        <x>127</x>
-        <y>86</y>
+        <x>109</x>
+        <y>75</y>
         <width>121</width>
         <height>20</height>
        </rect>
@@ -2813,16 +2857,16 @@ QListWidget:!enabled
      <widget class="QLabel" name="lblVersion">
       <property name="geometry">
        <rect>
-        <x>375</x>
-        <y>68</y>
-        <width>161</width>
+        <x>84</x>
+        <y>28</y>
+        <width>361</width>
         <height>16</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>Arial</family>
-        <pointsize>10</pointsize>
+        <pointsize>8</pointsize>
         <weight>75</weight>
         <bold>true</bold>
        </font>
@@ -2831,31 +2875,7 @@ QListWidget:!enabled
        <string notr="true">color: rgb(6, 22, 125);</string>
       </property>
       <property name="text">
-       <string>==VERSION==</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="lblDate">
-      <property name="geometry">
-       <rect>
-        <x>376</x>
-        <y>84</y>
-        <width>161</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Arial</family>
-        <pointsize>10</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(6, 22, 125);</string>
-      </property>
-      <property name="text">
-       <string>==DATE==</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;==VERSION==&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
      <widget class="QLabel" name="lbl_pic_python">
@@ -3042,7 +3062,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>121</y>
+        <y>115</y>
         <width>371</width>
         <height>20</height>
        </rect>
@@ -3061,7 +3081,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>139</y>
+        <y>130</y>
         <width>81</width>
         <height>20</height>
        </rect>
@@ -3073,14 +3093,14 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>or contact the</string>
+       <string>contact the</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_22">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>165</y>
+        <y>155</y>
         <width>331</width>
         <height>20</height>
        </rect>
@@ -3099,7 +3119,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>192</y>
+        <y>180</y>
         <width>221</width>
         <height>20</height>
        </rect>
@@ -3117,8 +3137,8 @@ QListWidget:!enabled
      <widget class="QLabel" name="lbl_email">
       <property name="geometry">
        <rect>
-        <x>94</x>
-        <y>139</y>
+        <x>80</x>
+        <y>130</y>
         <width>81</width>
         <height>20</height>
        </rect>
@@ -3143,9 +3163,9 @@ QListWidget:!enabled
      <widget class="QLabel" name="label_25">
       <property name="geometry">
        <rect>
-        <x>174</x>
-        <y>139</y>
-        <width>41</width>
+        <x>160</x>
+        <y>130</y>
+        <width>21</width>
         <height>20</height>
        </rect>
       </property>
@@ -3163,8 +3183,8 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>379</x>
-        <y>121</y>
-        <width>111</width>
+        <y>115</y>
+        <width>115</width>
         <height>20</height>
        </rect>
       </property>
@@ -3188,9 +3208,9 @@ QListWidget:!enabled
      <widget class="QLabel" name="label_27">
       <property name="geometry">
        <rect>
-        <x>483</x>
-        <y>122</y>
-        <width>16</width>
+        <x>487</x>
+        <y>115</y>
+        <width>21</width>
         <height>20</height>
        </rect>
       </property>
@@ -3201,14 +3221,14 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>.</string>
+       <string>or</string>
       </property>
      </widget>
      <widget class="QLabel" name="lbl_tcpm">
       <property name="geometry">
        <rect>
         <x>341</x>
-        <y>165</y>
+        <y>155</y>
         <width>141</width>
         <height>20</height>
        </rect>
@@ -3234,7 +3254,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>474</x>
-        <y>165</y>
+        <y>155</y>
         <width>16</width>
         <height>20</height>
        </rect>
@@ -3253,7 +3273,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>229</x>
-        <y>192</y>
+        <y>180</y>
         <width>181</width>
         <height>20</height>
        </rect>
@@ -3272,14 +3292,14 @@ QListWidget:!enabled
        <string notr="true">color: rgb(6, 22, 125);</string>
       </property>
       <property name="text">
-       <string>TIE Corps Personnel Uniforms</string>
+       <string>Personnel Uniforms</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_31">
       <property name="geometry">
        <rect>
-        <x>403</x>
-        <y>193</y>
+        <x>342</x>
+        <y>180</y>
         <width>16</width>
         <height>20</height>
        </rect>
@@ -3297,8 +3317,8 @@ QListWidget:!enabled
      <widget class="QLabel" name="label_11">
       <property name="geometry">
        <rect>
-        <x>242</x>
-        <y>86</y>
+        <x>224</x>
+        <y>75</y>
         <width>131</width>
         <height>20</height>
        </rect>
@@ -3318,9 +3338,9 @@ QListWidget:!enabled
      <widget class="QLabel" name="label_12">
       <property name="geometry">
        <rect>
-        <x>127</x>
-        <y>103</y>
-        <width>131</width>
+        <x>333</x>
+        <y>75</y>
+        <width>121</width>
         <height>20</height>
        </rect>
       </property>
@@ -3333,7 +3353,7 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>&amp; AD Jedi Eclipse.</string>
+       <string>&amp; AD Jedi Eclipse</string>
       </property>
      </widget>
      <widget class="QLabel" name="lbl_pic_io">
@@ -3394,6 +3414,56 @@ QListWidget:!enabled
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
+     <widget class="QLabel" name="label_32">
+      <property name="geometry">
+       <rect>
+        <x>449</x>
+        <y>75</y>
+        <width>71</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>and based</string>
+      </property>
+     </widget>
+     <zorder>label_4</zorder>
+     <zorder>label_5</zorder>
+     <zorder>label_6</zorder>
+     <zorder>label_7</zorder>
+     <zorder>label_8</zorder>
+     <zorder>label_9</zorder>
+     <zorder>label_10</zorder>
+     <zorder>lblVersion</zorder>
+     <zorder>lbl_pic_python</zorder>
+     <zorder>lbl_pic_povray</zorder>
+     <zorder>lbl_python</zorder>
+     <zorder>lbl_povray</zorder>
+     <zorder>lbl_pic_qt</zorder>
+     <zorder>lbl_qt</zorder>
+     <zorder>label_21</zorder>
+     <zorder>label_22</zorder>
+     <zorder>label_23</zorder>
+     <zorder>lbl_email</zorder>
+     <zorder>label_25</zorder>
+     <zorder>lbl_tcpm</zorder>
+     <zorder>label_29</zorder>
+     <zorder>lbl_uniforms</zorder>
+     <zorder>label_31</zorder>
+     <zorder>label_11</zorder>
+     <zorder>label_12</zorder>
+     <zorder>lbl_pic_io</zorder>
+     <zorder>lbl_io</zorder>
+     <zorder>label_32</zorder>
+     <zorder>label_20</zorder>
+     <zorder>lbl_readme</zorder>
+     <zorder>label_27</zorder>
     </widget>
    </widget>
    <widget class="QPushButton" name="btn_dress">

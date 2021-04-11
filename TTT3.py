@@ -61,9 +61,9 @@ class TTT3(QMainWindow):
 
         try:
             # Version info.
-            version = "3.00"
-            devVersion = "Alpha 21"
-            date = "2 March 2021"
+            version = "3.0.0"
+            devVersion = "Alpha 22"
+            date = "23 March 2021"
             self.saveFileVersion = 1
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
@@ -77,8 +77,8 @@ class TTT3(QMainWindow):
             self.gui.keyPressEvent = self.keyPressEvent
 
             # Set the version number.
-            self.gui.lblVersion.setText("Version: {v} {a}".format(v=version, a=devVersion))
-            self.gui.lblDate.setText("Date:     " + date)
+            self.gui.lblVersion.setText("<p align=\"center\">Version: {v} {a}&nbsp;&nbsp;&nbsp;Date: {d}</p>".format(v=version, a=devVersion, d=date))
+            #self.gui.lblDate.setText("Date: " + date)
 
             # ---------- Initialise instance variables and connections. ----------
 
@@ -349,7 +349,7 @@ class TTT3(QMainWindow):
     def uniformsLink(self, event):
         '''Method event for when 'TIE Corps Personnel Uniforms' is clicked on the 'Info' tab.'''
 
-        subprocess.Popen("start https://tc.emperorshammer.org/uniforms.php", shell=True)
+        subprocess.Popen("start https://emperorshammer.org/uniforms.php", shell=True)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def pythonLink(self, event):
@@ -4020,8 +4020,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def writeToImportTextBox(self, message):
         '''Method that will display text in the 'Import' tab text box.'''
 
-        self.gui.textEdit.clear()
-        self.gui.textEdit.setPlainText(message)
+        # self.gui.textEdit.clear()
+        self.gui.textEdit.append(message)
         QApplication.processEvents()  # Required to refresh the textbox widget.
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -4245,12 +4245,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
             if "error" in apiFleetData.keys():
                 self.updateProgressBar.emit("code400", 0)
-                self.updateMsg += "Checking for updates failed.\nInvalid connection to www.emperorshammer.org or bad 'fleetapi' TTT3.ini setting.\n"
+                self.updateMsg += "Checking for updates failed.\nInvalid connection to emperorshammer.org or bad 'fleetapi' TTT3.ini setting.\n"
                 self.updateProgressBar.emit("message", None)
 
             else:
-                # Update the locally stored flee.json file and load the downloaded settings.
-                self.updateMsg += "Successful connection to www.emperorshammer.org...\n"
+                # Update the locally stored fleet.json file and load the downloaded settings.
+                self.updateMsg += "Successful connection to emperorshammer.org...\n"
                 if self.fleetConfig != apiFleetData:
                     with open(os.getcwd() + "\\settings\\fleet.json", "w") as fleetDataFile:
                         fleetDataFile.write(json.dumps(apiFleetData))
