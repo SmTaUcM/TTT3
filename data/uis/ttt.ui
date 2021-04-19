@@ -2453,7 +2453,7 @@ QListWidget:!enabled
           <rect>
            <x>137</x>
            <y>22</y>
-           <width>71</width>
+           <width>121</width>
            <height>22</height>
           </rect>
          </property>
@@ -2486,7 +2486,7 @@ QListWidget:!enabled
           <string>Use sidearm</string>
          </property>
         </widget>
-        <widget class="QLabel" name="lbl_saberSide">
+        <widget class="QLabel" name="lbl_blasterSide">
          <property name="geometry">
           <rect>
            <x>16</x>

@@ -166,20 +166,29 @@ class TTT3(QMainWindow):
             self.loadLighsabers()
             self.cb_dressLightsaberFunc()
             self.cb_dutyLightsaberFunc()
+            self.cb_dutyBlasterFunc()
+            self.blasterDict = {}
+            self.loadBlasters()
             self.gui.cb_dressLightsaber.setChecked(False)
-            self.gui.cb_dutyLightsaber.setChecked(False)
             self.gui.rb_daggerLeft.setChecked(True)
+            self.gui.cb_dutyLightsaber.setChecked(False)
+            self.gui.rb_blasterLeft.setChecked(True)
 
             # Lightsaber options.
             self.gui.cb_dressLightsaber.stateChanged.connect(self.cb_dressLightsaberFunc)
             self.gui.cb_dutyLightsaber.stateChanged.connect(self.cb_dutyLightsaberFunc)
-            # TODO Duty saber / blaster deconfliction.
             self.gui.rb_dressSaberLeft.clicked.connect(self.saberDaggerDeconflict)
             self.gui.rb_dressSaberRight.clicked.connect(self.saberDaggerDeconflict)
-
             # GOE Options.
             self.gui.rb_daggerLeft.clicked.connect(self.daggerSaberDeconflict)
             self.gui.rb_daggerRight.clicked.connect(self.daggerSaberDeconflict)
+
+            # Blaster options.
+            self.gui.cb_dutyBlaster.stateChanged.connect(self.cb_dutyBlasterFunc)
+            self.gui.rb_blasterLeft.clicked.connect(self.blasterSaberDeconflict)
+            self.gui.rb_blasterRight.clicked.connect(self.blasterSaberDeconflict)
+            self.gui.rb_dutySaberLeft.clicked.connect(self.saberBlasterDeconflict)
+            self.gui.rb_dutySaberRight.clicked.connect(self.saberBlasterDeconflict)
 
             # ----- 'Import' Tab. -----
             self.gui.btn_browseRoster.clicked.connect(self.btn_browseRosterFunc)
@@ -471,9 +480,6 @@ class TTT3(QMainWindow):
 
         # TODO Disabled Duty Lightsaber Customisation.
         self.gui.btn_dutySaberCustom.setEnabled(False)
-
-        # TODO Disabled Duty Sidearm Options.
-        self.gui.gb_dutySidearm.setEnabled(False)
 
         # Hide the remember button.
         self.gui.btn_remember.hide()
@@ -2170,6 +2176,21 @@ color_map
                     object = 'object { %s_%s }' % (style, side)
                     povData.append(line.replace("&SABER&", object))
 
+            elif "&BLASTERINCLUDE&" in line:
+                if self.gui.cb_dutyBlaster.isChecked():
+                    include = '#include "%s"' % self.blasterDict.get(self.gui.cb_dutyBlasterStyles.currentText())
+                    povData.append(line.replace("&BLASTERINCLUDE&", include))
+
+            elif "&BLASTER&" in line:
+                if self.gui.cb_dutyBlaster.isChecked():
+                    style = self.blasterDict.get(self.gui.cb_dutyBlasterStyles.currentText()).replace("_g.inc", "")
+                    if self.gui.rb_blasterLeft.isChecked():
+                        side = "left"
+                    else:
+                        side = "right"
+                    object = 'object { %s_%s }' % (style, side)
+                    povData.append(line.replace("&BLASTER&", object))
+
             # ----- Non-Editable Data. -----
             else:
                 povData.append(line)
@@ -3673,6 +3694,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 # Duty.
                 self.gui.cb_dutyLightsaber.setChecked(False)
                 self.gui.cb_dutySaberStyles.setCurrentIndex(0)
+                self.gui.rb_dutySaberRight.setChecked(True)
+                self.gui.cb_dutyBlaster.setChecked(False)
+                self.gui.cb_dutyBlasterStyles.setCurrentIndex(0)
+                self.gui.rb_blasterLeft.setChecked(True)
 
             # Disable render buttons.
             self.gui.btn_dress.setEnabled(False)
@@ -3779,12 +3804,21 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         self.gui.rb_daggerRight.setChecked(True)
 
                     # Duty.
+                    # Lightsaber.
                     self.gui.cb_dutyLightsaber.setChecked(saveData[14])
                     self.gui.cb_dutySaberStyles.setCurrentIndex(saveData[15])
                     if saveData[16]:
                         self.gui.rb_dutySaberRight.setChecked(True)
                     else:
                         self.gui.rb_dutySaberLeft.setChecked(True)
+
+                    # Blaster.
+                    self.gui.cb_dutyBlaster.setChecked(saveData[17])
+                    self.gui.cb_dutyBlasterStyles.setCurrentIndex(saveData[18])
+                    if saveData[19]:
+                        self.gui.rb_blasterLeft.setChecked(True)
+                    else:
+                        self.gui.rb_blasterRight.setChecked(True)
 
                 else:
                     # Show error message.
@@ -3806,7 +3840,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             saveData = (self.saveFileVersion, self.position, self.rank, self.ship, self.wing, self.gui.cb_eliteSqn.isChecked(),
                         self.sqn, self.awards, self.deconflictNeckRibbons, self.gui.cbFCHG.currentText(), self.gui.cb_dressLightsaber.isChecked(),
                         self.gui.cb_dressSaberStyles.currentIndex(), self.gui.rb_dressSaberRight.isChecked(), self.gui.rb_daggerLeft.isChecked(),
-                        self.gui.cb_dutyLightsaber.isChecked(), self.gui.cb_dutySaberStyles.currentIndex(), self.gui.rb_dutySaberRight.isChecked())
+                        self.gui.cb_dutyLightsaber.isChecked(), self.gui.cb_dutySaberStyles.currentIndex(), self.gui.rb_dutySaberRight.isChecked(),
+                        self.gui.cb_dutyBlaster.isChecked(), self.gui.cb_dutyBlasterStyles.currentIndex(), self.gui.rb_blasterLeft.isChecked())
 
             # Save the data.
             fileName = self.saveUniformFileDialog()
@@ -4207,6 +4242,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                 descriptionFound = True
                                 break
 
+                        # Add the saber to the GUI and store it's name and filepath into self.saberDict.
                         if descriptionFound:
                             style = line.replace("// DESCRIPTION ", "").replace("\n", "")
                             self.saberDict[style] = name
@@ -4214,7 +4250,6 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                             style = name.replace("_g.inc", "")
                             self.saberDict[style] = name
 
-                        # Add the saber to the GUI and store it's name and filepath into self.saberDict.
                         self.gui.cb_dressSaberStyles.addItem(style)
                         self.gui.cb_dutySaberStyles.addItem(style)
 
@@ -4275,6 +4310,75 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.gui.rb_dressSaberRight.setChecked(True)
             else:
                 self.gui.rb_dressSaberLeft.setChecked(True)
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def loadBlasters(self):
+        '''Method to detect and load the number of blaster styles within the data folder.'''
+
+        # Detect installed blaster styles and add them to the GUI.
+        for root, dirs, files in os.walk(os.getcwd() + "\\data\\", topdown=False):
+            for name in files:
+                if "blaster" in name and "_g.inc" in name:
+                    # Read in the name of the Blaster by locating it's '// DESCRIPTION' reference.
+                    # If no '// DESCRIPTION' is provided. Use the filename instead.
+                    with open(os.getcwd() + "\\data\\" + name, "r") as blasterFile:
+                        descriptionFound = False
+                        for line in blasterFile.readlines():
+                            if "// DESCRIPTION" in line:
+                                descriptionFound = True
+                                break
+
+                        # Add the blaster to the GUI and store it's name and filepath into self.blasterDict.
+                        if descriptionFound:
+                            style = line.replace("// DESCRIPTION ", "").replace("\n", "")
+                            self.blasterDict[style] = name
+                        else:
+                            style = name.replace("_g.inc", "")
+                            self.blasterDict[style] = name
+
+                        self.gui.cb_dutyBlasterStyles.addItem(style)
+
+        # Prepare the GUI for initial use.
+        self.gui.rb_blasterLeft.setChecked(True)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def cb_dutyBlasterFunc(self):
+        '''Method that triggers when the 'Use sidearm' checkbox is selected.'''
+
+        try:
+            blasterItems = [self.gui.cb_dutyBlasterStyles, self.gui.lbl_blasterSide, self.gui.rb_blasterLeft, self.gui.rb_blasterRight]
+
+            for item in blasterItems:
+                if self.gui.cb_dutyBlaster.isChecked():
+                    item.show()
+                else:
+                    item.hide()
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def blasterSaberDeconflict(self):
+        '''Method to deconflict the blaster and lightsaber if a blaster mounting option is selected.'''
+
+        try:
+            if self.gui.rb_blasterLeft.isChecked():
+                self.gui.rb_dutySaberRight.setChecked(True)
+            else:
+                self.gui.rb_dutySaberLeft.setChecked(True)
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def saberBlasterDeconflict(self):
+        '''Method to deconflict the lightsaber and blaster if a saber mounting option is selected.'''
+
+        try:
+            if self.gui.rb_dutySaberLeft.isChecked():
+                self.gui.rb_blasterRight.setChecked(True)
+            else:
+                self.gui.rb_blasterLeft.setChecked(True)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
