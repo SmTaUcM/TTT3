@@ -14,6 +14,38 @@
 // RIBBONS
 
 
+#declare T_r_iar =
+texture
+{
+  pigment { image_map { gif "ribbons/iar.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_iar_bl =
+texture
+{
+  pigment { image_map { gif "ribbons/iar-bl.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_iar_sl =
+texture
+{
+  pigment { image_map { gif "ribbons/iar-sl.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_iar_gl =
+texture
+{
+  pigment { image_map { gif "ribbons/iar-gl.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
 #declare T_r_mot_bh =
 texture
 {
