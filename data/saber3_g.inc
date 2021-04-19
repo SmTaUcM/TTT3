@@ -7,13 +7,15 @@
 //                                                 //
 /////////////////////////////////////////////////////
 
+// DESCRIPTION Style 3 - Curved
+
 #declare T_Grip = T_red;
 #declare T_GripScrew_Ou = T_red;
 #declare T_Base = T_metal;
 #declare T_EndCap = T_metal;
 #declare T_GripScrew_In = T_dullmetal;
 #declare T_def_mat = T_black;
-     
+
 #include "saber3_o.inc";
 #include "saber_metal_o.inc";
 

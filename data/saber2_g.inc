@@ -1,20 +1,19 @@
- ////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
 //                                                 //
 //  TIE Corps Dress Uniform                        //
 //  Lightsaber model 2                             //
 //                                                 //
 //  Settings in this file are not affected by TTT  //
 //                                                 //
-////////////////////////////////////////////////////
+/////////////////////////////////////////////////////
 
-         
+// DESCRIPTION Style 2
+
 #declare T_bright = T_dullmetal;
 #declare T_switches = T_copper;
 
-         
 #include "saber2_o.inc";
-    
-    
+
 #declare saber2_left =
 union
 {
@@ -36,5 +35,3 @@ union
   object { P_button_green rotate <1.199,-179.65,0.188> translate <-118.525,-113.01,-209.923> }
   object { P_metal_right }
 }
-
-

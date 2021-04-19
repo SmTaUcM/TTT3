@@ -7,6 +7,8 @@
 //                                                      //
 //////////////////////////////////////////////////////////
 
+// DESCRIPTION Style 4
+
 #declare fin_T_flatmetal = 
 finish 
 {            

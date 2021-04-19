@@ -1,11 +1,13 @@
-/////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////
 //                                                      //
 //  TIE Corps Dress Uniform                             //
-//  Lighsaber model 5 - AD Turtle Jerrar                //
+//  Lighsaber model 5 'Kamjin' - AD Turtle Jerrar       //
 //                                                      //
 //  Settings in this file are not affected by TTT       //
 //                                                      //
 //////////////////////////////////////////////////////////
+
+// DESCRIPTION Kamjin's Saber
 
 #declare fin_T_flatmetal = 
 finish 
