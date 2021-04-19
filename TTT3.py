@@ -1903,7 +1903,7 @@ color_map
                     povData.append(line.replace("&FCHGINCLUDE&", '#include "wing_g.inc"'))
 
             elif "&SABERINCLUDE&" in line:
-                if self.gui.cb_dressLightsaber.isChecked():
+                if self.gui.cb_dressLightsaber.isChecked() and self.gui.cb_dressSaberStyles.currentText() != "":
                     include = '#include "%s"' % self.saberDict.get(self.gui.cb_dressSaberStyles.currentText())
                     povData.append(line.replace("&SABERINCLUDE&", include))
 
@@ -1986,7 +1986,7 @@ color_map
                 # ------------------------------------------------------------
 
             elif "&SABER&" in line:
-                if self.gui.cb_dressLightsaber.isChecked():
+                if self.gui.cb_dressLightsaber.isChecked() and self.gui.cb_dressSaberStyles.currentText() != "":
                     style = self.saberDict.get(self.gui.cb_dressSaberStyles.currentText()).replace("_g.inc", "")
                     if self.gui.rb_dressSaberLeft.isChecked():
                         side = "left"
@@ -2162,12 +2162,12 @@ color_map
                     povData.append(line.replace("&RANKTRANSLATE&", self.RANK_OFFSET_DUTY_FLAG[1]))
 
             elif "&SABERINCLUDE&" in line:
-                if self.gui.cb_dutyLightsaber.isChecked():
+                if self.gui.cb_dutyLightsaber.isChecked() and self.gui.cb_dutySaberStyles.currentText() != "":
                     include = '#include "%s"' % self.saberDict.get(self.gui.cb_dutySaberStyles.currentText())
                     povData.append(line.replace("&SABERINCLUDE&", include))
 
             elif "&SABER&" in line:
-                if self.gui.cb_dutyLightsaber.isChecked():
+                if self.gui.cb_dutyLightsaber.isChecked() and self.gui.cb_dutySaberStyles.currentText() != "":
                     style = self.saberDict.get(self.gui.cb_dutySaberStyles.currentText()).replace("_g.inc", "")
                     if self.gui.rb_dutySaberLeft.isChecked():
                         side = "left"
@@ -2177,12 +2177,12 @@ color_map
                     povData.append(line.replace("&SABER&", object))
 
             elif "&BLASTERINCLUDE&" in line:
-                if self.gui.cb_dutyBlaster.isChecked():
+                if self.gui.cb_dutyBlaster.isChecked() and self.gui.cb_dutyBlasterStyles.currentText() != "":
                     include = '#include "%s"' % self.blasterDict.get(self.gui.cb_dutyBlasterStyles.currentText())
                     povData.append(line.replace("&BLASTERINCLUDE&", include))
 
             elif "&BLASTER&" in line:
-                if self.gui.cb_dutyBlaster.isChecked():
+                if self.gui.cb_dutyBlaster.isChecked() and self.gui.cb_dutyBlasterStyles.currentText() != "":
                     style = self.blasterDict.get(self.gui.cb_dutyBlasterStyles.currentText()).replace("_g.inc", "")
                     if self.gui.rb_blasterLeft.isChecked():
                         side = "left"
