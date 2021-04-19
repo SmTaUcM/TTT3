@@ -162,6 +162,7 @@ class TTT3(QMainWindow):
             # Set default Misc Options.
             # Detect and load in lighsaber styles.
             self.gui.cb_dressSaberStyles.hide()
+            self.saberDict = {}
             self.loadLighsabers()
             self.cb_dressLightsaberFunc()
             self.cb_dutyLightsaberFunc()
@@ -1897,8 +1898,7 @@ color_map
 
             elif "&SABERINCLUDE&" in line:
                 if self.gui.cb_dressLightsaber.isChecked():
-                    style = self.gui.cb_dressSaberStyles.currentText().replace("Style ", "")
-                    include = '#include "saber%s_g.inc"' % style
+                    include = '#include "%s"' % self.saberDict.get(self.gui.cb_dressSaberStyles.currentText())
                     povData.append(line.replace("&SABERINCLUDE&", include))
 
             elif "&MEDALSINCLUDE&" in line:
@@ -1981,12 +1981,12 @@ color_map
 
             elif "&SABER&" in line:
                 if self.gui.cb_dressLightsaber.isChecked():
-                    style = self.gui.cb_dressSaberStyles.currentText().replace("Style ", "")
+                    style = self.saberDict.get(self.gui.cb_dressSaberStyles.currentText()).replace("_g.inc", "")
                     if self.gui.rb_dressSaberLeft.isChecked():
                         side = "left"
                     else:
                         side = "right"
-                    object = 'object { saber%s_%s }' % (style, side)
+                    object = 'object { %s_%s }' % (style, side)
                     povData.append(line.replace("&SABER&", object))
 
             elif "&PAD&" in line:
@@ -2157,18 +2157,17 @@ color_map
 
             elif "&SABERINCLUDE&" in line:
                 if self.gui.cb_dutyLightsaber.isChecked():
-                    style = self.gui.cb_dutySaberStyles.currentText().replace("Style ", "")
-                    include = '#include "saber%s_g.inc"' % style
+                    include = '#include "%s"' % self.saberDict.get(self.gui.cb_dutySaberStyles.currentText())
                     povData.append(line.replace("&SABERINCLUDE&", include))
 
             elif "&SABER&" in line:
                 if self.gui.cb_dutyLightsaber.isChecked():
-                    style = self.gui.cb_dutySaberStyles.currentText().replace("Style ", "")
+                    style = self.saberDict.get(self.gui.cb_dutySaberStyles.currentText()).replace("_g.inc", "")
                     if self.gui.rb_dutySaberLeft.isChecked():
                         side = "left"
                     else:
                         side = "right"
-                    object = 'object { saber%s_%s }' % (style, side)
+                    object = 'object { %s_%s }' % (style, side)
                     povData.append(line.replace("&SABER&", object))
 
             # ----- Non-Editable Data. -----
@@ -2956,14 +2955,41 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     spinFunctions = [self.sb_multi_center1Logic, self.sb_multi_center2Logic, self.sb_multi_center3Logic, self.sb_multi_center4Logic]
                     spinFunctions = spinFunctions[: subRibbonNum]
                 else:
-                    spinBoxes = [self.gui.sb_multi_left1, self.gui.sb_multi_left2, self.gui.sb_multi_left3, self.gui.sb_multi_left4, self.gui.sb_multi_left5,
-                                 self.gui.sb_multi_right1, self.gui.sb_multi_right2, self.gui.sb_multi_right3, self.gui.sb_multi_right4, self.gui.sb_multi_right5]
+                    spinBoxes = [
+                        self.gui.sb_multi_left1,
+                        self.gui.sb_multi_left2,
+                        self.gui.sb_multi_left3,
+                        self.gui.sb_multi_left4,
+                        self.gui.sb_multi_left5,
+                        self.gui.sb_multi_right1,
+                        self.gui.sb_multi_right2,
+                        self.gui.sb_multi_right3,
+                        self.gui.sb_multi_right4,
+                        self.gui.sb_multi_right5]
                     spinBoxes = spinBoxes[: subRibbonNum]
-                    spinLabels = [self.gui.lbl_multi_left1, self.gui.lbl_multi_left2, self.gui.lbl_multi_left3, self.gui.lbl_multi_left4, self.gui.lbl_multi_left5,
-                                  self.gui.lbl_multi_right1, self.gui.lbl_multi_right2, self.gui.lbl_multi_right3, self.gui.lbl_multi_right4, self.gui.lbl_multi_right5]
+                    spinLabels = [
+                        self.gui.lbl_multi_left1,
+                        self.gui.lbl_multi_left2,
+                        self.gui.lbl_multi_left3,
+                        self.gui.lbl_multi_left4,
+                        self.gui.lbl_multi_left5,
+                        self.gui.lbl_multi_right1,
+                        self.gui.lbl_multi_right2,
+                        self.gui.lbl_multi_right3,
+                        self.gui.lbl_multi_right4,
+                        self.gui.lbl_multi_right5]
                     spinLabels = spinLabels[: subRibbonNum]
-                    spinFunctions = [self.sb_multi_left1Logic, self.sb_multi_left2Logic, self.sb_multi_left3Logic, self.sb_multi_left4Logic, self.sb_multi_left5Logic,
-                                     self.sb_multi_right1Logic, self.sb_multi_right2Logic, self.sb_multi_right3Logic, self.sb_multi_right4Logic, self.sb_multi_right5Logic]
+                    spinFunctions = [
+                        self.sb_multi_left1Logic,
+                        self.sb_multi_left2Logic,
+                        self.sb_multi_left3Logic,
+                        self.sb_multi_left4Logic,
+                        self.sb_multi_left5Logic,
+                        self.sb_multi_right1Logic,
+                        self.sb_multi_right2Logic,
+                        self.sb_multi_right3Logic,
+                        self.sb_multi_right4Logic,
+                        self.sb_multi_right5Logic]
                     spinFunctions = spinFunctions[: subRibbonNum]
 
                 # Show the required spinboxes.
@@ -4172,9 +4198,27 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         for root, dirs, files in os.walk(os.getcwd() + "\\data\\", topdown=False):
             for name in files:
                 if "saber" in name and "_g.inc" in name:
-                    style = name.split("_")[0].replace("saber", "")
-                    self.gui.cb_dressSaberStyles.addItem("Style " + style)
-                    self.gui.cb_dutySaberStyles.addItem("Style " + style)
+                    # Read in the name of the Lightsaber by locating it's '// DESCRIPTION' reference.
+                    # If no '// DESCRIPTION' is provided. Use the filename instead.
+                    with open(os.getcwd() + "\\data\\" + name, "r") as saberFile:
+                        descriptionFound = False
+                        for line in saberFile.readlines():
+                            if "// DESCRIPTION" in line:
+                                descriptionFound = True
+                                break
+
+                        if descriptionFound:
+                            style = line.replace("// DESCRIPTION ", "").replace("\n", "")
+                            self.saberDict[style] = name
+                        else:
+                            style = name.replace("_g.inc", "")
+                            self.saberDict[style] = name
+
+                        # Add the saber to the GUI and store it's name and filepath into self.saberDict.
+                        self.gui.cb_dressSaberStyles.addItem(style)
+                        self.gui.cb_dutySaberStyles.addItem(style)
+
+        # Prepare the GUI for initial use.
         self.gui.rb_dressSaberRight.setChecked(True)
         self.gui.rb_dutySaberRight.setChecked(True)
         #--------------------------------------------------------------------------------------------------------------------------------------------#

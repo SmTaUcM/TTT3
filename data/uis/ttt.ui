@@ -2144,7 +2144,7 @@ QListWidget:!enabled
           <rect>
            <x>137</x>
            <y>22</y>
-           <width>71</width>
+           <width>121</width>
            <height>22</height>
           </rect>
          </property>
@@ -2215,10 +2215,10 @@ QListWidget:!enabled
         <widget class="QLabel" name="label_34">
          <property name="geometry">
           <rect>
-           <x>240</x>
-           <y>25</y>
-           <width>181</width>
-           <height>61</height>
+           <x>279</x>
+           <y>24</y>
+           <width>161</width>
+           <height>101</height>
           </rect>
          </property>
          <property name="font">
@@ -2301,7 +2301,7 @@ QListWidget:!enabled
           <rect>
            <x>137</x>
            <y>22</y>
-           <width>71</width>
+           <width>121</width>
            <height>22</height>
           </rect>
          </property>
@@ -2372,10 +2372,10 @@ QListWidget:!enabled
         <widget class="QLabel" name="label_33">
          <property name="geometry">
           <rect>
-           <x>240</x>
-           <y>25</y>
-           <width>181</width>
-           <height>61</height>
+           <x>279</x>
+           <y>24</y>
+           <width>161</width>
+           <height>101</height>
           </rect>
          </property>
          <property name="font">
