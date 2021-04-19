@@ -62,8 +62,8 @@ class TTT3(QMainWindow):
         try:
             # Version info.
             version = "3.0.0"
-            devVersion = "Alpha 22"
-            date = "23 March 2021"
+            devVersion = "Alpha 23"
+            date = "19 April 2021"
             self.saveFileVersion = 1
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
@@ -1375,19 +1375,43 @@ class TTT3(QMainWindow):
             baseHeight = 548
             baseWidth = 640
 
+        # Determine if the user's selected width and height extend beyond their monitor's display output and display at max screen resolution if so.
+        screenWidth, screenHeight = getScreenResolution()
+
+        if height - 160 > screenHeight:  # 160 pixels to account for groupbox and lower buttons.
+            height = screenHeight - 160
+            if self.uniform != "helmet":
+                width = getX(height)
+            else:
+                width = getXHelm(height)
+
+        elif width - 40 > screenWidth:  # 40 pixels to allow for groupbox and borders.
+            width = screenWidth - 40
+            if self.uniform != "helmet":
+                height = getY(width)
+            else:
+                height = getYHelm(width)
+
+        # Resize the output window, it's inner groupbox and the output image.
         xOffset = width - baseWidth
         yOffset = height - baseHeight
 
+        # Image sizing.
         self.output_gui.lbl_output.setMinimumHeight(height)
         self.output_gui.lbl_output.setMaximumHeight(height)
         self.output_gui.lbl_output.setMinimumWidth(width)
         self.output_gui.lbl_output.setMaximumWidth(width)
+
         if xOffset < -240:  # Prevent the output window from going too small.
             xOffset = -240
+
+        # Groupbox sizing.
         self.output_gui.groupBox.setMinimumHeight(self.output_gui.groupBox.height() + yOffset)
         self.output_gui.groupBox.setMaximumHeight(self.output_gui.groupBox.height() + yOffset)
         self.output_gui.groupBox.setMinimumWidth(self.output_gui.groupBox.width() + xOffset)
         self.output_gui.groupBox.setMaximumWidth(self.output_gui.groupBox.width() + xOffset)
+
+        # Window sizing.
         self.output_gui.setMinimumHeight(self.output_gui.height() + yOffset)
         self.output_gui.setMaximumHeight(self.output_gui.height() + yOffset)
         self.output_gui.setMinimumWidth(self.output_gui.width() + xOffset)
@@ -6007,10 +6031,24 @@ def getYHelm(x):
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
+def getXHelm(y):
+    '''Function to return an aspect ratio locked value for any given y.'''
+
+    return round(float(y) * 1.1678)
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
 def getY(x):
     '''Function to return an aspect ratio locked value for any given x.'''
 
     return round(float(x) / 0.7502)
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+def getX(y):
+    '''Function to return an aspect ratio locked value for any given y.'''
+
+    return round(float(y) * 0.7502)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -6023,6 +6061,14 @@ def getHash(strSource):
 
     # Get MD5 has of source file and return it.
     return hashlib.md5(data).hexdigest()
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+def getScreenResolution():
+    '''Method that returns the width and height of the user's monitor resolution.'''
+
+    user32 = ctypes.windll.user32
+    return user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
