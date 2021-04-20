@@ -296,11 +296,8 @@ class TTT3(QMainWindow):
             self.RANK_OFFSET_RIBBONS_17_TO_20 = ["-23.7950000762939,0.264999985694885,7.68100023269653",
                                                  "50.5919990539551,-126.778999328613,226.337997436523"]
 
-            self.RANK_OFFSET_RIBBONS_21_TO_24 = ["-25.6240005493164,0.264999985694885,7.68100023269653",
+            self.RANK_OFFSET_RIBBONS_21_TO_28 = ["-25.6240005493164,0.264999985694885,7.68100023269653",
                                                  "50.326000213623,-124.832000732422,230.47900390625"]
-
-            self.RANK_OFFSET_RIBBONS_25_TO_28 = ["-27.4530010223389,0.299985694885,7.68100023269653",
-                                                 "50.060001373290895,-121.149832000732422,234.620010375977"]
 
             self.RANK_OFFSET_DUTY_LINE = ["-20.74,1.325,9.085",      # Rotate
                                           "69.846,-125.146,223.304"]  # Translate
@@ -2526,12 +2523,10 @@ color_map
             return self.RANK_OFFSET_RIBBONS_13_TO_16[0]
         elif ribbonCount > 16 and ribbonCount <= 20:
             return self.RANK_OFFSET_RIBBONS_17_TO_20[0]
-        elif ribbonCount > 20 and ribbonCount <= 24:
-            return self.RANK_OFFSET_RIBBONS_21_TO_24[0]
-        elif ribbonCount > 24 and ribbonCount <= 28:
-            return self.RANK_OFFSET_RIBBONS_25_TO_28[0]
+        elif ribbonCount > 20 and ribbonCount <= 28:
+            return self.RANK_OFFSET_RIBBONS_21_TO_28[0]
         else:
-            return self.RANK_OFFSET_RIBBONS_25_TO_28[0]
+            return self.RANK_OFFSET_RIBBONS_21_TO_28[0]
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getRankTranslateOffset(self):
@@ -2547,12 +2542,10 @@ color_map
             return self.RANK_OFFSET_RIBBONS_13_TO_16[1]
         elif ribbonCount > 16 and ribbonCount <= 20:
             return self.RANK_OFFSET_RIBBONS_17_TO_20[1]
-        elif ribbonCount > 20 and ribbonCount <= 24:
-            return self.RANK_OFFSET_RIBBONS_21_TO_24[1]
-        elif ribbonCount > 24 and ribbonCount <= 28:
-            return self.RANK_OFFSET_RIBBONS_25_TO_28[1]
+        elif ribbonCount > 20 and ribbonCount <= 28:
+            return self.RANK_OFFSET_RIBBONS_21_TO_28[1]
         else:
-            return self.RANK_OFFSET_RIBBONS_25_TO_28[1]
+            return self.RANK_OFFSET_RIBBONS_21_TO_28[1]
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getRibbonAwardCount(self):
@@ -3412,6 +3405,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         name = 0
         quantity = 1
 
+        # Special handling of awards for >24 ribbons. All ribbon awards are shifted downwards instead of moving the rank upward.
+        if self.getRibbonAwardCount() >24:
+            yOffset = -2.5 # Move all ribbons down half a ribbons height.
+        else:
+            yOffset = 0 # Do not move ribbons up or down.
+
         for award in self.awards:
             # Upgradeable and SubRibbon type awards.
             if self.awards.get(award)["type"] == "upgradeable" or self.awards.get(award)["type"] == "subRibbons":
@@ -3445,7 +3444,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 for upgrade in upgrades:  # Medals that don't require reversing.
                     if upgrade[quantity] != 0:
                         awardName = "T_r_" + self.getFilename(upgrade[name]).split(".")[0].lower().replace("-", "_")
-                        ribbonObjects.append("P_r&NUM& texture { %s }" % awardName)
+                        ribbonObjects.append("P_r&NUM& translate <0,0,%s> texture { %s }" % (yOffset, awardName))
 
             # Ranged type awards.
             elif self.awards.get(award)["type"] == "ranged":
@@ -3454,13 +3453,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         if self.ribbonConfig.get(section, "name") == award:
                             awardName = "T_r_" + self.ribbonConfig.get(section, "filename").split(".")[0].lower().replace("-", "_")
                             awardName = awardName.replace("&range&", str(self.awards.get(award)["upgrades"][quantity]))
-                            ribbonObjects.append("P_r&NUM& texture { %s }" % awardName)
+                            ribbonObjects.append("P_r&NUM& translate <0,0,%s> texture { %s }" % (yOffset, awardName))
 
             # Multi type awards.
             elif self.awards.get(award)["type"] == "multiRibbon":
                 if self.awards.get(award)["upgrades"][quantity] > 0:
                     awardName = "T_r_" + self.getFilename(award).split(".")[0].lower().replace("-", "_")
-                    ribbonObjects.append("P_r&NUM& texture { %s }" % awardName)
+                    ribbonObjects.append("P_r&NUM& translate <0,0,%s> texture { %s }" % (yOffset, awardName))
 
         return self.ribbonNumberOrdering(ribbonObjects)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
