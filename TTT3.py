@@ -3077,7 +3077,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def checkRibbonCount(self):
         '''Method to ensure that the user has not selected more than the maxiumum number of allowed ribbons (24)'''
 
-        maxRibbons = 24
+        maxRibbons = 28
         objectRefs = self.buildRibbonObjects()
 
         if len(objectRefs) > maxRibbons:
@@ -3464,7 +3464,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         ribbonObjects = []
         fullRows = int(len(ribbons) / 4)
         bottomRowNumCount = len(ribbons) % 4
-        ribbonCounter = 24 - (fullRows * 4)
+        ribbonCounter = 28 - (fullRows * 4)
 
         # Logic for complete ribbon rows of 4 for more than 4 ribbons.
         if len(ribbons) > 4:
@@ -3481,11 +3481,11 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             # Logic to add the bottom row of ribbons for more than 4 ribbons.
             if bottomRowNumCount != 0:
                 if bottomRowNumCount == 1:
-                    ribbonCounter = 25
+                    ribbonCounter = 29
                 elif bottomRowNumCount == 2:
-                    ribbonCounter = 21
+                    ribbonCounter = 25
                 elif bottomRowNumCount == 3:
-                    ribbonCounter = 24
+                    ribbonCounter = 28
 
                 for ribbon in ribbons[-bottomRowNumCount:]:
                     ribbonObjects.append(ribbon.replace("&NUM&", str(ribbonCounter)))
@@ -3495,16 +3495,16 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         else:
             if len(ribbons) == 1:
                 for ribbon in ribbons:
-                    ribbonCounter = 25
+                    ribbonCounter = 29
 
             elif len(ribbons) == 2:
-                ribbonCounter = 21
+                ribbonCounter = 25
 
             elif len(ribbons) == 3:
-                ribbonCounter = 24
+                ribbonCounter = 28
 
             elif len(ribbons) == 4:
-                ribbonCounter = 20
+                ribbonCounter = 24
 
             for ribbon in ribbons:
                 ribbonObjects.append(ribbon.replace("&NUM&", str(ribbonCounter)))
