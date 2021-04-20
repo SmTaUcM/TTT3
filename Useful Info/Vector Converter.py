@@ -1,8 +1,8 @@
-xOffset = 0.4 # netative moves right, positive moves left.
-zOffset = 0.0 # negative moves towards chest, positive moves away from chest.
-yOffset = -5.0 # negative moves up, positive moves down.
+xOffset = 0.158543 # netative moves right, positive moves left.
+zOffset = -1.0882645 # negative moves towards chest, positive moves away from chest.
+yOffset = -5.335579 # negative moves up, positive moves down.
 
-boundMin = "<73.352531, -133.862488, 197.740814>"
+boundMin = "<73.352531, -133.862488, 197.740814>"   # DONE r4/0, r5/1, r6/2, r7/r3
 boundMax = "<96.213715, -125.819641, 203.273270>"
 vertex_vectors = """
         <73.949310, -131.677689, 198.161392>,
