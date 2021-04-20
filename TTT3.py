@@ -299,6 +299,9 @@ class TTT3(QMainWindow):
             self.RANK_OFFSET_RIBBONS_21_TO_24 = ["-25.6240005493164,0.264999985694885,7.68100023269653",
                                                  "50.326000213623,-124.832000732422,230.47900390625"]
 
+            self.RANK_OFFSET_RIBBONS_25_TO_28 = ["-27.4530010223389,0.264999985694885,7.68100023269653",
+                                                 "50.060001373290895,-122.88500213623101,234.620010375977"]
+
             self.RANK_OFFSET_DUTY_LINE = ["-20.74,1.325,9.085",      # Rotate
                                           "69.846,-125.146,223.304"]  # Translate
 
@@ -2525,8 +2528,10 @@ color_map
             return self.RANK_OFFSET_RIBBONS_17_TO_20[0]
         elif ribbonCount > 20 and ribbonCount <= 24:
             return self.RANK_OFFSET_RIBBONS_21_TO_24[0]
+        elif ribbonCount > 24 and ribbonCount <= 28:
+            return self.RANK_OFFSET_RIBBONS_25_TO_28[0]
         else:
-            return self.RANK_OFFSET_RIBBONS_21_TO_24[0]
+            return self.RANK_OFFSET_RIBBONS_25_TO_28[0]
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getRankTranslateOffset(self):
@@ -2544,8 +2549,10 @@ color_map
             return self.RANK_OFFSET_RIBBONS_17_TO_20[1]
         elif ribbonCount > 20 and ribbonCount <= 24:
             return self.RANK_OFFSET_RIBBONS_21_TO_24[1]
+        elif ribbonCount > 24 and ribbonCount <= 28:
+            return self.RANK_OFFSET_RIBBONS_25_TO_28[1]
         else:
-            return self.RANK_OFFSET_RIBBONS_21_TO_24[1]
+            return self.RANK_OFFSET_RIBBONS_25_TO_28[1]
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getRibbonAwardCount(self):
