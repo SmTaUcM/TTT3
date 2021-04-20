@@ -1,6 +1,6 @@
 xOffset = 0.4 # netative moves right, positive moves left.
-yOffset = -5.0 # negative moves up, positive moves down.
 zOffset = 0.0 # negative moves towards chest, positive moves away from chest.
+yOffset = -5.0 # negative moves up, positive moves down.
 
 boundMin = "<73.352531, -133.862488, 197.740814>"
 boundMax = "<96.213715, -125.819641, 203.273270>"
@@ -70,7 +70,7 @@ def translateVectors(input):
 
     print(str(out[:-2]))
 
-
+# Output.
 translateVectors(boundMin)
 print("\n")
 translateVectors(boundMax)
