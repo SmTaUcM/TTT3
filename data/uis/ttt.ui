@@ -3332,7 +3332,7 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>AD Turtle Jerrar,</string>
+       <string>FA Turtle Jerrar,</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_12">

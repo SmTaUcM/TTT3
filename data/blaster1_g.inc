@@ -8,7 +8,7 @@
 //                                                 //
 /////////////////////////////////////////////////////
 
-// DESCRIPTION DH17 Blaster
+// DESCRIPTION DH-17 Blaster
 
 #declare fin_T_reallydullmetal = 
 finish 

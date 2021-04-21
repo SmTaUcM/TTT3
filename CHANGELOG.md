@@ -1,14 +1,15 @@
-# TTT3
+# TTT3 Changelog
 
 ## Description
 
-TIE Corps Tailoring Tool 3 (TTT3) represents a re-write of the TTT2 code.  It supports greater
-integration with the Emperor's Hammer/TIE Corps web site and database, and provides for several
-new options.
+TIE Corps Tailoring Tool 3 (TTT3) is the next generation uniform tool for the Emperor's Hammer 
+and TIE Corps.  It supports greater integration with the Emperor's Hammer/TIE Corps web site and 
+databases, and provides for several new options.
 
 ## Important Notes
 
-After importing your profile via the Import tab, please verify the accuracy of all information.
+After importing your profile via the Import tab, please verify the accuracy of all information
+before rendering your uniform.
 
 Report problems or concerns to the Internet Office at io@emperorshammer.org, or open an issue 
 at https://github.com/emperorshammer/issues-incoming-queue.
@@ -19,7 +20,8 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 
 ### PENDING ###
 CHANGED: - Updated shoulder marks for EH Command Staff positions.
-ADDED: - Miscellaneous: Added sidearm option for duty uniforms with support for left or right handed carry.
+
+## [3.0.0 Beta 1] 2021-04-21
 
 ### Added
 - At runtime, TTT3 will synchronize with the Emperor's Hammer/TIE Corps database to obtain current
@@ -35,13 +37,15 @@ GOE.
 - Added three additional lightsaber models.  Lightsabers may be displayed on both the duty and dress
 uniforms for members that have achieved the rank of Sith Knight in the Emperor's Hammer Dark
 Brotherhood.
+- Added sidearm option for duty uniforms with support for left or right handed carry of the DH-17 or
+SE-14r.
 - Added viewer after successful uniform render, which allows saving the finished uniform to a
 user-specific location.
 - Implemented the Iron Star - Copper Wings and Copper Ribbon.
 - Render options: Added option for transparent background.
 
 ### Changed
-- Re-write using Python and QT.
+- Re-write using Python 3 and QT.
 - Improved appearance of wing devices on ribbons (IS, DFC, etc.).
 - Expanded Order of the Vanguard to a maximum of 39th echelon.  The base ribbon indicates 1 year of
 service, with a white pip representing an additional year, a gold pip representing 5 years,

@@ -62,8 +62,8 @@ class TTT3(QMainWindow):
         try:
             # Version info.
             version = "3.0.0"
-            devVersion = "Alpha 24"
-            date = "20 April 2021"
+            devVersion = "Beta 1"
+            date = "21 April 2021"
             self.saveFileVersion = 1
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
@@ -1798,7 +1798,7 @@ class TTT3(QMainWindow):
             elif "&EE&" in line:
                 if self.eeCount >= 3:
                     povData.append(line.replace("&EE&", "#declare prae = 1;"))
-                    self.gui.label_11.setText("AD Turtle Jerrar,")
+                    self.gui.label_11.setText("FA Turtle Jerrar,")
                     self.gui.label_11.setStyleSheet("")
 
             elif "&CLOTH&" in line:

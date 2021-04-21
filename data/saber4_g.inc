@@ -1,7 +1,7 @@
-/////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////
 //                                                      //
 //  TIE Corps Dress Uniform                             //
-//  Lighsaber model 4 - SL Braz Ile / AD Turtle Jerrar  //
+//  Lighsaber model 4 - SL Braz Ile / FA Turtle Jerrar  //
 //                                                      //
 //  Settings in this file are not affected by TTT       //
 //                                                      //

@@ -78,7 +78,7 @@ texture
 #declare T_Metallic = T_test;
 
 #include "blaster2_o.inc";
-//#include "blaster2_left_o.inc";
+#include "blaster2_left_o.inc";
 
 #declare blaster2_right = P_blaster2_obj;
-#declare blaster2_left = P_blaster2_obj;
+#declare blaster2_left = P_blaster2_left_obj;

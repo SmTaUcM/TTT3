@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////
 //                                                      //
 //  TIE Corps Dress Uniform                             //
-//  Lighsaber model 5 'Kamjin' - AD Turtle Jerrar       //
+//  Lighsaber model 5 'Kamjin' - FA Turtle Jerrar       //
 //                                                      //
 //  Settings in this file are not affected by TTT       //
 //                                                      //
