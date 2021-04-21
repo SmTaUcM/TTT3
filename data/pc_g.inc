@@ -16,7 +16,7 @@
 #declare T_pc = 
 texture
 {
-  pigment { image_map { gif ".\medals\pc.gif" } }
+  pigment { image_map { gif "medals/pc.gif" } }
   finish  { fin_T_uni } 
 }
 texture { T_unilayer }    

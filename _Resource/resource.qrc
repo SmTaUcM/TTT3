@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>palette.png</file>
     <file>io.png</file>
     <file>python.png</file>
     <file>Qt_logo.png</file>

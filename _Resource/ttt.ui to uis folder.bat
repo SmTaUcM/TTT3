@@ -1,1 +1,0 @@
-copy ttt.ui ..\data\uis\ttt.ui

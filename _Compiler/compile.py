@@ -59,6 +59,8 @@ os.rename(ttt3Dir + "\\_Compiler\\dist", ttt3Dir + "\\_Compiler\\TTT3")
 shutil.copytree(ttt3Dir + "\\settings", ttt3Dir + "\\_Compiler\\TTT3\\settings")
 shutil.copytree(ttt3Dir + "\\data", ttt3Dir + "\\_Compiler\\TTT3\\data")
 shutil.copy(ttt3Dir + "\\TTT3_readme.htm", ttt3Dir + "\\_Compiler\\TTT3\\")
+shutil.copy(ttt3Dir + "\\CHANGELOG.md", ttt3Dir + "\\_Compiler\\TTT3\\")
+shutil.copy(ttt3Dir + "\\LICENSE.md", ttt3Dir + "\\_Compiler\\TTT3\\")
 
 # Create TTT3.zip for distribution.
 print("\nCreating TTT3.zip. Please wait...")
