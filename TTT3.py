@@ -583,7 +583,7 @@ class TTT3(QMainWindow):
 
                     # Commodore.
                     elif radioButton == self.gui.rb_pos_com:
-                        self.showRanks(RA, HA)
+                        self.showRanks(RA, GA)
                         self.position = "COM"
 
                         # Set the options available to the user in the 'Wing and Squadron' tab.
