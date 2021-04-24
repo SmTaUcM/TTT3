@@ -223,6 +223,7 @@ class TTT3(QMainWindow):
             self.position = None
             self.rank = None
             self.name = "Unknown"
+            self.callsign = "None"
             self.pin = None
             self.ship = ""
             self.wing = ""
@@ -1108,8 +1109,8 @@ class TTT3(QMainWindow):
             # Decorations.
             # Helmet Text.
             if self.nameHelm == "EH TC":
-                if self.name != "Unknown":
-                    self.nameHelm = self.name.upper()[:12].rstrip(" ")
+                if self.callsign != "None":
+                    self.nameHelm = self.callsign.upper()[:12].rstrip(" ")
             self.preview.le_helmText.setText(self.nameHelm)
             self.preview.fcb_helmFont.setCurrentFont(self.fontHelmQFront)
 
@@ -3682,6 +3683,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.position = None
             self.rank = None
             self.name = "Unknown"
+            self.callsign = "None"
+            self.nameHelm = "EH TC"
             self.ship = ""
             self.wing = ""
             self.sqn = ""
@@ -3850,6 +3853,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     else:
                         self.gui.rb_blasterRight.setChecked(True)
 
+                    # Callsign.
+                    self.callsign = saveData[20]
+
                 else:
                     # Show error message.
                     msg = "%s is not compatible with this version of TTT3.\nPlease save a new profile." % fileName.split("\\")[-1]
@@ -3871,7 +3877,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         self.sqn, self.awards, self.deconflictNeckRibbons, self.gui.cbFCHG.currentText(), self.gui.cb_dressLightsaber.isChecked(),
                         self.gui.cb_dressSaberStyles.currentIndex(), self.gui.rb_dressSaberRight.isChecked(), self.gui.rb_daggerLeft.isChecked(),
                         self.gui.cb_dutyLightsaber.isChecked(), self.gui.cb_dutySaberStyles.currentIndex(), self.gui.rb_dutySaberRight.isChecked(),
-                        self.gui.cb_dutyBlaster.isChecked(), self.gui.cb_dutyBlasterStyles.currentIndex(), self.gui.rb_blasterLeft.isChecked())
+                        self.gui.cb_dutyBlaster.isChecked(), self.gui.cb_dutyBlasterStyles.currentIndex(), self.gui.rb_blasterLeft.isChecked(),
+                        self.callsign)
 
             # Save the data.
             fileName = self.saveUniformFileDialog()
@@ -3946,7 +3953,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 if "error" not in apiData.keys():
 
                     # Name
-                    self.name = apiData.get("label").replace(apiData.get("rankAbbr") + " ", "")
+                    self.name = apiData.get("name")
+
+                    # Callsign
+                    self.callsign = apiData.get("callsign")
 
                     # PIN
                     self.pin = apiData.get("PIN")
@@ -5527,10 +5537,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for restting helmet decorations options.'''
 
         self.nameHelm = "EH TC"
-        if self.name == "Unknown":
+        if self.callsign == "None":
             self.preview.le_helmText.setText(self.nameHelm)
         else:
-            self.preview.le_helmText.setText(self.name)
+            self.preview.le_helmText.setText(self.callsign)
 
         self.fontHelmQFront = QFont("impact")
         self.preview.fcb_helmFont.setCurrentFont(self.fontHelmQFront)
