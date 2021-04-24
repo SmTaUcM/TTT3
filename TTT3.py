@@ -5417,7 +5417,6 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     if not self.loadingHelm:
                         self.preview.le_helmLogo1Filepath.setText("")
                         self.logo1FilepathHelm = ""
-                        self.lastRenderData = self.getUniformData()
                         # Show error message.
                         msg = "%s does not have a transparent background." % self.preview.le_helmLogo1Filepath.text().split("\\")[-1]
                         return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
@@ -5450,7 +5449,6 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     if not self.loadingHelm:
                         self.preview.le_helmLogo2Filepath.setText("")
                         self.logo2FilepathHelm = ""
-                        self.lastRenderData = self.getUniformData()
                         # Show error message.
                         msg = "%s does not have a transparent background." % self.preview.le_helmLogo2Filepath.text().split("\\")[-1]
                         return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
@@ -5475,7 +5473,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 if self.logo1FilepathHelm != "":
                     path = os.path.dirname(self.logo1FilepathHelm) + "\\"
                 else:
-                    path = "C:\\users\\" + os.getlogin() + "\\Pictures\\"
+                    path = os.getcwd() + "\\data\\misc\\"
             elif logoNum == 2:
                 if self.logo2FilepathHelm != "":
                     path = os.path.dirname(self.logo2FilepathHelm) + "\\"
@@ -5483,7 +5481,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     if self.logo1FilepathHelm != "":
                         path = os.path.dirname(self.logo1FilepathHelm) + "\\"
                     else:
-                        path = "C:\\users\\" + os.getlogin() + "\\Pictures\\"
+                        path = os.getcwd() + "\\data\\misc\\"
 
             # Open the file picker.
             options = QFileDialog.Options()
