@@ -1119,12 +1119,14 @@ class TTT3(QMainWindow):
             logo1Type = self.logo1TypeHelm  # Used to reset user options during the addition of combo box items.
             logo2Type = self.logo2TypeHelm
 
+            self.loadingHelm = True
             for widget in widgets:
                 widget.clear()
                 if self.sqn == "":
                     widget.addItems(["Image - bg. transparent", "Image - stencil mask", "None"])
                 else:
                     widget.addItems(["Squadron Patch", "Image - bg. transparent", "Image - stencil mask", "None"])
+            self.loadingHelm = False
 
             self.logo1TypeHelm = logo1Type
             self.logo2TypeHelm = logo2Type
@@ -1137,10 +1139,10 @@ class TTT3(QMainWindow):
                 self.preview.cb_hemlLogo2Type.setCurrentIndex(1)
                 self.logo2FilepathHelm = os.getcwd() + "\\data\\misc\\tiecorps_logo_new.png"
 
-            self.cb_previewHemlLogo1TypeFunc()
-            self.cb_previewHemlLogo2TypeFunc()
             self.preview.le_helmLogo1Filepath.setText(self.logo1FilepathHelm)
             self.preview.le_helmLogo2Filepath.setText(self.logo2FilepathHelm)
+            self.cb_previewHemlLogo1TypeFunc()
+            self.cb_previewHemlLogo2TypeFunc()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def renderPreview(self):
@@ -5412,12 +5414,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     return
                 else:
                     self.logo1TypeHelm = self.preview.cb_hemlLogo1Type.currentText()
-                    self.preview.le_helmLogo1Filepath.setText("")
-                    self.logo1FilepathHelm = ""
-                    self.lastRenderData = self.getUniformData()
-                    # Show error message.
-                    msg = "%s does not have a transparent background." % self.preview.le_helmLogo1Filepath.text().split("\\")[-1]
-                    return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+                    if not self.loadingHelm:
+                        self.preview.le_helmLogo1Filepath.setText("")
+                        self.logo1FilepathHelm = ""
+                        self.lastRenderData = self.getUniformData()
+                        # Show error message.
+                        msg = "%s does not have a transparent background." % self.preview.le_helmLogo1Filepath.text().split("\\")[-1]
+                        return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
 
         elif self.preview.cb_hemlLogo1Type.currentText() == "None":
             self.preview.le_helmLogo1Filepath.setEnabled(False)
@@ -5444,12 +5447,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     return
                 else:
                     self.logo2TypeHelm = self.preview.cb_hemlLogo2Type.currentText()
-                    self.preview.le_helmLogo2Filepath.setText("")
-                    self.logo2FilepathHelm = ""
-                    self.lastRenderData = self.getUniformData()
-                    # Show error message.
-                    msg = "%s does not have a transparent background." % self.preview.le_helmLogo2Filepath.text().split("\\")[-1]
-                    return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+                    if not self.loadingHelm:
+                        self.preview.le_helmLogo2Filepath.setText("")
+                        self.logo2FilepathHelm = ""
+                        self.lastRenderData = self.getUniformData()
+                        # Show error message.
+                        msg = "%s does not have a transparent background." % self.preview.le_helmLogo2Filepath.text().split("\\")[-1]
+                        return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
 
         elif self.preview.cb_hemlLogo2Type.currentText() == "None":
             self.preview.le_helmLogo2Filepath.setEnabled(False)
