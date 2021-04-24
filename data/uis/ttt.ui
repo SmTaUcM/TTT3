@@ -310,7 +310,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
         </font>
        </property>
        <property name="text">
-        <string>Subgroup Commander (SGCOM)</string>
+        <string>Group Commanding Officer (GCO)</string>
        </property>
       </widget>
       <widget class="QRadioButton" name="rb_pos_cs">
