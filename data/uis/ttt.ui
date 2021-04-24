@@ -1245,9 +1245,9 @@ QListWidget:!enabled
      <widget class="QListWidget" name="lw_medals">
       <property name="geometry">
        <rect>
-        <x>12</x>
+        <x>4</x>
         <y>35</y>
-        <width>251</width>
+        <width>262</width>
         <height>231</height>
        </rect>
       </property>
