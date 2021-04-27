@@ -4337,9 +4337,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         try:
             if self.gui.rb_dressSaberLeft.isChecked():
+                self.gui.rb_dutySaberLeft.setChecked(True)
                 self.gui.rb_daggerRight.setChecked(True)
+                self.gui.rb_blasterRight.setChecked(True)
             else:
+                self.gui.rb_dutySaberRight.setChecked(True)
                 self.gui.rb_daggerLeft.setChecked(True)
+                self.gui.rb_blasterLeft.setChecked(True)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4349,9 +4353,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         try:
             if self.gui.rb_daggerLeft.isChecked():
+                self.gui.rb_blasterLeft.setChecked(True)
                 self.gui.rb_dressSaberRight.setChecked(True)
+                self.gui.rb_dutySaberRight.setChecked(True)
             else:
+                self.gui.rb_blasterRight.setChecked(True)
                 self.gui.rb_dressSaberLeft.setChecked(True)
+                self.gui.rb_dutySaberLeft.setChecked(True)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4406,9 +4414,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         try:
             if self.gui.rb_blasterLeft.isChecked():
+                self.gui.rb_daggerLeft.setChecked(True)
                 self.gui.rb_dutySaberRight.setChecked(True)
+                self.gui.rb_dressSaberRight.setChecked(True)
             else:
+                self.gui.rb_daggerRight.setChecked(True)
                 self.gui.rb_dutySaberLeft.setChecked(True)
+                self.gui.rb_dressSaberLeft.setChecked(True)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4418,9 +4430,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         try:
             if self.gui.rb_dutySaberLeft.isChecked():
+                self.gui.rb_dressSaberLeft.setChecked(True)
                 self.gui.rb_blasterRight.setChecked(True)
+                self.gui.rb_daggerRight.setChecked(True)
             else:
+                self.gui.rb_dressSaberRight.setChecked(True)
                 self.gui.rb_blasterLeft.setChecked(True)
+                self.gui.rb_daggerLeft.setChecked(True)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#

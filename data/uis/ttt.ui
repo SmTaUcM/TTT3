@@ -2008,7 +2008,7 @@ QListWidget:!enabled
     </widget>
     <widget class="QWidget" name="tabMisc">
      <attribute name="title">
-      <string>Miscellaneous</string>
+      <string>Weapons</string>
      </attribute>
      <widget class="QTabWidget" name="tw_misc">
       <property name="geometry">
