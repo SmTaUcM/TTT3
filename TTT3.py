@@ -770,6 +770,28 @@ class TTT3(QMainWindow):
                         self.rank = "GA"
                         break
 
+            # Apply any previous Ship/Wing/Sqn options.
+            if self.ship != "":
+                for row in range(self.gui.lw_ship.count()):
+                    self.gui.lw_ship.setCurrentRow(row)
+                    if self.gui.lw_ship.currentItem().text() == self.ship:
+                        break
+                self.shipSelectionLogic(None)
+
+            if self.wing != "":
+                for row in range(self.gui.lw_wing.count()):
+                    self.gui.lw_wing.setCurrentRow(row)
+                    if self.gui.lw_wing.currentItem().text() == self.wing:
+                        break
+                self.wingSelectionLogic(None)
+
+            if self.sqn != "":
+                for row in range(self.gui.lw_squad.count()):
+                    self.gui.lw_squad.setCurrentRow(row)
+                    if self.gui.lw_squad.currentItem().text() == self.sqn:
+                        break
+                self.squadSelectionLogic(None)
+
             # Enable the Dress and Duty Uniform buttons.
             self.gui.btn_dress.setEnabled(True)
             self.gui.btn_duty.setEnabled(True)
@@ -2647,7 +2669,6 @@ color_map
         try:
             # Clear the 'Wing' ListWidget.
             self.gui.lw_wing.clear()
-            self.wing = ""
 
             try:
                 # Save the selected option.
@@ -2666,6 +2687,11 @@ color_map
                     for wing in self.fleetConfig.get("wings"):
                         if wing.get("uniformData").get("parentId") == shipId:
                             self.gui.lw_wing.addItem(wing.get("name"))
+
+                    # If only one Wing exists, select it by default.
+                    if self.gui.lw_wing.count() == 1:
+                        self.gui.lw_wing.setCurrentRow(0)
+
                     self.wingSelectionLogic(None)
 
                 else:
@@ -2685,7 +2711,6 @@ color_map
         try:
             # Clear the 'Squadron' ListWidget.
             self.gui.lw_squad.clear()
-            self.sqn = ""
 
             try:
                 # Save the selected option.
