@@ -319,6 +319,7 @@ class TTT3(QMainWindow):
             self.combo_topConnected = False
             self.rb_upgradeablesConnected = False
             self.imagePath = None
+            self.savedImage = ""
 
             # ----- Application logic. -----
             self.queue = queue.Queue()
@@ -1350,15 +1351,17 @@ class TTT3(QMainWindow):
             self.output_gui.groupBox.setMaximumHeight(self.output_gui.groupBox.height() - yOffset)
             self.output_gui.setMinimumHeight(self.output_gui.height() - yOffset)
             self.output_gui.setMaximumHeight(self.output_gui.height() - yOffset)
-            for button in [self.output_gui.btn_saveAs, self.output_gui.btn_upload, self.output_gui.btn_close]:
+            for button in [self.output_gui.btn_saveAs, self.output_gui.btn_open, self.output_gui.btn_close]:
                 pos = button.pos()
                 pos.setY(pos.y() - yOffset)
                 button.move(pos)
         self.output_gui.lbl_output.installEventFilter(self)
         self.resizeOutput()
         self.output_gui.show()
-        self.output_gui.btn_upload.setEnabled(False)  # TODO Upload to TC Database buttton disabled UTFN.
+        self.savedImage = ""
+        self.output_gui.btn_open.setEnabled(False)
         self.output_gui.btn_saveAs.clicked.connect(self.btn_saveAsFunc)
+        self.output_gui.btn_open.clicked.connect(self.btn_openFunc)
         self.output_gui.btn_close.clicked.connect(self.outputCloseEvent)
         self.output_gui.closeEvent = self.outputCloseEvent
         self.preview.hide()
@@ -1429,7 +1432,7 @@ class TTT3(QMainWindow):
         self.output_gui.lbl_output.move(pos)
 
         # Place the buttons in the correct place.
-        for button in [self.output_gui.btn_saveAs, self.output_gui.btn_upload, self.output_gui.btn_close]:
+        for button in [self.output_gui.btn_saveAs, self.output_gui.btn_open, self.output_gui.btn_close]:
             pos = button.pos()
             try:
                 pos.setX(pos.x() + round(xOffset / 2))
@@ -1450,15 +1453,24 @@ class TTT3(QMainWindow):
             else:
                 name = "untitled"
             saveName, ext = QFileDialog.getSaveFileName(
-                self, "Save Uniform As", "C:\\users\\" + os.getlogin() + "\\Pictures\\%s" %
+                self, "Save Uniform As", os.getcwd() + "\\Data\\%s" %
                 name + "_" + self.uniform.title(), "*.png;;*.jpg;;*.gif;;*.bmp", options=options)
             ext = ext.replace("*", "")
             if saveName:
                 saveName = saveName.replace(r"/", "\\") + ext
                 self.convertImage(self.imagePath, ext, saveName)
+                self.savedImage = saveName
+                self.output_gui.btn_open.setEnabled(True)
 
         except Exception as e:
             handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def btn_openFunc(self):
+        '''Method to open rendered image files once displayed and saved in the output window.'''
+
+        if self.savedImage != "":
+            subprocess.Popen(self.savedImage, shell=True)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def povrayMonitor(self, pid):
@@ -3409,10 +3421,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         quantity = 1
 
         # Special handling of awards for >24 ribbons. All ribbon awards are shifted downwards instead of moving the rank upward.
-        if self.getRibbonAwardCount() >24:
-            yOffset = -2.5 # Move all ribbons down half a ribbons height.
+        if self.getRibbonAwardCount() > 24:
+            yOffset = -2.5  # Move all ribbons down half a ribbons height.
         else:
-            yOffset = 0 # Do not move ribbons up or down.
+            yOffset = 0  # Do not move ribbons up or down.
 
         for award in self.awards:
             # Upgradeable and SubRibbon type awards.
@@ -4224,10 +4236,17 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             elif (event.type() == QEvent.ContextMenu and source is self.output_gui.lbl_output):
                 menu = QMenu()
                 saveAs = menu.addAction("Save As")
+                openImage = menu.addAction("Open Saved Image")
+                if self.savedImage != "":
+                    openImage.setEnabled(True)
+                else:
+                    openImage.setEnabled(False)
                 close = menu.addAction("Close")
                 action = menu.exec_(event.globalPos())
                 if action == saveAs:
                     self.btn_saveAsFunc()
+                elif action == openImage:
+                    self.btn_openFunc()
                 elif action == close:
                     self.outputCloseEvent(None)
                 return True

@@ -87,7 +87,7 @@ QPushButton:!enabled
      <string>Save As</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btn_upload">
+   <widget class="QPushButton" name="btn_open">
     <property name="enabled">
      <bool>true</bool>
     </property>
@@ -131,7 +131,7 @@ QPushButton:!enabled
 }</string>
     </property>
     <property name="text">
-     <string>Upload to TC Profile</string>
+     <string>Open Saved File</string>
     </property>
    </widget>
    <widget class="QGroupBox" name="groupBox">
