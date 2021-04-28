@@ -62,9 +62,9 @@ class TTT3(QMainWindow):
         try:
             # Version info.
             version = "3.0.0"
-            devVersion = "Beta 1"
-            date = "21 April 2021"
-            self.saveFileVersion = 1
+            devVersion = ""
+            date = "28 April 2021"
+            self.saveFileVersion = 1  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
             # Initialise an instance of a QT Main Window and load our GUI file 'data\uis\ttt.ui'.
