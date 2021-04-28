@@ -1294,7 +1294,15 @@ class TTT3(QMainWindow):
 
         # Apply the path depending on what the user has selected from within the Configuratrion window.
         if self.config.get("POV-Ray", "detection_mode") == "registry":
-            template = template.replace("&POVPATH&", self.getPathFromRegistry())
+            regPath = self.getPathFromRegistry()
+            if regPath != "POV-Ray Installation Not Found":
+                template = template.replace("&POVPATH&", regPath)
+            else:
+                msg = "TTT3 cannot find valid installion of POV-Ray.\n\nPlease ensure that POV-Ray v2.7 or greater is installed. " \
+                      + "The POV-Ray website can be found on the 'Info' tab." \
+                      + "\n\nYou can also set the POV-Ray installtion path manually from the 'Configuration' menu."
+                ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+                return
         else:
             template = template.replace("&POVPATH&", self.config.get("POV-Ray", "user_specified_path"))
 
@@ -1661,6 +1669,17 @@ class TTT3(QMainWindow):
 
         while not path:
             try:
+                # Test to see if POV-Ray is in the registry.
+                try:
+                    winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Software\\POV-Ray\\", 0, winreg.KEY_READ)
+                except FileNotFoundError:
+                    path = "POV-Ray Installation Not Found"
+                    self.config.set("POV-Ray", "registry_detected_path", path)
+                    self.saveSettings()
+                    msg = "Cannot find valid installion of POV-Ray in the Windows Registry."
+                    ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+                    return path
+
                 # Obtain the path to POV-Ray.
                 aKey = "Software\\POV-Ray\\v" + str(version) + "\\Windows\\"
                 values = winreg.OpenKey(winreg.HKEY_CURRENT_USER, aKey, 0, winreg.KEY_READ)
@@ -1674,8 +1693,16 @@ class TTT3(QMainWindow):
                 if version < 3.6:
                     aKey = "Software\\POV-Ray\\CurrentVersion\\Windows\\"
                     values = winreg.OpenKey(winreg.HKEY_CURRENT_USER, aKey)
-                    path = winreg.QueryValueEx(values, "Home")[0]
-                    self.config.set("POV-Ray", "detection_mode", "fallback")
+                    try:
+                        path = winreg.QueryValueEx(values, "Home")[0]
+                        self.config.set("POV-Ray", "detection_mode", "fallback")
+                    except FileNotFoundError:
+                        path = "POV-Ray Installation Not Found"
+                        self.config.set("POV-Ray", "registry_detected_path", path)
+                        self.saveSettings()
+                        msg = "Cannot find valid installion of POV-Ray in the Windows Registry."
+                        ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+                        return path
 
         # Add a backslash if required to the path.
         if path[-1] != "\\":
@@ -1691,7 +1718,7 @@ class TTT3(QMainWindow):
         else:
             # Raise an error if we can't find POV-Ray in the Windows Registry.
             msg = "Cannot find valid installion of POV-Ray in the Windows Registry."
-            return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+            ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
 
         # Save the detected path and return the value.
         self.config.set("POV-Ray", "registry_detected_path", path)
