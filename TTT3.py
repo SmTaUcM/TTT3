@@ -319,7 +319,6 @@ class TTT3(QMainWindow):
             self.combo_topConnected = False
             self.rb_upgradeablesConnected = False
             self.imagePath = None
-            self.savedImage = ""
 
             # ----- Application logic. -----
             self.queue = queue.Queue()
@@ -1380,8 +1379,6 @@ class TTT3(QMainWindow):
         self.output_gui.lbl_output.installEventFilter(self)
         self.resizeOutput()
         self.output_gui.show()
-        self.savedImage = ""
-        self.output_gui.btn_open.setEnabled(False)
         self.output_gui.btn_saveAs.clicked.connect(self.btn_saveAsFunc)
         self.output_gui.btn_open.clicked.connect(self.btn_openFunc)
         self.output_gui.btn_close.clicked.connect(self.outputCloseEvent)
@@ -1481,8 +1478,6 @@ class TTT3(QMainWindow):
             if saveName:
                 saveName = saveName.replace(r"/", "\\") + ext
                 self.convertImage(self.imagePath, ext, saveName)
-                self.savedImage = saveName
-                self.output_gui.btn_open.setEnabled(True)
 
         except Exception as e:
             handleException(e)
@@ -1491,8 +1486,7 @@ class TTT3(QMainWindow):
     def btn_openFunc(self):
         '''Method to open rendered image files once displayed and saved in the output window.'''
 
-        if self.savedImage != "":
-            subprocess.Popen(self.savedImage, shell=True)
+        subprocess.Popen(os.getcwd() + "\\data\\" + self.uniform + ".png", shell=True)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def povrayMonitor(self, pid):
@@ -4261,11 +4255,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             elif (event.type() == QEvent.ContextMenu and source is self.output_gui.lbl_output):
                 menu = QMenu()
                 saveAs = menu.addAction("Save As")
-                openImage = menu.addAction("Open Saved Image")
-                if self.savedImage != "":
-                    openImage.setEnabled(True)
-                else:
-                    openImage.setEnabled(False)
+                openImage = menu.addAction("Open Image")
                 close = menu.addAction("Close")
                 action = menu.exec_(event.globalPos())
                 if action == saveAs:
