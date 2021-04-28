@@ -310,7 +310,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
         </font>
        </property>
        <property name="text">
-        <string>Subgroup Commander (SGCOM)</string>
+        <string>Group Commanding Officer (GCO)</string>
        </property>
       </widget>
       <widget class="QRadioButton" name="rb_pos_cs">
@@ -1245,9 +1245,9 @@ QListWidget:!enabled
      <widget class="QListWidget" name="lw_medals">
       <property name="geometry">
        <rect>
-        <x>12</x>
+        <x>4</x>
         <y>35</y>
-        <width>251</width>
+        <width>262</width>
         <height>231</height>
        </rect>
       </property>
@@ -2008,7 +2008,7 @@ QListWidget:!enabled
     </widget>
     <widget class="QWidget" name="tabMisc">
      <attribute name="title">
-      <string>Miscellaneous</string>
+      <string>Weapons</string>
      </attribute>
      <widget class="QTabWidget" name="tw_misc">
       <property name="geometry">

@@ -62,9 +62,9 @@ class TTT3(QMainWindow):
         try:
             # Version info.
             version = "3.0.0"
-            devVersion = "Beta 1"
-            date = "21 April 2021"
-            self.saveFileVersion = 1
+            devVersion = ""
+            date = "1 May 2021"
+            self.saveFileVersion = 1  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
             # Initialise an instance of a QT Main Window and load our GUI file 'data\uis\ttt.ui'.
@@ -223,6 +223,7 @@ class TTT3(QMainWindow):
             self.position = None
             self.rank = None
             self.name = "Unknown"
+            self.callsign = "None"
             self.pin = None
             self.ship = ""
             self.wing = ""
@@ -318,6 +319,7 @@ class TTT3(QMainWindow):
             self.combo_topConnected = False
             self.rb_upgradeablesConnected = False
             self.imagePath = None
+            self.savedImage = ""
 
             # ----- Application logic. -----
             self.queue = queue.Queue()
@@ -583,7 +585,7 @@ class TTT3(QMainWindow):
 
                     # Commodore.
                     elif radioButton == self.gui.rb_pos_com:
-                        self.showRanks(RA, HA)
+                        self.showRanks(RA, GA)
                         self.position = "COM"
 
                         # Set the options available to the user in the 'Wing and Squadron' tab.
@@ -767,6 +769,28 @@ class TTT3(QMainWindow):
                     elif radioButton == self.gui.rb_rank_ga:
                         self.rank = "GA"
                         break
+
+            # Apply any previous Ship/Wing/Sqn options.
+            if self.ship != "":
+                for row in range(self.gui.lw_ship.count()):
+                    self.gui.lw_ship.setCurrentRow(row)
+                    if self.gui.lw_ship.currentItem().text() == self.ship:
+                        break
+                self.shipSelectionLogic(None)
+
+            if self.wing != "":
+                for row in range(self.gui.lw_wing.count()):
+                    self.gui.lw_wing.setCurrentRow(row)
+                    if self.gui.lw_wing.currentItem().text() == self.wing:
+                        break
+                self.wingSelectionLogic(None)
+
+            if self.sqn != "":
+                for row in range(self.gui.lw_squad.count()):
+                    self.gui.lw_squad.setCurrentRow(row)
+                    if self.gui.lw_squad.currentItem().text() == self.sqn:
+                        break
+                self.squadSelectionLogic(None)
 
             # Enable the Dress and Duty Uniform buttons.
             self.gui.btn_dress.setEnabled(True)
@@ -1108,8 +1132,8 @@ class TTT3(QMainWindow):
             # Decorations.
             # Helmet Text.
             if self.nameHelm == "EH TC":
-                if self.name != "Unknown":
-                    self.nameHelm = self.name.upper()[:12].rstrip(" ")
+                if self.callsign != "None":
+                    self.nameHelm = self.callsign.upper()[:12].rstrip(" ")
             self.preview.le_helmText.setText(self.nameHelm)
             self.preview.fcb_helmFont.setCurrentFont(self.fontHelmQFront)
 
@@ -1118,12 +1142,14 @@ class TTT3(QMainWindow):
             logo1Type = self.logo1TypeHelm  # Used to reset user options during the addition of combo box items.
             logo2Type = self.logo2TypeHelm
 
+            self.loadingHelm = True
             for widget in widgets:
                 widget.clear()
                 if self.sqn == "":
                     widget.addItems(["Image - bg. transparent", "Image - stencil mask", "None"])
                 else:
                     widget.addItems(["Squadron Patch", "Image - bg. transparent", "Image - stencil mask", "None"])
+            self.loadingHelm = False
 
             self.logo1TypeHelm = logo1Type
             self.logo2TypeHelm = logo2Type
@@ -1136,10 +1162,10 @@ class TTT3(QMainWindow):
                 self.preview.cb_hemlLogo2Type.setCurrentIndex(1)
                 self.logo2FilepathHelm = os.getcwd() + "\\data\\misc\\tiecorps_logo_new.png"
 
-            self.cb_previewHemlLogo1TypeFunc()
-            self.cb_previewHemlLogo2TypeFunc()
             self.preview.le_helmLogo1Filepath.setText(self.logo1FilepathHelm)
             self.preview.le_helmLogo2Filepath.setText(self.logo2FilepathHelm)
+            self.cb_previewHemlLogo1TypeFunc()
+            self.cb_previewHemlLogo2TypeFunc()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def renderPreview(self):
@@ -1347,15 +1373,17 @@ class TTT3(QMainWindow):
             self.output_gui.groupBox.setMaximumHeight(self.output_gui.groupBox.height() - yOffset)
             self.output_gui.setMinimumHeight(self.output_gui.height() - yOffset)
             self.output_gui.setMaximumHeight(self.output_gui.height() - yOffset)
-            for button in [self.output_gui.btn_saveAs, self.output_gui.btn_upload, self.output_gui.btn_close]:
+            for button in [self.output_gui.btn_saveAs, self.output_gui.btn_open, self.output_gui.btn_close]:
                 pos = button.pos()
                 pos.setY(pos.y() - yOffset)
                 button.move(pos)
         self.output_gui.lbl_output.installEventFilter(self)
         self.resizeOutput()
         self.output_gui.show()
-        self.output_gui.btn_upload.setEnabled(False)  # TODO Upload to TC Database buttton disabled UTFN.
+        self.savedImage = ""
+        self.output_gui.btn_open.setEnabled(False)
         self.output_gui.btn_saveAs.clicked.connect(self.btn_saveAsFunc)
+        self.output_gui.btn_open.clicked.connect(self.btn_openFunc)
         self.output_gui.btn_close.clicked.connect(self.outputCloseEvent)
         self.output_gui.closeEvent = self.outputCloseEvent
         self.preview.hide()
@@ -1426,7 +1454,7 @@ class TTT3(QMainWindow):
         self.output_gui.lbl_output.move(pos)
 
         # Place the buttons in the correct place.
-        for button in [self.output_gui.btn_saveAs, self.output_gui.btn_upload, self.output_gui.btn_close]:
+        for button in [self.output_gui.btn_saveAs, self.output_gui.btn_open, self.output_gui.btn_close]:
             pos = button.pos()
             try:
                 pos.setX(pos.x() + round(xOffset / 2))
@@ -1447,15 +1475,24 @@ class TTT3(QMainWindow):
             else:
                 name = "untitled"
             saveName, ext = QFileDialog.getSaveFileName(
-                self, "Save Uniform As", "C:\\users\\" + os.getlogin() + "\\Pictures\\%s" %
+                self, "Save Uniform As", os.getcwd() + "\\Data\\%s" %
                 name + "_" + self.uniform.title(), "*.png;;*.jpg;;*.gif;;*.bmp", options=options)
             ext = ext.replace("*", "")
             if saveName:
                 saveName = saveName.replace(r"/", "\\") + ext
                 self.convertImage(self.imagePath, ext, saveName)
+                self.savedImage = saveName
+                self.output_gui.btn_open.setEnabled(True)
 
         except Exception as e:
             handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def btn_openFunc(self):
+        '''Method to open rendered image files once displayed and saved in the output window.'''
+
+        if self.savedImage != "":
+            subprocess.Popen(self.savedImage, shell=True)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def povrayMonitor(self, pid):
@@ -2632,7 +2669,6 @@ color_map
         try:
             # Clear the 'Wing' ListWidget.
             self.gui.lw_wing.clear()
-            self.wing = ""
 
             try:
                 # Save the selected option.
@@ -2651,6 +2687,11 @@ color_map
                     for wing in self.fleetConfig.get("wings"):
                         if wing.get("uniformData").get("parentId") == shipId:
                             self.gui.lw_wing.addItem(wing.get("name"))
+
+                    # If only one Wing exists, select it by default.
+                    if self.gui.lw_wing.count() == 1:
+                        self.gui.lw_wing.setCurrentRow(0)
+
                     self.wingSelectionLogic(None)
 
                 else:
@@ -2670,7 +2711,6 @@ color_map
         try:
             # Clear the 'Squadron' ListWidget.
             self.gui.lw_squad.clear()
-            self.sqn = ""
 
             try:
                 # Save the selected option.
@@ -3406,10 +3446,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         quantity = 1
 
         # Special handling of awards for >24 ribbons. All ribbon awards are shifted downwards instead of moving the rank upward.
-        if self.getRibbonAwardCount() >24:
-            yOffset = -2.5 # Move all ribbons down half a ribbons height.
+        if self.getRibbonAwardCount() > 24:
+            yOffset = -2.5  # Move all ribbons down half a ribbons height.
         else:
-            yOffset = 0 # Do not move ribbons up or down.
+            yOffset = 0  # Do not move ribbons up or down.
 
         for award in self.awards:
             # Upgradeable and SubRibbon type awards.
@@ -3682,6 +3722,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.position = None
             self.rank = None
             self.name = "Unknown"
+            self.callsign = "None"
+            self.nameHelm = "EH TC"
             self.ship = ""
             self.wing = ""
             self.sqn = ""
@@ -3850,6 +3892,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     else:
                         self.gui.rb_blasterRight.setChecked(True)
 
+                    # Callsign.
+                    self.callsign = saveData[20]
+
                 else:
                     # Show error message.
                     msg = "%s is not compatible with this version of TTT3.\nPlease save a new profile." % fileName.split("\\")[-1]
@@ -3871,7 +3916,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         self.sqn, self.awards, self.deconflictNeckRibbons, self.gui.cbFCHG.currentText(), self.gui.cb_dressLightsaber.isChecked(),
                         self.gui.cb_dressSaberStyles.currentIndex(), self.gui.rb_dressSaberRight.isChecked(), self.gui.rb_daggerLeft.isChecked(),
                         self.gui.cb_dutyLightsaber.isChecked(), self.gui.cb_dutySaberStyles.currentIndex(), self.gui.rb_dutySaberRight.isChecked(),
-                        self.gui.cb_dutyBlaster.isChecked(), self.gui.cb_dutyBlasterStyles.currentIndex(), self.gui.rb_blasterLeft.isChecked())
+                        self.gui.cb_dutyBlaster.isChecked(), self.gui.cb_dutyBlasterStyles.currentIndex(), self.gui.rb_blasterLeft.isChecked(),
+                        self.callsign)
 
             # Save the data.
             fileName = self.saveUniformFileDialog()
@@ -3946,7 +3992,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 if "error" not in apiData.keys():
 
                     # Name
-                    self.name = apiData.get("label").replace(apiData.get("rankAbbr") + " ", "")
+                    self.name = apiData.get("name")
+
+                    # Callsign
+                    self.callsign = apiData.get("callsign")
 
                     # PIN
                     self.pin = apiData.get("PIN")
@@ -4212,10 +4261,17 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             elif (event.type() == QEvent.ContextMenu and source is self.output_gui.lbl_output):
                 menu = QMenu()
                 saveAs = menu.addAction("Save As")
+                openImage = menu.addAction("Open Saved Image")
+                if self.savedImage != "":
+                    openImage.setEnabled(True)
+                else:
+                    openImage.setEnabled(False)
                 close = menu.addAction("Close")
                 action = menu.exec_(event.globalPos())
                 if action == saveAs:
                     self.btn_saveAsFunc()
+                elif action == openImage:
+                    self.btn_openFunc()
                 elif action == close:
                     self.outputCloseEvent(None)
                 return True
@@ -4325,9 +4381,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         try:
             if self.gui.rb_dressSaberLeft.isChecked():
+                self.gui.rb_dutySaberLeft.setChecked(True)
                 self.gui.rb_daggerRight.setChecked(True)
+                self.gui.rb_blasterRight.setChecked(True)
             else:
+                self.gui.rb_dutySaberRight.setChecked(True)
                 self.gui.rb_daggerLeft.setChecked(True)
+                self.gui.rb_blasterLeft.setChecked(True)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4337,9 +4397,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         try:
             if self.gui.rb_daggerLeft.isChecked():
+                self.gui.rb_blasterLeft.setChecked(True)
                 self.gui.rb_dressSaberRight.setChecked(True)
+                self.gui.rb_dutySaberRight.setChecked(True)
             else:
+                self.gui.rb_blasterRight.setChecked(True)
                 self.gui.rb_dressSaberLeft.setChecked(True)
+                self.gui.rb_dutySaberLeft.setChecked(True)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4394,9 +4458,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         try:
             if self.gui.rb_blasterLeft.isChecked():
+                self.gui.rb_daggerLeft.setChecked(True)
                 self.gui.rb_dutySaberRight.setChecked(True)
+                self.gui.rb_dressSaberRight.setChecked(True)
             else:
+                self.gui.rb_daggerRight.setChecked(True)
                 self.gui.rb_dutySaberLeft.setChecked(True)
+                self.gui.rb_dressSaberLeft.setChecked(True)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4406,9 +4474,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         try:
             if self.gui.rb_dutySaberLeft.isChecked():
+                self.gui.rb_dressSaberLeft.setChecked(True)
                 self.gui.rb_blasterRight.setChecked(True)
+                self.gui.rb_daggerRight.setChecked(True)
             else:
+                self.gui.rb_dressSaberRight.setChecked(True)
                 self.gui.rb_blasterLeft.setChecked(True)
+                self.gui.rb_daggerLeft.setChecked(True)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -5402,12 +5474,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     return
                 else:
                     self.logo1TypeHelm = self.preview.cb_hemlLogo1Type.currentText()
-                    self.preview.le_helmLogo1Filepath.setText("")
-                    self.logo1FilepathHelm = ""
-                    self.lastRenderData = self.getUniformData()
-                    # Show error message.
-                    msg = "%s does not have a transparent background." % self.preview.le_helmLogo1Filepath.text().split("\\")[-1]
-                    return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+                    if not self.loadingHelm:
+                        self.preview.le_helmLogo1Filepath.setText("")
+                        self.logo1FilepathHelm = ""
+                        # Show error message.
+                        msg = "%s does not have a transparent background." % self.preview.le_helmLogo1Filepath.text().split("\\")[-1]
+                        return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
 
         elif self.preview.cb_hemlLogo1Type.currentText() == "None":
             self.preview.le_helmLogo1Filepath.setEnabled(False)
@@ -5434,12 +5506,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     return
                 else:
                     self.logo2TypeHelm = self.preview.cb_hemlLogo2Type.currentText()
-                    self.preview.le_helmLogo2Filepath.setText("")
-                    self.logo2FilepathHelm = ""
-                    self.lastRenderData = self.getUniformData()
-                    # Show error message.
-                    msg = "%s does not have a transparent background." % self.preview.le_helmLogo2Filepath.text().split("\\")[-1]
-                    return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+                    if not self.loadingHelm:
+                        self.preview.le_helmLogo2Filepath.setText("")
+                        self.logo2FilepathHelm = ""
+                        # Show error message.
+                        msg = "%s does not have a transparent background." % self.preview.le_helmLogo2Filepath.text().split("\\")[-1]
+                        return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
 
         elif self.preview.cb_hemlLogo2Type.currentText() == "None":
             self.preview.le_helmLogo2Filepath.setEnabled(False)
@@ -5461,7 +5533,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 if self.logo1FilepathHelm != "":
                     path = os.path.dirname(self.logo1FilepathHelm) + "\\"
                 else:
-                    path = "C:\\users\\" + os.getlogin() + "\\Pictures\\"
+                    path = os.getcwd() + "\\data\\misc\\"
             elif logoNum == 2:
                 if self.logo2FilepathHelm != "":
                     path = os.path.dirname(self.logo2FilepathHelm) + "\\"
@@ -5469,7 +5541,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     if self.logo1FilepathHelm != "":
                         path = os.path.dirname(self.logo1FilepathHelm) + "\\"
                     else:
-                        path = "C:\\users\\" + os.getlogin() + "\\Pictures\\"
+                        path = os.getcwd() + "\\data\\misc\\"
 
             # Open the file picker.
             options = QFileDialog.Options()
@@ -5527,10 +5599,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for restting helmet decorations options.'''
 
         self.nameHelm = "EH TC"
-        if self.name == "Unknown":
+        if self.callsign == "None":
             self.preview.le_helmText.setText(self.nameHelm)
         else:
-            self.preview.le_helmText.setText(self.name)
+            self.preview.le_helmText.setText(self.callsign)
 
         self.fontHelmQFront = QFont("impact")
         self.preview.fcb_helmFont.setCurrentFont(self.fontHelmQFront)
