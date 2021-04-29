@@ -860,6 +860,7 @@ class TTT3(QMainWindow):
 
         # Show the preview GUI.
         self.preview.show()
+        setPixelSizes(self.preview)
         self.preview.closeEvent = self.previewCloseEvent
         self.gui.hide()
 
@@ -939,6 +940,7 @@ class TTT3(QMainWindow):
 
         # Show the preview GUI.
         self.preview.show()
+        setPixelSizes(self.preview)
         self.preview.closeEvent = self.previewCloseEvent
         self.gui.hide()
 
@@ -1388,6 +1390,7 @@ class TTT3(QMainWindow):
         self.output_gui.lbl_output.installEventFilter(self)
         self.resizeOutput()
         self.output_gui.show()
+        setPixelSizes(self.output_gui)
         self.output_gui.btn_saveAs.clicked.connect(self.btn_saveAsFunc)
         self.output_gui.btn_open.clicked.connect(self.btn_openFunc)
         self.output_gui.btn_close.clicked.connect(self.outputCloseEvent)
@@ -1412,8 +1415,8 @@ class TTT3(QMainWindow):
         # Determine if the user's selected width and height extend beyond their monitor's display output and display at max screen resolution if so.
         screenWidth, screenHeight = getScreenResolution()
 
-        if height - 160 > screenHeight:  # 160 pixels to account for groupbox and lower buttons.
-            height = screenHeight - 160
+        if height > screenHeight - 180:  # 180 pixels to account for groupbox and lower buttons.
+            height = screenHeight - 180
             if self.uniform != "helmet":
                 width = getX(height)
             else:
@@ -1577,6 +1580,7 @@ class TTT3(QMainWindow):
             # Load our GUI file 'data\uis\config.ui'.
             self.config_gui = uic.loadUi(r"data\uis\config.ui")
             self.config_gui.show()
+            setPixelSizes(self.config_gui)
 
             # GUI Connections.
             self.config_gui.btn_config_close.clicked.connect(self.config_gui.close)
@@ -6173,19 +6177,20 @@ def getScreenResolution():
     return user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
+
 def setPixelSizes(tgtGUI):
-    '''Function that handles font scalling fron pointSize to pixelSize for a given GUI.'''
+    '''Function that handles font scalling fron pointSize to pixelSize for a given GUI.
+       pixelSize is used instead of the regular pointSize in order to scale text properly for high DPI monitor settings.'''
 
     for widget in vars(tgtGUI):
         try:
             font = vars(tgtGUI).get(widget).font()
             font.setPixelSize(font.pointSize() + 3)
             vars(tgtGUI).get(widget).setFont(font)
-
         except AttributeError:
             pass
-
     #------------------------------------------------------------------------------------------------------------------------------------------------#
+
 
 def handleException(exception):
     '''Function that will log all python exceptions to TTT3 Crash.log.'''
