@@ -3912,7 +3912,6 @@ QPushButton:!enabled
     </property>
    </widget>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <tabstops>
   <tabstop>tabWidget</tabstop>

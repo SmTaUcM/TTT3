@@ -466,6 +466,7 @@ class TTT3(QMainWindow):
             time.sleep(2)  # Allow time for the checkUpdates thread to download a new fleet definition.
             for ship in self.fleetConfig.get("ships"):
                 self.gui.lw_ship.addItem(ship.get("nameShort"))
+        setLWPixelSizes(self.gui.lw_ship)
 
         # Load Medal and Ribbon data.
         self.loadMedals()
@@ -678,6 +679,7 @@ class TTT3(QMainWindow):
                 self.gui.lw_ship.clear()
                 for ship in self.fleetConfig.get("ships"):
                     self.gui.lw_ship.addItem(ship.get("nameShort"))
+            setLWPixelSizes(self.gui.lw_ship)
 
         else:
             self.gui.cb_eliteSqn.setChecked(False)
@@ -2720,6 +2722,7 @@ color_map
                     for wing in self.fleetConfig.get("wings"):
                         if wing.get("uniformData").get("parentId") == shipId:
                             self.gui.lw_wing.addItem(wing.get("name"))
+                    setLWPixelSizes(self.gui.lw_wing)
 
                     # If only one Wing exists, select it by default.
                     if self.gui.lw_wing.count() == 1:
@@ -2761,6 +2764,7 @@ color_map
                     for squad in self.fleetConfig.get("squadrons"):
                         if squad.get("uniformData").get("parentId") == wingId:
                             self.gui.lw_squad.addItem(squad.get("name"))
+                    setLWPixelSizes(self.gui.lw_squad)
                 else:
                     self.gui.lw_squad.clear()
 
@@ -2801,6 +2805,7 @@ color_map
                 # Add the Ships to the Ships list view.
                 for ship in self.fleetConfig.get("ships"):
                     self.gui.lw_ship.addItem(ship.get("nameShort"))
+                setLWPixelSizes(self.gui.lw_ship)
 
             elif value == 2:
                 # Clear and disable the Ship and Wing List Widgets.
@@ -2842,6 +2847,7 @@ color_map
 
             # Add the medal name to the GUI.
             self.gui.lw_medals.addItem(self.medalConfig.get(medal, "name"))
+        setLWPixelSizes(self.gui.lw_medals)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def loadRibbons(self):
@@ -2914,6 +2920,8 @@ color_map
                         # Add the ribbon to ribbons_g.inc
                         if "upgrade" in option:
                             ribbons_g += self.addToRibbonIncludes(self.getFilename(self.ribbonConfig.get(ribbon, option)))
+
+        setLWPixelSizes(self.gui.lw_medals)
 
         with open("data\\ribbons_g.inc", "w") as ribbonFile:
             ribbonFile.write(ribbons_g)
@@ -4240,6 +4248,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             for item in self.pinData:
                 if item != "\n":
                     self.gui.lw_presets.addItem(item.split("#")[0])
+            setLWPixelSizes(self.gui.lw_presets)
 
         except FileNotFoundError:
             pass  # No pin.dat file is saved.
@@ -6021,7 +6030,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lightY = -6474
             self.lightZ = -10000
 
-        # TTT2 Default # Bookmark
+        # TTT2 Default
         elif intIndex == 10:
             self.lightX = 15185
             self.lightY = -6474
@@ -6196,6 +6205,17 @@ def setPixelSizes(tgtGUI):
             vars(tgtGUI).get(widget).setFont(font)
         except AttributeError:
             pass
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+def setLWPixelSizes(listWidget, pixelSize=13):
+    '''Function that handles font scalling fron pointSize to pixelSize for a given QListWidget.
+       pixelSize is used instead of the regular pointSize in order to scale text properly for high DPI monitor settings.'''
+
+    for entry in range(listWidget.count()):
+        font = listWidget.item(entry).font()
+        font.setPixelSize(pixelSize)
+        listWidget.item(entry).setFont(font)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
