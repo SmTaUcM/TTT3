@@ -10,19 +10,19 @@
     <x>0</x>
     <y>0</y>
     <width>785</width>
-    <height>601</height>
+    <height>590</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>785</width>
-    <height>601</height>
+    <height>590</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>785</width>
-    <height>601</height>
+    <height>590</height>
    </size>
   </property>
   <property name="contextMenuPolicy">
@@ -3249,7 +3249,6 @@ QLineEdit:!enabled
    <zorder>gb_surfProps</zorder>
    <zorder>gb_options_3</zorder>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <customwidgets>
   <customwidget>
