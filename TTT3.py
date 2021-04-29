@@ -320,6 +320,7 @@ class TTT3(QMainWindow):
             self.combo_topConnected = False
             self.rb_upgradeablesConnected = False
             self.imagePath = None
+            self.launchingPOVRay = False
 
             # ----- Application logic. -----
             self.queue = queue.Queue()
@@ -1223,6 +1224,7 @@ class TTT3(QMainWindow):
         '''Method that dynamically launches POV-Ray with the correct paths.
            The "uniform" argument takes "dress", "duty or "helmet" which is dependant on which button has been pressed.'''
 
+        self.launchingPOVRay = True
         self.lastRenderData = self.getUniformData()
         self.preview.btn_raytrace.setEnabled(False)
         QApplication.processEvents()
@@ -1301,10 +1303,11 @@ class TTT3(QMainWindow):
             if regPath != "POV-Ray Installation Not Found":
                 template = template.replace("&POVPATH&", regPath)
             else:
-                msg = "TTT3 cannot find valid installion of POV-Ray.\n\nPlease ensure that POV-Ray v2.7 or greater is installed. " \
+                msg = "TTT3 cannot find valid installion of POV-Ray.\n\nPlease ensure that POV-Ray v3.7 or greater is installed. " \
                       + "The POV-Ray website can be found on the 'Info' tab." \
                       + "\n\nYou can also set the POV-Ray installtion path manually from the 'Configuration' menu."
                 ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+                self.launchingPOVRay = False
                 return
         else:
             template = template.replace("&POVPATH&", self.config.get("POV-Ray", "user_specified_path"))
@@ -1331,6 +1334,8 @@ class TTT3(QMainWindow):
         else:
             self.showPreviewImage()
             self.queue.task_done()
+
+        self.launchingPOVRay = False
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def showPreviewImage(self):
@@ -1681,8 +1686,9 @@ class TTT3(QMainWindow):
                     path = "POV-Ray Installation Not Found"
                     self.config.set("POV-Ray", "registry_detected_path", path)
                     self.saveSettings()
-                    msg = "Cannot find valid installion of POV-Ray in the Windows Registry."
-                    ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+                    if not self.launchingPOVRay:
+                        msg = "Cannot find valid installion of POV-Ray in the Windows Registry."
+                        ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
                     return path
 
                 # Obtain the path to POV-Ray.
@@ -1705,8 +1711,9 @@ class TTT3(QMainWindow):
                         path = "POV-Ray Installation Not Found"
                         self.config.set("POV-Ray", "registry_detected_path", path)
                         self.saveSettings()
-                        msg = "Cannot find valid installion of POV-Ray in the Windows Registry."
-                        ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+                        if not self.launchingPOVRay:
+                            msg = "Cannot find valid installion of POV-Ray in the Windows Registry."
+                            ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
                         return path
 
         # Add a backslash if required to the path.
