@@ -1223,9 +1223,9 @@ QListWidget:!enabled
      <widget class="QListWidget" name="lw_medals">
       <property name="geometry">
        <rect>
-        <x>4</x>
+        <x>3</x>
         <y>35</y>
-        <width>262</width>
+        <width>270</width>
         <height>231</height>
        </rect>
       </property>
@@ -1241,7 +1241,7 @@ QListWidget:!enabled
      <widget class="QGroupBox" name="gb_medals">
       <property name="geometry">
        <rect>
-        <x>270</x>
+        <x>277</x>
         <y>10</y>
         <width>256</width>
         <height>256</height>
@@ -2141,7 +2141,7 @@ QListWidget:!enabled
           <rect>
            <x>15</x>
            <y>25</y>
-           <width>111</width>
+           <width>121</width>
            <height>17</height>
           </rect>
          </property>
@@ -2298,7 +2298,7 @@ QListWidget:!enabled
           <rect>
            <x>15</x>
            <y>25</y>
-           <width>111</width>
+           <width>121</width>
            <height>17</height>
           </rect>
          </property>
@@ -2450,7 +2450,7 @@ QListWidget:!enabled
           <rect>
            <x>15</x>
            <y>24</y>
-           <width>101</width>
+           <width>121</width>
            <height>17</height>
           </rect>
          </property>
