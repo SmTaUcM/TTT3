@@ -73,6 +73,7 @@ class TTT3(QMainWindow):
             self.gui.pb_update.hide()
             self.gui.lbl_update.hide()
             self.gui.show()
+            setPixelSizes(self.gui)
             self.gui.closeEvent = self.closeEvent
             self.gui.keyPressEvent = self.keyPressEvent
 
@@ -249,9 +250,9 @@ class TTT3(QMainWindow):
             self.lookX = 0
             self.lookY = -128
             self.lookZ = 28
-            self.lightX = 15185
+            self.lightX = 10000
             self.lightY = -6474
-            self.lightZ = 17501
+            self.lightZ = 10000
             self.helmColour = QColor(33, 33, 33)
             self.bgColourHelm = QColor(69, 79, 112)
             self.decColour = QColor(147, 147, 147)
@@ -5059,7 +5060,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lightXHelm = value
             self.preview.lbl_LightX.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetLight.setCurrentIndex(10)
+        self.preview.cb_PresetLight.setCurrentIndex(11)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLightYFunc(self, value):
@@ -5072,7 +5073,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lightYHelm = value
             self.preview.lbl_LightY.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetLight.setCurrentIndex(10)
+        self.preview.cb_PresetLight.setCurrentIndex(11)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLightZFunc(self, value):
@@ -5085,7 +5086,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lightZHelm = value
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetLight.setCurrentIndex(10)
+        self.preview.cb_PresetLight.setCurrentIndex(11)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetLightFunc(self):
@@ -5951,9 +5952,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for preview light presets.'''
 
         if intIndex == 0:
-            self.lightX = 15185
+            self.lightX = 10000
             self.lightY = -6474
-            self.lightZ = 17501
+            self.lightZ = 10000
 
         # Top Left.
         elif intIndex == 1:
@@ -6009,7 +6010,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lightY = -6474
             self.lightZ = -10000
 
-        if intIndex != 10:
+        # TTT2 Default
+        elif intIndex == 10:
+            self.lightX = 15185
+            self.lightY = -6474
+            self.lightZ = -17501
+
+        if intIndex != 11:
             self.renderPreview()
             self.preview.vs_LightX.setValue(self.lightX)
             self.preview.lbl_LightX.setText(self.convertIntToFloatStr(self.lightX, 10))
@@ -6166,6 +6173,19 @@ def getScreenResolution():
     return user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
+def setPixelSizes(tgtGUI):
+    '''Function that handles font scalling fron pointSize to pixelSize for a given GUI.'''
+
+    for widget in vars(tgtGUI):
+        try:
+            font = vars(tgtGUI).get(widget).font()
+            font.setPixelSize(font.pointSize() + 3)
+            vars(tgtGUI).get(widget).setFont(font)
+
+        except AttributeError:
+            pass
+
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
 
 def handleException(exception):
     '''Function that will log all python exceptions to TTT3 Crash.log.'''

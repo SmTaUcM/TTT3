@@ -45,8 +45,8 @@
      <rect>
       <x>46</x>
       <y>10</y>
-      <width>521</width>
-      <height>51</height>
+      <width>561</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="font">
@@ -62,32 +62,10 @@
      <string notr="true">color: rgb(6, 22, 125);</string>
     </property>
     <property name="text">
-     <string>TIECorps Tailoring Tool</string>
+     <string/>
     </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>562</x>
-      <y>11</y>
-      <width>41</width>
-      <height>60</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>50</pointsize>
-      <weight>75</weight>
-      <italic>true</italic>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: rgb(6, 22, 125);</string>
-    </property>
-    <property name="text">
-     <string>3</string>
+    <property name="pixmap">
+     <pixmap resource="../../_Resource/resource.qrc">:/icons/title.png</pixmap>
     </property>
    </widget>
    <widget class="QTabWidget" name="tabWidget">
@@ -373,9 +351,9 @@ margin-top: 2px; /* make non-selected tabs look smaller */
       <widget class="QRadioButton" name="rb_pos_lr">
        <property name="geometry">
         <rect>
-         <x>71</x>
+         <x>66</x>
          <y>289</y>
-         <width>71</width>
+         <width>91</width>
          <height>17</height>
         </rect>
        </property>
@@ -393,9 +371,9 @@ margin-top: 2px; /* make non-selected tabs look smaller */
       <widget class="QRadioButton" name="rb_pos_fr">
        <property name="geometry">
         <rect>
-         <x>160</x>
+         <x>155</x>
          <y>289</y>
-         <width>71</width>
+         <width>91</width>
          <height>17</height>
         </rect>
        </property>
@@ -2049,7 +2027,7 @@ QListWidget:!enabled
           <rect>
            <x>15</x>
            <y>23</y>
-           <width>91</width>
+           <width>101</width>
            <height>17</height>
           </rect>
          </property>
@@ -2068,7 +2046,7 @@ QListWidget:!enabled
           <rect>
            <x>117</x>
            <y>23</y>
-           <width>101</width>
+           <width>111</width>
            <height>17</height>
           </rect>
          </property>
@@ -2106,7 +2084,7 @@ QListWidget:!enabled
           <rect>
            <x>117</x>
            <y>74</y>
-           <width>101</width>
+           <width>111</width>
            <height>17</height>
           </rect>
          </property>
@@ -2125,7 +2103,7 @@ QListWidget:!enabled
           <rect>
            <x>15</x>
            <y>74</y>
-           <width>91</width>
+           <width>101</width>
            <height>17</height>
           </rect>
          </property>
@@ -2263,7 +2241,7 @@ QListWidget:!enabled
           <rect>
            <x>117</x>
            <y>74</y>
-           <width>101</width>
+           <width>111</width>
            <height>17</height>
           </rect>
          </property>
@@ -2282,7 +2260,7 @@ QListWidget:!enabled
           <rect>
            <x>15</x>
            <y>74</y>
-           <width>91</width>
+           <width>101</width>
            <height>17</height>
           </rect>
          </property>
@@ -2415,7 +2393,7 @@ QListWidget:!enabled
           <rect>
            <x>15</x>
            <y>74</y>
-           <width>91</width>
+           <width>101</width>
            <height>17</height>
           </rect>
          </property>
@@ -2434,7 +2412,7 @@ QListWidget:!enabled
           <rect>
            <x>117</x>
            <y>74</y>
-           <width>101</width>
+           <width>111</width>
            <height>17</height>
           </rect>
          </property>
