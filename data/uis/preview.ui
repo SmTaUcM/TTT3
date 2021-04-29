@@ -2387,6 +2387,11 @@ QSlider::handle:vertical:hover
      </item>
      <item>
       <property name="text">
+       <string>TTT2 Default</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
        <string>Custom</string>
       </property>
      </item>

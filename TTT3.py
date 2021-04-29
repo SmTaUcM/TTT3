@@ -73,6 +73,7 @@ class TTT3(QMainWindow):
             self.gui.pb_update.hide()
             self.gui.lbl_update.hide()
             self.gui.show()
+            setPixelSizes(self.gui)
             self.gui.closeEvent = self.closeEvent
             self.gui.keyPressEvent = self.keyPressEvent
 
@@ -249,9 +250,9 @@ class TTT3(QMainWindow):
             self.lookX = 0
             self.lookY = -128
             self.lookZ = 28
-            self.lightX = 15185
-            self.lightY = -6474
-            self.lightZ = 17501
+            self.lightX = 13000
+            self.lightY = -15000
+            self.lightZ = 13000
             self.helmColour = QColor(33, 33, 33)
             self.bgColourHelm = QColor(69, 79, 112)
             self.decColour = QColor(147, 147, 147)
@@ -319,6 +320,7 @@ class TTT3(QMainWindow):
             self.combo_topConnected = False
             self.rb_upgradeablesConnected = False
             self.imagePath = None
+            self.launchingPOVRay = False
 
             # ----- Application logic. -----
             self.queue = queue.Queue()
@@ -859,6 +861,7 @@ class TTT3(QMainWindow):
 
         # Show the preview GUI.
         self.preview.show()
+        setPixelSizes(self.preview)
         self.preview.closeEvent = self.previewCloseEvent
         self.gui.hide()
 
@@ -938,6 +941,7 @@ class TTT3(QMainWindow):
 
         # Show the preview GUI.
         self.preview.show()
+        setPixelSizes(self.preview)
         self.preview.closeEvent = self.previewCloseEvent
         self.gui.hide()
 
@@ -1220,6 +1224,7 @@ class TTT3(QMainWindow):
         '''Method that dynamically launches POV-Ray with the correct paths.
            The "uniform" argument takes "dress", "duty or "helmet" which is dependant on which button has been pressed.'''
 
+        self.launchingPOVRay = True
         self.lastRenderData = self.getUniformData()
         self.preview.btn_raytrace.setEnabled(False)
         QApplication.processEvents()
@@ -1294,7 +1299,16 @@ class TTT3(QMainWindow):
 
         # Apply the path depending on what the user has selected from within the Configuratrion window.
         if self.config.get("POV-Ray", "detection_mode") == "registry":
-            template = template.replace("&POVPATH&", self.getPathFromRegistry())
+            regPath = self.getPathFromRegistry()
+            if regPath != "POV-Ray Installation Not Found":
+                template = template.replace("&POVPATH&", regPath)
+            else:
+                msg = "TTT3 cannot find valid installion of POV-Ray.\n\nPlease ensure that POV-Ray v3.7 or greater is installed. " \
+                      + "The POV-Ray website can be found on the 'Info' tab." \
+                      + "\n\nYou can also set the POV-Ray installtion path manually from the 'Configuration' menu."
+                ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+                self.launchingPOVRay = False
+                return
         else:
             template = template.replace("&POVPATH&", self.config.get("POV-Ray", "user_specified_path"))
 
@@ -1320,6 +1334,8 @@ class TTT3(QMainWindow):
         else:
             self.showPreviewImage()
             self.queue.task_done()
+
+        self.launchingPOVRay = False
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def showPreviewImage(self):
@@ -1379,6 +1395,7 @@ class TTT3(QMainWindow):
         self.output_gui.lbl_output.installEventFilter(self)
         self.resizeOutput()
         self.output_gui.show()
+        setPixelSizes(self.output_gui)
         self.output_gui.btn_saveAs.clicked.connect(self.btn_saveAsFunc)
         self.output_gui.btn_open.clicked.connect(self.btn_openFunc)
         self.output_gui.btn_close.clicked.connect(self.outputCloseEvent)
@@ -1403,8 +1420,8 @@ class TTT3(QMainWindow):
         # Determine if the user's selected width and height extend beyond their monitor's display output and display at max screen resolution if so.
         screenWidth, screenHeight = getScreenResolution()
 
-        if height - 160 > screenHeight:  # 160 pixels to account for groupbox and lower buttons.
-            height = screenHeight - 160
+        if height > screenHeight - 180:  # 180 pixels to account for groupbox and lower buttons.
+            height = screenHeight - 180
             if self.uniform != "helmet":
                 width = getX(height)
             else:
@@ -1568,6 +1585,7 @@ class TTT3(QMainWindow):
             # Load our GUI file 'data\uis\config.ui'.
             self.config_gui = uic.loadUi(r"data\uis\config.ui")
             self.config_gui.show()
+            setPixelSizes(self.config_gui)
 
             # GUI Connections.
             self.config_gui.btn_config_close.clicked.connect(self.config_gui.close)
@@ -1661,6 +1679,18 @@ class TTT3(QMainWindow):
 
         while not path:
             try:
+                # Test to see if POV-Ray is in the registry.
+                try:
+                    winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Software\\POV-Ray\\", 0, winreg.KEY_READ)
+                except FileNotFoundError:
+                    path = "POV-Ray Installation Not Found"
+                    self.config.set("POV-Ray", "registry_detected_path", path)
+                    self.saveSettings()
+                    if not self.launchingPOVRay:
+                        msg = "Cannot find valid installion of POV-Ray in the Windows Registry."
+                        ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+                    return path
+
                 # Obtain the path to POV-Ray.
                 aKey = "Software\\POV-Ray\\v" + str(version) + "\\Windows\\"
                 values = winreg.OpenKey(winreg.HKEY_CURRENT_USER, aKey, 0, winreg.KEY_READ)
@@ -1674,8 +1704,17 @@ class TTT3(QMainWindow):
                 if version < 3.6:
                     aKey = "Software\\POV-Ray\\CurrentVersion\\Windows\\"
                     values = winreg.OpenKey(winreg.HKEY_CURRENT_USER, aKey)
-                    path = winreg.QueryValueEx(values, "Home")[0]
-                    self.config.set("POV-Ray", "detection_mode", "fallback")
+                    try:
+                        path = winreg.QueryValueEx(values, "Home")[0]
+                        self.config.set("POV-Ray", "detection_mode", "fallback")
+                    except FileNotFoundError:
+                        path = "POV-Ray Installation Not Found"
+                        self.config.set("POV-Ray", "registry_detected_path", path)
+                        self.saveSettings()
+                        if not self.launchingPOVRay:
+                            msg = "Cannot find valid installion of POV-Ray in the Windows Registry."
+                            ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+                        return path
 
         # Add a backslash if required to the path.
         if path[-1] != "\\":
@@ -1691,7 +1730,7 @@ class TTT3(QMainWindow):
         else:
             # Raise an error if we can't find POV-Ray in the Windows Registry.
             msg = "Cannot find valid installion of POV-Ray in the Windows Registry."
-            return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+            ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
 
         # Save the detected path and return the value.
         self.config.set("POV-Ray", "registry_detected_path", path)
@@ -5032,7 +5071,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lightXHelm = value
             self.preview.lbl_LightX.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetLight.setCurrentIndex(10)
+        self.preview.cb_PresetLight.setCurrentIndex(11)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLightYFunc(self, value):
@@ -5045,7 +5084,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lightYHelm = value
             self.preview.lbl_LightY.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetLight.setCurrentIndex(10)
+        self.preview.cb_PresetLight.setCurrentIndex(11)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLightZFunc(self, value):
@@ -5058,7 +5097,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lightZHelm = value
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetLight.setCurrentIndex(10)
+        self.preview.cb_PresetLight.setCurrentIndex(11)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetLightFunc(self):
@@ -5066,13 +5105,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         try:
             if self.uniform != "helmet":
-                self.lightX = 15185
+                self.lightX = 13000
                 self.preview.vs_LightX.setValue(self.lightX)
                 self.preview.lbl_LightX.setText(self.convertIntToFloatStr(self.lightX, 10))
-                self.lightY = -6474
+                self.lightY = -15000
                 self.preview.vs_LightY.setValue(self.lightY)
                 self.preview.lbl_LightY.setText(self.convertIntToFloatStr(self.lightY, 10))
-                self.lightZ = 17501
+                self.lightZ = 13000
                 self.preview.vs_LightZ.setValue(self.lightZ)
                 self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZ, 10))
             else:
@@ -5924,9 +5963,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for preview light presets.'''
 
         if intIndex == 0:
-            self.lightX = 15185
-            self.lightY = -6474
-            self.lightZ = 17501
+            self.lightX = 13000
+            self.lightY = -15000
+            self.lightZ = 13000
 
         # Top Left.
         elif intIndex == 1:
@@ -5982,7 +6021,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lightY = -6474
             self.lightZ = -10000
 
-        if intIndex != 10:
+        # TTT2 Default # Bookmark
+        elif intIndex == 10:
+            self.lightX = 15185
+            self.lightY = -6474
+            self.lightZ = -17501
+
+        if intIndex != 11:
             self.renderPreview()
             self.preview.vs_LightX.setValue(self.lightX)
             self.preview.lbl_LightX.setText(self.convertIntToFloatStr(self.lightX, 10))
@@ -6137,6 +6182,20 @@ def getScreenResolution():
 
     user32 = ctypes.windll.user32
     return user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
+    #------------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+def setPixelSizes(tgtGUI):
+    '''Function that handles font scalling fron pointSize to pixelSize for a given GUI.
+       pixelSize is used instead of the regular pointSize in order to scale text properly for high DPI monitor settings.'''
+
+    for widget in vars(tgtGUI):
+        try:
+            font = vars(tgtGUI).get(widget).font()
+            font.setPixelSize(font.pointSize() + 3)
+            vars(tgtGUI).get(widget).setFont(font)
+        except AttributeError:
+            pass
     #------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
