@@ -249,9 +249,9 @@ class TTT3(QMainWindow):
             self.lookX = 0
             self.lookY = -128
             self.lookZ = 28
-            self.lightX = 10000
-            self.lightY = -6474
-            self.lightZ = 10000
+            self.lightX = 13000
+            self.lightY = -15000
+            self.lightZ = 13000
             self.helmColour = QColor(33, 33, 33)
             self.bgColourHelm = QColor(69, 79, 112)
             self.decColour = QColor(147, 147, 147)
@@ -5093,13 +5093,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         try:
             if self.uniform != "helmet":
-                self.lightX = 15185
+                self.lightX = 13000
                 self.preview.vs_LightX.setValue(self.lightX)
                 self.preview.lbl_LightX.setText(self.convertIntToFloatStr(self.lightX, 10))
-                self.lightY = -6474
+                self.lightY = -15000
                 self.preview.vs_LightY.setValue(self.lightY)
                 self.preview.lbl_LightY.setText(self.convertIntToFloatStr(self.lightY, 10))
-                self.lightZ = 17501
+                self.lightZ = 13000
                 self.preview.vs_LightZ.setValue(self.lightZ)
                 self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZ, 10))
             else:
@@ -5951,9 +5951,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for preview light presets.'''
 
         if intIndex == 0:
-            self.lightX = 10000
-            self.lightY = -6474
-            self.lightZ = 10000
+            self.lightX = 13000
+            self.lightY = -15000
+            self.lightZ = 13000
 
         # Top Left.
         elif intIndex == 1:
