@@ -6289,6 +6289,9 @@ if __name__ == "__main__":
     logging.basicConfig(filename="TTT3 Crash.log", filemode="a", level=logging.ERROR)
 
     # Start the QT application.
+    os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
     app = QApplication(sys.argv)
     ttt3 = TTT3()
     sys.exit(app.exec_())
