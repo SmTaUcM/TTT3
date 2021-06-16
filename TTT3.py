@@ -282,7 +282,7 @@ class TTT3(QMainWindow):
             self.fontHelmQFront = QFont("impact")
             self.logo1TypeHelm = "Image - stencil mask"
             self.logo2TypeHelm = "Squadron Patch"
-            self.logo1FilepathHelm = os.getcwd() + "\\data\\misc\\implogo.gif"
+            self.logo1FilepathHelm = os.getcwd() + "\\data\\misc\\tclogo.gif"
             self.logo2FilepathHelm = ""
 
             # PovRay Template Constants.
@@ -5646,7 +5646,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         self.preview.fcb_helmFont.setCurrentFont(self.fontHelmQFront)
 
         self.logo1TypeHelm = "Image - stencil mask"
-        self.logo1FilepathHelm = os.getcwd() + "\\data\\misc\\implogo.gif"
+        self.logo1FilepathHelm = os.getcwd() + "\\data\\misc\\tclogo.gif"
 
         if self.sqn != "":
             self.logo2TypeHelm = "Squadron Patch"
