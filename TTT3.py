@@ -5419,27 +5419,22 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def creatHelmetFaceDetail(self, colour):
         r'''Method used to add helmtex_b.gif to "data\helmet\hemltex.bmp.'''
 
-        colourRGB = colour.getRgb()
-
         # Convert helmtex_b.gif to a transparent background *.png.
         img = Image.open(os.getcwd() + "\\data\\helmet\\helmtex_b.gif")
         img = img.convert("RGBA")
         datas = img.getdata()
 
         # Make background transparent.
+        colourRGB = colour.getRgb()
         newData = []
         for item in datas:
             if item == (0, 0, 0, 255):
                 newData.append((255, 255, 255, 0))
             else: # Reduce the base helmet colour by the shader colours to create shading.
                 newData.append((colourRGB[0] - item[0], colourRGB[1] - item[1], colourRGB[2] - item[2], 255))
-
         img.putdata(newData)
-        img.save(os.getcwd() + "\\data\\helmet\\helmtex_b.png", "PNG")
 
         # Layer the transparent helmtex_b.png onto our coloured helmtex.bmp.
-        img = Image.open(os.getcwd() + "\\data\\helmet\\helmtex_b.png", 'r')
-
         img_w, img_h = img.size
         background = Image.open(os.getcwd() + "\\data\\helmet\\helmtex.bmp", 'r')
         bg_w, bg_h = background.size
