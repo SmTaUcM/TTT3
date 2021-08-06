@@ -180,6 +180,8 @@ class TTT3(QMainWindow):
             self.gui.cb_dutyLightsaber.stateChanged.connect(self.cb_dutyLightsaberFunc)
             self.gui.rb_dressSaberLeft.clicked.connect(self.saberDaggerDeconflict)
             self.gui.rb_dressSaberRight.clicked.connect(self.saberDaggerDeconflict)
+            self.gui.cb_dressSaberStyles.currentIndexChanged.connect(self.lightsaberDressSelectedFunc)
+            self.gui.cb_dutySaberStyles.currentIndexChanged.connect(self.lightsaberDutySelectedFunc)
             # GOE Options.
             self.gui.rb_daggerLeft.clicked.connect(self.daggerSaberDeconflict)
             self.gui.rb_daggerRight.clicked.connect(self.daggerSaberDeconflict)
@@ -4007,7 +4009,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getRetrieveAPIData(self, url, pin):
-        '''Method to retrieve TIE Corps Website API returned data and return it as a Python Disctionary.'''
+        '''Method to retrieve TIE Corps Website API returned data and return it as a Python Dictionary.'''
 
         http = urllib3.PoolManager()
         response = http.request("GET", url + pin)
@@ -4410,6 +4412,28 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     item.show()
                 else:
                     item.hide()
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lightsaberDressSelectedFunc(self):
+        '''Method that synchronises the duty saber with the dress saber when a lightsaber is selected from the dress combo box'''
+
+        try:
+            self.gui.cb_dutySaberStyles.currentIndexChanged.disconnect(self.lightsaberDutySelectedFunc)
+            self.gui.cb_dutySaberStyles.setCurrentIndex(self.gui.cb_dressSaberStyles.currentIndex())
+            self.gui.cb_dutySaberStyles.currentIndexChanged.connect(self.lightsaberDutySelectedFunc)
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lightsaberDutySelectedFunc(self):
+        '''Method that synchronises the dress saber with the duty saber when a lightsaber is selected from the duty combo box'''
+
+        try:
+            self.gui.cb_dressSaberStyles.currentIndexChanged.disconnect(self.lightsaberDressSelectedFunc)
+            self.gui.cb_dressSaberStyles.setCurrentIndex(self.gui.cb_dutySaberStyles.currentIndex())
+            self.gui.cb_dressSaberStyles.currentIndexChanged.connect(self.lightsaberDressSelectedFunc)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
