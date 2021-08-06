@@ -61,9 +61,9 @@ class TTT3(QMainWindow):
 
         try:
             # Version info.
-            version = "3.0.0"
-            devVersion = ""
-            date = "1 May 2021"
+            version = "3.0.1"
+            devVersion = "Beta 1"
+            date = "6 August 2021"
             self.saveFileVersion = 1  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
@@ -6357,6 +6357,9 @@ if __name__ == "__main__":
     logging.basicConfig(filename="TTT3 Crash.log", filemode="a", level=logging.ERROR)
 
     # Start the QT application.
+    os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
     app = QApplication(sys.argv)
     ttt3 = TTT3()
     sys.exit(app.exec_())
