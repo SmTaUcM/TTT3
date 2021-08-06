@@ -4745,9 +4745,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.colourDlg.setCurrentColor(colourOption)
             self.colourDlg.show()
             # Connections.
-            self.colourDlg.currentColorChanged.connect(lambda: self.colourSelected(self.colourDlg.currentColor(), optionStr, label, lineEdit))
-            self.colourDlg.finished.connect(lambda: self.closeColourPicker(oldRefreshSetting))
+            self.colourDlg.accepted.connect(lambda: self.colourSelected(self.colourDlg.currentColor(), optionStr, label, lineEdit))
             self.colourDlg.rejected.connect(lambda: self.cancelColourPicker(oldColourOption, optionStr, label, lineEdit))
+            self.colourDlg.finished.connect(lambda: self.closeColourPicker(oldRefreshSetting))
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
