@@ -2816,7 +2816,7 @@ QListWidget:!enabled
        <rect>
         <x>109</x>
         <y>75</y>
-        <width>121</width>
+        <width>111</width>
         <height>20</height>
        </rect>
       </property>
@@ -2829,7 +2829,7 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>LCM SkyShadow, </string>
+       <string>CM SkyShadow, </string>
       </property>
      </widget>
      <widget class="QLabel" name="lblVersion">
@@ -3295,7 +3295,7 @@ QListWidget:!enabled
      <widget class="QLabel" name="label_11">
       <property name="geometry">
        <rect>
-        <x>224</x>
+        <x>217</x>
         <y>75</y>
         <width>131</width>
         <height>20</height>
@@ -3310,13 +3310,13 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>FA Turtle Jerrar,</string>
+       <string>FA Turtle Jerrar</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_12">
       <property name="geometry">
        <rect>
-        <x>333</x>
+        <x>320</x>
         <y>75</y>
         <width>121</width>
         <height>20</height>
@@ -3395,7 +3395,7 @@ QListWidget:!enabled
      <widget class="QLabel" name="label_32">
       <property name="geometry">
        <rect>
-        <x>449</x>
+        <x>436</x>
         <y>75</y>
         <width>71</width>
         <height>20</height>
