@@ -273,7 +273,7 @@ class TTT3(QMainWindow):
             self.lightZHelm = 5282
             self.widthHelm = 640
             self.heightHelm = 548
-            self.qualityHelm = 7  # More than 7 creates graphical glitches around the nametag. Suspected due to createHelmetFaceCoulour()
+            self.qualityHelm = 9
             self.antiAliasingHelm = True
             self.shadowlessHelm = False
             self.homoHelm = False
@@ -5398,12 +5398,54 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         r'''Method used to create "data\helmet\hemltex.bmp with the user's selected helmet colour.'''
 
         # creating an image object
-        img = Image.open(os.getcwd() + "\\data\\helmet\\helmtex_m.gif").convert("L")
+        img = Image.open(os.getcwd() + "\\data\\helmet\\helmtex_m.gif")
 
         # image colorize function
-        rgb = colour.getRgb()[:3]
-        colouredImg = ImageOps.colorize(img, black="black", white=rgb)
-        colouredImg.save(os.getcwd() + "\\data\\helmet\\helmtex.bmp")
+        img = img.convert("RGBA")
+        datas = img.getdata()
+
+        newData = []
+        for item in datas:
+            if item == (255, 255, 255, 255):
+                newData.append(colour.getRgb())
+            else:
+                newData.append(item)
+
+        img.putdata(newData)
+        img.save(os.getcwd() + "\\data\\helmet\\helmtex.bmp", "BMP")
+        self.creatHelmetFaceDetail(colour)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def creatHelmetFaceDetail(self, colour):
+        r'''Method used to add helmtex_b.gif to "data\helmet\hemltex.bmp.'''
+
+        colourRGB = colour.getRgb()
+
+        # Convert helmtex_b.gif to a transparent background *.png.
+        img = Image.open(os.getcwd() + "\\data\\helmet\\helmtex_b.gif")
+        img = img.convert("RGBA")
+        datas = img.getdata()
+
+        # Make background transparent.
+        newData = []
+        for item in datas:
+            if item == (0, 0, 0, 255):
+                newData.append((255, 255, 255, 0))
+            else: # Reduce the base helmet colour by the shader colours to create shading.
+                newData.append((colourRGB[0] - item[0], colourRGB[1] - item[1], colourRGB[2] - item[2], 255))
+
+        img.putdata(newData)
+        img.save(os.getcwd() + "\\data\\helmet\\helmtex_b.png", "PNG")
+
+        # Layer the transparent helmtex_b.png onto our coloured helmtex.bmp.
+        img = Image.open(os.getcwd() + "\\data\\helmet\\helmtex_b.png", 'r')
+
+        img_w, img_h = img.size
+        background = Image.open(os.getcwd() + "\\data\\helmet\\helmtex.bmp", 'r')
+        bg_w, bg_h = background.size
+        offset = (((bg_w - img_w) // 2) + 86, ((bg_h - img_h) // 2) - 38)
+        background.paste(img, offset, mask=img)
+        background.save(os.getcwd() + "\\data\\helmet\\helmtex.bmp")
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_PaletteHelmDecFunc(self):
