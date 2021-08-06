@@ -18,6 +18,31 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 
 ## ------------------------------------------------------------------------------------------------##
 
+## [v3.0.1] 2021-08-06
+
+### Added
+- High DPI support allowing app scaling for high resolution monitors in Windows 10 via: 
+  Settings --> Display Settings --> Change the size of text, apps and other items
+- Reintroduced TTT2 helmet shading graphics.
+- Helmet name tags now support lowercase lettering.
+
+### Changed
+- New TIE Corps Logo is now the default graphic on helmets replacing the imperial cog.
+- Current fleet settings updated.
+- Weapons tab lightsaber style selection is now synchronised between dress and duty uniforms.
+- Helmet logo graphics restructured to make it clearer to the user which graphics are stencils and which
+  are transparencies.
+
+### Fixed
+- Preview colour picker cancel button now functions correctly.
+- Helmet grey detailing now displays properly instead of being black.
+- Selecting Squadron Patch followed by BG. Transparent in helmet preview no longer disables file selection.
+
+### Removed
+- None
+
+## ------------------------------------------------------------------------------------------------##
+
 ## [v3.0.0] 2021-05-01
 
 ### Added
