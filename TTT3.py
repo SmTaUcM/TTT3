@@ -5571,6 +5571,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def cb_previewHemlLogo1TypeFunc(self):
         '''Method for handling Decoration Logo ComboBox actions.'''
 
+        self.preview.le_helmLogo1Filepath.setEnabled(True)
+        self.preview.btn_helmLogo1Filepath.setEnabled(True)
+
         if self.preview.cb_hemlLogo1Type.currentText() == "Squadron Patch":
             self.preview.le_helmLogo1Filepath.setEnabled(False)
             self.preview.btn_helmLogo1Filepath.setEnabled(False)
@@ -5594,15 +5597,14 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.le_helmLogo1Filepath.setEnabled(False)
             self.preview.btn_helmLogo1Filepath.setEnabled(False)
 
-        else:
-            self.preview.le_helmLogo1Filepath.setEnabled(True)
-            self.preview.btn_helmLogo1Filepath.setEnabled(True)
-
         self.logo1TypeHelm = self.preview.cb_hemlLogo1Type.currentText()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewHemlLogo2TypeFunc(self):
         '''Method for handling Decoration Logo ComboBox actions.'''
+
+        self.preview.le_helmLogo2Filepath.setEnabled(True)
+        self.preview.btn_helmLogo2Filepath.setEnabled(True)
 
         if self.preview.cb_hemlLogo2Type.currentText() == "Squadron Patch":
             self.preview.le_helmLogo2Filepath.setEnabled(False)
@@ -5626,10 +5628,6 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         elif self.preview.cb_hemlLogo2Type.currentText() == "None":
             self.preview.le_helmLogo2Filepath.setEnabled(False)
             self.preview.btn_helmLogo2Filepath.setEnabled(False)
-
-        else:
-            self.preview.le_helmLogo2Filepath.setEnabled(True)
-            self.preview.btn_helmLogo2Filepath.setEnabled(True)
 
         self.logo2TypeHelm = self.preview.cb_hemlLogo2Type.currentText()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
