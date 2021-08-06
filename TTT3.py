@@ -1138,7 +1138,7 @@ class TTT3(QMainWindow):
             # Helmet Text.
             if self.nameHelm == "EH TC":
                 if self.callsign != "None":
-                    self.nameHelm = self.callsign.upper()[:12].rstrip(" ")
+                    self.nameHelm = self.callsign[:12].rstrip(" ")
             self.preview.le_helmText.setText(self.nameHelm)
             self.preview.fcb_helmFont.setCurrentFont(self.fontHelmQFront)
 
@@ -5523,7 +5523,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def le_previewHelmTextFunc(self, text):
         '''Method to handle text entry into the Helmet Text textbox.'''
 
-        self.nameHelm = str(self.preview.le_helmText.text()).upper()
+        self.nameHelm = str(self.preview.le_helmText.text())
         self.preview.le_helmText.setText(self.nameHelm)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
