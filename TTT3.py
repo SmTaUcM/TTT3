@@ -4711,7 +4711,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method to open the QColorDialog.'''
 
         try:
-            # Prevent auto-refrsh from spamming changes when picking a colour.
+            # Prevent auto-refresh from spamming changes to the render que when picking a colour.
+            oldColourOption = colourOption
             oldRefreshSetting = self.preview.cb_Refresh.isChecked()
             self.preview.cb_Refresh.setChecked(False)
 
@@ -4719,8 +4720,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.colourDlg = QColorDialog()
             self.colourDlg.setCurrentColor(colourOption)
             self.colourDlg.show()
+            # Connections.
             self.colourDlg.currentColorChanged.connect(lambda: self.colourSelected(self.colourDlg.currentColor(), optionStr, label, lineEdit))
             self.colourDlg.finished.connect(lambda: self.closeColourPicker(oldRefreshSetting))
+            self.colourDlg.rejected.connect(lambda: self.cancelColourPicker(oldColourOption, optionStr, label, lineEdit))
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4729,6 +4732,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for closing the colour picker.'''
 
         self.preview.cb_Refresh.setChecked(setting)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def cancelColourPicker(self, oldColourOption, optionStr, label, lineEdit):
+        '''Method for closing the colour picker.'''
+
+        self.colourSelected(oldColourOption, optionStr, label, lineEdit)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def colourSelected(self, colour, optionStr, label, lineEdit):
