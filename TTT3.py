@@ -284,7 +284,7 @@ class TTT3(QMainWindow):
             self.fontHelmQFront = QFont("impact")
             self.logo1TypeHelm = "Image - stencil mask"
             self.logo2TypeHelm = "Squadron Patch"
-            self.logo1FilepathHelm = os.getcwd() + "\\data\\misc\\tclogo.gif"
+            self.logo1FilepathHelm = os.getcwd() + "\\data\\misc\\Helmet Stencils\\tclogo.gif"
             self.logo2FilepathHelm = ""
 
             # PovRay Template Constants.
@@ -1167,7 +1167,7 @@ class TTT3(QMainWindow):
 
             if self.preview.cb_hemlLogo2Type.currentText() == "":  # If previous setting was 'Squadron Patch' (default) but it's not longer available.
                 self.preview.cb_hemlLogo2Type.setCurrentIndex(1)
-                self.logo2FilepathHelm = os.getcwd() + "\\data\\misc\\tiecorps_logo_new.png"
+                self.logo2FilepathHelm = os.getcwd() + "\\data\\misc\\Helmet Stencils\\tiecorps_logo_new.png"
 
             self.preview.le_helmLogo1Filepath.setText(self.logo1FilepathHelm)
             self.preview.le_helmLogo2Filepath.setText(self.logo2FilepathHelm)
@@ -5583,11 +5583,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 else:
                     self.logo1TypeHelm = self.preview.cb_hemlLogo1Type.currentText()
                     if not self.loadingHelm:
-                        self.preview.le_helmLogo1Filepath.setText("")
                         self.logo1FilepathHelm = ""
                         # Show error message.
-                        msg = "%s does not have a transparent background." % self.preview.le_helmLogo1Filepath.text().split("\\")[-1]
-                        return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+##                        msg = "%s does not have a transparent background." % self.preview.le_helmLogo1Filepath.text().split("\\")[-1]
+                        self.preview.le_helmLogo1Filepath.setText("")
+##                        return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+                        return
 
         elif self.preview.cb_hemlLogo1Type.currentText() == "None":
             self.preview.le_helmLogo1Filepath.setEnabled(False)
@@ -5615,11 +5616,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 else:
                     self.logo2TypeHelm = self.preview.cb_hemlLogo2Type.currentText()
                     if not self.loadingHelm:
-                        self.preview.le_helmLogo2Filepath.setText("")
                         self.logo2FilepathHelm = ""
                         # Show error message.
-                        msg = "%s does not have a transparent background." % self.preview.le_helmLogo2Filepath.text().split("\\")[-1]
-                        return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+##                        msg = "%s does not have a transparent background." % self.preview.le_helmLogo2Filepath.text().split("\\")[-1]
+                        self.preview.le_helmLogo2Filepath.setText("")
+##                        return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+                        return
 
         elif self.preview.cb_hemlLogo2Type.currentText() == "None":
             self.preview.le_helmLogo2Filepath.setEnabled(False)
@@ -5638,18 +5640,16 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         try:
             # Specify the starting directory to open the file picker from.
             if logoNum == 1:
-                if self.logo1FilepathHelm != "":
-                    path = os.path.dirname(self.logo1FilepathHelm) + "\\"
-                else:
-                    path = os.getcwd() + "\\data\\misc\\"
+                if self.preview.cb_hemlLogo1Type.currentText() == "Image - bg. transparent":
+                    path = os.getcwd() + "\\data\\misc\\Helmet Transparencies\\"
+                elif self.preview.cb_hemlLogo1Type.currentText() == "Image - stencil mask":
+                    path = os.getcwd() + "\\data\\misc\\Helmet Stencils\\"
+
             elif logoNum == 2:
-                if self.logo2FilepathHelm != "":
-                    path = os.path.dirname(self.logo2FilepathHelm) + "\\"
-                else:
-                    if self.logo1FilepathHelm != "":
-                        path = os.path.dirname(self.logo1FilepathHelm) + "\\"
-                    else:
-                        path = os.getcwd() + "\\data\\misc\\"
+                if self.preview.cb_hemlLogo2Type.currentText() == "Image - bg. transparent":
+                    path = os.getcwd() + "\\data\\misc\\Helmet Transparencies\\"
+                elif self.preview.cb_hemlLogo2Type.currentText() == "Image - stencil mask":
+                    path = os.getcwd() + "\\data\\misc\\Helmet Stencils\\"
 
             # Open the file picker.
             options = QFileDialog.Options()
@@ -5683,7 +5683,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                             self.preview.le_helmLogo2Filepath.setText(fileName)
                         else:
                             self.preview.le_helmLogo2Filepath.setText("")
-                            elf.logo2FilepathHelm = ""
+                            self.logo2FilepathHelm = ""
                             self.lastRenderData = self.getUniformData()
                             msg = "%s does not have a transparent background." % fileName.split("\\")[-1]
                             return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
@@ -5716,14 +5716,14 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         self.preview.fcb_helmFont.setCurrentFont(self.fontHelmQFront)
 
         self.logo1TypeHelm = "Image - stencil mask"
-        self.logo1FilepathHelm = os.getcwd() + "\\data\\misc\\tclogo.gif"
+        self.logo1FilepathHelm = os.getcwd() + "\\data\\misc\\Helmet Stencils\\tclogo.gif"
 
         if self.sqn != "":
             self.logo2TypeHelm = "Squadron Patch"
             self.logo2FilepathHelm = ""
         else:
             self.logo2TypeHelm = "Image - stencil mask"
-            self.logo2FilepathHelm = os.getcwd() + "\\data\\misc\\tiecorps_logo_new.png"
+            self.logo2FilepathHelm = os.getcwd() + "\\data\\misc\\Helmet Stencils\\tiecorps_logo_new.png"
 
         logo1Type = self.preview.cb_hemlLogo1Type.findText(self.logo1TypeHelm, Qt.MatchExactly | Qt.MatchCaseSensitive)
         logo2Type = self.preview.cb_hemlLogo2Type.findText(self.logo2TypeHelm, Qt.MatchExactly | Qt.MatchCaseSensitive)
