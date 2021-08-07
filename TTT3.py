@@ -5144,11 +5144,11 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         if self.uniform != "helmet":
             self.lightX = value
             self.preview.lbl_LightX.setText(self.convertIntToFloatStr(value, 10))
+            self.preview.cb_PresetLight.setCurrentIndex(11)
         else:
             self.lightXHelm = value
             self.preview.lbl_LightX.setText(self.convertIntToFloatStr(value, 100))
-
-        self.preview.cb_PresetLight.setCurrentIndex(11)
+            self.preview.cb_PresetLight.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLightYFunc(self, value):
@@ -5157,11 +5157,11 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         if self.uniform != "helmet":
             self.lightY = value
             self.preview.lbl_LightY.setText(self.convertIntToFloatStr(value, 10))
+            self.preview.cb_PresetLight.setCurrentIndex(11)
         else:
             self.lightYHelm = value
             self.preview.lbl_LightY.setText(self.convertIntToFloatStr(value, 100))
-
-        self.preview.cb_PresetLight.setCurrentIndex(11)
+            self.preview.cb_PresetLight.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLightZFunc(self, value):
@@ -5170,11 +5170,11 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         if self.uniform != "helmet":
             self.lightZ = value
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(value, 10))
+            self.preview.cb_PresetLight.setCurrentIndex(11)
         else:
             self.lightZHelm = value
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(value, 100))
-
-        self.preview.cb_PresetLight.setCurrentIndex(11)
+            self.preview.cb_PresetLight.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetLightFunc(self):
@@ -6209,85 +6209,85 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def lbl_CamXHelmFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
-        self.sliderValueInput(self.preview.vs_CamX, "Cam X", self.preview.lbl_CamX, -100, 100, 100)
+        self.sliderValueInput(self.preview.vs_CamX, "Cam X", self.preview.lbl_CamX, -100, 100, 100, 2, 0.01)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_CamYHelmFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
-        self.sliderValueInput(self.preview.vs_CamY, "Cam Y", self.preview.lbl_CamY, -100, 100, 100)
+        self.sliderValueInput(self.preview.vs_CamY, "Cam Y", self.preview.lbl_CamY, -100, 100, 100, 2, 0.01)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_CamZHelmFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
-        self.sliderValueInput(self.preview.vs_CamZ, "Cam Z", self.preview.lbl_CamZ, -100, 100, 100)
+        self.sliderValueInput(self.preview.vs_CamZ, "Cam Z", self.preview.lbl_CamZ, -100, 100, 100, 2, 0.01)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_LookXHelmFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
-        self.sliderValueInput(self.preview.vs_LookX, "Look X", self.preview.lbl_LookX, -100, 100, 100)
+        self.sliderValueInput(self.preview.vs_LookX, "Look X", self.preview.lbl_LookX, -100, 100, 100, 2, 0.01)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_LookYHelmFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
-        self.sliderValueInput(self.preview.vs_LookY, "Look Y", self.preview.lbl_LookY, -100, 100, 100)
+        self.sliderValueInput(self.preview.vs_LookY, "Look Y", self.preview.lbl_LookY, -100, 100, 100, 2, 0.01)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_LookZHelmFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
-        self.sliderValueInput(self.preview.vs_LookZ, "Look Z", self.preview.lbl_LookZ, -100, 100, 100)
+        self.sliderValueInput(self.preview.vs_LookZ, "Look Z", self.preview.lbl_LookZ, -100, 100, 100, 2, 0.01)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_LightXHelmFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
-        self.sliderValueInput(self.preview.vs_LightX, "Light X", self.preview.lbl_LightX, -100, 100, 100)
+        self.sliderValueInput(self.preview.vs_LightX, "Light X", self.preview.lbl_LightX, -100, 100, 100, 2, 0.01)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_LightYHelmFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
-        self.sliderValueInput(self.preview.vs_LightY, "Light Y", self.preview.lbl_LightY, -100, 100, 100)
+        self.sliderValueInput(self.preview.vs_LightY, "Light Y", self.preview.lbl_LightY, -100, 100, 100, 2, 0.01)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_LightZHelmFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
-        self.sliderValueInput(self.preview.vs_LightZ, "Light Z", self.preview.lbl_LightZ, -100, 100, 100)
+        self.sliderValueInput(self.preview.vs_LightZ, "Light Z", self.preview.lbl_LightZ, -100, 100, 100, 2, 0.01)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_AmbientFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
-        self.sliderValueInput(self.preview.vs_Ambient, "Ambient", self.preview.lbl_Ambient, 0, 1, 100)
+        self.sliderValueInput(self.preview.vs_Ambient, "Ambient", self.preview.lbl_Ambient, 0, 1, 100, 2, 0.01)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_SpecularFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
-        self.sliderValueInput(self.preview.vs_Specular, "Specular", self.preview.lbl_Specular, 0, 1, 100)
+        self.sliderValueInput(self.preview.vs_Specular, "Specular", self.preview.lbl_Specular, 0, 1, 100, 2, 0.01)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_RoughnessFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
-        self.sliderValueInput(self.preview.vs_Roughness, "Roughness", self.preview.lbl_Roughness, 0, 1, 100)
+        self.sliderValueInput(self.preview.vs_Roughness, "Roughness", self.preview.lbl_Roughness, 0, 1, 100, 2, 0.01)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_ReflectionFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
-        self.sliderValueInput(self.preview.vs_Reflection, "Reflection", self.preview.lbl_Reflection, 0, 1, 100)
+        self.sliderValueInput(self.preview.vs_Reflection, "Reflection", self.preview.lbl_Reflection, 0, 1, 100, 2, 0.01)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def sliderValueInput(self, slider, name, label, min, max, scale):
+    def sliderValueInput(self, slider, name, label, min, max, scale, decimals=1, step=0.1):
         '''Method directly asks the user for a slider input.'''
 
-        value, ok = QInputDialog.getDouble(self, "%s Value" % name, "Enter new value:", float(label.text()), min, max)
+        value, ok = QInputDialog.getDouble(self, "%s Value" % name, "Enter new value:", float(label.text()), min, max, decimals, Qt.WindowFlags(), step)
         if ok:
             slider.setValue(int(value * scale))
         #--------------------------------------------------------------------------------------------------------------------------------------------#
