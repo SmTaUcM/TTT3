@@ -1567,7 +1567,7 @@ class TTT3(QMainWindow):
 
         img = Image.open(src)
         new_img = img.resize((width, height))
-        newFilePath = dest.split(".")[0] + ext
+        newFilePath = dest.rsplit(".", 1)[0] + ext
         if ext == ".jpg":
             ext = ".jpeg"
         try:
@@ -2474,7 +2474,7 @@ color_map
 
                     if self.logo1TypeHelm == "Image - stencil mask":
                         filePath = self.logo1FilepathHelm.replace("\\", "/")
-                        ext = filePath.split(".")[1]
+                        ext = filePath.rsplit(".", 1)[1]
                         if ext == "jpg":
                             ext = "jpeg"
                         povData.append(line.replace("&LOGO1STENCIL&", r'%s "%s"' % (ext, filePath)))
@@ -2483,7 +2483,7 @@ color_map
                         self.createMask(self.logo1FilepathHelm)
                         filePath = self.logo1FilepathHelm.replace("\\", "/")
                         # Change file path to mask file.
-                        filePath = filePath.split(".")[0] + "_mask.png"
+                        filePath = filePath.rsplit('.', 1)[0] + "_mask.png"
                         povData.append(line.replace("&LOGO1STENCIL&", r'png "%s"' % (filePath)))
 
                     # None selected.
@@ -2495,7 +2495,7 @@ color_map
                     ext, filePath = self.findSquadPatch()
                     ext = ext.replace(".", "")
                     filePath = filePath.replace("data\\", "").replace("\\", "/")
-                    filePath = filePath.split(".")[0] + "_mask.png"
+                    filePath = filePath.rsplit(".", 1)[0] + "_mask.png"
                     povData.append(line.replace("&LOGO1STENCIL&", r'%s "%s"' % (ext, filePath)))
 
                 # No image selected.
@@ -2510,7 +2510,7 @@ color_map
 
                     elif self.logo1TypeHelm == "Image - bg. transparent":
                         filePath = self.logo1FilepathHelm.replace("\\", "/")
-                        ext = filePath.split(".")[1]
+                        ext = filePath.rsplit(".", 1)[1]
                         if ext == "jpg":
                             ext = "jpeg"
                         povData.append(line.replace("&LOGO1PIGMENT&", r'image_map { %s "%s" }' % (ext, filePath)))
@@ -2540,7 +2540,7 @@ color_map
 
                     if self.logo2TypeHelm == "Image - stencil mask":
                         filePath = self.logo2FilepathHelm.replace("\\", "/")
-                        ext = filePath.split(".")[1]
+                        ext = filePath.rsplit(".", 1)[1]
                         if ext == "jpg":
                             ext = "jpeg"
                         povData.append(line.replace("&LOGO2STENCIL&", r'%s "%s"' % (ext, filePath)))
@@ -2549,7 +2549,7 @@ color_map
                         self.createMask(self.logo2FilepathHelm)
                         filePath = self.logo2FilepathHelm.replace("\\", "/")
                         # Change file path to mask file.
-                        filePath = filePath.split(".")[0] + "_mask.png"
+                        filePath = filePath.rsplit(".", 1)[0] + "_mask.png"
                         povData.append(line.replace("&LOGO2STENCIL&", r'png "%s"' % (filePath)))
 
                     # None selected.
@@ -2561,7 +2561,7 @@ color_map
                     ext, filePath = self.findSquadPatch()
                     ext = ext.replace(".", "")
                     filePath = filePath.replace("data\\", "").replace("\\", "/")
-                    filePath = filePath.split(".")[0] + "_mask.png"
+                    filePath = filePath.rsplit(".", 1)[0] + "_mask.png"
                     povData.append(line.replace("&LOGO2STENCIL&", r'%s "%s"' % (ext, filePath)))
 
                 # No image selected.
@@ -2576,7 +2576,7 @@ color_map
 
                     elif self.logo2TypeHelm == "Image - bg. transparent":
                         filePath = self.logo2FilepathHelm.replace("\\", "/")
-                        ext = filePath.split(".")[1]
+                        ext = filePath.rsplit(".", 1)[1]
                         if ext == "jpg":
                             ext = "jpeg"
                         povData.append(line.replace("&LOGO2PIGMENT&", r'image_map { %s "%s" }' % (ext, filePath)))
@@ -2700,7 +2700,7 @@ color_map
             extension, fileName = self.findSquadPatch()
         else:
             fileName = filepath
-            extension = "." + fileName.split(".")[1]
+            extension = "." + fileName.rsplit(".", 1)[1]
 
         try:
             # Primary Mask Creation. Requires a transparent background.
@@ -5658,10 +5658,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.logo2TypeHelm = self.preview.cb_hemlLogo2Type.currentText()
                     if not self.loadingHelm:
                         self.logo2FilepathHelm = ""
-                        # Show error message.
-##                        msg = "%s does not have a transparent background." % self.preview.le_helmLogo2Filepath.text().split("\\")[-1]
                         self.preview.le_helmLogo2Filepath.setText("")
-##                        return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
                         return
 
         elif self.preview.cb_hemlLogo2Type.currentText() == "None":
