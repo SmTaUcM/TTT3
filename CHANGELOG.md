@@ -25,6 +25,7 @@ at https://github.com/emperorshammer/issues-incoming-queue.
   Settings --> Display Settings --> Change the size of text, apps and other items
 - Reintroduced TTT2 helmet shading graphics.
 - Helmet name tags now support lowercase lettering.
+- Uniform and helmet slider bar values can now be manually entered by clicking on their respective labels.
 
 ### Changed
 - New TIE Corps Logo is now the default graphic on helmets replacing the imperial cog.
