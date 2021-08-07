@@ -1570,7 +1570,11 @@ class TTT3(QMainWindow):
         newFilePath = dest.split(".")[0] + ext
         if ext == ".jpg":
             ext = ".jpeg"
-        new_img.save(newFilePath, ext.replace(".", ""))
+        try:
+            new_img.save(newFilePath, ext.replace(".", ""))
+        except PermissionError:
+            msg = "Error: TTT3 does not have permission to save files to %s\n\nPlease try saving to a different location." % newFilePath
+            return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def loadSettings(self):
