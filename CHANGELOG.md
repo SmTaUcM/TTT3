@@ -37,6 +37,7 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 - Preview colour picker cancel button now functions correctly.
 - Helmet grey detailing now displays properly instead of being black.
 - Selecting Squadron Patch followed by BG. Transparent in helmet preview no longer disables file selection.
+- TTT3 no longer crashes when opening legacy TTT2 .ttt profile files and will produce an error message to the user.
 
 ### Removed
 - None

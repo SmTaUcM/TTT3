@@ -3834,7 +3834,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             if fileName:
 
                 with open(fileName, "rb") as dataFile:
-                    saveData = pickle.load(dataFile)
+                    try:
+                        saveData = pickle.load(dataFile)
+                    except pickle.UnpicklingError:
+                        msg = "%s is not compatible with TTT3.\nPlease save a new profile." % fileName.split("\\")[-1]
+                        return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+
 
                 if saveData[0] == self.saveFileVersion:
                     # Apply the saved settings.
