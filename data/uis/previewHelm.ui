@@ -10,19 +10,19 @@
     <x>0</x>
     <y>0</y>
     <width>785</width>
-    <height>590</height>
+    <height>610</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>785</width>
-    <height>590</height>
+    <height>610</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>785</width>
-    <height>590</height>
+    <height>610</height>
    </size>
   </property>
   <property name="contextMenuPolicy">
@@ -156,7 +156,7 @@ QPushButton:!enabled
      </size>
     </property>
     <property name="title">
-     <string>POV-Ray preview</string>
+     <string>POV-Ray Preview</string>
     </property>
     <widget class="QLabel" name="lbl_preview">
      <property name="geometry">
@@ -1168,6 +1168,9 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Rotates the camera around the image Right (+) to Left (-).</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(170, 0, 0);</string>
      </property>
@@ -1234,6 +1237,9 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Zooms the camera In (+) and Out (-).</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(19, 104, 0);</string>
      </property>
@@ -1278,6 +1284,9 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Zooms the camera In (+) and Out (-).</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(0, 0, 127);</string>
      </property>
@@ -1318,6 +1327,9 @@ QSlider::handle:horizontal:hover
        <family>Arial</family>
        <pointsize>8</pointsize>
       </font>
+     </property>
+     <property name="toolTip">
+      <string>Changes the point the camera is looking at diagonally. Top Right (+) to Bottom Left (-).</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(19, 104, 0);</string>
@@ -1382,6 +1394,9 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Changes the point the camera is looking at. Right (+) and Left (-).</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(170, 0, 0);</string>
      </property>
@@ -1421,7 +1436,7 @@ QSlider::handle:horizontal:hover
       </rect>
      </property>
      <property name="toolTip">
-      <string>Pans the camera source Right (+) and Left (-).</string>
+      <string>Changes the point the camera is looking at. Right (+) and Left (-).</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -1478,6 +1493,9 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Changes the point the camera is looking at. Up (+) and Down (-).</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(0, 0, 127);</string>
      </property>
@@ -1495,7 +1513,7 @@ QSlider::handle:horizontal:hover
       </rect>
      </property>
      <property name="toolTip">
-      <string>Pans the camera source Back (+) to Front (-).</string>
+      <string>Changes the point the camera is looking at diagonally. Top Right (+) to Bottom Left (-).</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -1572,7 +1590,7 @@ QSlider::handle:horizontal:hover
       </rect>
      </property>
      <property name="toolTip">
-      <string>Pans the camera source Up (+) and Down (-).</string>
+      <string>Changes the point the camera is looking at. Up (+) and Down (-).</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -2121,6 +2139,9 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Pans the light source Right (+) and Left (-).</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(170, 0, 0);</string>
      </property>
@@ -2228,6 +2249,9 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Pans the light source Up (+) and Down (-).</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(0, 0, 127);</string>
      </property>
@@ -2249,6 +2273,9 @@ QSlider::handle:horizontal:hover
        <family>Arial</family>
        <pointsize>8</pointsize>
       </font>
+     </property>
+     <property name="toolTip">
+      <string>Pans the light source Back (+) to Front (-).</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(19, 104, 0);</string>
@@ -2573,6 +2600,9 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Controls the level of surface ambience.</string>
+     </property>
      <property name="text">
       <string>Ambient:</string>
      </property>
@@ -2591,6 +2621,9 @@ QSlider::handle:horizontal:hover
        <family>Arial</family>
        <pointsize>8</pointsize>
       </font>
+     </property>
+     <property name="toolTip">
+      <string>Controls the level of surface specularity.</string>
      </property>
      <property name="text">
       <string>Specular:</string>
@@ -2611,6 +2644,9 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Controls the level of surface roughness.</string>
+     </property>
      <property name="text">
       <string>Roughness:</string>
      </property>
@@ -2630,6 +2666,9 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Controls the level of surface reflection.</string>
+     </property>
      <property name="text">
       <string>Reflection:</string>
      </property>
@@ -2642,6 +2681,9 @@ QSlider::handle:horizontal:hover
        <width>151</width>
        <height>16</height>
       </rect>
+     </property>
+     <property name="toolTip">
+      <string>Controls the level of surface ambience.</string>
      </property>
      <property name="styleSheet">
       <string notr="true">QSlider::groove:horizontal {
@@ -2694,6 +2736,9 @@ QSlider::handle:horizontal:hover
        <height>16</height>
       </rect>
      </property>
+     <property name="toolTip">
+      <string>Controls the level of surface specularity.</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">QSlider::groove:horizontal {
     ;
@@ -2742,6 +2787,9 @@ QSlider::handle:horizontal:hover
        <height>16</height>
       </rect>
      </property>
+     <property name="toolTip">
+      <string>Controls the level of surface roughness.</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">QSlider::groove:horizontal {
     ;
@@ -2789,6 +2837,9 @@ QSlider::handle:horizontal:hover
        <width>151</width>
        <height>16</height>
       </rect>
+     </property>
+     <property name="toolTip">
+      <string>Controls the level of surface reflection.</string>
      </property>
      <property name="styleSheet">
       <string notr="true">QSlider::groove:horizontal {
@@ -2844,6 +2895,9 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Controls the level of surface ambience.</string>
+     </property>
      <property name="text">
       <string>0.3</string>
      </property>
@@ -2862,6 +2916,9 @@ QSlider::handle:horizontal:hover
        <family>Arial</family>
        <pointsize>8</pointsize>
       </font>
+     </property>
+     <property name="toolTip">
+      <string>Controls the level of surface specularity.</string>
      </property>
      <property name="text">
       <string>0.5</string>
@@ -2882,6 +2939,9 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Controls the level of surface roughness.</string>
+     </property>
      <property name="text">
       <string>0.01</string>
      </property>
@@ -2900,6 +2960,9 @@ QSlider::handle:horizontal:hover
        <family>Arial</family>
        <pointsize>8</pointsize>
       </font>
+     </property>
+     <property name="toolTip">
+      <string>Controls the level of surface reflection.</string>
      </property>
      <property name="text">
       <string>0.1</string>
@@ -3238,6 +3301,25 @@ QLineEdit:!enabled
      </property>
     </widget>
    </widget>
+   <widget class="QLabel" name="label_36">
+    <property name="geometry">
+     <rect>
+      <x>258</x>
+      <y>590</y>
+      <width>271</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>* Click on X, Y, Z numbers to manually set their values.</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
    <zorder>btn_raytrace</zorder>
    <zorder>btn_close</zorder>
    <zorder>gb_preview</zorder>
@@ -3248,6 +3330,7 @@ QLineEdit:!enabled
    <zorder>gb_light</zorder>
    <zorder>gb_surfProps</zorder>
    <zorder>gb_options_3</zorder>
+   <zorder>label_36</zorder>
   </widget>
  </widget>
  <customwidgets>
