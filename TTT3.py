@@ -323,6 +323,7 @@ class TTT3(QMainWindow):
             self.rb_upgradeablesConnected = False
             self.imagePath = None
             self.launchingPOVRay = False
+            self.previewLoaded = False
 
             # ----- Application logic. -----
             self.queue = queue.Queue()
@@ -857,6 +858,7 @@ class TTT3(QMainWindow):
     def showPreviewDialog(self):
         '''Method to open the render preview / options GUI.'''
 
+        self.previewLoaded = False
         # Load our GUI file 'data\uis\preview.ui'.
         self.preview = uic.loadUi(r"data\uis\preview.ui")
 
@@ -868,6 +870,8 @@ class TTT3(QMainWindow):
         setPixelSizes(self.preview)
         self.preview.closeEvent = self.previewCloseEvent
         self.gui.hide()
+        self.preview.lbl_wait.setAttribute(Qt.WA_TranslucentBackground)
+        self.preview.lbl_wait.setHidden(True)
 
         # Apply setttings.
         self.applyPreviewSettings()
@@ -944,11 +948,13 @@ class TTT3(QMainWindow):
 
         # Get a preview uniform render.
         self.renderPreview()
+        self.previewLoaded = True
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def showPreviewHelmDialog(self):
         '''Method to open the render preview / options GUI.'''
 
+        self.previewLoaded = False
         # Load our GUI file 'data\uis\preview.ui'.
         self.preview = uic.loadUi(r"data\uis\previewHelm.ui")
 
@@ -957,6 +963,8 @@ class TTT3(QMainWindow):
         setPixelSizes(self.preview)
         self.preview.closeEvent = self.previewCloseEvent
         self.gui.hide()
+        self.preview.lbl_wait.setAttribute(Qt.WA_TranslucentBackground)
+        self.preview.lbl_wait.setHidden(True)
 
         # Apply setttings.
         self.applyPreviewSettings()
@@ -1058,6 +1066,7 @@ class TTT3(QMainWindow):
 
         # Get a preview uniform render.
         self.renderPreview()
+        self.previewLoaded = True
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def applyPreviewSettings(self):
@@ -1210,8 +1219,8 @@ class TTT3(QMainWindow):
         '''Method for rendering a preview image.'''
 
         if self.getUniformData() != self.lastRenderData:
-            self.preview.lbl_preview.clear()
-            self.preview.lbl_preview.setText("Please wait for preview to load...")
+            if self.previewLoaded:
+                self.preview.lbl_wait.setHidden(False)
             if self.uniform == "dress":
                 self.createDressPov()
             elif self.uniform == "duty":
@@ -1391,6 +1400,7 @@ class TTT3(QMainWindow):
 
         self.imagePath = r"data\%s%s" % (self.uniform, ext)
         self.preview.lbl_preview.setPixmap(QPixmap(self.imagePath))
+        self.preview.lbl_wait.setHidden(True)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def showOutputDialog(self, uniform):
