@@ -1003,7 +1003,7 @@ QSlider::handle:vertical:hover
       <number>20000</number>
      </property>
      <property name="value">
-      <number>-2608</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -1097,7 +1097,7 @@ QSlider::handle:vertical:hover
       <number>1</number>
      </property>
      <property name="value">
-      <number>-13311</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -1201,7 +1201,7 @@ QSlider::handle:vertical:hover
       <number>20000</number>
      </property>
      <property name="value">
-      <number>2090</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -1710,7 +1710,7 @@ QSlider::handle:vertical:hover
       <number>1</number>
      </property>
      <property name="value">
-      <number>-128</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -1810,7 +1810,7 @@ QSlider::handle:vertical:hover
       <number>20000</number>
      </property>
      <property name="value">
-      <number>28</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -2094,7 +2094,7 @@ QSlider::handle:vertical:hover
       <number>1</number>
      </property>
      <property name="value">
-      <number>-6474</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -2211,7 +2211,7 @@ QSlider::handle:vertical:hover
       <number>20000</number>
      </property>
      <property name="value">
-      <number>17501</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -2276,7 +2276,7 @@ QSlider::handle:vertical:hover
       <number>20000</number>
      </property>
      <property name="value">
-      <number>15185</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Vertical</enum>

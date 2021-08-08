@@ -1059,7 +1059,7 @@ QSlider::handle:horizontal:hover
       <number>10000</number>
      </property>
      <property name="value">
-      <number>2170</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -1153,7 +1153,7 @@ QSlider::handle:horizontal:hover
       <number>1</number>
      </property>
      <property name="value">
-      <number>-6519</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -1257,7 +1257,7 @@ QSlider::handle:horizontal:hover
       <number>10000</number>
      </property>
      <property name="value">
-      <number>3146</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -1317,7 +1317,7 @@ QSlider::handle:horizontal:hover
       <string notr="true">color: rgb(170, 0, 0);</string>
      </property>
      <property name="text">
-      <string>21.70</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_10">
@@ -1386,7 +1386,7 @@ QSlider::handle:horizontal:hover
       <string notr="true">color: rgb(19, 104, 0);</string>
      </property>
      <property name="text">
-      <string>-65.19</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_23">
@@ -1427,13 +1427,13 @@ QSlider::handle:horizontal:hover
       </font>
      </property>
      <property name="toolTip">
-      <string>Zooms the camera: In (+) and Out (-).</string>
+      <string>Rotates the camera around the helmet: Top (+) to Bottom (-).</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(0, 0, 127);</string>
      </property>
      <property name="text">
-      <string>31.46</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_24">
@@ -1471,13 +1471,13 @@ QSlider::handle:horizontal:hover
       </font>
      </property>
      <property name="toolTip">
-      <string>Changes the point the camera is looking at. Far (+) to Near (-).</string>
+      <string>Changes the point the camera is looking at: Far (+) to Near (-).</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(19, 104, 0);</string>
      </property>
      <property name="text">
-      <string>-4.45</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_25">
@@ -1537,13 +1537,13 @@ QSlider::handle:horizontal:hover
       </font>
      </property>
      <property name="toolTip">
-      <string>Changes the point the camera is looking at. Right (+) and Left (-).</string>
+      <string>Changes the point the camera is looking at: Right (+) and Left (-).</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(170, 0, 0);</string>
      </property>
      <property name="text">
-      <string>-5.68</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_33">
@@ -1578,7 +1578,7 @@ QSlider::handle:horizontal:hover
       </rect>
      </property>
      <property name="toolTip">
-      <string>Changes the point the camera is looking at. Right (+) and Left (-).</string>
+      <string>Changes the point the camera is looking at: Right (+) and Left (-).</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -1608,7 +1608,7 @@ QSlider::handle:horizontal:hover
       <number>10000</number>
      </property>
      <property name="value">
-      <number>-568</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -1636,13 +1636,13 @@ QSlider::handle:horizontal:hover
       </font>
      </property>
      <property name="toolTip">
-      <string>Changes the point the camera is looking at. Up (+) and Down (-).</string>
+      <string>Changes the point the camera is looking at: Up (+) and Down (-).</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(0, 0, 127);</string>
      </property>
      <property name="text">
-      <string>10.52</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="Slider" name="vs_LookY">
@@ -1655,7 +1655,7 @@ QSlider::handle:horizontal:hover
       </rect>
      </property>
      <property name="toolTip">
-      <string>Changes the point the camera is looking at. Far (+) to Near (-).</string>
+      <string>Changes the point the camera is looking at: Far (+) to Near (-).</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -1688,7 +1688,7 @@ QSlider::handle:horizontal:hover
       <number>1</number>
      </property>
      <property name="value">
-      <number>-445</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -1732,7 +1732,7 @@ QSlider::handle:horizontal:hover
       </rect>
      </property>
      <property name="toolTip">
-      <string>Changes the point the camera is looking at. Up (+) and Down (-).</string>
+      <string>Changes the point the camera is looking at: Up (+) and Down (-).</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -1762,7 +1762,7 @@ QSlider::handle:horizontal:hover
       <number>10000</number>
      </property>
      <property name="value">
-      <number>1052</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -2150,7 +2150,7 @@ QSlider::handle:horizontal:hover
       <number>1</number>
      </property>
      <property name="value">
-      <number>-5089</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -2202,7 +2202,7 @@ QSlider::handle:horizontal:hover
       <number>10000</number>
      </property>
      <property name="value">
-      <number>5282</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -2254,7 +2254,7 @@ QSlider::handle:horizontal:hover
       <number>10000</number>
      </property>
      <property name="value">
-      <number>2244</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -2288,7 +2288,7 @@ QSlider::handle:horizontal:hover
       <string notr="true">color: rgb(170, 0, 0);</string>
      </property>
      <property name="text">
-      <string>22.44</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_50">
@@ -2398,7 +2398,7 @@ QSlider::handle:horizontal:hover
       <string notr="true">color: rgb(0, 0, 127);</string>
      </property>
      <property name="text">
-      <string>52.82</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="QLabel" name="lbl_LightY">
@@ -2423,7 +2423,7 @@ QSlider::handle:horizontal:hover
       <string notr="true">color: rgb(19, 104, 0);</string>
      </property>
      <property name="text">
-      <string>-50.89</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_21">
@@ -2857,7 +2857,7 @@ QSlider::handle:horizontal:hover
       <number>1</number>
      </property>
      <property name="value">
-      <number>30</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -2908,7 +2908,7 @@ QSlider::handle:horizontal:hover
       <number>100</number>
      </property>
      <property name="value">
-      <number>50</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -2959,7 +2959,7 @@ QSlider::handle:horizontal:hover
       <number>100</number>
      </property>
      <property name="value">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -3010,7 +3010,7 @@ QSlider::handle:horizontal:hover
       <number>100</number>
      </property>
      <property name="value">
-      <number>10</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
