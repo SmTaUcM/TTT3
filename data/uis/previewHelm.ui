@@ -1029,7 +1029,7 @@ QSpinBox:!enabled
       </rect>
      </property>
      <property name="toolTip">
-      <string>Rotates the camera around the image Right (+) to Left (-).</string>
+      <string>Rotates the camera around the helmet: Right (+) to Left (-).</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -1120,7 +1120,7 @@ QSlider::handle:horizontal:hover
       </rect>
      </property>
      <property name="toolTip">
-      <string>Zooms the camera In (+) and Out (-).</string>
+      <string>Zooms the camera: In (+) and Out (-).</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -1227,7 +1227,7 @@ QSlider::handle:horizontal:hover
       </rect>
      </property>
      <property name="toolTip">
-      <string>Rotates the camera around the image Top (+) to Bottom (-).</string>
+      <string>Rotates the camera around the helmet: Top (+) to Bottom (-).</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -1311,7 +1311,7 @@ QSlider::handle:horizontal:hover
       </font>
      </property>
      <property name="toolTip">
-      <string>Rotates the camera around the image Right (+) to Left (-).</string>
+      <string>Rotates the camera around the helmet: Right (+) to Left (-).</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(170, 0, 0);</string>
@@ -1380,7 +1380,7 @@ QSlider::handle:horizontal:hover
       </font>
      </property>
      <property name="toolTip">
-      <string>Zooms the camera In (+) and Out (-).</string>
+      <string>Zooms the camera: In (+) and Out (-).</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(19, 104, 0);</string>
@@ -1427,7 +1427,7 @@ QSlider::handle:horizontal:hover
       </font>
      </property>
      <property name="toolTip">
-      <string>Zooms the camera In (+) and Out (-).</string>
+      <string>Zooms the camera: In (+) and Out (-).</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(0, 0, 127);</string>
@@ -1471,7 +1471,7 @@ QSlider::handle:horizontal:hover
       </font>
      </property>
      <property name="toolTip">
-      <string>Changes the point the camera is looking at diagonally. Top Right (+) to Bottom Left (-).</string>
+      <string>Changes the point the camera is looking at. Far (+) to Near (-).</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(19, 104, 0);</string>
@@ -1655,7 +1655,7 @@ QSlider::handle:horizontal:hover
       </rect>
      </property>
      <property name="toolTip">
-      <string>Changes the point the camera is looking at diagonally. Top Right (+) to Bottom Left (-).</string>
+      <string>Changes the point the camera is looking at. Far (+) to Near (-).</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -2117,7 +2117,7 @@ QSlider::handle:horizontal:hover
       </rect>
      </property>
      <property name="toolTip">
-      <string>Pans the light source Back (+) to Front (-).</string>
+      <string>Pans the light source: Back (+) to Front (-).</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -2172,7 +2172,7 @@ QSlider::handle:horizontal:hover
       </rect>
      </property>
      <property name="toolTip">
-      <string>Pans the light source Up (+) and Down (-).</string>
+      <string>Pans the light source: Up (+) and Down (-).</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -2224,7 +2224,7 @@ QSlider::handle:horizontal:hover
       </rect>
      </property>
      <property name="toolTip">
-      <string>Pans the light source Right (+) and Left (-).</string>
+      <string>Pans the light source: Right (+) and Left (-).</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -2282,7 +2282,7 @@ QSlider::handle:horizontal:hover
       </font>
      </property>
      <property name="toolTip">
-      <string>Pans the light source Right (+) and Left (-).</string>
+      <string>Pans the light source: Right (+) and Left (-).</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(170, 0, 0);</string>
@@ -2392,7 +2392,7 @@ QSlider::handle:horizontal:hover
       </font>
      </property>
      <property name="toolTip">
-      <string>Pans the light source Up (+) and Down (-).</string>
+      <string>Pans the light source: Up (+) and Down (-).</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(0, 0, 127);</string>
@@ -2417,7 +2417,7 @@ QSlider::handle:horizontal:hover
       </font>
      </property>
      <property name="toolTip">
-      <string>Pans the light source Back (+) to Front (-).</string>
+      <string>Pans the light source: Back (+) to Front (-).</string>
      </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(19, 104, 0);</string>

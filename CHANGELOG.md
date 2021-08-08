@@ -18,29 +18,33 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 
 ## ------------------------------------------------------------------------------------------------##
 
-## [v3.0.1] 2021-08-06
+## [v3.0.1] Unreleased
 
 ### Added
 - High DPI support allowing app scaling for high resolution monitors in Windows 10 via: 
   Settings --> Display Settings --> Change the size of text, apps and other items
 - Reintroduced TTT2 helmet shading graphics.
 - Helmet name tags now support lowercase lettering.
-- Uniform and helmet slider bar values can now be manually entered by clicking on their respective labels.
+- Uniform and helmet slider bar values can now be manually entered by clicking on their respective 
+  labels.
 
 ### Changed
 - New TIE Corps Logo is now the default graphic on helmets replacing the imperial cog.
 - Current fleet settings updated.
 - Weapons tab lightsaber style selection is now synchronised between dress and duty uniforms.
-- Helmet logo graphics restructured to make it clearer to the user which graphics are stencils and which
-  are transparencies.
+- Helmet logo graphics restructured to make it clearer to the user which graphics are stencils and 
+  which are transparencies.
 - Preview windows no longer hide the image when rendering to give the user a better view of the changes
   being applied.
+- Tweaked preset camera positions for uniforms and helmets to be more useful.
 
 ### Fixed
 - Preview colour picker cancel button now functions correctly.
 - Helmet grey detailing now displays properly instead of being black.
-- Selecting Squadron Patch followed by BG. Transparent in helmet preview no longer disables file selection.
-- TTT3 no longer crashes when opening legacy TTT2 .ttt profile files and will produce an error message to the user.
+- Selecting Squadron Patch followed by BG. Transparent in helmet preview no longer disables file 
+  selection.
+- TTT3 no longer crashes when opening legacy TTT2 .ttt profile files and will produce an error message 
+  to the user.
 
 ### Removed
 - None

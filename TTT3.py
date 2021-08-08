@@ -246,9 +246,9 @@ class TTT3(QMainWindow):
             self.antiAliasing = True
             self.shadowless = False
             self.mosaicPreview = False
-            self.camX = -2608
-            self.camY = -13311
-            self.camZ = 2090
+            self.camX = -2500
+            self.camY = -13300
+            self.camZ = 2100
             self.lookX = 0
             self.lookY = -128
             self.lookZ = 28
@@ -265,7 +265,7 @@ class TTT3(QMainWindow):
             self.roughHelm = 1
             self.reflectionHelm = 10
             self.camXHelm = 2170
-            self.camYHelm = -6519
+            self.camYHelm = -6510
             self.camZHelm = 3146
             self.lookXHelm = -568
             self.lookYHelm = -445
@@ -5108,13 +5108,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         try:
             if self.uniform != "helmet":
-                self.camX = -2608
+                self.camX = -2500
                 self.preview.vs_CamX.setValue(self.camX)
                 self.preview.lbl_CamX.setText(self.convertIntToFloatStr(self.camX, 10))
-                self.camY = -13311
+                self.camY = -13300
                 self.preview.vs_CamY.setValue(self.camY)
                 self.preview.lbl_CamY.setText(self.convertIntToFloatStr(self.camY, 10))
-                self.camZ = 2090
+                self.camZ = 2100
                 self.preview.vs_CamZ.setValue(self.camZ)
                 self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(self.camZ, 10))
                 self.lookX = 0
@@ -5130,7 +5130,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.camXHelm = 2170
                 self.preview.vs_CamX.setValue(self.camXHelm)
                 self.preview.lbl_CamX.setText(self.convertIntToFloatStr(self.camXHelm, 100))
-                self.camYHelm = -6519
+                self.camYHelm = -6510
                 self.preview.vs_CamY.setValue(self.camYHelm)
                 self.preview.lbl_CamY.setText(self.convertIntToFloatStr(self.camYHelm, 100))
                 self.camZHelm = 3146
@@ -5786,63 +5786,63 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for preview camera presets.'''
 
         if intIndex == 0:
-            self.camX = -2608
-            self.camY = -13311
-            self.camZ = 2090
+            self.camX = -2500
+            self.camY = -13300
+            self.camZ = 2100
 
         # Top Left.
         elif intIndex == 1:
             self.camX = -10000
-            self.camY = -13311
-            self.camZ = 10000
+            self.camY = -8000
+            self.camZ = 8000
 
         # Top Centre.
         elif intIndex == 2:
             self.camX = 0
-            self.camY = -13311
-            self.camZ = 10000
+            self.camY = -11000
+            self.camZ = 8000
 
         # Top Right.
         elif intIndex == 3:
             self.camX = 10000
-            self.camY = -13311
-            self.camZ = 10000
+            self.camY = -8000
+            self.camZ = 8000
 
         # Middle Left.
         elif intIndex == 4:
-            self.camX = -10000
-            self.camY = -13311
+            self.camX = -9000
+            self.camY = -11000
             self.camZ = 0
 
         # Middle Centre.
         elif intIndex == 5:
             self.camX = 0
-            self.camY = -13311
+            self.camY = -13300
             self.camZ = 0
 
         # Middle Right.
         elif intIndex == 6:
-            self.camX = 10000
-            self.camY = -13311
+            self.camX = 9000
+            self.camY = -11000
             self.camZ = 0
 
         # Bottom Left.
         elif intIndex == 7:
-            self.camX = -10000
-            self.camY = -13311
-            self.camZ = -10000
+            self.camX = -8000
+            self.camY = -11000
+            self.camZ = -8000
 
         # Bottom Centre.
         elif intIndex == 8:
             self.camX = 0
-            self.camY = -13311
-            self.camZ = -10000
+            self.camY = -12000
+            self.camZ = -8000
 
         # Bottom Right.
         elif intIndex == 9:
-            self.camX = 10000
-            self.camY = -13311
-            self.camZ = -10000
+            self.camX = 8000
+            self.camY = -11000
+            self.camZ = -8000
 
         if intIndex != 10:
             self.renderPreview()
@@ -5862,62 +5862,62 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         if intIndex == 0:
             self.camXHelm = 2170
-            self.camYHelm = -6519
+            self.camYHelm = -6510
             self.camZHelm = 3146
 
         # Top Left.
         elif intIndex == 1:
             self.camXHelm = -5000
-            self.camYHelm = -6519
+            self.camYHelm = -6510
             self.camZHelm = 5000
 
         # Top Centre.
         elif intIndex == 2:
             self.camXHelm = 0
-            self.camYHelm = -6519
+            self.camYHelm = -7000
             self.camZHelm = 5000
 
         # Top Right.
         elif intIndex == 3:
             self.camXHelm = 5000
-            self.camYHelm = -6519
+            self.camYHelm = -6510
             self.camZHelm = 5000
 
         # Middle Left.
         elif intIndex == 4:
             self.camXHelm = -5000
-            self.camYHelm = -6519
-            self.camZHelm = 0
+            self.camYHelm = -6510
+            self.camZHelm = 1500
 
         # Middle Centre.
         elif intIndex == 5:
             self.camXHelm = 0
-            self.camYHelm = -6519
-            self.camZHelm = 0
+            self.camYHelm = -6510
+            self.camZHelm = 1500
 
         # Middle Right.
         elif intIndex == 6:
             self.camXHelm = 5000
-            self.camYHelm = -6519
-            self.camZHelm = 0
+            self.camYHelm = -6510
+            self.camZHelm = 1500
 
         # Bottom Left.
         elif intIndex == 7:
             self.camXHelm = -5000
-            self.camYHelm = -6519
-            self.camZHelm = -5000
+            self.camYHelm = -6510
+            self.camZHelm = -2000
 
         # Bottom Centre.
         elif intIndex == 8:
             self.camXHelm = 0
-            self.camYHelm = -6519
-            self.camZHelm = -5000
+            self.camYHelm = -6510
+            self.camZHelm = -2000
 
         # Bottom Right.
         elif intIndex == 9:
             self.camXHelm = 5000
-            self.camYHelm = -6519
-            self.camZHelm = -5000
+            self.camYHelm = -6510
+            self.camZHelm = -2000
 
         if intIndex != 10:
             self.renderPreview()
