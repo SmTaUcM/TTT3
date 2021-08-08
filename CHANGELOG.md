@@ -33,6 +33,8 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 - Weapons tab lightsaber style selection is now synchronised between dress and duty uniforms.
 - Helmet logo graphics restructured to make it clearer to the user which graphics are stencils and which
   are transparencies.
+- Preview windows no longer hide the image when rendering to give the user a better view of the changes
+  being applied.
 
 ### Fixed
 - Preview colour picker cancel button now functions correctly.
