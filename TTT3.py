@@ -1577,7 +1577,7 @@ class TTT3(QMainWindow):
 
         img = Image.open(src)
         new_img = img.resize((width, height))
-        newFilePath = dest.rsplit(".", 1)[0] + ext
+        newFilePath = dest.replace(ext, "") + ext
         if ext == ".jpg":
             ext = ".jpeg"
         try:
