@@ -18,7 +18,7 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 
 ## ------------------------------------------------------------------------------------------------##
 
-## [v3.0.1] Unreleased
+## [v3.0.1] 2021-08-21
 
 ### Added
 - High DPI support allowing app scaling for high resolution monitors in Windows 10 via: 
@@ -27,6 +27,7 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 - Helmet name tags now support lowercase lettering.
 - Uniform and helmet slider bar values can now be manually entered by clicking on their respective 
   labels.
+- Database importing of preset helmet / decoration colours.
 
 ### Changed
 - New TIE Corps Logo is now the default graphic on helmets replacing the imperial cog.
