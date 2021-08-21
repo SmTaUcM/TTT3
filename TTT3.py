@@ -2828,8 +2828,29 @@ color_map
             # Save the selected option.
             self.sqn = self.gui.lw_squad.currentItem().text()
 
+            # Apply the Fleet API settings for helmet colouring.
+            for squad in self.fleetConfig.get("squadrons"):
+                if squad.get("name") == self.sqn:
+                    if squad.get("uniformData").get("colorHelmetBase") != None:
+                        self.helmColour = self.getAPIHelmColour(squad.get("uniformData").get("colorHelmetBase"))
+
+                    if squad.get("uniformData").get("colorHelmetDecoration") != None:
+                        self.decColour = self.getAPIHelmColour(squad.get("uniformData").get("colorHelmetDecoration"))
+
+                    break
+
         except AttributeError:
             pass  # Prevents the application throwing an error when the 'Wing' List Widget clears and tries to populate squadrons from a 'blank' wing.
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def getAPIHelmColour(self, colourStr):
+        '''Method that convers the api string e.g. #112233 into a QColor.'''
+
+        red = int(colourStr[1:3], 16)
+        green = int(colourStr[3:5], 16)
+        blue = int(colourStr[5:7], 16)
+
+        return QColor(red, green, blue)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def eliteSqnSelectionLogic(self, value):
