@@ -10,19 +10,19 @@
     <x>0</x>
     <y>0</y>
     <width>785</width>
-    <height>610</height>
+    <height>670</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>785</width>
-    <height>610</height>
+    <height>670</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>785</width>
-    <height>610</height>
+    <height>670</height>
    </size>
   </property>
   <property name="contextMenuPolicy">
@@ -47,7 +47,7 @@
     <property name="geometry">
      <rect>
       <x>645</x>
-      <y>10</y>
+      <y>29</y>
       <width>91</width>
       <height>22</height>
      </rect>
@@ -94,7 +94,7 @@ QPushButton:!enabled
     <property name="geometry">
      <rect>
       <x>645</x>
-      <y>41</y>
+      <y>60</y>
       <width>91</width>
       <height>22</height>
      </rect>
@@ -140,7 +140,7 @@ QPushButton:!enabled
       <x>188</x>
       <y>9</y>
       <width>410</width>
-      <height>423</height>
+      <height>476</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -162,7 +162,7 @@ QPushButton:!enabled
      <property name="geometry">
       <rect>
        <x>11</x>
-       <y>21</y>
+       <y>49</y>
        <width>390</width>
        <height>334</height>
       </rect>
@@ -196,7 +196,7 @@ QPushButton:!enabled
      <property name="geometry">
       <rect>
        <x>132</x>
-       <y>369</y>
+       <y>413</y>
        <width>151</width>
        <height>23</height>
       </rect>
@@ -212,7 +212,7 @@ QPushButton:!enabled
      <property name="geometry">
       <rect>
        <x>167</x>
-       <y>396</y>
+       <y>440</y>
        <width>81</width>
        <height>17</height>
       </rect>
@@ -228,7 +228,7 @@ QPushButton:!enabled
      <property name="geometry">
       <rect>
        <x>96</x>
-       <y>11</y>
+       <y>39</y>
        <width>221</width>
        <height>41</height>
       </rect>
@@ -371,7 +371,7 @@ QPushButton:!enabled
     <property name="geometry">
      <rect>
       <x>9</x>
-      <y>64</y>
+      <y>117</y>
       <width>173</width>
       <height>181</height>
      </rect>
@@ -783,7 +783,7 @@ QLineEdit:!enabled
     <property name="geometry">
      <rect>
       <x>604</x>
-      <y>65</y>
+      <y>94</y>
       <width>172</width>
       <height>181</height>
      </rect>
@@ -935,7 +935,7 @@ QSpinBox:!enabled
       <number>1</number>
      </property>
      <property name="value">
-      <number>7</number>
+      <number>9</number>
      </property>
     </widget>
     <widget class="QCheckBox" name="cb_AA">
@@ -995,7 +995,7 @@ QSpinBox:!enabled
     <property name="geometry">
      <rect>
       <x>9</x>
-      <y>431</y>
+      <y>484</y>
       <width>485</width>
       <height>151</height>
      </rect>
@@ -2083,7 +2083,7 @@ QSlider::handle:horizontal:hover
     <property name="geometry">
      <rect>
       <x>501</x>
-      <y>431</y>
+      <y>484</y>
       <width>276</width>
       <height>151</height>
      </rect>
@@ -2703,7 +2703,7 @@ QSlider::handle:horizontal:hover
     <property name="geometry">
      <rect>
       <x>9</x>
-      <y>244</y>
+      <y>297</y>
       <width>173</width>
       <height>188</height>
      </rect>
@@ -3041,7 +3041,7 @@ QSlider::handle:horizontal:hover
       <string>Controls the level of surface ambience.</string>
      </property>
      <property name="text">
-      <string>0.3</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="QLabel" name="lbl_Specular">
@@ -3063,7 +3063,7 @@ QSlider::handle:horizontal:hover
       <string>Controls the level of surface specularity.</string>
      </property>
      <property name="text">
-      <string>0.5</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="QLabel" name="lbl_Roughness">
@@ -3085,7 +3085,7 @@ QSlider::handle:horizontal:hover
       <string>Controls the level of surface roughness.</string>
      </property>
      <property name="text">
-      <string>0.01</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="QLabel" name="lbl_Reflection">
@@ -3107,7 +3107,7 @@ QSlider::handle:horizontal:hover
       <string>Controls the level of surface reflection.</string>
      </property>
      <property name="text">
-      <string>0.1</string>
+      <string>0</string>
      </property>
     </widget>
     <zorder>lbl_Specular</zorder>
@@ -3128,9 +3128,9 @@ QSlider::handle:horizontal:hover
     <property name="geometry">
      <rect>
       <x>604</x>
-      <y>245</y>
+      <y>274</y>
       <width>172</width>
-      <height>187</height>
+      <height>211</height>
      </rect>
     </property>
     <property name="title">
@@ -3140,7 +3140,7 @@ QSlider::handle:horizontal:hover
      <property name="geometry">
       <rect>
        <x>7</x>
-       <y>155</y>
+       <y>179</y>
        <width>159</width>
        <height>23</height>
       </rect>
@@ -3158,7 +3158,7 @@ QSlider::handle:horizontal:hover
        <x>7</x>
        <y>16</y>
        <width>158</width>
-       <height>81</height>
+       <height>101</height>
       </rect>
      </property>
      <property name="font">
@@ -3268,6 +3268,19 @@ QLineEdit:!enabled
         <bool>true</bool>
        </property>
       </widget>
+      <widget class="QCheckBox" name="cb_Logo1Mirrored">
+       <property name="geometry">
+        <rect>
+         <x>25</x>
+         <y>57</y>
+         <width>101</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Images Mirrored</string>
+       </property>
+      </widget>
      </widget>
      <widget class="QWidget" name="tab_9">
       <attribute name="title">
@@ -3356,13 +3369,26 @@ QLineEdit:!enabled
         <string>...</string>
        </property>
       </widget>
+      <widget class="QCheckBox" name="cb_Logo2Mirrored">
+       <property name="geometry">
+        <rect>
+         <x>25</x>
+         <y>57</y>
+         <width>101</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Images Mirrored</string>
+       </property>
+      </widget>
      </widget>
     </widget>
     <widget class="QLineEdit" name="le_helmText">
      <property name="geometry">
       <rect>
        <x>36</x>
-       <y>102</y>
+       <y>124</y>
        <width>129</width>
        <height>20</height>
       </rect>
@@ -3389,7 +3415,7 @@ QLineEdit:!enabled
      <property name="geometry">
       <rect>
        <x>7</x>
-       <y>129</y>
+       <y>153</y>
        <width>31</width>
        <height>16</height>
       </rect>
@@ -3408,7 +3434,7 @@ QLineEdit:!enabled
      <property name="geometry">
       <rect>
        <x>7</x>
-       <y>104</y>
+       <y>126</y>
        <width>25</width>
        <height>16</height>
       </rect>
@@ -3427,7 +3453,7 @@ QLineEdit:!enabled
      <property name="geometry">
       <rect>
        <x>36</x>
-       <y>126</y>
+       <y>150</y>
        <width>129</width>
        <height>20</height>
       </rect>
@@ -3447,7 +3473,7 @@ QLineEdit:!enabled
     <property name="geometry">
      <rect>
       <x>258</x>
-      <y>590</y>
+      <y>643</y>
       <width>271</width>
       <height>16</height>
      </rect>
@@ -3462,6 +3488,51 @@ QLineEdit:!enabled
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QGroupBox" name="gb_style">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>63</y>
+      <width>172</width>
+      <height>55</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Helmet Style</string>
+    </property>
+    <widget class="QComboBox" name="cb_helmStyle">
+     <property name="geometry">
+      <rect>
+       <x>14</x>
+       <y>22</y>
+       <width>145</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(211, 211, 211);</string>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <item>
+      <property name="text">
+       <string>Imperial</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Infiltrator</string>
+      </property>
+     </item>
+    </widget>
+   </widget>
    <zorder>btn_raytrace</zorder>
    <zorder>btn_close</zorder>
    <zorder>gb_preview</zorder>
@@ -3473,6 +3544,7 @@ QLineEdit:!enabled
    <zorder>gb_surfProps</zorder>
    <zorder>gb_options_3</zorder>
    <zorder>label_36</zorder>
+   <zorder>gb_style</zorder>
   </widget>
  </widget>
  <customwidgets>

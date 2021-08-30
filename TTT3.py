@@ -286,6 +286,8 @@ class TTT3(QMainWindow):
             self.logo2TypeHelm = "Squadron Patch"
             self.logo1FilepathHelm = os.getcwd() + "\\data\\misc\\Helmet Stencils\\tclogo.gif"
             self.logo2FilepathHelm = ""
+            self.logo1Mirrored = False
+            self.logo2Mirrored = False
 
             # PovRay Template Constants.
             self.RANK_OFFSET_RIBBONS_00_TO_08 = ["-18.8939990997314,0.351000010967255,7.92899990081787",  # Rotate
@@ -958,6 +960,9 @@ class TTT3(QMainWindow):
         # Load our GUI file 'data\uis\preview.ui'.
         self.preview = uic.loadUi(r"data\uis\previewHelm.ui")
 
+        # TODO Disabled Helmet Style.
+        self.preview.gb_style.setEnabled(False)
+
         # Show the preview GUI.
         self.preview.show()
         setPixelSizes(self.preview)
@@ -1029,6 +1034,8 @@ class TTT3(QMainWindow):
         self.preview.lbl_Specular.mouseReleaseEvent = self.lbl_SpecularFunc
         self.preview.lbl_Roughness.mouseReleaseEvent = self.lbl_RoughnessFunc
         self.preview.lbl_Reflection.mouseReleaseEvent = self.lbl_ReflectionFunc
+        self.preview.cb_Logo1Mirrored.stateChanged.connect(lambda: self.mirrorLogo(1))
+        self.preview.cb_Logo2Mirrored.stateChanged.connect(lambda: self.mirrorLogo(2))
 
         # Set widgets to auto update on their mouseReleaseEvent.
         self.preview.cb_Refresh.stateChanged.connect(self.cb_previewRefreshFunc)
@@ -1063,6 +1070,8 @@ class TTT3(QMainWindow):
         self.preview.le_helmLogo1Filepath.textChanged.connect(self.previewAutoRefresh)
         self.preview.le_helmLogo2Filepath.textChanged.connect(self.previewAutoRefresh)
         self.preview.le_helmText.editingFinished.connect(self.previewAutoRefresh)
+        self.preview.cb_Logo1Mirrored.stateChanged.connect(self.previewAutoRefresh)
+        self.preview.cb_Logo2Mirrored.stateChanged.connect(self.previewAutoRefresh)
 
         # Get a preview uniform render.
         self.renderPreview()
@@ -1204,6 +1213,8 @@ class TTT3(QMainWindow):
             logo2TypeInt = self.preview.cb_hemlLogo2Type.findText(self.logo2TypeHelm, Qt.MatchExactly | Qt.MatchCaseSensitive)
             self.preview.cb_hemlLogo1Type.setCurrentIndex(logo1TypeInt)
             self.preview.cb_hemlLogo2Type.setCurrentIndex(logo2TypeInt)
+            self.preview.cb_Logo1Mirrored.setChecked(self.logo1Mirrored)
+            self.preview.cb_Logo2Mirrored.setChecked(self.logo2Mirrored)
 
             if self.preview.cb_hemlLogo2Type.currentText() == "":  # If previous setting was 'Squadron Patch' (default) but it's not longer available.
                 self.preview.cb_hemlLogo2Type.setCurrentIndex(1)
@@ -2620,6 +2631,18 @@ color_map
                 else:
                     povData.append(line.replace("&HOMOGENOUS&", ""))
 
+            elif "&IMPLOGOMIRRORING&" in line:
+                if self.logo1Mirrored:
+                    povData.append(line.replace("&IMPLOGOMIRRORING&", "P_implogoMirrored"))
+                else:
+                    povData.append(line.replace("&IMPLOGOMIRRORING&", "P_implogoUnmirrored"))
+
+            elif "&JAWLOGOMIRRORING&" in line:
+                if self.logo2Mirrored:
+                    povData.append(line.replace("&JAWLOGOMIRRORING&", "P_jawlogoMirrored"))
+                else:
+                    povData.append(line.replace("&JAWLOGOMIRRORING&", "P_jawlogoUnmirrored"))
+
             # ----- Non-Editable Data. -----
             else:
                 povData.append(line)
@@ -2831,10 +2854,10 @@ color_map
             # Apply the Fleet API settings for helmet colouring.
             for squad in self.fleetConfig.get("squadrons"):
                 if squad.get("name") == self.sqn:
-                    if squad.get("uniformData").get("colorHelmetBase") != None:
+                    if squad.get("uniformData").get("colorHelmetBase") is not None:
                         self.helmColour = self.getAPIHelmColour(squad.get("uniformData").get("colorHelmetBase"))
 
-                    if squad.get("uniformData").get("colorHelmetDecoration") != None:
+                    if squad.get("uniformData").get("colorHelmetDecoration") is not None:
                         self.decColour = self.getAPIHelmColour(squad.get("uniformData").get("colorHelmetDecoration"))
 
                     break
@@ -5279,7 +5302,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         self.lookXHelm, self.lookYHelm, self.lookZHelm, self.lightXHelm, self.lightYHelm, self.lightZHelm,
                         self.fontHelmQFront.family(), self.nameHelm, self.logo1FilepathHelm, self.logo1TypeHelm,
                         self.logo2FilepathHelm, self.logo2TypeHelm, self.mosaicPreviewHelm, self.homoHelm, self.shadowlessHelm,
-                        self.antiAliasingHelm, self.qualityHelm, self.widthHelm, self.heightHelm, self.rank, self.position, self.sqn)
+                        self.antiAliasingHelm, self.qualityHelm, self.widthHelm, self.heightHelm, self.rank, self.position, self.sqn,
+                        self.logo1Mirrored, self.logo2Mirrored)
 
         return saveData
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -5395,6 +5419,14 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.rank = saveData[31]
                     self.position = saveData[32]
                     self.sqn = saveData[33]
+                    try:
+                        self.logo1Mirrored = saveData[34]
+                    except BaseException:
+                        self.logo1Mirrored = True
+                    try:
+                        self.logo2Mirrored = saveData[35]
+                    except BaseException:
+                        self.logo2Mirrored = True
 
                 oldRefreshSetting = self.preview.cb_Refresh.isChecked()
                 # Turn off auto refresh to prevent applying the loaded settings to trigger multiple refreshes.
@@ -5658,9 +5690,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     if not self.loadingHelm:
                         self.logo1FilepathHelm = ""
                         # Show error message.
-##                        msg = "%s does not have a transparent background." % self.preview.le_helmLogo1Filepath.text().split("\\")[-1]
                         self.preview.le_helmLogo1Filepath.setText("")
-##                        return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
                         return
 
         elif self.preview.cb_hemlLogo1Type.currentText() == "None":
@@ -6319,9 +6349,19 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def sliderValueInput(self, slider, name, label, min, max, scale, decimals=1, step=1):
         '''Method directly asks the user for a slider input.'''
 
-        value, ok = QInputDialog.getDouble(self, "%s Value" % name, slider.toolTip() + "\n\nEnter new value:", float(label.text()), min, max, decimals, Qt.WindowFlags(), step)
+        value, ok = QInputDialog.getDouble(self, "%s Value" % name, slider.toolTip() + "\n\nEnter new value:",
+                                           float(label.text()), min, max, decimals, Qt.WindowFlags(), step)
         if ok:
             slider.setValue(int(value * scale))
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def mirrorLogo(self, intLogo):
+        '''Method to handle helmet logo mirroring selection.'''
+
+        if intLogo == 1:
+            self.logo1Mirrored = self.preview.cb_Logo1Mirrored.isChecked()
+        elif intLogo == 2:
+            self.logo2Mirrored = self.preview.cb_Logo2Mirrored.isChecked()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewPresetLightHelmFunc(self, intIndex):
