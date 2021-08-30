@@ -28,7 +28,7 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 - Uniform and helmet slider bar values can now be manually entered by clicking on their respective 
   labels.
 - Database importing of preset helmet / decoration colours.
-- Helmet logos can now be selected as mirrored or un-mirrored..
+- Helmet logos can now be selected as mirrored or un-mirrored.
 - Infiltrator Wing Helmets.
 
 ### Changed
