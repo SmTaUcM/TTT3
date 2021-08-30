@@ -482,7 +482,7 @@ QLineEdit:!enabled
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="label_51">
+    <widget class="QLabel" name="lbl_helm">
      <property name="geometry">
       <rect>
        <x>5</x>
@@ -767,7 +767,7 @@ QLineEdit:!enabled
     <zorder>btn_PaletteDec</zorder>
     <zorder>btn_PaletteBack</zorder>
     <zorder>le_PaletteHelm</zorder>
-    <zorder>label_51</zorder>
+    <zorder>lbl_helm</zorder>
     <zorder>lbl_PaletteHelm</zorder>
     <zorder>lbl_PaletteDec</zorder>
     <zorder>le_PaletteDec</zorder>
