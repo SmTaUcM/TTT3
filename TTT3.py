@@ -286,9 +286,9 @@ class TTT3(QMainWindow):
             self.logo2TypeHelm = "Squadron Patch"
             self.logo1FilepathHelm = os.getcwd() + "\\data\\misc\\Helmet Stencils\\tclogo.gif"
             self.logo2FilepathHelm = ""
-            self.logo1Mirrored = False
-            self.logo2Mirrored = False
             self.helmetStyle = "imperial"
+            self.logo1Mirrored = True
+            self.logo2Mirrored = True
 
             # PovRay Template Constants.
             self.RANK_OFFSET_RIBBONS_00_TO_08 = ["-18.8939990997314,0.351000010967255,7.92899990081787",  # Rotate
@@ -5847,6 +5847,11 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         self.preview.le_helmLogo1Filepath.setText(self.logo1FilepathHelm)
         self.preview.le_helmLogo2Filepath.setText(self.logo2FilepathHelm)
+
+        self.logo1Mirrored = True
+        self.logo2Mirrored = True
+        self.preview.cb_Logo1Mirrored.setChecked(self.logo1Mirrored)
+        self.preview.cb_Logo2Mirrored.setChecked(self.logo2Mirrored)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewPresetCamFunc(self, intIndex):
