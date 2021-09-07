@@ -6123,13 +6123,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         if intIndex == 0:
             if self.helmetStyle == "imperial":
-                self.lookX = self.lookXHelmImpDefault
-                self.lookY = self.lookYHelmImpDefault
-                self.lookZ = self.lookZHelmImpDefault
+                self.lookXHelm = self.lookXHelmImpDefault
+                self.lookYHelm = self.lookYHelmImpDefault
+                self.lookZHelm = self.lookZHelmImpDefault
             else:
-                self.lookX = self.lookXHelmInfDefault
-                self.lookY = self.lookYHelmInfDefault
-                self.lookZ = self.lookZHelmInfDefault
+                self.lookXHelm = self.lookXHelmInfDefault
+                self.lookYHelm = self.lookYHelmInfDefault
+                self.lookZHelm = self.lookZHelmInfDefault
 
         # Top Left.
         elif intIndex == 1:
@@ -6487,7 +6487,6 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         self.lookZHelm = self.lookZHelmImpDefault
         self.preview.vs_LookZ.setValue(self.lookZHelm)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def cb_previewPresetLightHelmFunc(self, intIndex):
         '''Method for preview light presets.'''
