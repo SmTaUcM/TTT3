@@ -63,7 +63,7 @@ class TTT3(QMainWindow):
             # Version info.
             version = "3.0.1"
             devVersion = ""
-            date = "21 August 2021"
+            date = "07 September 2021"
             self.saveFileVersion = 1  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
@@ -257,19 +257,33 @@ class TTT3(QMainWindow):
             self.lightZ = 13000
             self.helmColour = QColor(33, 33, 33)
             self.bgColourHelm = QColor(69, 79, 112)
-            self.decColour = QColor(147, 147, 147)
+            self.decColourImpDefault = QColor(147, 147, 147)
+            self.decColourInfDefault = QColor(201, 90, 18)
+            self.decColour = self.decColourImpDefault
             self.lightColour = QColor(255, 255, 255)
             self.transparentBGHelm = ""
             self.ambientHelm = 30
             self.specularHelm = 50
             self.roughHelm = 1
             self.reflectionHelm = 10
-            self.camXHelm = 2170
-            self.camYHelm = -6510
-            self.camZHelm = 3146
-            self.lookXHelm = -568
-            self.lookYHelm = -445
-            self.lookZHelm = 1052
+            self.camXHelmImpDefault = 2170
+            self.camXHelmInfDefault = 1500
+            self.camXHelm = self.camXHelmImpDefault
+            self.camYHelmImpDefault = -6510
+            self.camYHelmInfDefault = -5000
+            self.camYHelm = self.camYHelmImpDefault
+            self.camZHelmImpDefault = 3146
+            self.camZHelmInfDefault = 2300
+            self.camZHelm = self.camZHelmImpDefault
+            self.lookXHelmImpDefault = -568
+            self.lookXHelmInfDefault = 150
+            self.lookXHelm = self.lookXHelmImpDefault
+            self.lookYHelmImpDefault = -445
+            self.lookYHelmInfDefault = -445
+            self.lookYHelm = self.lookYHelmImpDefault
+            self.lookZHelmImpDefault = 1052
+            self.lookZHelmInfDefault = 1600
+            self.lookZHelm = self.lookZHelmImpDefault
             self.lightXHelm = 2244
             self.lightYHelm = -5089
             self.lightZHelm = 5282
@@ -4911,12 +4925,17 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.transparentBG = ""
                 self.preview.cb_TransparentBG.setChecked(False)
             else:
-                self.helmColour = QColor(33, 33, 33)
+                if self.helmetStyle == "imperial":
+                    self.helmColour = QColor(33, 33, 33)
                 self.bgColourHelm = QColor(69, 79, 112)
-                self.decColour = QColor(147, 147, 147)
+                if self.helmetStyle == "imperial":
+                    self.decColour = self.decColourImpDefault
+                else:
+                    self.decColour = self.decColourInfDefault
                 self.lightColour = QColor(255, 255, 255)
                 # Helmet Colour.
-                self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
+                if self.helmetStyle == "imperial":
+                    self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
                 # Decoration Colour.
                 self.colourSelected(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
                 # Background Colour.
@@ -5091,7 +5110,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.camXHelm = value
             self.preview.lbl_CamX.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetCam.setCurrentIndex(10)
+        if value != self.camXHelmImpDefault and value != self.camXHelmInfDefault:
+            self.preview.cb_PresetCam.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewCamYFunc(self, value):
@@ -5104,7 +5124,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.camYHelm = value
             self.preview.lbl_CamY.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetCam.setCurrentIndex(10)
+        if value != self.camYHelmImpDefault and value != self.camYHelmInfDefault:
+            self.preview.cb_PresetCam.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewCamZFunc(self, value):
@@ -5117,7 +5138,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.camZHelm = value
             self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetCam.setCurrentIndex(10)
+        if value != self.camZHelmImpDefault and value != self.camZHelmInfDefault:
+            self.preview.cb_PresetCam.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookXFunc(self, value):
@@ -5130,7 +5152,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lookXHelm = value
             self.preview.lbl_LookX.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetLook.setCurrentIndex(10)
+        if value != self.lookXHelmImpDefault and value != self.lookXHelmInfDefault:
+            self.preview.cb_PresetLook.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookYFunc(self, value):
@@ -5143,7 +5166,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lookYHelm = value
             self.preview.lbl_LookY.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetLook.setCurrentIndex(10)
+        if value != self.lookYHelmImpDefault and value != self.lookYHelmInfDefault:
+            self.preview.cb_PresetLook.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookZFunc(self, value):
@@ -5156,7 +5180,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lookZHelm = value
             self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetLook.setCurrentIndex(10)
+        if value != self.lookZHelmImpDefault and value != self.lookZHelmInfDefault:
+            self.preview.cb_PresetLook.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetCameraFunc(self):
@@ -5183,22 +5208,31 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.preview.vs_LookZ.setValue(self.lookZ)
                 self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(self.lookZ, 10))
             else:
-                self.camXHelm = 2170
+                if self.helmetStyle == "imperial":
+                    self.camXHelm = self.camXHelmImpDefault
+                    self.camYHelm = self.camYHelmImpDefault
+                    self.camZHelm = self.camZHelmImpDefault
+                    self.lookXHelm = self.lookXHelmImpDefault
+                    self.lookYHelm = self.lookYHelmImpDefault
+                    self.lookZHelm = self.lookZHelmImpDefault
+                else:
+                    self.camXHelm = self.camXHelmInfDefault
+                    self.camYHelm = self.camYHelmInfDefault
+                    self.camZHelm = self.camZHelmInfDefault
+                    self.lookXHelm = self.lookXHelmInfDefault
+                    self.lookYHelm = self.lookYHelmInfDefault
+                    self.lookZHelm = self.lookZHelmInfDefault
+
                 self.preview.vs_CamX.setValue(self.camXHelm)
                 self.preview.lbl_CamX.setText(self.convertIntToFloatStr(self.camXHelm, 100))
-                self.camYHelm = -6510
                 self.preview.vs_CamY.setValue(self.camYHelm)
                 self.preview.lbl_CamY.setText(self.convertIntToFloatStr(self.camYHelm, 100))
-                self.camZHelm = 3146
                 self.preview.vs_CamZ.setValue(self.camZHelm)
                 self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(self.camZHelm, 100))
-                self.lookXHelm = -568
                 self.preview.vs_LookX.setValue(self.lookXHelm)
                 self.preview.lbl_LookX.setText(self.convertIntToFloatStr(self.lookXHelm, 100))
-                self.lookYHelm = -445
                 self.preview.vs_LookY.setValue(self.lookYHelm)
                 self.preview.lbl_LookY.setText(self.convertIntToFloatStr(self.lookYHelm, 100))
-                self.lookZHelm = 1052
                 self.preview.vs_LookZ.setValue(self.lookZHelm)
                 self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(self.lookZHelm, 100))
 
@@ -5933,9 +5967,14 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for preview camera presets.'''
 
         if intIndex == 0:
-            self.camXHelm = 2170
-            self.camYHelm = -6510
-            self.camZHelm = 3146
+            if self.helmetStyle == "imperial":
+                self.camXHelm = self.camXHelmImpDefault
+                self.camYHelm = self.camYHelmImpDefault
+                self.camZHelm = self.camZHelmImpDefault
+            else:
+                self.camXHelm = self.camXHelmInfDefault
+                self.camYHelm = self.camYHelmInfDefault
+                self.camZHelm = self.camZHelmInfDefault
 
         # Top Left.
         elif intIndex == 1:
@@ -6083,9 +6122,14 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for preview look presets.'''
 
         if intIndex == 0:
-            self.lookXHelm = -568
-            self.lookYHelm = -445
-            self.lookZHelm = 1052
+            if self.helmetStyle == "imperial":
+                self.lookX = self.lookXHelmImpDefault
+                self.lookY = self.lookYHelmImpDefault
+                self.lookZ = self.lookZHelmImpDefault
+            else:
+                self.lookX = self.lookXHelmInfDefault
+                self.lookY = self.lookYHelmInfDefault
+                self.lookZ = self.lookZHelmInfDefault
 
         # Top Left.
         elif intIndex == 1:
@@ -6395,13 +6439,55 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         if self.helmetStyle == "infiltrator":
             self.preview.lbl_PaletteHelm.setStyleSheet("background-color: rgb(211, 211, 211);")
             enableWidgets = False
+            self.previewHelmSetInfDefaults()
+
         else:
             self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
             enableWidgets = True
+            self.previewHelmSetImpDefaults()
 
         for widget in widgets:
             widget.setEnabled(enableWidgets)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def previewHelmSetInfDefaults(self):
+        '''Method that sets the default preview options for the Infiltrator style helmet.'''
+
+        self.decColour = self.decColourInfDefault
+        self.colourSelected(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
+        self.camXHelm = self.camXHelmInfDefault
+        self.preview.vs_CamX.setValue(self.camXHelm)
+        self.camYHelm = self.camYHelmInfDefault
+        self.preview.vs_CamY.setValue(self.camYHelm)
+        self.camZHelm = self.camZHelmInfDefault
+        self.preview.vs_CamZ.setValue(self.camZHelm)
+        self.lookXHelm = self.lookXHelmInfDefault
+        self.preview.vs_LookX.setValue(self.lookXHelm)
+        self.lookYHelm = self.lookYHelmInfDefault
+        self.preview.vs_LookY.setValue(self.lookYHelm)
+        self.lookZHelm = self.lookZHelmInfDefault
+        self.preview.vs_LookZ.setValue(self.lookZHelm)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def previewHelmSetImpDefaults(self):
+        '''Method that sets the default preview options for the Infiltrator style helmet.'''
+
+        self.decColour = self.decColourImpDefault
+        self.colourSelected(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
+        self.camXHelm = self.camXHelmImpDefault
+        self.preview.vs_CamX.setValue(self.camXHelm)
+        self.camYHelm = self.camYHelmImpDefault
+        self.preview.vs_CamY.setValue(self.camYHelm)
+        self.camZHelm = self.camZHelmImpDefault
+        self.preview.vs_CamZ.setValue(self.camZHelm)
+        self.lookXHelm = self.lookXHelmImpDefault
+        self.preview.vs_LookX.setValue(self.lookXHelm)
+        self.lookYHelm = self.lookYHelmImpDefault
+        self.preview.vs_LookY.setValue(self.lookYHelm)
+        self.lookZHelm = self.lookZHelmImpDefault
+        self.preview.vs_LookZ.setValue(self.lookZHelm)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
 
     def cb_previewPresetLightHelmFunc(self, intIndex):
         '''Method for preview light presets.'''
