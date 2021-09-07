@@ -255,6 +255,7 @@ class TTT3(QMainWindow):
             self.lightX = 13000
             self.lightY = -15000
             self.lightZ = 13000
+            self.loadingHelm = False
             self.helmColour = QColor(33, 33, 33)
             self.bgColourHelm = QColor(69, 79, 112)
             self.decColourImpDefault = QColor(147, 147, 147)
@@ -5481,6 +5482,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 oldRefreshSetting = self.preview.cb_Refresh.isChecked()
                 # Turn off auto refresh to prevent applying the loaded settings to trigger multiple refreshes.
                 self.preview.cb_Refresh.setChecked(False)
+                self.loadingHelm = True
                 self.applyPreviewSettings()
                 self.preview.cb_Refresh.setChecked(oldRefreshSetting)
                 self.renderPreview()
@@ -6439,12 +6441,14 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         if self.helmetStyle == "infiltrator":
             self.preview.lbl_PaletteHelm.setStyleSheet("background-color: rgb(211, 211, 211);")
             enableWidgets = False
-            self.previewHelmSetInfDefaults()
+            if not self.loadingHelm:
+                self.previewHelmSetInfDefaults()
 
         else:
             self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
             enableWidgets = True
-            self.previewHelmSetImpDefaults()
+            if not self.loadingHelm:
+                self.previewHelmSetImpDefaults()
 
         for widget in widgets:
             widget.setEnabled(enableWidgets)
@@ -6453,39 +6457,53 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def previewHelmSetInfDefaults(self):
         '''Method that sets the default preview options for the Infiltrator style helmet.'''
 
-        self.decColour = self.decColourInfDefault
-        self.colourSelected(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
-        self.camXHelm = self.camXHelmInfDefault
-        self.preview.vs_CamX.setValue(self.camXHelm)
-        self.camYHelm = self.camYHelmInfDefault
-        self.preview.vs_CamY.setValue(self.camYHelm)
-        self.camZHelm = self.camZHelmInfDefault
-        self.preview.vs_CamZ.setValue(self.camZHelm)
-        self.lookXHelm = self.lookXHelmInfDefault
-        self.preview.vs_LookX.setValue(self.lookXHelm)
-        self.lookYHelm = self.lookYHelmInfDefault
-        self.preview.vs_LookY.setValue(self.lookYHelm)
-        self.lookZHelm = self.lookZHelmInfDefault
-        self.preview.vs_LookZ.setValue(self.lookZHelm)
+        if self.decColour == self.decColourImpDefault:
+            self.decColour = self.decColourInfDefault
+            self.colourSelected(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
+        if self.camXHelm == self.camXHelmImpDefault:
+            self.camXHelm = self.camXHelmInfDefault
+            self.preview.vs_CamX.setValue(self.camXHelm)
+        if self.camYHelm == self.camYHelmImpDefault:
+            self.camYHelm = self.camYHelmInfDefault
+            self.preview.vs_CamY.setValue(self.camYHelm)
+        if self.camZHelm == self.camZHelmImpDefault:
+            self.camZHelm = self.camZHelmInfDefault
+            self.preview.vs_CamZ.setValue(self.camZHelm)
+        if self.lookXHelm == self.lookXHelmImpDefault:
+            self.lookXHelm = self.lookXHelmInfDefault
+            self.preview.vs_LookX.setValue(self.lookXHelm)
+        if self.lookYHelm == self.lookYHelmImpDefault:
+            self.lookYHelm = self.lookYHelmInfDefault
+            self.preview.vs_LookY.setValue(self.lookYHelm)
+        if self.lookZHelm == self.lookZHelmImpDefault:
+            self.lookZHelm = self.lookZHelmInfDefault
+            self.preview.vs_LookZ.setValue(self.lookZHelm)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def previewHelmSetImpDefaults(self):
         '''Method that sets the default preview options for the Infiltrator style helmet.'''
 
-        self.decColour = self.decColourImpDefault
-        self.colourSelected(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
-        self.camXHelm = self.camXHelmImpDefault
-        self.preview.vs_CamX.setValue(self.camXHelm)
-        self.camYHelm = self.camYHelmImpDefault
-        self.preview.vs_CamY.setValue(self.camYHelm)
-        self.camZHelm = self.camZHelmImpDefault
-        self.preview.vs_CamZ.setValue(self.camZHelm)
-        self.lookXHelm = self.lookXHelmImpDefault
-        self.preview.vs_LookX.setValue(self.lookXHelm)
-        self.lookYHelm = self.lookYHelmImpDefault
-        self.preview.vs_LookY.setValue(self.lookYHelm)
-        self.lookZHelm = self.lookZHelmImpDefault
-        self.preview.vs_LookZ.setValue(self.lookZHelm)
+        if self.decColour == self.decColourInfDefault:
+            self.decColour = self.decColourImpDefault
+            self.colourSelected(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
+        if self.camXHelm == self.camXHelmInfDefault:
+            self.camXHelm = self.camXHelmImpDefault
+            self.preview.vs_CamX.setValue(self.camXHelm)
+        if self.camYHelm == self.camYHelmInfDefault:
+            self.camYHelm = self.camYHelmImpDefault
+            self.preview.vs_CamY.setValue(self.camYHelm)
+        if self.camZHelm == self.camZHelmInfDefault:
+            self.camZHelm = self.camZHelmImpDefault
+            self.preview.vs_CamZ.setValue(self.camZHelm)
+        if self.lookXHelm == self.lookXHelmInfDefault:
+            self.lookXHelm = self.lookXHelmImpDefault
+            self.preview.vs_LookX.setValue(self.lookXHelm)
+        if self.lookYHelm == self.lookYHelmInfDefault:
+            self.lookYHelm = self.lookYHelmImpDefault
+            self.preview.vs_LookY.setValue(self.lookYHelm)
+        if self.lookZHelm == self.lookZHelmInfDefault:
+            self.lookZHelm = self.lookZHelmImpDefault
+            self.preview.vs_LookZ.setValue(self.lookZHelm)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewPresetLightHelmFunc(self, intIndex):
