@@ -1144,6 +1144,11 @@ class TTT3(QMainWindow):
             self.preview.vs_LightZ.setValue(self.lightZ)
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZ, 10))
         else:
+            # Helmet Style.
+            helmStyle = self.preview.cb_helmStyle.findText(self.helmetStyle.title(), Qt.MatchExactly | Qt.MatchCaseSensitive)
+            self.preview.cb_helmStyle.setCurrentIndex(helmStyle)
+            self.cb_previewHemlStyleFunc(None)
+
             # Colours.
             # Helmet Colour.
             self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
@@ -1238,11 +1243,6 @@ class TTT3(QMainWindow):
             self.preview.le_helmLogo2Filepath.setText(self.logo2FilepathHelm)
             self.cb_previewHemlLogo1TypeFunc()
             self.cb_previewHemlLogo2TypeFunc()
-
-            # Helmet Style.
-            helmStyle = self.preview.cb_helmStyle.findText(self.helmetStyle.title(), Qt.MatchExactly | Qt.MatchCaseSensitive)
-            self.preview.cb_helmStyle.setCurrentIndex(helmStyle)
-            self.cb_previewHemlStyleFunc(None)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def renderPreview(self):
