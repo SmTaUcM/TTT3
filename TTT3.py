@@ -5437,7 +5437,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.preview.cb_Refresh.setChecked(False)
                 self.applyPreviewSettings()
                 self.preview.cb_Refresh.setChecked(oldRefreshSetting)
-                self.renderPreview()
+                if not self.preview.cb_Refresh.isChecked():
+                    self.renderPreview()
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -5542,12 +5543,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 newData.append(item)
 
         img.putdata(newData)
-        img.save(os.getcwd() + "\\data\\helmet\\helmtex.bmp", "BMP")
-        time.sleep(0.25) # Processing time to allow the image to save. Prevents bug of helmet not loading on profile import.
-        self.creatHelmetFaceDetail(colour)
+        self.creatHelmetFaceDetail(colour, img)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def creatHelmetFaceDetail(self, colour):
+    def creatHelmetFaceDetail(self, colour, background):
         r'''Method used to add helmtex_b.gif to "data\helmet\hemltex.bmp.'''
 
         # Convert helmtex_b.gif to a transparent background *.png.
@@ -5567,11 +5566,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         # Layer the transparent helmtex_b.png onto our coloured helmtex.bmp.
         img_w, img_h = img.size
-        background = Image.open(os.getcwd() + "\\data\\helmet\\helmtex.bmp", 'r')
         bg_w, bg_h = background.size
         offset = (((bg_w - img_w) // 2) + 86, ((bg_h - img_h) // 2) - 38)
         background.paste(img, offset, mask=img)
-        background.save(os.getcwd() + "\\data\\helmet\\helmtex.bmp")
+        background.save(os.getcwd() + "\\data\\helmet\\helmtex.bmp", "BMP")
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_PaletteHelmDecFunc(self):
