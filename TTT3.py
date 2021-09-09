@@ -326,6 +326,7 @@ class TTT3(QMainWindow):
             self.previewLoaded = False
 
             # ----- Application logic. -----
+            self.queingAllowed = True
             self.queue = queue.Queue()
             threading.Thread(target=self.taskQueuer, daemon=True).start()
             self.fastRendering = False  # Forces POV-Ray to render at a lower quality for quicker rendering during testing.
@@ -1218,16 +1219,17 @@ class TTT3(QMainWindow):
     def renderPreview(self):
         '''Method for rendering a preview image.'''
 
-        if self.getUniformData() != self.lastRenderData:
-            if self.previewLoaded:
-                self.preview.lbl_wait.setHidden(False)
-            if self.uniform == "dress":
-                self.createDressPov()
-            elif self.uniform == "duty":
-                self.createDutyPov()
-            elif self.uniform == "helmet":
-                self.createHelmetPov()
-            self.queue.put(None)
+        if self.queingAllowed:
+            if self.getUniformData() != self.lastRenderData:
+                if self.previewLoaded:
+                    self.preview.lbl_wait.setHidden(False)
+                if self.uniform == "dress":
+                    self.createDressPov()
+                elif self.uniform == "duty":
+                    self.createDutyPov()
+                elif self.uniform == "helmet":
+                    self.createHelmetPov()
+                self.queue.put(None)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def taskQueuer(self):
@@ -5246,12 +5248,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method to reset all preview window options / profile.'''
 
         try:
+            self.queingAllowed = False
             if self.uniform != "helmet":
                 self.btn_previewResetColoursFunc()
                 self.btn_previewResetCameraFunc()
                 self.btn_previewResetOptionsFunc()
                 self.btn_previewResetLightFunc()
-                self.renderPreview()
             else:
                 self.btn_previewResetColoursFunc()
                 self.btn_previewResetSurfPropsFunc()
@@ -5259,7 +5261,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.btn_previewResetLightFunc()
                 self.btn_previewResetDecsFunc()
                 self.btn_previewResetOptionsFunc()
-                self.renderPreview()
+
+            self.queingAllowed = True
+            self.renderPreview()
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -5380,7 +5384,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.lightYHelm = saveData[16]
                     self.lightZHelm = saveData[17]
                     self.fontHelmQFront = QFont(saveData[18])
-                    self.nameHelm = saveData[19]
+##                    self.nameHelm = saveData[19]
                     self.logo1FilepathHelm = saveData[20]
                     self.logo1TypeHelm = saveData[21]
                     self.logo2FilepathHelm = saveData[22]
@@ -5392,9 +5396,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.qualityHelm = saveData[28]
                     self.widthHelm = saveData[29]
                     self.heightHelm = saveData[30]
-                    self.rank = saveData[31]
-                    self.position = saveData[32]
-                    self.sqn = saveData[33]
+##                    self.rank = saveData[31]
+##                    self.position = saveData[32]
+##                    self.sqn = saveData[33]
 
                 oldRefreshSetting = self.preview.cb_Refresh.isChecked()
                 # Turn off auto refresh to prevent applying the loaded settings to trigger multiple refreshes.
@@ -5507,6 +5511,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         img.putdata(newData)
         img.save(os.getcwd() + "\\data\\helmet\\helmtex.bmp", "BMP")
+        time.sleep(0.1) # Processing time to allow the image to save. Prevents bug of helmet not loading on profile import.
         self.creatHelmetFaceDetail(colour)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
