@@ -1153,7 +1153,8 @@ class TTT3(QMainWindow):
 
             # Colours.
             # Helmet Colour.
-            self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
+            if self.helmetStyle == "imperial":
+                self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
             # Decoration Colour.
             self.colourSelected(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
             # Background Colour.
