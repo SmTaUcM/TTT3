@@ -5511,7 +5511,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         img.putdata(newData)
         img.save(os.getcwd() + "\\data\\helmet\\helmtex.bmp", "BMP")
-        time.sleep(0.1) # Processing time to allow the image to save. Prevents bug of helmet not loading on profile import.
+        time.sleep(0.25) # Processing time to allow the image to save. Prevents bug of helmet not loading on profile import.
         self.creatHelmetFaceDetail(colour)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
