@@ -42,6 +42,7 @@ import hashlib
 import threading
 import queue
 import Slider
+import ftfy  # python -m pip install ftfy
 # python -m pip install pyinstaller - for compiler.
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -63,7 +64,7 @@ class TTT3(QMainWindow):
             # Version info.
             version = "3.0.1"
             devVersion = ""
-            date = "21 August 2021"
+            date = "29 September 2021"
             self.saveFileVersion = 1  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
@@ -2833,10 +2834,10 @@ color_map
             # Apply the Fleet API settings for helmet colouring.
             for squad in self.fleetConfig.get("squadrons"):
                 if squad.get("name") == self.sqn:
-                    if squad.get("uniformData").get("colorHelmetBase") != None:
+                    if squad.get("uniformData").get("colorHelmetBase") is not None:
                         self.helmColour = self.getAPIHelmColour(squad.get("uniformData").get("colorHelmetBase"))
 
-                    if squad.get("uniformData").get("colorHelmetDecoration") != None:
+                    if squad.get("uniformData").get("colorHelmetDecoration") is not None:
                         self.decColour = self.getAPIHelmColour(squad.get("uniformData").get("colorHelmetDecoration"))
 
                     break
@@ -4108,9 +4109,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
                     # Name
                     self.name = apiData.get("name")
+                    self.name = ftfy.ftfy(self.name, uncurl_quotes=False)  # Correct JSON's incoprrect interprtation of UTF-8 extended characters.
 
                     # Callsign
                     self.callsign = apiData.get("callsign")
+                    # Correct JSON's incoprrect interprtation of UTF-8 extended characters.
+                    self.callsign = ftfy.ftfy(self.callsign, uncurl_quotes=False)
 
                     # PIN
                     self.pin = apiData.get("PIN")
@@ -4254,6 +4258,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     # Write to information box.
                     msg = "Imported uniform data for {label}\nCallsign '{callsign}'\n{idLine}\n\nImport finished.".format(
                         label=apiData.get("label"), callsign=apiData.get("callsign"), idLine=apiData.get("IDLine"))
+                    msg = ftfy.ftfy(msg, uncurl_quotes=False)  # Correct JSON's incoprrect interprtation of UTF-8 extended characters.
                     self.writeToImportTextBox(msg)
 
                     # PIN number saving.
@@ -6322,7 +6327,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def sliderValueInput(self, slider, name, label, min, max, scale, decimals=1, step=1):
         '''Method directly asks the user for a slider input.'''
 
-        value, ok = QInputDialog.getDouble(self, "%s Value" % name, slider.toolTip() + "\n\nEnter new value:", float(label.text()), min, max, decimals, Qt.WindowFlags(), step)
+        value, ok = QInputDialog.getDouble(self, "%s Value" % name, slider.toolTip() + "\n\nEnter new value:",
+                                           float(label.text()), min, max, decimals, Qt.WindowFlags(), step)
         if ok:
             slider.setValue(int(value * scale))
         #--------------------------------------------------------------------------------------------------------------------------------------------#

@@ -2829,7 +2829,7 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>CM SkyShadow, </string>
+       <string>CPT SkyShadow, </string>
       </property>
      </widget>
      <widget class="QLabel" name="lblVersion">
@@ -3295,7 +3295,7 @@ QListWidget:!enabled
      <widget class="QLabel" name="label_11">
       <property name="geometry">
        <rect>
-        <x>217</x>
+        <x>222</x>
         <y>75</y>
         <width>131</width>
         <height>20</height>
@@ -3316,7 +3316,7 @@ QListWidget:!enabled
      <widget class="QLabel" name="label_12">
       <property name="geometry">
        <rect>
-        <x>320</x>
+        <x>325</x>
         <y>75</y>
         <width>121</width>
         <height>20</height>
@@ -3395,7 +3395,7 @@ QListWidget:!enabled
      <widget class="QLabel" name="label_32">
       <property name="geometry">
        <rect>
-        <x>436</x>
+        <x>441</x>
         <y>75</y>
         <width>71</width>
         <height>20</height>

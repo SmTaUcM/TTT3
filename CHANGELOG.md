@@ -18,7 +18,7 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 
 ## ------------------------------------------------------------------------------------------------##
 
-## [v3.0.1] 2021-08-21
+## [v3.0.1] 2021-09-29
 
 ### Added
 - High DPI support allowing app scaling for high resolution monitors in Windows 10 via: 
@@ -46,6 +46,7 @@ at https://github.com/emperorshammer/issues-incoming-queue.
   selection.
 - TTT3 no longer crashes when opening legacy TTT2 .ttt profile files and will produce an error message 
   to the user.
+- Support for pilot names and callsigns containing single and double quotes added.
 
 ### Removed
 - None
