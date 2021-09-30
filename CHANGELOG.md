@@ -28,6 +28,7 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 - Uniform and helmet slider bar values can now be manually entered by clicking on their respective 
   labels.
 - Database importing of preset helmet / decoration colours.
+- Redundancy for expired root certificates.
 
 ### Changed
 - New TIE Corps Logo is now the default graphic on helmets replacing the imperial cog.
