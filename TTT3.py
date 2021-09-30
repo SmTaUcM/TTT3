@@ -42,6 +42,8 @@ import hashlib
 import threading
 import queue
 import Slider
+import certifi # python -m pip install certifi
+import ssl
 # python -m pip install pyinstaller - for compiler.
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -4083,8 +4085,16 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def getRetrieveAPIData(self, url, pin):
         '''Method to retrieve TIE Corps Website API returned data and return it as a Python Dictionary.'''
 
-        http = urllib3.PoolManager()
-        response = http.request("GET", url + pin)
+        try:
+            http = urllib3.PoolManager()
+            response = http.request("GET", url + pin)
+        except urllib3.exceptions.MaxRetryError as error:
+            if "CERTIFICATE_VERIFY_FAILED" in str(error):
+                http = urllib3.PoolManager(cert_reqs='CERT_REQUIRED', ca_certs=certifi.where())
+                response = http.request("GET", url + pin)
+            else:
+                response = http.request("GET", url + pin)
+
         data = json.loads(response.data)
 
         return data
@@ -4266,7 +4276,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.writeToImportTextBox(apiData.get("error")["message"])
 
             except urllib3.exceptions.MaxRetryError:
-                self.writeToImportTextBox("Error! No Internet Connection!")
+                self.writeToImportTextBox("Error! No Connection!")
 
         except Exception as e:
             handleException(e)
@@ -4697,7 +4707,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except urllib3.exceptions.MaxRetryError:
             self.updateProgressBar.emit("error", 0)
-            self.updateMsg += "Checking for updates failed.\nNo internet connection.\n"
+            self.updateMsg += "Checking for updates failed.\nNo connection.\n"
             self.updateProgressBar.emit("message", None)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -4713,8 +4723,15 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     pass
 
             # Download new patch.
-            http = urllib3.PoolManager()
-            response = http.request("GET", url)
+            try:
+                http = urllib3.PoolManager()
+                response = http.request("GET", url)
+            except urllib3.exceptions.MaxRetryError as error:
+                if "CERTIFICATE_VERIFY_FAILED" in str(error):
+                    http = urllib3.PoolManager(cert_reqs='CERT_REQUIRED', ca_certs=certifi.where())
+                    response = http.request("GET", url)
+                else:
+                    return
 
             # Detect the file extension.
             fileType = response.headers.get("Content-Type")
@@ -4752,13 +4769,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.gui.lbl_update.hide()
 
             elif type == "error":
-                self.gui.lbl_update.setText("Squadron Patch Update Error! No Internet Connection!")
+                self.gui.lbl_update.setText("TTT3 Update Error! No Connection!")
                 self.gui.pb_update.setStyleSheet(r"background-color: rgb(170, 0, 0);border-color: rgb(170, 0, 0);text-align: right;")
                 self.gui.pb_update.show()
                 self.gui.lbl_update.show()
 
             elif type == "code400":
-                self.gui.lbl_update.setText("Squadron Patch Update Error! Invalid Fleet API setting!")
+                self.gui.lbl_update.setText("TTT3 Update Update Error! Invalid Fleet API setting!")
                 self.gui.pb_update.setStyleSheet(r"background-color: rgb(170, 0, 0);border-color: rgb(170, 0, 0);text-align: right;")
                 self.gui.pb_update.show()
                 self.gui.lbl_update.show()
