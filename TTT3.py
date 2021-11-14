@@ -2906,7 +2906,10 @@ color_map
                     if squad.get("uniformData").get("colorHelmetDecoration") is not None:
                         self.decColour = self.getAPIHelmColour(squad.get("uniformData").get("colorHelmetDecoration"))
 
-                    self.helmetStyle = squad.get("uniformData").get("helmetStyle").title() + " - " + self.sqn.title()
+                    if squad.get("uniformData").get("helmetStyle") != "imperial":
+                        self.helmetStyle = squad.get("uniformData").get("helmetStyle").title() + " - " + self.sqn.title()
+                    else:
+                        self.helmetStyle = squad.get("uniformData").get("helmetStyle")
 
                     break
 
