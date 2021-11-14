@@ -1148,6 +1148,11 @@ class TTT3(QMainWindow):
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZ, 10))
         else:
             # Helmet Style.
+            self.preview.cb_helmStyle.clear()
+            self.preview.cb_helmStyle.addItem("Imperial")
+            self.preview.cb_helmStyle.addItem("Infiltrator - Clean")
+            if self.helmetStyle.title() != "Imperial":
+                self.preview.cb_helmStyle.addItem(self.helmetStyle)
             helmStyle = self.preview.cb_helmStyle.findText(self.helmetStyle.title(), Qt.MatchExactly | Qt.MatchCaseSensitive)
             self.preview.cb_helmStyle.setCurrentIndex(helmStyle)
             self.cb_previewHemlStyleFunc(None)
@@ -2383,7 +2388,7 @@ color_map
 
         if self.helmetStyle == "imperial":
             template = r"data\helmImp.tpt"
-        elif self.helmetStyle == "infiltrator":
+        else:
             template = r"data\helmInf.tpt"
 
         # Create the Pilot Helmet nametag.
@@ -2672,6 +2677,18 @@ color_map
                 else:
                     povData.append(line.replace("&JAWLOGOMIRRORING&", "P_jawlogo_Unmirrored"))
 
+            elif "&COLOURMAP&" in line:
+                if self.preview.cb_helmStyle.currentText() != "Infiltrator - Clean":
+                    povData.append(line.replace("&COLOURMAP&", 'tga "helmet/Infiltrator_%s_C.tga"'%self.sqn))
+                else:
+                    povData.append(line.replace("&COLOURMAP&", 'tga "helmet/Infiltrator_Clean_C.tga"'))
+
+            elif "&NORMALMAP&" in line:
+                if self.preview.cb_helmStyle.currentText() != "Infiltrator - Clean":
+                    povData.append(line.replace("&NORMALMAP&", 'tga "helmet/Infiltrator_%s_N.tga"'%self.sqn))
+                else:
+                    povData.append(line.replace("&NORMALMAP&", 'tga "helmet/Infiltrator_Clean_N.tga"'))
+
             # ----- Non-Editable Data. -----
             else:
                 povData.append(line)
@@ -2889,7 +2906,7 @@ color_map
                     if squad.get("uniformData").get("colorHelmetDecoration") is not None:
                         self.decColour = self.getAPIHelmColour(squad.get("uniformData").get("colorHelmetDecoration"))
 
-                    self.helmetStyle = squad.get("uniformData").get("helmetStyle")
+                    self.helmetStyle = squad.get("uniformData").get("helmetStyle").title() + " - " + self.sqn.title()
 
                     break
 
@@ -6454,7 +6471,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         widgets = [self.preview.lbl_helm, self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm, self.preview.btn_PaletteHelm]
 
-        if self.helmetStyle == "infiltrator":
+        if self.helmetStyle != "imperial":
             self.preview.lbl_PaletteHelm.setStyleSheet("background-color: rgb(211, 211, 211);")
             enableWidgets = False
             if not self.loadingHelm:

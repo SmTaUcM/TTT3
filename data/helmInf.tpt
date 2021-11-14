@@ -63,14 +63,14 @@ texture // Helmet_Material
     {
 	    image_map
         {
-          tga "helmet/Infiltrator_Clean_C.tga"
+		  &COLOURMAP&
         } 
     }
     normal
     {
         bump_map
         {
-            tga "helmet/Infiltrator_Clean_N.tga"
+		    &NORMALMAP&
             //bump_size 2
         }
     }
@@ -84,7 +84,7 @@ texture // Visor_Material
     {
 	    image_map
         {
-          tga "helmet/Infiltrator_Clean_C.tga"
+		  &COLOURMAP&
           transmit all 0.7
         }
     }
@@ -92,7 +92,7 @@ texture // Visor_Material
     {
         bump_map
         {
-            tga "helmet/Infiltrator_Clean_N.tga"
+			&NORMALMAP&
             //bump_size 2
         }
     }
