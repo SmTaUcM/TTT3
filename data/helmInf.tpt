@@ -63,14 +63,14 @@ texture // Helmet_Material
     {
 	    image_map
         {
-          tga "helmet/Cha_Reb_Helmet_XWing_Black_Orange.tga"
+          tga "helmet/Infiltrator_Clean_C.tga"
         } 
     }
     normal
     {
         bump_map
         {
-            tga "helmet/XWing_Firebird_N.tga"
+            tga "helmet/Infiltrator_Clean_N.tga"
             //bump_size 2
         }
     }
@@ -84,7 +84,7 @@ texture // Visor_Material
     {
 	    image_map
         {
-          tga "helmet/XWing_Firebird_C.tga"
+          tga "helmet/Infiltrator_Clean_C.tga"
           transmit all 0.7
         }
     }
@@ -92,7 +92,7 @@ texture // Visor_Material
     {
         bump_map
         {
-            tga "helmet/XWing_Firebird_N.tga"
+            tga "helmet/Infiltrator_Clean_N.tga"
             //bump_size 2
         }
     }
