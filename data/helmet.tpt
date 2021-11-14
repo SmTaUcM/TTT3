@@ -188,8 +188,8 @@ object{ P_light }
 object{ P_face }
 object{ P_helmet }
 object{ P_ears }
-object{ P_implogo no_shadow }
-object{ P_jawlogo no_shadow }
+object{ &IMPLOGOMIRRORING& no_shadow }
+object{ &JAWLOGOMIRRORING& no_shadow }
 object{ P_nametag no_shadow }
 object{ P_hoses }
 object{ P_mohawk no_shadow }
