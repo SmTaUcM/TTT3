@@ -3182,12 +3182,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     else:
                         self.gui.cb_singleMedal.setChecked(False)
 
+                self.gui.cb_singleMedal.show()
+                self.showUpgradeableRadioButtons()
+
                 if not self.cb_singleMedalConnected:
                     self.gui.cb_singleMedal.stateChanged.connect(self.cb_singleMedalSelectionLogic)
                     self.cb_singleMedalConnected = True
-
-                self.gui.cb_singleMedal.show()
-                self.showUpgradeableRadioButtons()
 
                 # ----- SubRibbons type ribbon awards. (MoS, MoT, IS, CoX)
             elif award.get("type") == "subRibbons":
@@ -3325,11 +3325,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.neckRibbonDeconfliction()
 
             # === Ribbons ===
-                # ----- Upgradeable type ribbon awards. (MoI)
+                # ----- Upgradeable type ribbon awards. (MoI, MoC LoC, LoS, DFC)
             elif award.get("type") == "upgradeable":
 
-                widgets = [self.gui.rb_upgradeable_0, self.gui.rb_upgradeable_1, self.gui.rb_upgradeable_2,
-                           self.gui.rb_upgradeable_3, self.gui.rb_upgradeable_4, self.gui.rb_upgradeable_5]
+                self.disconnectRibbonUpgrades()
 
                 if self.gui.cb_singleMedal.isChecked():
 
@@ -3352,17 +3351,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
                     # Reset the selection.
                     self.gui.rb_upgradeable_0.setChecked(True)
-
-                    # Hide and disconnect the radio buttons.
-                    for widget in widgets:
-                        widget.hide()
-                        # Disconnect the radio buttons.
-                        if self.rb_upgradeablesConnected:
-                            try:
-                                widget.clicked.disconnect()
-                            except TypeError:
-                                pass  # Prevents a crash when trying to disconnect a widget that isn't connected to aything.
-                    self.rb_upgradeablesConnected = False
+                    self.disconnectRibbonUpgrades()
 
                 # ----- Ranged type ribbon awards. (OV)
             elif award.get("type") == "ranged":
@@ -3391,6 +3380,24 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def disconnectRibbonUpgrades(self):
+        '''Method that disconnects the ribbon upgrade radio buttons.'''
+
+        widgets = [self.gui.rb_upgradeable_0, self.gui.rb_upgradeable_1, self.gui.rb_upgradeable_2,
+                   self.gui.rb_upgradeable_3, self.gui.rb_upgradeable_4, self.gui.rb_upgradeable_5]
+
+        # Hide and disconnect the radio buttons.
+        for widget in widgets:
+            widget.hide()
+            # Disconnect the radio buttons.
+            if self.rb_upgradeablesConnected:
+                try:
+                    widget.clicked.disconnect()
+                except TypeError:
+                    pass  # Prevents a crash when trying to disconnect a widget that isn't connected to aything.
+        self.rb_upgradeablesConnected = False
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def showUpgradeableRadioButtons(self):
