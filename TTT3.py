@@ -1148,9 +1148,11 @@ class TTT3(QMainWindow):
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZ, 10))
         else:
             # Helmet Style.
+            helmStyle = self.helmetStyle.title()
             self.preview.cb_helmStyle.clear()
             self.preview.cb_helmStyle.addItem("Imperial")
             self.preview.cb_helmStyle.addItem("Infiltrator - Clean")
+            self.helmetStyle = helmStyle
             if self.helmetStyle.title() != "Imperial":
                 self.preview.cb_helmStyle.addItem(self.helmetStyle)
             helmStyle = self.preview.cb_helmStyle.findText(self.helmetStyle.title(), Qt.MatchExactly | Qt.MatchCaseSensitive)
@@ -2678,14 +2680,16 @@ color_map
                     povData.append(line.replace("&JAWLOGOMIRRORING&", "P_jawlogo_Unmirrored"))
 
             elif "&COLOURMAP&" in line:
+                sqn = self.preview.cb_helmStyle.currentText().replace("Infiltrator - ", "")
                 if self.preview.cb_helmStyle.currentText() != "Infiltrator - Clean":
-                    povData.append(line.replace("&COLOURMAP&", 'tga "helmet/Infiltrator_%s_C.tga"'%self.sqn))
+                    povData.append(line.replace("&COLOURMAP&", 'tga "helmet/Infiltrator_%s_C.tga"'%sqn))
                 else:
                     povData.append(line.replace("&COLOURMAP&", 'tga "helmet/Infiltrator_Clean_C.tga"'))
 
             elif "&NORMALMAP&" in line:
+                sqn = self.preview.cb_helmStyle.currentText().replace("Infiltrator - ", "")
                 if self.preview.cb_helmStyle.currentText() != "Infiltrator - Clean":
-                    povData.append(line.replace("&NORMALMAP&", 'tga "helmet/Infiltrator_%s_N.tga"'%self.sqn))
+                    povData.append(line.replace("&NORMALMAP&", 'tga "helmet/Infiltrator_%s_N.tga"'%sqn))
                 else:
                     povData.append(line.replace("&NORMALMAP&", 'tga "helmet/Infiltrator_Clean_N.tga"'))
 
@@ -5512,7 +5516,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     except BaseException:
                         self.logo2Mirrored = True
                     try:
-                        self.helmetStyle = saveData[36]
+                        self.helmetStyle = saveData[36].title()
                     except BaseException:
                         self.helmetStyle = "imperial"
 
