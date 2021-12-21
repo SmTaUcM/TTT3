@@ -63,7 +63,7 @@ texture // Helmet_Material
     {
 	    image_map
         {
-		  &COLOURMAP&
+		  sys "helmet/helmtex.bmp"
         } 
     }
     normal
@@ -84,7 +84,7 @@ texture // Visor_Material
     {
 	    image_map
         {
-		  &COLOURMAP&
+		  sys "helmet/helmtex.bmp"
           transmit all 0.7
         }
     }

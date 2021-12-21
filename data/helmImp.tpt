@@ -90,6 +90,14 @@ texture
           sys "helmet/helmtex.bmp"
         }
       }
+	normal
+    {
+        bump_map
+        {
+		    &NORMALMAP&
+            //bump_size 2
+        }
+    }
       finish  { fin_T_helmet } 
     }
   }

@@ -247,6 +247,10 @@ class TTT3(QMainWindow):
             self.antiAliasing = True
             self.shadowless = False
             self.mosaicPreview = False
+            self.ambientHelm = 30
+            self.specularHelm = 50
+            self.roughHelm = 1
+            self.reflectionHelm = 10
             self.camX = -2500
             self.camY = -13300
             self.camZ = 2100
@@ -257,38 +261,26 @@ class TTT3(QMainWindow):
             self.lightY = -15000
             self.lightZ = 13000
             self.loadingHelm = False
-            self.helmColour = QColor(33, 33, 33)
-            self.bgColourHelm = QColor(69, 79, 112)
-            self.decColourImpDefault = QColor(147, 147, 147)
-            self.decColourInfDefault = QColor(201, 90, 18)
-            self.decColour = self.decColourImpDefault
-            self.lightColour = QColor(255, 255, 255)
+            self.helmColour = QColor(0, 0, 0)
+            self.bgColourHelm = QColor(0, 0, 0)
+            self.decColour = QColor(0, 0, 0)
+            self.lightColour = QColor(0, 0, 0)
             self.transparentBGHelm = ""
-            self.ambientHelm = 30
-            self.specularHelm = 50
-            self.roughHelm = 1
-            self.reflectionHelm = 10
-            self.camXHelmImpDefault = 2170
-            self.camXHelmInfDefault = 1500
-            self.camXHelm = self.camXHelmImpDefault
-            self.camYHelmImpDefault = -6510
-            self.camYHelmInfDefault = -5000
-            self.camYHelm = self.camYHelmImpDefault
-            self.camZHelmImpDefault = 3146
-            self.camZHelmInfDefault = 2300
-            self.camZHelm = self.camZHelmImpDefault
-            self.lookXHelmImpDefault = -568
-            self.lookXHelmInfDefault = 150
-            self.lookXHelm = self.lookXHelmImpDefault
-            self.lookYHelmImpDefault = -445
-            self.lookYHelmInfDefault = -445
-            self.lookYHelm = self.lookYHelmImpDefault
-            self.lookZHelmImpDefault = 1052
-            self.lookZHelmInfDefault = 1600
-            self.lookZHelm = self.lookZHelmImpDefault
-            self.lightXHelm = 2244
-            self.lightYHelm = -5089
-            self.lightZHelm = 5282
+            self.camXHelmDefault = 0
+            self.camXHelm = self.camXHelmDefault
+            self.camYHelmDefault = 0
+            self.camYHelm = self.camYHelmDefault
+            self.camZHelmDefault = 0
+            self.camZHelm = self.camZHelmDefault
+            self.lookXHelmDefault = 0
+            self.lookXHelm = self.lookXHelmDefault
+            self.lookYHelmDefault = 0
+            self.lookYHelm = self.lookYHelmDefault
+            self.lookZHelmDefault = 0
+            self.lookZHelm = self.lookZHelmDefault
+            self.lightXHelm = 0
+            self.lightYHelm = 0
+            self.lightZHelm = 0
             self.widthHelm = 640
             self.heightHelm = 548
             self.qualityHelm = 9
@@ -302,7 +294,7 @@ class TTT3(QMainWindow):
             self.logo2TypeHelm = "Squadron Patch"
             self.logo1FilepathHelm = os.getcwd() + "\\data\\misc\\Helmet Stencils\\tclogo.gif"
             self.logo2FilepathHelm = ""
-            self.helmetStyle = "imperial"
+            self.helmetStyle = "Imperial"
             self.logo1Mirrored = True
             self.logo2Mirrored = True
 
@@ -351,6 +343,7 @@ class TTT3(QMainWindow):
             self.fastRendering = False  # Forces POV-Ray to render at a lower quality for quicker rendering during testing.
             self.continueRender = True
             self.uniform = None
+            self.loadHelmetData()
             self.loadSettings()
             self.loadFleetData()
             self.lastRenderData = None
@@ -1148,21 +1141,23 @@ class TTT3(QMainWindow):
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZ, 10))
         else:
             # Helmet Style.
-            helmStyle = self.helmetStyle.title()
+                # Add the styles to the comboBox.
+            helmStyle = self.helmetStyle
             self.preview.cb_helmStyle.clear()
-            self.preview.cb_helmStyle.addItem("Imperial")
-            self.preview.cb_helmStyle.addItem("Infiltrator - Clean")
+            for style in self.helmetConfig.sections():
+                if self.helmetConfig.get(style, "squad") == "None":
+                    self.preview.cb_helmStyle.addItem(style)
+                else:
+                    if self.helmetConfig.get(style, "squad") == self.sqn:
+                        self.preview.cb_helmStyle.addItem(style)
             self.helmetStyle = helmStyle
-            if self.helmetStyle.title() != "Imperial":
-                self.preview.cb_helmStyle.addItem(self.helmetStyle)
-            helmStyle = self.preview.cb_helmStyle.findText(self.helmetStyle.title(), Qt.MatchExactly | Qt.MatchCaseSensitive)
+            helmStyle = self.preview.cb_helmStyle.findText(self.helmetStyle, Qt.MatchExactly | Qt.MatchCaseSensitive)
             self.preview.cb_helmStyle.setCurrentIndex(helmStyle)
             self.cb_previewHemlStyleFunc(None)
 
             # Colours.
             # Helmet Colour.
-            if self.helmetStyle == "imperial":
-                self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
+            self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
             # Decoration Colour.
             self.colourSelected(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
             # Background Colour.
@@ -1627,6 +1622,13 @@ class TTT3(QMainWindow):
         except PermissionError:
             msg = "Error: TTT3 does not have permission to save files to %s\n\nPlease try saving to a different location." % newFilePath
             return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def loadHelmetData(self):
+        r'''Method to load in the helmet style data from TTT3\Settings\helmets.ini'''
+
+        self.helmetConfig = configparser.ConfigParser()
+        self.helmetConfig.read(r"settings\helmets.ini")
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def loadSettings(self):
@@ -2388,13 +2390,13 @@ color_map
     def createHelmetPov(self):
         r'''Method that loads in '\data\helmXXX.tpt' parses in the correct uniform data and creates a new 'data\helmet.pov' file.'''
 
-        if self.helmetStyle == "imperial":
-            template = r"data\helmImp.tpt"
-        else:
-            template = r"data\helmInf.tpt"
+        template = os.getcwd() + "\\data\\" + self.helmetConfig.get(self.helmetStyle, "template")
 
         # Create the Pilot Helmet nametag.
         self.createHelmetNameTag()
+
+        # Colour ther helmet.
+        self.createHelmetColour(self.helmColour)
 
         # Read in the template data.
         with open(template, "r") as tptFile:
@@ -2501,7 +2503,6 @@ color_map
 
             # ----- Helmet Settings -----
             elif "&HELMCOLOUR&" in line:
-                self.creatHelmetFaceColour(self.helmColour)
                 povData.append(line.replace("&HELMCOLOUR&", "%s" % self.convertToPOVRGB(self.helmColour)))
 
             elif "&AMBIENT&" in line:
@@ -2680,18 +2681,18 @@ color_map
                     povData.append(line.replace("&JAWLOGOMIRRORING&", "P_jawlogo_Unmirrored"))
 
             elif "&COLOURMAP&" in line:
-                sqn = self.preview.cb_helmStyle.currentText().replace("Infiltrator - ", "")
-                if self.preview.cb_helmStyle.currentText() != "Infiltrator - Clean":
-                    povData.append(line.replace("&COLOURMAP&", 'tga "helmet/Infiltrator_%s_C.tga"'%sqn))
-                else:
-                    povData.append(line.replace("&COLOURMAP&", 'tga "helmet/Infiltrator_Clean_C.tga"'))
+                colourFile = self.helmetConfig.get(self.helmetStyle, "colourMapImage")
+                fileType = colourFile.split(".")[1]
+                if fileType.lower() == "bmp":
+                    fileType = "sys"
+                povData.append(line.replace("&COLOURMAP&", '{type} "helmet/{fileName}"'.format(type=fileType, fileName=colourFile)))
 
             elif "&NORMALMAP&" in line:
-                sqn = self.preview.cb_helmStyle.currentText().replace("Infiltrator - ", "")
-                if self.preview.cb_helmStyle.currentText() != "Infiltrator - Clean":
-                    povData.append(line.replace("&NORMALMAP&", 'tga "helmet/Infiltrator_%s_N.tga"'%sqn))
-                else:
-                    povData.append(line.replace("&NORMALMAP&", 'tga "helmet/Infiltrator_Clean_N.tga"'))
+                normalFile = self.helmetConfig.get(self.helmetStyle, "normalMapImage")
+                fileType = normalFile.split(".")[1]
+                if fileType.lower() == "bmp":
+                    fileType = "sys"
+                povData.append(line.replace("&NORMALMAP&", '{type} "helmet/{fileName}"'.format(type=fileType, fileName=normalFile)))
 
             # ----- Non-Editable Data. -----
             else:
@@ -2910,10 +2911,20 @@ color_map
                     if squad.get("uniformData").get("colorHelmetDecoration") is not None:
                         self.decColour = self.getAPIHelmColour(squad.get("uniformData").get("colorHelmetDecoration"))
 
+                    # API returns an Infiltrator helmet.
                     if squad.get("uniformData").get("helmetStyle") != "imperial":
                         self.helmetStyle = squad.get("uniformData").get("helmetStyle").title() + " - " + self.sqn.title()
+                        # If there's a custom squad infiltrator colourmap.
+                        if self.helmetStyle in self.helmetConfig.sections():
+                            pass
+
+                        # Else use the clean infiltrator design.
+                        else:
+                            self.helmetStyle = squad.get("uniformData").get("helmetStyle").title()
+
+                    # Use imperial helmet.
                     else:
-                        self.helmetStyle = squad.get("uniformData").get("helmetStyle")
+                        self.helmetStyle = squad.get("uniformData").get("helmetStyle").title()
 
                     break
 
@@ -4929,7 +4940,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         # Set the class member.
         setattr(self, optionStr, colour)
 
-        # Conver values.
+        # Convert values.
         realRGB = getattr(self, optionStr).getRgb()
         hexRGB = "#%02x%02x%02x" % (realRGB[0], realRGB[1], realRGB[2])
 
@@ -4946,6 +4957,24 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             colourPov.append(col / 255.0)
         colourPov = str(tuple(colourPov)).replace("(", "").replace(")", "")
         return colourPov
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def convertHexRGBtoIntRGB(self, strHexRGB):
+        '''Method to convert a string of hex RGB to a QColor Tuple of integer RGB values'''
+
+        try:
+            r = int(strHexRGB[0:2], 16)
+        except ValueError:
+            r = 0
+        try:
+            g = int(strHexRGB[2:4], 16)
+        except ValueError:
+            g = 0
+        try:
+            b = int(strHexRGB[4:6], 16)
+        except ValueError:
+            b = 0
+        return QColor(r, g, b)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetColoursFunc(self):
@@ -4965,17 +4994,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.transparentBG = ""
                 self.preview.cb_TransparentBG.setChecked(False)
             else:
-                if self.helmetStyle == "imperial":
-                    self.helmColour = QColor(33, 33, 33)
-                self.bgColourHelm = QColor(69, 79, 112)
-                if self.helmetStyle == "imperial":
-                    self.decColour = self.decColourImpDefault
-                else:
-                    self.decColour = self.decColourInfDefault
-                self.lightColour = QColor(255, 255, 255)
+                self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
+                self.bgColourHelm = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "bgColour"))
+                self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
+                self.lightColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "lightColour"))
+
                 # Helmet Colour.
-                if self.helmetStyle == "imperial":
-                    self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
+                self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
                 # Decoration Colour.
                 self.colourSelected(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
                 # Background Colour.
@@ -5150,7 +5175,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.camXHelm = value
             self.preview.lbl_CamX.setText(self.convertIntToFloatStr(value, 100))
 
-        if value != self.camXHelmImpDefault and value != self.camXHelmInfDefault:
+        if value != self.camXHelmDefault:
             self.preview.cb_PresetCam.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -5164,7 +5189,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.camYHelm = value
             self.preview.lbl_CamY.setText(self.convertIntToFloatStr(value, 100))
 
-        if value != self.camYHelmImpDefault and value != self.camYHelmInfDefault:
+        if value != self.camYHelmDefault:
             self.preview.cb_PresetCam.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -5178,7 +5203,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.camZHelm = value
             self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(value, 100))
 
-        if value != self.camZHelmImpDefault and value != self.camZHelmInfDefault:
+        if value != self.camZHelmDefault:
             self.preview.cb_PresetCam.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -5192,7 +5217,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lookXHelm = value
             self.preview.lbl_LookX.setText(self.convertIntToFloatStr(value, 100))
 
-        if value != self.lookXHelmImpDefault and value != self.lookXHelmInfDefault:
+        if value != self.lookXHelmDefault:
             self.preview.cb_PresetLook.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -5206,7 +5231,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lookYHelm = value
             self.preview.lbl_LookY.setText(self.convertIntToFloatStr(value, 100))
 
-        if value != self.lookYHelmImpDefault and value != self.lookYHelmInfDefault:
+        if value != self.lookYHelmDefault:
             self.preview.cb_PresetLook.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -5220,7 +5245,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lookZHelm = value
             self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(value, 100))
 
-        if value != self.lookZHelmImpDefault and value != self.lookZHelmInfDefault:
+        if value != self.lookZHelmDefault:
             self.preview.cb_PresetLook.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -5248,20 +5273,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.preview.vs_LookZ.setValue(self.lookZ)
                 self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(self.lookZ, 10))
             else:
-                if self.helmetStyle == "imperial":
-                    self.camXHelm = self.camXHelmImpDefault
-                    self.camYHelm = self.camYHelmImpDefault
-                    self.camZHelm = self.camZHelmImpDefault
-                    self.lookXHelm = self.lookXHelmImpDefault
-                    self.lookYHelm = self.lookYHelmImpDefault
-                    self.lookZHelm = self.lookZHelmImpDefault
-                else:
-                    self.camXHelm = self.camXHelmInfDefault
-                    self.camYHelm = self.camYHelmInfDefault
-                    self.camZHelm = self.camZHelmInfDefault
-                    self.lookXHelm = self.lookXHelmInfDefault
-                    self.lookYHelm = self.lookYHelmInfDefault
-                    self.lookZHelm = self.lookZHelmInfDefault
+                self.camXHelm = self.camXHelmDefault
+                self.camYHelm = self.camYHelmDefault
+                self.camZHelm = self.camZHelmDefault
+                self.lookXHelm = self.lookXHelmDefault
+                self.lookYHelm = self.lookYHelmDefault
+                self.lookZHelm = self.lookZHelmDefault
 
                 self.preview.vs_CamX.setValue(self.camXHelm)
                 self.preview.lbl_CamX.setText(self.convertIntToFloatStr(self.camXHelm, 100))
@@ -5518,7 +5535,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     try:
                         self.helmetStyle = saveData[36].title()
                     except BaseException:
-                        self.helmetStyle = "imperial"
+                        self.helmetStyle = "Imperial"
 
                 oldRefreshSetting = self.preview.cb_Refresh.isChecked()
                 # Turn off auto refresh to prevent applying the loaded settings to trigger multiple refreshes.
@@ -5614,51 +5631,17 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def creatHelmetFaceColour(self, colour):
-        r'''Method used to create "data\helmet\hemltex.bmp with the user's selected helmet colour.'''
+    def createHelmetColour(self, colour):
+        r'''Method used to create user's selected helmet colour.'''
 
         # creating an image object
-        img = Image.open(os.getcwd() + "\\data\\helmet\\helmtex_m.gif")
+        img = Image.open(os.getcwd() + "\\data\\helmet\\" + self.helmetConfig.get(self.helmetStyle, "colourMapImage")).convert("RGBA")
 
         # image colorize function
-        img = img.convert("RGBA")
-        datas = img.getdata()
-
-        newData = []
-        for item in datas:
-            if item == (255, 255, 255, 255):
-                newData.append(colour.getRgb())
-            else:
-                newData.append(item)
-
-        img.putdata(newData)
-        self.creatHelmetFaceDetail(colour, img)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
-
-    def creatHelmetFaceDetail(self, colour, background):
-        r'''Method used to add helmtex_b.gif to "data\helmet\hemltex.bmp.'''
-
-        # Convert helmtex_b.gif to a transparent background *.png.
-        img = Image.open(os.getcwd() + "\\data\\helmet\\helmtex_b.gif")
-        img = img.convert("RGBA")
-        datas = img.getdata()
-
-        # Make background transparent.
-        colourRGB = colour.getRgb()
-        newData = []
-        for item in datas:
-            if item == (0, 0, 0, 255):
-                newData.append((255, 255, 255, 0))
-            else:  # Reduce the base helmet colour by the shader colours to create shading.
-                newData.append((colourRGB[0] - item[0], colourRGB[1] - item[1], colourRGB[2] - item[2], 255))
-        img.putdata(newData)
-
-        # Layer the transparent helmtex_b.png onto our coloured helmtex.bmp.
-        img_w, img_h = img.size
-        bg_w, bg_h = background.size
-        offset = (((bg_w - img_w) // 2) + 86, ((bg_h - img_h) // 2) - 38)
-        background.paste(img, offset, mask=img)
-        background.save(os.getcwd() + "\\data\\helmet\\helmtex.bmp", "BMP")
+        rgb = colour.getRgb()[:3]
+        bgImg = Image.new("RGBA", img.size, rgb)
+        bgImg.paste(img, (0,0), img)
+        bgImg.save(os.getcwd() + "\\data\\helmet\\helmtex.bmp")
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_PaletteHelmDecFunc(self):
@@ -6009,14 +5992,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for preview camera presets.'''
 
         if intIndex == 0:
-            if self.helmetStyle == "imperial":
-                self.camXHelm = self.camXHelmImpDefault
-                self.camYHelm = self.camYHelmImpDefault
-                self.camZHelm = self.camZHelmImpDefault
-            else:
-                self.camXHelm = self.camXHelmInfDefault
-                self.camYHelm = self.camYHelmInfDefault
-                self.camZHelm = self.camZHelmInfDefault
+            self.camXHelm = self.camXHelmDefault
+            self.camYHelm = self.camYHelmDefault
+            self.camZHelm = self.camZHelmDefault
 
         # Top Left.
         elif intIndex == 1:
@@ -6164,14 +6142,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for preview look presets.'''
 
         if intIndex == 0:
-            if self.helmetStyle == "imperial":
-                self.lookXHelm = self.lookXHelmImpDefault
-                self.lookYHelm = self.lookYHelmImpDefault
-                self.lookZHelm = self.lookZHelmImpDefault
-            else:
-                self.lookXHelm = self.lookXHelmInfDefault
-                self.lookYHelm = self.lookYHelmInfDefault
-                self.lookZHelm = self.lookZHelmInfDefault
+            self.lookXHelm = self.lookXHelmDefault
+            self.lookYHelm = self.lookYHelmDefault
+            self.lookZHelm = self.lookZHelmDefault
 
         # Top Left.
         elif intIndex == 1:
@@ -6474,76 +6447,49 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def cb_previewHemlStyleFunc(self, value):
         '''Method to handle helmet style selection.'''
 
-        self.helmetStyle = self.preview.cb_helmStyle.currentText().lower()
-
-        widgets = [self.preview.lbl_helm, self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm, self.preview.btn_PaletteHelm]
-
-        if self.helmetStyle != "imperial":
-            self.preview.lbl_PaletteHelm.setStyleSheet("background-color: rgb(211, 211, 211);")
-            enableWidgets = False
+        try:
+            self.helmetStyle = self.preview.cb_helmStyle.currentText()
             if not self.loadingHelm:
-                self.previewHelmSetInfDefaults()
+                # Helmet Colour.
+                self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
+                self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
+                # Decoration Colour.
+                self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
+                self.colourSelected(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
+                # Background Colour.
+                self.bgColourHelm = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "bgColour"))
+                self.colourSelected(self.bgColourHelm, "bgColourHelm", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
+                # Light Colour.
+                self.lightColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "lightColour"))
+                self.colourSelected(self.lightColour, "lightColour", self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
 
-        else:
-            self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
-            enableWidgets = True
-            if not self.loadingHelm:
-                self.previewHelmSetImpDefaults()
-
-        for widget in widgets:
-            widget.setEnabled(enableWidgets)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
-
-    def previewHelmSetInfDefaults(self):
-        '''Method that sets the default preview options for the Infiltrator style helmet.'''
-
-        if self.decColour == self.decColourImpDefault:
-            self.decColour = self.decColourInfDefault
-            self.colourSelected(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
-        if self.camXHelm == self.camXHelmImpDefault:
-            self.camXHelm = self.camXHelmInfDefault
-            self.preview.vs_CamX.setValue(self.camXHelm)
-        if self.camYHelm == self.camYHelmImpDefault:
-            self.camYHelm = self.camYHelmInfDefault
-            self.preview.vs_CamY.setValue(self.camYHelm)
-        if self.camZHelm == self.camZHelmImpDefault:
-            self.camZHelm = self.camZHelmInfDefault
-            self.preview.vs_CamZ.setValue(self.camZHelm)
-        if self.lookXHelm == self.lookXHelmImpDefault:
-            self.lookXHelm = self.lookXHelmInfDefault
-            self.preview.vs_LookX.setValue(self.lookXHelm)
-        if self.lookYHelm == self.lookYHelmImpDefault:
-            self.lookYHelm = self.lookYHelmInfDefault
-            self.preview.vs_LookY.setValue(self.lookYHelm)
-        if self.lookZHelm == self.lookZHelmImpDefault:
-            self.lookZHelm = self.lookZHelmInfDefault
-            self.preview.vs_LookZ.setValue(self.lookZHelm)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
-
-    def previewHelmSetImpDefaults(self):
-        '''Method that sets the default preview options for the Infiltrator style helmet.'''
-
-        if self.decColour == self.decColourInfDefault:
-            self.decColour = self.decColourImpDefault
-            self.colourSelected(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
-        if self.camXHelm == self.camXHelmInfDefault:
-            self.camXHelm = self.camXHelmImpDefault
-            self.preview.vs_CamX.setValue(self.camXHelm)
-        if self.camYHelm == self.camYHelmInfDefault:
-            self.camYHelm = self.camYHelmImpDefault
-            self.preview.vs_CamY.setValue(self.camYHelm)
-        if self.camZHelm == self.camZHelmInfDefault:
-            self.camZHelm = self.camZHelmImpDefault
-            self.preview.vs_CamZ.setValue(self.camZHelm)
-        if self.lookXHelm == self.lookXHelmInfDefault:
-            self.lookXHelm = self.lookXHelmImpDefault
-            self.preview.vs_LookX.setValue(self.lookXHelm)
-        if self.lookYHelm == self.lookYHelmInfDefault:
-            self.lookYHelm = self.lookYHelmImpDefault
-            self.preview.vs_LookY.setValue(self.lookYHelm)
-        if self.lookZHelm == self.lookZHelmInfDefault:
-            self.lookZHelm = self.lookZHelmImpDefault
-            self.preview.vs_LookZ.setValue(self.lookZHelm)
+                # Cameras.
+                self.camXHelm = self.helmetConfig.getint(self.helmetStyle, "camX")
+                self.camXHelmDefault = self.camXHelm
+                self.preview.vs_CamX.setValue(self.camXHelm)
+                self.camYHelm = self.helmetConfig.getint(self.helmetStyle, "camY")
+                self.camYHelmDefault = self.camYHelm
+                self.preview.vs_CamY.setValue(self.camYHelm)
+                self.camZHelm = self.helmetConfig.getint(self.helmetStyle, "camZ")
+                self.camZHelmDefault = self.camZHelm
+                self.preview.vs_CamZ.setValue(self.camZHelm)
+                self.lookXHelm = self.helmetConfig.getint(self.helmetStyle, "lookX")
+                self.lookXHelmDefault = self.lookXHelm
+                self.preview.vs_LookX.setValue(self.lookXHelm)
+                self.lookYHelm = self.helmetConfig.getint(self.helmetStyle, "lookY")
+                self.lookYHelmDefault = self.lookYHelm
+                self.preview.vs_LookY.setValue(self.lookYHelm)
+                self.lookZHelm = self.helmetConfig.getint(self.helmetStyle, "lookZ")
+                self.lookZHelmDefault = self.lookZHelm
+                self.preview.vs_LookZ.setValue(self.lookZHelm)
+                self.lightXHelm = self.helmetConfig.getint(self.helmetStyle, "lightX")
+                self.preview.vs_LightX.setValue(self.lightXHelm)
+                self.lightYHelm = self.helmetConfig.getint(self.helmetStyle, "lightY")
+                self.preview.vs_LightY.setValue(self.lightYHelm)
+                self.lightZHelm = self.helmetConfig.getint(self.helmetStyle, "lightZ")
+                self.preview.vs_LightZ.setValue(self.lightZHelm)
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewPresetLightHelmFunc(self, intIndex):
