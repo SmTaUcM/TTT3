@@ -46,26 +46,10 @@ texture
 }
 texture { T_unilayer scale 2}
 
-#declare T_r_mot_bh =
+#declare T_r_mot =
 texture
 {
-  pigment { image_map { gif "ribbons/mot-bh.gif" } }
-  finish  { fin_T_uni }
-}
-texture { T_unilayer scale 2}
-
-#declare T_r_mot_gh =
-texture
-{
-  pigment { image_map { gif "ribbons/mot-gh.gif" } }
-  finish  { fin_T_uni }
-}
-texture { T_unilayer scale 2}
-
-#declare T_r_mot_rh =
-texture
-{
-  pigment { image_map { gif "ribbons/mot-rh.gif" } }
+  pigment { image_map { png "ribbons/mot.png" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}

@@ -3003,17 +3003,32 @@ color_map
                 else:
                     self.awards[name]["upgrades"] = []
 
+                if self.ribbonConfig.get(ribbon, "type") == "multiDevice":
+                    devices = []
+                    for option in self.ribbonConfig.options(ribbon):
+                        if "device" in option:
+                            devices.append(self.ribbonConfig.get(ribbon, option))
+                        if option == "backgroundribbon":
+                            self.awards[name]["backgroundribbon"] = self.ribbonConfig.get(ribbon, option)
+                    self.awards[name]["devices"] = devices
+
                 for option in self.ribbonConfig.options(ribbon):
 
                     # Store the ribbon data to the 'self.awards' dictionary.
-                    if "type" not in option and "name" not in option.lower():
+                    if "type" not in option and "name" not in option.lower() and "device" not in option.lower() and "backgroundribbon" not in option.lower():
                         self.awards[name]["upgrades"].append([self.ribbonConfig.get(ribbon, option), 0])
 
                     # Create the required include declarations for 'ribbons_g.inc'
-                    if option != "name" and option != "type":
+                    if option != "name" and option != "type" and "device" not in option.lower():
                         # Add the ribbon to ribbons_g.inc
                         if "upgrade" in option:
-                            ribbons_g += self.addToRibbonIncludes(self.getFilename(self.ribbonConfig.get(ribbon, option)))
+                            fileName = self.getFilename(self.ribbonConfig.get(ribbon, option))
+                            if not self.ribbonConfig.get(ribbon, "type") == "multiDevice":
+                                include = self.addToRibbonIncludes(fileName)
+                            else:
+                                include = self.addToRibbonIncludes(fileName, multiDevice=True)
+                            if include not in ribbons_g:
+                                ribbons_g += include
 
         setLWPixelSizes(self.gui.lw_medals)
 
@@ -3023,21 +3038,35 @@ color_map
 
     def getFilename(self, award):
         '''Method that determines an award's filename from it's abbreviation.'''
-        return award.replace("(s)", "").split("(")[1].replace(")", "").lower() + ".gif"
+
+        for section in self.ribbonConfig.sections():
+            for option in self.ribbonConfig.options(section):
+                if self.ribbonConfig.get(section, option) == award:
+                    if self.ribbonConfig.get(section, "type") == "multiDevice":
+                        filename = award.replace("(s)", "").split("(")[1].replace(")", "").split("-")[0].lower() + ".png"
+                        return filename
+
+        filename = award.replace("(s)", "").split("(")[1].replace(")", "").lower() + ".gif"
+        return filename
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def addToRibbonIncludes(self, filename):
+    def addToRibbonIncludes(self, filename, multiDevice=False):
         '''Method that creates the include data for a single ribbon. This include data goes on to build ribbons_g.inc'''
 
-        ribbonName = filename.replace("-", "_").replace(".gif", "")
+        if not multiDevice:
+            ribbonName = filename.replace("-", "_").replace(".gif", "")
+            ext = "gif"
+        else:
+            ribbonName = filename.replace("-", "_").replace(".png", "")
+            ext = "png"
 
         includeTemplate = """#declare T_r_%s =
 texture
 {
-  pigment { image_map { gif "ribbons/%s" } }
+  pigment { image_map { %s "ribbons/%s" } }
   finish  { fin_T_uni }
 }
-texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
+texture { T_unilayer scale 2}\n\n""" % (ribbonName, ext, filename)
 
         return includeTemplate
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -3162,7 +3191,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.cb_singleMedalConnected = True
 
                 # ----- SubRibbons type ribbon awards. (MoS, MoT, IS, CoX)
-            elif award.get("type") == "subRibbons":
+            elif award.get("type") == "subRibbons" or award.get("type") == "multiDevice":
                 # Determine the number of subRibbons the award has for SpinBox assignment.
                 subRibbonNum = len(award.get("upgrades"))
                 upgrades = award.get("upgrades")
@@ -3595,7 +3624,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         for award in self.awards:
             # Upgradeable and SubRibbon type awards.
-            if self.awards.get(award)["type"] == "upgradeable" or self.awards.get(award)["type"] == "subRibbons":
+            if self.awards.get(award)["type"] == "upgradeable" or self.awards.get(
+                    award)["type"] == "subRibbons" or self.awards.get(award)["type"] == "multiDevice":
 
                 if "Iron Star (IS)" == award or "Medal of Communication (MoC)" == award or \
                    "Medal of Scholarship (MoS)" == award:  # Reverse the ribbon list for certain medals.
@@ -3617,16 +3647,29 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 else:
                     upgrades = self.awards.get(award)["upgrades"]
 
-                if "Medal of Tactics (MoT)" == award:  # Special sorting correction for MoT.
-                    blue = [upgrades[0]]
-                    green = [upgrades[1]]
-                    red = [upgrades[2]]
-                    upgrades = blue + red + green
+                if self.awards.get(award)["type"] == "multiDevice":  # Special handling correction for multiDevice.
+                    if "Medal of Tactics (MoT)" == award:
+                        blue = [upgrades[0]]
+                        green = [upgrades[1]]
+                        red = [upgrades[2]]
+                        awarded = [green[name][quantity], red[name][quantity], blue[name][quantity]]
+                    else:
+                        awarded = []
+                        for upgrade in upgrades:
+                            awarded.append(upgrade[quantity])
+                    multiDeviceName = award.split("(")[1].split(")")[0].lower()
+                    self.createCombinedRibbon(multiDeviceName, self.awards.get(award)["backgroundribbon"], self.awards.get(award)["devices"], awarded)
 
                 for upgrade in upgrades:  # Medals that don't require reversing.
                     if upgrade[quantity] != 0:
-                        awardName = "T_r_" + self.getFilename(upgrade[name]).split(".")[0].lower().replace("-", "_")
-                        ribbonObjects.append("P_r&NUM& translate <0,0,%s> texture { %s }" % (yOffset, awardName))
+                        if self.awards.get(award)["type"] == "multiDevice":
+                            awardName = "T_r_" + upgrade[0].split("(")[1].split("-")[0].lower()
+                        else:
+                            awardName = "T_r_" + self.getFilename(upgrade[name]).split(".")[0].lower().replace("-", "_")
+
+                        ribbonObject = "P_r&NUM& translate <0,0,%s> texture { %s }" % (yOffset, awardName)
+                        if ribbonObject not in ribbonObjects:
+                            ribbonObjects.append(ribbonObject)
 
             # Ranged type awards.
             elif self.awards.get(award)["type"] == "ranged":
@@ -3735,7 +3778,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.awards.get(str(self.gui.lw_medals.currentItem().text()))["upgrades"][quantity] = value
 
             # ----- SubRibbons type ribbon awards. (MoS, MoT, IS, MoC, CoX)
-            elif award.get("type") == "subRibbons":
+            elif award.get("type") == "subRibbons" or award.get("type") == "multiDevice":
                 awardName = self.subRibbonAwards[sender][0]
                 subRibbonName = self.subRibbonAwards[sender][1]
                 spinBox = self.subRibbonAwards[sender][2]
@@ -6475,6 +6518,37 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         else:
             self.preview.btn_preview.setEnabled(True)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def createCombinedRibbon(self, name, ribbonImg, devices, awarded):
+        '''Method to draw a multiDevice type ribbon'''
+
+        # Open and detect the details of the ribbon.
+        ribbon = Image.open(os.getcwd() + "\\data\\ribbons\\" + ribbonImg)
+        ribbon = ribbon.convert("RGBA")
+        ribbon_w, ribbon_h = ribbon.size
+
+        slot = 0
+
+        for item in awarded:
+            if item != 0:
+
+                # Open and detect the details of the ribbon.
+                device = Image.open(os.getcwd() + "\\data\\ribbons\\" + devices[slot])
+                device = device.convert("RGBA")
+                device_w, device_h = device.size
+
+                slots = len(devices)  # Number of devices
+                slotOffset = ((ribbon_w // slots) // 2) - (device_w // 2)  # The position of where the first device would go.
+
+                ribbonXOffset = slotOffset + (ribbon_w // slots * slot)
+                ribbonYOffset = (ribbon_h - device_h) // 2
+
+                ribbon.paste(device, (ribbonXOffset, ribbonYOffset), mask=device)
+
+            slot += 1
+
+        ribbon.save(os.getcwd() + "\\data\\ribbons\\" + name + ".png")
+   #--------------------------------------------------------------------------------------------------------------------------------------------#
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
