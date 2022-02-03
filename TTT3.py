@@ -2950,7 +2950,11 @@ color_map
                     else:
                         self.helmetStyle = unit.get("uniformData").get("helmetStyle").title()
 
-                    break
+                else:
+                    self.loadHelmetData()
+                    self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
+                    self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
+                break
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getAPIHelmColour(self, colourStr):
