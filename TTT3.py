@@ -2926,7 +2926,7 @@ color_map
         # Apply the Fleet API settings for helmet colouring.
         for unit in self.fleetConfig.get(unitType):
             if unit.get("name") == unitProperty:
-                if unit.get("uniformData").get("helmetStyle") != None:
+                if unit.get("uniformData").get("helmetStyle") is not None:
                     if unit.get("uniformData").get("colorHelmetBase") is not None:
                         self.helmColour = self.getAPIHelmColour(unit.get("uniformData").get("colorHelmetBase"))
                         self.helmetConfig.set(self.helmetStyle, "helmColour", unit.get("uniformData").get("colorHelmetBase"))
@@ -6496,7 +6496,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 elif self.position == "COM" and self.ship == "":
                     self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
                     self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
-                elif self.position == None:
+                elif self.position is None:
                     self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
                     self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
                 elif self.position in ["LR", "FR"]:
