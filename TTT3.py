@@ -2907,9 +2907,11 @@ color_map
                 if squad.get("name") == self.sqn:
                     if squad.get("uniformData").get("colorHelmetBase") is not None:
                         self.helmColour = self.getAPIHelmColour(squad.get("uniformData").get("colorHelmetBase"))
+                        self.helmetConfig.set(self.helmetStyle, "helmColour", squad.get("uniformData").get("colorHelmetBase"))
 
                     if squad.get("uniformData").get("colorHelmetDecoration") is not None:
                         self.decColour = self.getAPIHelmColour(squad.get("uniformData").get("colorHelmetDecoration"))
+                        self.helmetConfig.set(self.helmetStyle, "decColour", squad.get("uniformData").get("colorHelmetDecoration"))
 
                     # API returns an Infiltrator helmet.
                     if squad.get("uniformData").get("helmetStyle") != "imperial":
@@ -2933,12 +2935,12 @@ color_map
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getAPIHelmColour(self, colourStr):
-        '''Method that convers the api string e.g. #112233 into a QColor.'''
+        '''Method that convers the api string e.g. "#112233"Hex into a QColor(Int, Int, Int).'''
 
-        red = int(colourStr[1:3], 16)
-        green = int(colourStr[3:5], 16)
-        blue = int(colourStr[5:7], 16)
-
+        colourStr = colourStr.replace("#", "")
+        red = int(colourStr[0:2], 16)
+        green = int(colourStr[2:4], 16)
+        blue = int(colourStr[4:6], 16)
         return QColor(red, green, blue)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -4962,6 +4964,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def convertHexRGBtoIntRGB(self, strHexRGB):
         '''Method to convert a string of hex RGB to a QColor Tuple of integer RGB values'''
 
+        strHexRGB = strHexRGB.replace("#", "")
         try:
             r = int(strHexRGB[0:2], 16)
         except ValueError:
@@ -6465,10 +6468,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.helmetStyle = self.preview.cb_helmStyle.currentText()
             if not self.loadingHelm:
                 # Helmet Colour.
-                self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
+                if self.sqn == "":
+                    self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour")) # bookmark
                 self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
                 # Decoration Colour.
-                self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
+                if self.sqn == "":
+                    self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour")) # bookmark
                 self.colourSelected(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
                 # Background Colour.
                 self.bgColourHelm = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "bgColour"))
