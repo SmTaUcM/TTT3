@@ -599,6 +599,7 @@ class TTT3(QMainWindow):
                         self.gui.lw_squad.clear()
                         self.sqn = ""
                         self.enableWingAndSqnTab(True)
+                        self.loadHelmetData()
                         break
 
                     # Commodore.
@@ -616,6 +617,7 @@ class TTT3(QMainWindow):
                         self.gui.lw_squad.clear()
                         self.sqn = ""
                         self.enableWingAndSqnTab(True)
+                        self.loadHelmetData()
                         break
 
                     # TE Corps Command Staff.
@@ -623,6 +625,7 @@ class TTT3(QMainWindow):
                         self.showRanks(RA, HA)
                         self.position = "TCCS"
                         self.enableWingAndSqnTab(False)
+                        self.loadHelmetData()
                         break
 
                     # Imperial Advisor.
@@ -630,6 +633,7 @@ class TTT3(QMainWindow):
                         self.showRanks(RA, SA)
                         self.position = "IA"
                         self.enableWingAndSqnTab(False)
+                        self.loadHelmetData()
                         break
 
                     # Command Attache.
@@ -637,6 +641,7 @@ class TTT3(QMainWindow):
                         self.showRanks(RA, SA)
                         self.position = "CA"
                         self.enableWingAndSqnTab(False)
+                        self.loadHelmetData()
                         break
 
                     # Sub-Group Commander.
@@ -644,6 +649,7 @@ class TTT3(QMainWindow):
                         self.showRanks(RA, GA)
                         self.position = "SGCOM"
                         self.enableWingAndSqnTab(False)
+                        self.loadHelmetData()
                         break
 
                     # Command Staff.
@@ -651,6 +657,7 @@ class TTT3(QMainWindow):
                         self.showRanks(RA, GA)
                         self.position = "CS"
                         self.enableWingAndSqnTab(False)
+                        self.loadHelmetData()
                         break
 
                     # Executive Officer.
@@ -658,6 +665,7 @@ class TTT3(QMainWindow):
                         self.showRanks(RA, GA)
                         self.position = "XO"
                         self.enableWingAndSqnTab(False)
+                        self.loadHelmetData()
                         break
 
                     # Fleet Commander.
@@ -667,6 +675,7 @@ class TTT3(QMainWindow):
                         self.gui.rb_rank_ga.setChecked(True)
                         self.rankRBLogic()
                         self.enableWingAndSqnTab(False)
+                        self.loadHelmetData()
                         break
 
                     # Line Ranks.
@@ -674,6 +683,7 @@ class TTT3(QMainWindow):
                         self.showRanks(CT, GN)
                         self.position = "LR"
                         self.enableWingAndSqnTab(False)
+                        self.loadHelmetData()
                         break
 
                     # Flag Ranks.
@@ -681,6 +691,7 @@ class TTT3(QMainWindow):
                         self.showRanks(RA, GA)
                         self.position = "FR"
                         self.enableWingAndSqnTab(False)
+                        self.loadHelmetData()
                         break
         except Exception as e:
             handleException(e)
