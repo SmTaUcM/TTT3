@@ -2926,30 +2926,31 @@ color_map
         # Apply the Fleet API settings for helmet colouring.
         for unit in self.fleetConfig.get(unitType):
             if unit.get("name") == unitProperty:
-                if unit.get("uniformData").get("colorHelmetBase") is not None:
-                    self.helmColour = self.getAPIHelmColour(unit.get("uniformData").get("colorHelmetBase"))
-                    self.helmetConfig.set(self.helmetStyle, "helmColour", unit.get("uniformData").get("colorHelmetBase"))
+                if unit.get("uniformData").get("helmetStyle") != None:
+                    if unit.get("uniformData").get("colorHelmetBase") is not None:
+                        self.helmColour = self.getAPIHelmColour(unit.get("uniformData").get("colorHelmetBase"))
+                        self.helmetConfig.set(self.helmetStyle, "helmColour", unit.get("uniformData").get("colorHelmetBase"))
 
-                if unit.get("uniformData").get("colorHelmetDecoration") is not None:
-                    self.decColour = self.getAPIHelmColour(unit.get("uniformData").get("colorHelmetDecoration"))
-                    self.helmetConfig.set(self.helmetStyle, "decColour", unit.get("uniformData").get("colorHelmetDecoration"))
+                    if unit.get("uniformData").get("colorHelmetDecoration") is not None:
+                        self.decColour = self.getAPIHelmColour(unit.get("uniformData").get("colorHelmetDecoration"))
+                        self.helmetConfig.set(self.helmetStyle, "decColour", unit.get("uniformData").get("colorHelmetDecoration"))
 
-                # API returns an Infiltrator helmet.
-                if unit.get("uniformData").get("helmetStyle") != "imperial":
-                    self.helmetStyle = unit.get("uniformData").get("helmetStyle").title() + " - " + unitProperty.title()
-                    # If there's a custom unit infiltrator colourmap.
-                    if self.helmetStyle in unit.helmetConfig.sections():
-                        pass
+                    # API returns an Infiltrator helmet.
+                    if unit.get("uniformData").get("helmetStyle") != "imperial":
+                        self.helmetStyle = unit.get("uniformData").get("helmetStyle").title() + " - " + unitProperty.title()
+                        # If there's a custom unit infiltrator colourmap.
+                        if self.helmetStyle in unit.helmetConfig.sections():
+                            pass
 
-                    # Else use the clean infiltrator design.
+                        # Else use the clean infiltrator design.
+                        else:
+                            self.helmetStyle = unit.get("uniformData").get("helmetStyle").title()
+
+                    # Use imperial helmet.
                     else:
                         self.helmetStyle = unit.get("uniformData").get("helmetStyle").title()
 
-                # Use imperial helmet.
-                else:
-                    self.helmetStyle = unit.get("uniformData").get("helmetStyle").title()
-
-                break
+                    break
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getAPIHelmColour(self, colourStr):
