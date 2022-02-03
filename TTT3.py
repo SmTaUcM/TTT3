@@ -1141,7 +1141,7 @@ class TTT3(QMainWindow):
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZ, 10))
         else:
             # Helmet Style.
-                # Add the styles to the comboBox.
+            # Add the styles to the comboBox.
             helmStyle = self.helmetStyle
             self.preview.cb_helmStyle.clear()
             for style in self.helmetConfig.sections():
@@ -5643,7 +5643,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         # image colorize function
         rgb = colour.getRgb()[:3]
         bgImg = Image.new("RGBA", img.size, rgb)
-        bgImg.paste(img, (0,0), img)
+        bgImg.paste(img, (0, 0), img)
 
         # Delete the transparenty alpha layer to prevent artifacts
         datas = bgImg.getdata()
@@ -6469,11 +6469,11 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             if not self.loadingHelm:
                 # Helmet Colour.
                 if self.sqn == "":
-                    self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour")) # bookmark
+                    self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
                 self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
                 # Decoration Colour.
                 if self.sqn == "":
-                    self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour")) # bookmark
+                    self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
                 self.colourSelected(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
                 # Background Colour.
                 self.bgColourHelm = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "bgColour"))
