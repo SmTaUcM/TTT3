@@ -2840,6 +2840,7 @@ color_map
             try:
                 # Save the selected option.
                 self.ship = self.gui.lw_ship.currentItem().text()
+                self.setHelmetColouring("ships", self.ship)
 
                 if self.position not in ["TRN", "COM", "TCCS", "IA", "CA", "SGCOM", "CS",
                                          "XO", "FC"]:  # Stops Wings and Squadrons showing for COMs and above.
@@ -2883,6 +2884,7 @@ color_map
             try:
                 # Save the selected option.
                 self.wing = self.gui.lw_wing.currentItem().text()
+                self.setHelmetColouring("wings", self.wing)
 
                 if self.position not in ["WC"]:  # Stops Squadrons showing for WCs.
 
@@ -2912,37 +2914,42 @@ color_map
         try:
             # Save the selected option.
             self.sqn = self.gui.lw_squad.currentItem().text()
-
-            # Apply the Fleet API settings for helmet colouring.
-            for squad in self.fleetConfig.get("squadrons"):
-                if squad.get("name") == self.sqn:
-                    if squad.get("uniformData").get("colorHelmetBase") is not None:
-                        self.helmColour = self.getAPIHelmColour(squad.get("uniformData").get("colorHelmetBase"))
-                        self.helmetConfig.set(self.helmetStyle, "helmColour", squad.get("uniformData").get("colorHelmetBase"))
-
-                    if squad.get("uniformData").get("colorHelmetDecoration") is not None:
-                        self.decColour = self.getAPIHelmColour(squad.get("uniformData").get("colorHelmetDecoration"))
-                        self.helmetConfig.set(self.helmetStyle, "decColour", squad.get("uniformData").get("colorHelmetDecoration"))
-
-                    # API returns an Infiltrator helmet.
-                    if squad.get("uniformData").get("helmetStyle") != "imperial":
-                        self.helmetStyle = squad.get("uniformData").get("helmetStyle").title() + " - " + self.sqn.title()
-                        # If there's a custom squad infiltrator colourmap.
-                        if self.helmetStyle in self.helmetConfig.sections():
-                            pass
-
-                        # Else use the clean infiltrator design.
-                        else:
-                            self.helmetStyle = squad.get("uniformData").get("helmetStyle").title()
-
-                    # Use imperial helmet.
-                    else:
-                        self.helmetStyle = squad.get("uniformData").get("helmetStyle").title()
-
-                    break
+            self.setHelmetColouring("squadrons", self.sqn)
 
         except AttributeError:
             pass  # Prevents the application throwing an error when the 'Wing' List Widget clears and tries to populate squadrons from a 'blank' wing.
+    #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def setHelmetColouring(self, unitType, unitProperty):
+        '''Method sets a selected position's helmet colour scheme from the fleet API..'''
+
+        # Apply the Fleet API settings for helmet colouring.
+        for unit in self.fleetConfig.get(unitType):
+            if unit.get("name") == unitProperty:
+                if unit.get("uniformData").get("colorHelmetBase") is not None:
+                    self.helmColour = self.getAPIHelmColour(unit.get("uniformData").get("colorHelmetBase"))
+                    self.helmetConfig.set(self.helmetStyle, "helmColour", unit.get("uniformData").get("colorHelmetBase"))
+
+                if unit.get("uniformData").get("colorHelmetDecoration") is not None:
+                    self.decColour = self.getAPIHelmColour(unit.get("uniformData").get("colorHelmetDecoration"))
+                    self.helmetConfig.set(self.helmetStyle, "decColour", unit.get("uniformData").get("colorHelmetDecoration"))
+
+                # API returns an Infiltrator helmet.
+                if unit.get("uniformData").get("helmetStyle") != "imperial":
+                    self.helmetStyle = unit.get("uniformData").get("helmetStyle").title() + " - " + unitProperty.title()
+                    # If there's a custom unit infiltrator colourmap.
+                    if self.helmetStyle in unit.helmetConfig.sections():
+                        pass
+
+                    # Else use the clean infiltrator design.
+                    else:
+                        self.helmetStyle = unit.get("uniformData").get("helmetStyle").title()
+
+                # Use imperial helmet.
+                else:
+                    self.helmetStyle = unit.get("uniformData").get("helmetStyle").title()
+
+                break
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getAPIHelmColour(self, colourStr):
@@ -6478,13 +6485,24 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         try:
             self.helmetStyle = self.preview.cb_helmStyle.currentText()
             if not self.loadingHelm:
-                # Helmet Colour.
-                if self.sqn == "":
+                # Helmet & Decoration Colour..
+                if self.position in ["FM", "FL", "CMDR", "LR", "FR"] and self.sqn == "":
                     self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
-                self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
-                # Decoration Colour.
-                if self.sqn == "":
                     self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
+                elif self.position == "WC" and self.wing == "":
+                    self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
+                    self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
+                elif self.position == "COM" and self.ship == "":
+                    self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
+                    self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
+                elif self.position == None:
+                    self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
+                    self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
+                elif self.position in ["LR", "FR"]:
+                    self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
+                    self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
+
+                self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
                 self.colourSelected(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
                 # Background Colour.
                 self.bgColourHelm = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "bgColour"))
