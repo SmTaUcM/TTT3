@@ -3479,10 +3479,10 @@ QLineEdit:!enabled
      </rect>
     </property>
     <property name="text">
-     <string>* Click on X, Y, Z numbers to manually set their values.</string>
+     <string>* Click on the slider bar values to set manually.</string>
     </property>
     <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     <set>Qt::AlignHCenter|Qt::AlignTop</set>
     </property>
     <property name="wordWrap">
      <bool>true</bool>

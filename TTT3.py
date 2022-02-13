@@ -6337,19 +6337,19 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def lbl_CamXFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
-        self.sliderValueInput(self.preview.vs_CamX, "Cam X", self.preview.lbl_CamX, -2000, 2000, 10)
+        self.sliderValueInput(self.preview.vs_CamX, "Camera X", self.preview.lbl_CamX, -2000, 2000, 10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_CamYFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
-        self.sliderValueInput(self.preview.vs_CamY, "Cam Y", self.preview.lbl_CamY, -2000, 2000, 10)
+        self.sliderValueInput(self.preview.vs_CamY, "Camera Y", self.preview.lbl_CamY, -2000, 2000, 10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_CamZFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
-        self.sliderValueInput(self.preview.vs_CamZ, "Cam Z", self.preview.lbl_CamZ, -2000, 2000, 10)
+        self.sliderValueInput(self.preview.vs_CamZ, "Camera Z", self.preview.lbl_CamZ, -2000, 2000, 10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_LookXFunc(self, sender):
@@ -6391,19 +6391,19 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def lbl_CamXHelmFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
-        self.sliderValueInput(self.preview.vs_CamX, "Cam X", self.preview.lbl_CamX, -100, 100, 100, 2)
+        self.sliderValueInput(self.preview.vs_CamX, "Camera X", self.preview.lbl_CamX, -100, 100, 100, 2)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_CamYHelmFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
-        self.sliderValueInput(self.preview.vs_CamY, "Cam Y", self.preview.lbl_CamY, -100, 100, 100, 2)
+        self.sliderValueInput(self.preview.vs_CamY, "Camera Y", self.preview.lbl_CamY, -100, 100, 100, 2)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_CamZHelmFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
-        self.sliderValueInput(self.preview.vs_CamZ, "Cam Z", self.preview.lbl_CamZ, -100, 100, 100, 2)
+        self.sliderValueInput(self.preview.vs_CamZ, "Camera Z", self.preview.lbl_CamZ, -100, 100, 100, 2)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_LookXHelmFunc(self, sender):
