@@ -64,7 +64,7 @@ class TTT3(QMainWindow):
             # Version info.
             version = "3.0.1"
             devVersion = ""
-            date = "29 September 2021"
+            date = "13 February 2022"
             self.saveFileVersion = 1  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
@@ -405,7 +405,7 @@ class TTT3(QMainWindow):
         try:
             self.eeCount += 1
             if self.eeCount >= 3:
-                self.gui.label_11.setText("PRAETORIAN MODE")
+                self.gui.label_11.setText("PRAETORIAN")
                 self.gui.label_11.setStyleSheet("color: rgb(255, 0, 0);")
         except Exception as e:
             handleException(e)

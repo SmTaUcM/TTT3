@@ -18,7 +18,7 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 
 ## ------------------------------------------------------------------------------------------------##
 
-## [v3.0.1] 2021-09-29
+## [v3.0.1] 2022-02-13
 
 ### Added
 - High DPI support allowing app scaling for high resolution monitors in Windows 10 via: 
@@ -29,7 +29,7 @@ at https://github.com/emperorshammer/issues-incoming-queue.
   labels.
 - Database importing of preset helmet / decoration colours.
 - Helmet logos can now be selected as mirrored or un-mirrored.
-- Infiltrator Wing Helmets.
+- Infiltrator Style Helmets.
 
 ### Changed
 - New TIE Corps Logo is now the default graphic on helmets replacing the imperial cog.
