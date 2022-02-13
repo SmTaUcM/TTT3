@@ -2808,7 +2808,7 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>Created 2021 by</string>
+       <string>Created 2022 by</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_10">
@@ -2829,7 +2829,7 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>CPT SkyShadow, </string>
+       <string>MAJ SkyShadow, </string>
       </property>
      </widget>
      <widget class="QLabel" name="lblVersion">

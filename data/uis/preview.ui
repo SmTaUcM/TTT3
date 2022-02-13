@@ -2696,7 +2696,7 @@ QSlider::handle:vertical:hover
      </rect>
     </property>
     <property name="text">
-     <string>* Click on X, Y, Z numbers to manually set their values.</string>
+     <string>* Click on the slider bar values to set manually.</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
