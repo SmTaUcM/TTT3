@@ -5666,22 +5666,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         # image colorize function
         rgb = colour.getRgb()[:3]
         bgImg = Image.new("RGBA", img.size, rgb)
-        bgImg.paste(img, (0, 0), img)
-
-        # Delete the transparenty alpha layer to prevent artifacts
-        datas = bgImg.getdata()
-        newData = []
-        for item in datas:
-            if item[3] != 0:
-                newItem = list(item)
-                newItem[3] = 255
-                newData.append(tuple(newItem))
-            else:
-                newData.append(item)
-        bgImg.putdata(newData)
+        alphaComposite = Image.alpha_composite(bgImg, img)
 
         # Save the final colourmap image.
-        bgImg.save(os.getcwd() + "\\data\\helmet\\helmtex.bmp")
+        alphaComposite.save(os.getcwd() + "\\data\\helmet\\helmtex.bmp")
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_PaletteHelmDecFunc(self):
