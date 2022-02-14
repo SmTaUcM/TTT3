@@ -6500,9 +6500,50 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 # Background Colour.
                 self.bgColourHelm = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "bgColour"))
                 self.colourSelected(self.bgColourHelm, "bgColourHelm", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
+
                 # Light Colour.
                 self.lightColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "lightColour"))
                 self.colourSelected(self.lightColour, "lightColour", self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
+
+                # Decorations.
+                self.queingAllowed = False
+                try:
+                    self.logo1TypeHelm = self.helmetConfig.get(self.helmetStyle, "logo1Type")
+                except configparser.NoOptionError:
+                    self.logo1TypeHelm = "None"
+
+                try:
+                    if self.helmetConfig.get(self.helmetStyle, "logo1Filepath") != "None":
+                        self.logo1FilepathHelm = os.getcwd() + self.helmetConfig.get(self.helmetStyle, "logo1Filepath")
+                    else:
+                        self.logo1FilepathHelm = ""
+                except configparser.NoOptionError:
+                    self.logo1FilepathHelm = ""
+
+                try:
+                    self.logo2TypeHelm = self.helmetConfig.get(self.helmetStyle, "logo2Type")
+                except configparser.NoOptionError:
+                    self.logo2TypeHelm = "None"
+
+                try:
+                    if self.helmetConfig.get(self.helmetStyle, "logo2Filepath") != "None":
+                        self.logo2FilepathHelm = os.getcwd() + self.helmetConfig.get(self.helmetStyle, "logo2Filepath = ")
+                    else:
+                        self.logo2FilepathHelm = ""
+                except configparser.NoOptionError:
+                    self.logo2FilepathHelm = ""
+
+                # Apply decorations settings to the UX.
+                logo1TypeInt = self.preview.cb_hemlLogo1Type.findText(self.logo1TypeHelm, Qt.MatchExactly | Qt.MatchCaseSensitive)
+                logo2TypeInt = self.preview.cb_hemlLogo2Type.findText(self.logo2TypeHelm, Qt.MatchExactly | Qt.MatchCaseSensitive)
+                self.preview.cb_hemlLogo1Type.setCurrentIndex(logo1TypeInt)
+                self.preview.cb_hemlLogo2Type.setCurrentIndex(logo2TypeInt)
+                if self.preview.cb_hemlLogo2Type.currentText() == "":  # If previous setting was 'Squadron Patch' (default) but it's not longer available.
+                    self.preview.cb_hemlLogo2Type.setCurrentIndex(1)
+                    self.logo2FilepathHelm = os.getcwd() + "\\data\\misc\\Helmet Stencils\\tiecorps_logo_new.png"
+                self.preview.le_helmLogo1Filepath.setText(self.logo1FilepathHelm)
+                self.preview.le_helmLogo2Filepath.setText(self.logo2FilepathHelm)
+                self.queingAllowed = True
 
                 # Cameras.
                 self.camXHelm = self.helmetConfig.getint(self.helmetStyle, "camX")
