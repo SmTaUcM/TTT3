@@ -64,7 +64,7 @@ class TTT3(QMainWindow):
             # Version info.
             version = "3.0.1"
             devVersion = ""
-            date = "15 February 2022"
+            date = "16 February 2022"
             self.saveFileVersion = 1  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
@@ -218,8 +218,8 @@ class TTT3(QMainWindow):
             self.gui.lbl_povray.mouseReleaseEvent = self.povrayLink
             self.gui.lbl_pic_io.mouseReleaseEvent = self.ioLink
             self.gui.lbl_io.mouseReleaseEvent = self.ioLink
-            self.gui.label_11.mouseReleaseEvent = self.eeLink
-            self.gui.label_10.mouseReleaseEvent = self.devModeLink
+            self.gui.lbl_Turtle.mouseReleaseEvent = self.eeLink
+            self.gui.lbl_SkyShadow.mouseReleaseEvent = self.devModeLink
 
             # ----- POV-Ray Variables. -----
 
@@ -405,8 +405,8 @@ class TTT3(QMainWindow):
         try:
             self.eeCount += 1
             if self.eeCount >= 3:
-                self.gui.label_11.setText("PRAETORIAN")
-                self.gui.label_11.setStyleSheet("color: rgb(255, 0, 0);")
+                self.gui.lbl_Turtle.setText("  PRAETORIAN")
+                self.gui.lbl_Turtle.setStyleSheet("color: rgb(255, 0, 0);")
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -417,8 +417,8 @@ class TTT3(QMainWindow):
         try:
             self.devModeCount += 1
             if self.devModeCount >= 3:
-                self.gui.label_10.setText("DEV MODE")
-                self.gui.label_10.setStyleSheet("color: rgb(255, 0, 0);")
+                self.gui.lbl_SkyShadow.setText("     DEV MODE")
+                self.gui.lbl_SkyShadow.setStyleSheet("color: rgb(255, 0, 0);")
                 self.fastRendering = True
         except Exception as e:
             handleException(e)
@@ -1972,8 +1972,6 @@ class TTT3(QMainWindow):
             elif "&EE&" in line:
                 if self.eeCount >= 3:
                     povData.append(line.replace("&EE&", "#declare prae = 1;"))
-                    self.gui.label_11.setText("FA Turtle Jerrar,")
-                    self.gui.label_11.setStyleSheet("")
 
             elif "&CLOTH&" in line:
                 povData.append(line.replace("&CLOTH&", str(self.clothDetail)))
@@ -4745,9 +4743,18 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def checkForUpdates(self):
         '''Method for checking for online updates for TTT.'''
 
-        # Fleet data updates.
         try:
             self.updateMsg = ""
+
+            # Get current ranks for members listed on the Info tab.
+            # SkyShadow
+            self.gui.lbl_SkyShadow.setText(self.getRetrieveAPIData(self.config.get("TCDB", "pinapi"), "6958").get("rankAbbr") + " SkyShadow,")
+            # Turtle
+            self.gui.lbl_Turtle.setText(self.getRetrieveAPIData(self.config.get("TCDB", "pinapi"), "238").get("rankAbbr") + " Turtle Jerrar")
+            # Jedi Eclipse
+            self.gui.lbl_Eclipse.setText("& " + self.getRetrieveAPIData(self.config.get("TCDB", "pinapi"), "8171").get("rankAbbr") + " Jedi Eclipse")
+
+            # Fleet data updates.
             apiFleetData = self.getRetrieveAPIData(self.config.get("TCDB", "fleetapi"), "")
 
             if "error" in apiFleetData.keys():
@@ -4875,7 +4882,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.gui.lbl_update.hide()
 
             elif type == "error":
-                self.gui.lbl_update.setText("Squadron Patch Update Error! No Internet Connection!")
+                self.gui.lbl_update.setText("Update Error! No Internet Connection!")
                 self.gui.pb_update.setStyleSheet(r"background-color: rgb(170, 0, 0);border-color: rgb(170, 0, 0);text-align: right;")
                 self.gui.pb_update.show()
                 self.gui.lbl_update.show()

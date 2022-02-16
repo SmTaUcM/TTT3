@@ -2811,7 +2811,7 @@ QListWidget:!enabled
        <string>Created 2022 by</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_10">
+     <widget class="QLabel" name="lbl_SkyShadow">
       <property name="geometry">
        <rect>
         <x>109</x>
@@ -3292,7 +3292,7 @@ QListWidget:!enabled
        <string>.</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_11">
+     <widget class="QLabel" name="lbl_Turtle">
       <property name="geometry">
        <rect>
         <x>222</x>
@@ -3313,7 +3313,7 @@ QListWidget:!enabled
        <string>FA Turtle Jerrar</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_12">
+     <widget class="QLabel" name="lbl_Eclipse">
       <property name="geometry">
        <rect>
         <x>325</x>
@@ -3417,7 +3417,7 @@ QListWidget:!enabled
      <zorder>label_7</zorder>
      <zorder>label_8</zorder>
      <zorder>label_9</zorder>
-     <zorder>label_10</zorder>
+     <zorder>lbl_SkyShadow</zorder>
      <zorder>lblVersion</zorder>
      <zorder>lbl_pic_python</zorder>
      <zorder>lbl_pic_povray</zorder>
@@ -3434,8 +3434,8 @@ QListWidget:!enabled
      <zorder>label_29</zorder>
      <zorder>lbl_uniforms</zorder>
      <zorder>label_31</zorder>
-     <zorder>label_11</zorder>
-     <zorder>label_12</zorder>
+     <zorder>lbl_Turtle</zorder>
+     <zorder>lbl_Eclipse</zorder>
      <zorder>lbl_pic_io</zorder>
      <zorder>lbl_io</zorder>
      <zorder>label_32</zorder>
