@@ -64,7 +64,7 @@ class TTT3(QMainWindow):
             # Version info.
             version = "3.0.1"
             devVersion = ""
-            date = "16 February 2022"
+            date = "17 February 2022"
             self.saveFileVersion = 1  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
@@ -6538,7 +6538,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
                 try:
                     if self.helmetConfig.get(self.helmetStyle, "logo2Filepath") != "None":
-                        self.logo2FilepathHelm = os.getcwd() + self.helmetConfig.get(self.helmetStyle, "logo2Filepath = ")
+                        self.logo2FilepathHelm = os.getcwd() + self.helmetConfig.get(self.helmetStyle, "logo2Filepath")
                     else:
                         self.logo2FilepathHelm = ""
                 except configparser.NoOptionError:
