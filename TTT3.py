@@ -1163,6 +1163,10 @@ class TTT3(QMainWindow):
                         self.preview.cb_helmStyle.addItem(style)
             self.helmetStyle = helmStyle
             helmStyle = self.preview.cb_helmStyle.findText(self.helmetStyle, Qt.MatchExactly | Qt.MatchCaseSensitive)
+            if helmStyle == -1:
+                helmStyle = 0  # Used if a profile is loaded in which has a style not listed in the combo box.
+                msg = "Error! The profile you have loaded contains a Helmet Style (%s) this is not available for this pilot.\n\nThe Imperial Helmet style will be used instead." % self.helmetStyle
+                ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
             self.preview.cb_helmStyle.setCurrentIndex(helmStyle)
             self.cb_previewHemlStyleFunc(None)
 
