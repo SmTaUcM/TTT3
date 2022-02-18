@@ -493,8 +493,6 @@ class TTT3(QMainWindow):
         self.hideMedalOptions()
         self.gui.cbFCHG.setCurrentIndex(0)
 
-        self.gui.btn_helmet.setEnabled(True)
-
         # TODO Disabled Dress Lightsaber Customisation.
         self.gui.btn_dressSaberCustom.setEnabled(False)
 
@@ -4839,11 +4837,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                             os.remove(os.getcwd() + "\\data\\squads\\" + name)
                 self.updateProgressBar.emit("complete", 0)
                 self.updateProgressBar.emit("message", None)
+                self.gui.btn_helmet.setEnabled(True)
 
         except urllib3.exceptions.MaxRetryError:
             self.updateProgressBar.emit("error", 0)
             self.updateMsg += "Checking for updates failed.\nNo internet connection.\n"
             self.updateProgressBar.emit("message", None)
+            self.gui.btn_helmet.setEnabled(True)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def downloadPatchFile(self, name, url):
