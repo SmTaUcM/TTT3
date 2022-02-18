@@ -6518,7 +6518,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 elif self.position is None:
                     self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
                     self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
-                elif self.position in ["LR", "FR"]:
+                else:
                     self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
                     self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
 
