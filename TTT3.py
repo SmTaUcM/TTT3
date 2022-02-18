@@ -2889,6 +2889,9 @@ color_map
                 self.setHelmetColouring("wings", self.wing)
 
                 if self.position not in ["WC"]:  # Stops Squadrons showing for WCs.
+                    self.sqn = ""
+                    self.gui.btn_dress.setEnabled(False)
+                    self.gui.btn_duty.setEnabled(False)
 
                     # Populate the 'Squadron' List Widget with the Squadrons for the selected Wing.
                     # Get the wing's ID.
@@ -2915,6 +2918,8 @@ color_map
 
         try:
             # Save the selected option.
+            self.gui.btn_dress.setEnabled(True)
+            self.gui.btn_duty.setEnabled(True)
             self.sqn = self.gui.lw_squad.currentItem().text()
             self.setHelmetColouring("squadrons", self.sqn)
 
