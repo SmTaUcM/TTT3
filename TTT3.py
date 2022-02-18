@@ -5701,7 +5701,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             # Save the final colourmap image.
             alphaComposite.save(os.getcwd() + "\\data\\helmet\\helmtex.bmp")
         except FileNotFoundError:
-            msg = "Error! File - " + self.helmetConfig.get(self.helmetStyle, "colourMapImage") + " cannot be found within the TTT3\data\helmet\ folder."
+            msg = "Error! File - " + self.helmetConfig.get(self.helmetStyle, "colourMapImage") + \
+                " cannot be found within the TTT3\\data\\helmet\\ folder."
             return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
