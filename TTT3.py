@@ -2561,7 +2561,7 @@ color_map
                     else:
                         povData.append(line.replace("&LOGO1STENCIL&", r'gif "helmet/fallback_mask.gif"'))
 
-                elif self.logo1TypeHelm == "Squadron Patch":
+                elif self.sqn != "" and self.logo1TypeHelm == "Squadron Patch":
                     self.createMask()
                     ext, filePath = self.findSquadPatch()
                     ext = ext.replace(".", "")
@@ -2593,7 +2593,7 @@ color_map
                                 "&LOGO1PIGMENT&",
                                 r'image_map { png "helmet/fallback.png" interpolate 2 }'))
 
-                elif self.logo1TypeHelm == "Squadron Patch":
+                elif self.sqn != "" and self.logo1TypeHelm == "Squadron Patch":
                     ext, filePath = self.findSquadPatch()
                     ext = ext.replace(".", "")
                     filePath = filePath.replace("data\\", "").replace("\\", "/")
@@ -2627,7 +2627,7 @@ color_map
                     else:
                         povData.append(line.replace("&LOGO2STENCIL&", r'gif "helmet/fallback_mask.gif"'))
 
-                elif self.logo2TypeHelm == "Squadron Patch":
+                elif self.sqn != "" and self.logo2TypeHelm == "Squadron Patch":
                     self.createMask()
                     ext, filePath = self.findSquadPatch()
                     ext = ext.replace(".", "")
@@ -2659,7 +2659,7 @@ color_map
                                 "&LOGO2PIGMENT&",
                                 r'image_map { png "helmet/fallback.png" interpolate 2 }'))
 
-                elif self.logo2TypeHelm == "Squadron Patch":
+                elif self.sqn != "" and self.logo2TypeHelm == "Squadron Patch":
                     ext, filePath = self.findSquadPatch()
                     ext = ext.replace(".", "")
                     filePath = filePath.replace("data\\", "").replace("\\", "/")
