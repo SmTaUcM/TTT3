@@ -945,10 +945,6 @@ class TTT3(QMainWindow):
         # Set widgets to auto update on their mouseReleaseEvent.
         self.preview.cb_Refresh.stateChanged.connect(self.cb_previewRefreshFunc)
 
-        # Colours.
-        for label in [self.preview.lbl_PaletteSpot, self.preview.lbl_PaletteEnv, self.preview.lbl_PaletteBack]:
-            label.paintEvent = self.previewAutoRefresh
-
         # Checkboxes.
         for checkbox in [self.preview.cb_TransparentBG, self.preview.cb_Shadowless]:
             checkbox.stateChanged.connect(self.previewAutoRefresh)
@@ -1059,10 +1055,6 @@ class TTT3(QMainWindow):
 
         # Set widgets to auto update on their mouseReleaseEvent.
         self.preview.cb_Refresh.stateChanged.connect(self.cb_previewRefreshFunc)
-
-        # Colours.
-        for label in [self.preview.lbl_PaletteHelm, self.preview.lbl_PaletteDec, self.preview.lbl_PaletteBack, self.preview.lbl_PaletteLight]:
-            label.paintEvent = self.previewAutoRefresh
 
         # Checkboxes.
         for checkbox in [self.preview.cb_TransparentBG, self.preview.cb_Shadowless, self.preview.cb_Homo]:
@@ -5697,16 +5689,20 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def createHelmetColour(self, colour):
         r'''Method used to create user's selected helmet colour.'''
 
-        # creating an image object
-        img = Image.open(os.getcwd() + "\\data\\helmet\\" + self.helmetConfig.get(self.helmetStyle, "colourMapImage")).convert("RGBA")
+        try:
+            # creating an image object
+            img = Image.open(os.getcwd() + "\\data\\helmet\\" + self.helmetConfig.get(self.helmetStyle, "colourMapImage")).convert("RGBA")
 
-        # image colorize function
-        rgb = colour.getRgb()[:3]
-        bgImg = Image.new("RGBA", img.size, rgb)
-        alphaComposite = Image.alpha_composite(bgImg, img)
+            # image colorize function
+            rgb = colour.getRgb()[:3]
+            bgImg = Image.new("RGBA", img.size, rgb)
+            alphaComposite = Image.alpha_composite(bgImg, img)
 
-        # Save the final colourmap image.
-        alphaComposite.save(os.getcwd() + "\\data\\helmet\\helmtex.bmp")
+            # Save the final colourmap image.
+            alphaComposite.save(os.getcwd() + "\\data\\helmet\\helmtex.bmp")
+        except FileNotFoundError:
+            msg = "Error! File - " + self.helmetConfig.get(self.helmetStyle, "colourMapImage") + " cannot be found within the TTT3\data\helmet\ folder."
+            return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_PaletteHelmDecFunc(self):
