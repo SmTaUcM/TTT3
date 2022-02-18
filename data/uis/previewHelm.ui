@@ -370,9 +370,9 @@ QPushButton:!enabled
    <widget class="QGroupBox" name="gb_colours">
     <property name="geometry">
      <rect>
-      <x>9</x>
+      <x>10</x>
       <y>117</y>
-      <width>173</width>
+      <width>172</width>
       <height>181</height>
      </rect>
     </property>
@@ -994,7 +994,7 @@ QSpinBox:!enabled
    <widget class="QGroupBox" name="gb_camera">
     <property name="geometry">
      <rect>
-      <x>9</x>
+      <x>10</x>
       <y>484</y>
       <width>485</width>
       <height>151</height>
@@ -2702,9 +2702,9 @@ QSlider::handle:horizontal:hover
    <widget class="QGroupBox" name="gb_surfProps">
     <property name="geometry">
      <rect>
-      <x>9</x>
+      <x>10</x>
       <y>297</y>
-      <width>173</width>
+      <width>172</width>
       <height>188</height>
      </rect>
     </property>
