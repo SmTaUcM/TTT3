@@ -1148,13 +1148,6 @@ class TTT3(QMainWindow):
             helmStyle = self.helmetStyle
             self.preview.cb_helmStyle.clear()
 
-            # Find the currently selected squadron.
-            selectedSqn = None
-            for sqn in self.fleetConfig.get("squadrons"):
-                if sqn.get("name") == self.sqn:
-                    selectedSqn = sqn
-                    break
-
             # Find helmet styles that can be used by the selected squadron.
             for style in self.helmetConfig.sections():
                 if self.sqn == "" and self.position is None:  # User just clicks "Pilot's Helmet" without making/importing a pilot profile.
@@ -1164,7 +1157,7 @@ class TTT3(QMainWindow):
                     self.preview.cb_helmStyle.addItem(style)
 
                 # Add non-squadron-specific helmet styles.
-                elif selectedSqn.get("uniformData").get("helmetStyle").lower() in style.lower() and self.helmetConfig.get(style, "squad") == "None":
+                elif self.helmetStyle in style.lower() and self.helmetConfig.get(style, "squad") == "None":
                     self.preview.cb_helmStyle.addItem(style)
 
                 else:
