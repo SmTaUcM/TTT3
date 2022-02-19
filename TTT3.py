@@ -347,11 +347,11 @@ class TTT3(QMainWindow):
             self.loadSettings()
             self.loadFleetData()
             self.lastRenderData = None
+            self.loadPinData()
             self.updateProgressBar.connect(self.updaterSlot)
             self.update = threading.Thread(target=self.checkForUpdates)
             self.update.start()
             self.initialGUISetup()
-            self.loadPinData()
             self.maxedRibbons = False
         except Exception as e:
             handleException(e)
@@ -4402,6 +4402,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             except urllib3.exceptions.MaxRetryError:
                 self.writeToImportTextBox("Error! No Internet Connection!")
 
+            except json.JSONDecodeError:
+                self.writeToImportTextBox("Error! Profile not available from the Emperor's Hammer database.")
+
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4499,13 +4502,17 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         try:
             if (event.type() == QEvent.ContextMenu and source is self.gui.lw_presets):
                 menu = QMenu()
-                menu.addAction('delete      Del')
-                if menu.exec_(event.globalPos()):
-                    item = source.itemAt(event.pos())
+                autoImport = menu.addAction('Import on Launch')
+                delete = menu.addAction('Delete')
+                action = menu.exec_(event.globalPos())
+                item = source.itemAt(event.pos())
+                if action == delete:
                     try:
                         self.deletePreset(item.text())
                     except AttributeError:
                         pass  # User has not clicked on a name.
+                elif action == autoImport:
+                    self.autoImportPreset(item.text())
                 return True
 
             elif (event.type() == QEvent.ContextMenu and source is self.output_gui.lbl_output):
@@ -4533,6 +4540,29 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         for pin in self.pinData:
             if name in pin:
                 self.pinData.pop(self.pinData.index(pin))
+        self.savePinData()
+        self.loadPinData()
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def autoImportPreset(self, name):
+        '''Method to select a PIN to auto import on launch.'''
+
+        # Remove the old auto import tag.
+        for pin in self.pinData:
+            if " - Auto" in pin:
+                pinIndex = self.pinData.index(pin)
+                pinData = self.pinData[pinIndex].split("#")
+                pinData[0] = pinData[0].replace(" - Auto", "")
+                self.pinData[pinIndex] = pinData[0] + "#" + pinData[1]
+
+        # Set the new pin to auto import.
+        for pin in self.pinData:
+            if name in pin and " - Auto" not in name:
+                pinIndex = self.pinData.index(pin)
+                pinData = self.pinData[pinIndex].split("#")
+                pinData[0] = pinData[0] + " - Auto"
+                self.pinData[pinIndex] = pinData[0] + "#" + pinData[1]
+
         self.savePinData()
         self.loadPinData()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4835,15 +4865,27 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                 sqnFound = True
                         if not sqnFound:
                             os.remove(os.getcwd() + "\\data\\squads\\" + name)
-                self.updateProgressBar.emit("complete", 0)
                 self.updateProgressBar.emit("message", None)
-                self.gui.btn_helmet.setEnabled(True)
+                self.updateProgressBar.emit("complete", 0)
 
         except urllib3.exceptions.MaxRetryError:
             self.updateProgressBar.emit("error", 0)
             self.updateMsg += "Checking for updates failed.\nNo internet connection.\n"
             self.updateProgressBar.emit("message", None)
             self.gui.btn_helmet.setEnabled(True)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def autoImportProfile(self):
+        '''Method for auto importing the selected user's profile.'''
+
+        for pin in self.pinData:
+            if " - Auto" in pin:
+                self.gui.sbPin.setValue(int(pin.split("#")[1]))
+                break
+
+        self.gui.btn_helmet.setEnabled(True)
+        if self.gui.sbPin.value() != 0:
+            self.btn_importFunc()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def downloadPatchFile(self, name, url):
@@ -4895,18 +4937,21 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             elif type == "complete":
                 self.gui.pb_update.hide()
                 self.gui.lbl_update.hide()
+                self.autoImportProfile()
 
             elif type == "error":
                 self.gui.lbl_update.setText("Update Error! No Internet Connection!")
                 self.gui.pb_update.setStyleSheet(r"background-color: rgb(170, 0, 0);border-color: rgb(170, 0, 0);text-align: right;")
                 self.gui.pb_update.show()
                 self.gui.lbl_update.show()
+                self.autoImportProfile()
 
             elif type == "code400":
                 self.gui.lbl_update.setText("Squadron Patch Update Error! Invalid Fleet API setting!")
                 self.gui.pb_update.setStyleSheet(r"background-color: rgb(170, 0, 0);border-color: rgb(170, 0, 0);text-align: right;")
                 self.gui.pb_update.show()
                 self.gui.lbl_update.show()
+                self.autoImportProfile()
 
             elif type == "message":
                 self.writeToImportTextBox(self.updateMsg)
