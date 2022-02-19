@@ -18,7 +18,7 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 
 ## ------------------------------------------------------------------------------------------------##
 
-## [v3.0.1] 2022-02-13
+## [v3.0.1] 2022-02-19
 
 ### Added
 - High DPI support allowing app scaling for high resolution monitors in Windows 10 via: 
@@ -30,6 +30,7 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 - Database importing of preset helmet / decoration colours.
 - Helmet logos can now be selected as mirrored or un-mirrored.
 - Infiltrator Style Helmets.
+- Added auto import of a user selected PIN upon TTT3 launch.
 
 ### Changed
 - New TIE Corps Logo is now the default graphic on helmets replacing the imperial cog.
