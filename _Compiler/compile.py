@@ -43,6 +43,7 @@ shutil.copy(ttt3Dir + "\\_Resource\\ttt3.ico", ttt3Dir + "\\_Compiler\\")
 # Compile TTT3.
 print("\nCompiling TTT3.exe...\n")
 PyInstaller.__main__.run([
+     "--clean",
      "--onefile",
      "--windowed",
      "--icon=ttt3.ico",
