@@ -64,7 +64,7 @@ class TTT3(QMainWindow):
             # Version info.
             version = "3.0.1"
             devVersion = ""
-            date = "19 February 2022"
+            date = "20 February 2022"
             self.saveFileVersion = 1  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
@@ -5981,6 +5981,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.le_helmText.setText(self.nameHelm)
         else:
             self.preview.le_helmText.setText(self.callsign)
+            self.nameHelm = self.callsign
 
         self.fontHelmQFront = QFont("impact")
         self.preview.fcb_helmFont.setCurrentFont(self.fontHelmQFront)
