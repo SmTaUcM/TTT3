@@ -261,9 +261,11 @@ class TTT3(QMainWindow):
             self.lightY = -15000
             self.lightZ = 13000
             self.loadingHelm = False
-            self.helmColour = QColor(0, 0, 0)
+            self.helmColour = QColor(33, 33, 33)
+            self.apiHelmColour = QColor(33, 33, 33)
             self.bgColourHelm = QColor(0, 0, 0)
-            self.decColour = QColor(0, 0, 0)
+            self.decColour = QColor(147, 147, 147)
+            self.apiDecColour = QColor(147, 147, 147)
             self.lightColour = QColor(0, 0, 0)
             self.transparentBGHelm = ""
             self.camXHelmDefault = 0
@@ -682,6 +684,10 @@ class TTT3(QMainWindow):
                         self.position = "LR"
                         self.enableWingAndSqnTab(False)
                         self.loadHelmetData()
+                        self.helmColour = QColor(33, 33, 33)
+                        self.apiHelmColour = QColor(33, 33, 33)
+                        self.decColour = QColor(147, 147, 147)
+                        self.apiDecColour = QColor(147, 147, 147)
                         break
 
                     # Flag Ranks.
@@ -690,6 +696,10 @@ class TTT3(QMainWindow):
                         self.position = "FR"
                         self.enableWingAndSqnTab(False)
                         self.loadHelmetData()
+                        self.helmColour = QColor(33, 33, 33)
+                        self.apiHelmColour = QColor(33, 33, 33)
+                        self.decColour = QColor(147, 147, 147)
+                        self.apiDecColour = QColor(147, 147, 147)
                         break
         except Exception as e:
             handleException(e)
@@ -2940,10 +2950,12 @@ color_map
                 if unit.get("uniformData").get("helmetStyle") is not None:
                     if unit.get("uniformData").get("colorHelmetBase") is not None:
                         self.helmColour = self.getAPIHelmColour(unit.get("uniformData").get("colorHelmetBase"))
+                        self.apiHelmColour = self.helmColour
                         self.helmetConfig.set(self.helmetStyle, "helmColour", unit.get("uniformData").get("colorHelmetBase"))
 
                     if unit.get("uniformData").get("colorHelmetDecoration") is not None:
                         self.decColour = self.getAPIHelmColour(unit.get("uniformData").get("colorHelmetDecoration"))
+                        self.apiDecColour = self.decColour
                         self.helmetConfig.set(self.helmetStyle, "decColour", unit.get("uniformData").get("colorHelmetDecoration"))
 
                     # API returns an Infiltrator helmet.
@@ -4016,6 +4028,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.gui.btn_dress.setEnabled(False)
             self.gui.btn_duty.setEnabled(False)
 
+            # Reset Helmet Colours.
+            self.helmColour = QColor(33, 33, 33)
+            self.apiHelmColour = QColor(33, 33, 33)
+            self.decColour = QColor(147, 147, 147)
+            self.apiDecColour = QColor(147, 147, 147)
+            self.loadHelmetData()
+
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -5087,9 +5106,17 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.transparentBG = ""
                 self.preview.cb_TransparentBG.setChecked(False)
             else:
-                self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
+                if self.helmetConfig.get(self.helmetStyle, "helmColour").lower() != "default":
+                    self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
+                else:
+                    self.helmColour = self.apiHelmColour
+
+                if self.helmetConfig.get(self.helmetStyle, "decColour").lower() != "default":
+                    self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
+                else:
+                    self.decColour = self.apiDecColour
+
                 self.bgColourHelm = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "bgColour"))
-                self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
                 self.lightColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "lightColour"))
 
                 # Helmet Colour.
@@ -6551,25 +6578,21 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         try:
             self.helmetStyle = self.preview.cb_helmStyle.currentText()
             if not self.loadingHelm:
-                # Helmet & Decoration Colour..
-                if self.position in ["FM", "FL", "CMDR", "LR", "FR"] and self.sqn == "":
+                # Helmet & Decoration Colour.
+                if self.helmetConfig.get(self.helmetStyle, "helmColour").lower() != "default":
                     self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
-                    self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
-                elif self.position == "WC" and self.wing == "":
-                    self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
-                    self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
-                elif self.position == "COM" and self.ship == "":
-                    self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
-                    self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
-                elif self.position is None:
-                    self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
+                else:
+                    self.helmColour = self.apiHelmColour
+
+                if self.helmetConfig.get(self.helmetStyle, "decColour").lower() != "default":
                     self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
                 else:
-                    self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
-                    self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
+                    self.decColour = self.apiDecColour
 
+                # Set the colouring within the GUI.
                 self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
                 self.colourSelected(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
+
                 # Background Colour.
                 self.bgColourHelm = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "bgColour"))
                 self.colourSelected(self.bgColourHelm, "bgColourHelm", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
