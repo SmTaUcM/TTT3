@@ -523,6 +523,13 @@ class TTT3(QMainWindow):
                 radioButton.setChecked(False)
                 radioButton.setAutoExclusive(True)
 
+            # Reset helmet colouring.
+            self.loadHelmetData()
+            self.helmColour = QColor(33, 33, 33)
+            self.apiHelmColour = QColor(33, 33, 33)
+            self.decColour = QColor(147, 147, 147)
+            self.apiDecColour = QColor(147, 147, 147)
+
             # Initialise method constants.
             # Ranks:
                 # Line Ranks.
@@ -683,11 +690,6 @@ class TTT3(QMainWindow):
                         self.showRanks(CT, GN)
                         self.position = "LR"
                         self.enableWingAndSqnTab(False)
-                        self.loadHelmetData()
-                        self.helmColour = QColor(33, 33, 33)
-                        self.apiHelmColour = QColor(33, 33, 33)
-                        self.decColour = QColor(147, 147, 147)
-                        self.apiDecColour = QColor(147, 147, 147)
                         break
 
                     # Flag Ranks.
@@ -695,11 +697,6 @@ class TTT3(QMainWindow):
                         self.showRanks(RA, GA)
                         self.position = "FR"
                         self.enableWingAndSqnTab(False)
-                        self.loadHelmetData()
-                        self.helmColour = QColor(33, 33, 33)
-                        self.apiHelmColour = QColor(33, 33, 33)
-                        self.decColour = QColor(147, 147, 147)
-                        self.apiDecColour = QColor(147, 147, 147)
                         break
         except Exception as e:
             handleException(e)
@@ -2951,12 +2948,10 @@ color_map
                     if unit.get("uniformData").get("colorHelmetBase") is not None:
                         self.helmColour = self.getAPIHelmColour(unit.get("uniformData").get("colorHelmetBase"))
                         self.apiHelmColour = self.helmColour
-                        self.helmetConfig.set(self.helmetStyle, "helmColour", unit.get("uniformData").get("colorHelmetBase"))
 
                     if unit.get("uniformData").get("colorHelmetDecoration") is not None:
                         self.decColour = self.getAPIHelmColour(unit.get("uniformData").get("colorHelmetDecoration"))
                         self.apiDecColour = self.decColour
-                        self.helmetConfig.set(self.helmetStyle, "decColour", unit.get("uniformData").get("colorHelmetDecoration"))
 
                     # API returns an Infiltrator helmet.
                     if unit.get("uniformData").get("helmetStyle") != "imperial":
