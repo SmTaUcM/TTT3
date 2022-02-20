@@ -5144,7 +5144,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.widthHelm = 640
                 self.preview.sb_Width.setValue(self.widthHelm)
                 self.sb_previewWidthFunc(self.widthHelm)
-                self.qualityHelm = 7
+                self.qualityHelm = 9
                 self.preview.sb_Quality.setValue(self.qualityHelm)
                 self.antiAliasingHelm = True
                 self.preview.cb_AA.setChecked(self.antiAliasingHelm)
