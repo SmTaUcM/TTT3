@@ -261,12 +261,18 @@ class TTT3(QMainWindow):
             self.lightY = -15000
             self.lightZ = 13000
             self.loadingHelm = False
-            self.helmColour = QColor(33, 33, 33)
-            self.apiHelmColour = QColor(33, 33, 33)
-            self.bgColourHelm = QColor(0, 0, 0)
-            self.decColour = QColor(147, 147, 147)
-            self.apiDecColour = QColor(147, 147, 147)
-            self.lightColour = QColor(0, 0, 0)
+            self.helmColourDEFAULT = QColor(33, 33, 33)
+            self.helmColour = self.helmColourDEFAULT
+            self.apiHelmColour = self.helmColourDEFAULT
+            self.decColourDEFAULT = QColor(147, 147, 147)
+            self.decColour = self.decColourDEFAULT
+            self.apiDecColour = self.decColourDEFAULT
+            self.bgColourHelmDEFAULT = QColor(69, 79, 112)
+            self.bgColourHelm = self.bgColourHelmDEFAULT
+            self.apiBgColourHelm = self.bgColourHelmDEFAULT
+            self.lightColourDEFAULT = QColor(255, 255, 255)
+            self.lightColour = self.lightColourDEFAULT
+            self.apiLightColour = self.lightColourDEFAULT
             self.transparentBGHelm = ""
             self.camXHelmDefault = 0
             self.camXHelm = self.camXHelmDefault
@@ -299,6 +305,8 @@ class TTT3(QMainWindow):
             self.helmetStyle = "Imperial"
             self.logo1Mirrored = True
             self.logo2Mirrored = True
+            self.unitType = None
+            self.unitProperty = None
 
             # PovRay Template Constants.
             self.RANK_OFFSET_RIBBONS_00_TO_08 = ["-18.8939990997314,0.351000010967255,7.92899990081787",  # Rotate
@@ -532,7 +540,7 @@ class TTT3(QMainWindow):
 
             # Initialise method constants.
             # Ranks:
-                # Line Ranks.
+            # Line Ranks.
             CT = 0
             SL = 1
             LT = 2
@@ -2942,6 +2950,8 @@ color_map
         '''Method sets a selected position's helmet colour scheme from the fleet API..'''
 
         # Apply the Fleet API settings for helmet colouring.
+        self.unitType = unitType
+        self.unitProperty = unitProperty
         for unit in self.fleetConfig.get(unitType):
             if unit.get("name") == unitProperty:
                 if unit.get("uniformData").get("helmetStyle") is not None:
@@ -4024,6 +4034,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.gui.btn_duty.setEnabled(False)
 
             # Reset Helmet Colours.
+            self.unitType = None
+            self.unitProperty = None
             self.helmColour = QColor(33, 33, 33)
             self.apiHelmColour = QColor(33, 33, 33)
             self.decColour = QColor(147, 147, 147)
@@ -5002,7 +5014,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             if self.uniform != "helmet":
                 self.openColourPicker(self.bgColour, "bgColour", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
             else:
-                self.openColourPicker(self.bgColourHelm, "bgColourHelm", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
+                self.openColourPicker(self.bgColourHelm, ["bgColourHelm", "apiBgColourHelm"],
+                                      self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -5044,7 +5057,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for handling colour selection from within the ColourPicker.'''
 
         # Set the class member.
-        setattr(self, optionStr, colour)
+        if isinstance(optionStr, str):
+            setattr(self, optionStr, colour)
+        elif isinstance(optionStr, list):
+            for option in optionStr:
+                setattr(self, option, colour)
+                optionStr = option
 
         # Convert values.
         realRGB = getattr(self, optionStr).getRgb()
@@ -5101,6 +5119,19 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.transparentBG = ""
                 self.preview.cb_TransparentBG.setChecked(False)
             else:
+                if self.unitType is not None:
+                    # Reset the colours to the API/Config setting.
+                    helmetStyle = self.helmetStyle
+                    self.setHelmetColouring(self.unitType, self.unitProperty)
+                    self.helmetStyle = helmetStyle
+                else:
+                    # Reset to hard coded defaults.
+                    self.apiHelmColour = QColor(33, 33, 33)
+                    self.apiDecColour = QColor(147, 147, 147)
+
+                self.apiBgColourHelm = QColor(69, 79, 112)
+                self.apiLightColour = QColor(255, 255, 255)
+
                 if self.helmetConfig.get(self.helmetStyle, "helmColour").lower() != "default":
                     self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
                 else:
@@ -5111,8 +5142,15 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 else:
                     self.decColour = self.apiDecColour
 
-                self.bgColourHelm = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "bgColour"))
-                self.lightColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "lightColour"))
+                if self.helmetConfig.get(self.helmetStyle, "bgColour").lower() != "default":
+                    self.bgColourHelm = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "bgColour"))
+                else:
+                    self.bgColourHelm = self.apiBgColourHelm
+
+                if self.helmetConfig.get(self.helmetStyle, "lightColour").lower() != "default":
+                    self.lightColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "lightColour"))
+                else:
+                    self.lightColour = self.apiLightColour
 
                 # Helmet Colour.
                 self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
@@ -5124,6 +5162,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.colourSelected(self.lightColour, "lightColour", self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
                 self.transparentBGHelm = ""
                 self.preview.cb_TransparentBG.setChecked(False)
+
+                self.renderPreview()
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -5741,7 +5781,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for opening a colour palette dialog.'''
 
         try:
-            self.openColourPicker(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
+            self.openColourPicker(self.helmColour, ["helmColour", "apiHelmColour"], self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -5770,7 +5810,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for opening a colour palette dialog.'''
 
         try:
-            self.openColourPicker(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
+            self.openColourPicker(self.decColour, ["decColour", "apiDecColour"], self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -5779,7 +5819,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for opening a colour palette dialog.'''
 
         try:
-            self.openColourPicker(self.lightColour, "lightColour", self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
+            self.openColourPicker(self.lightColour, ["lightColour", "apiLightColour"], self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -6584,16 +6624,24 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 else:
                     self.decColour = self.apiDecColour
 
+                if self.helmetConfig.get(self.helmetStyle, "bgColour").lower() != "default":
+                    self.bgColourHelm = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "bgColour"))
+                else:
+                    self.bgColourHelm = self.apiBgColourHelm
+
+                if self.helmetConfig.get(self.helmetStyle, "lightColour").lower() != "default":
+                    self.lightColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "lightColour"))
+                else:
+                    self.lightColour = self.apiLightColour
+
                 # Set the colouring within the GUI.
                 self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
                 self.colourSelected(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
 
                 # Background Colour.
-                self.bgColourHelm = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "bgColour"))
                 self.colourSelected(self.bgColourHelm, "bgColourHelm", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
 
                 # Light Colour.
-                self.lightColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "lightColour"))
                 self.colourSelected(self.lightColour, "lightColour", self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
 
                 # Decorations.
