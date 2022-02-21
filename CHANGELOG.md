@@ -18,7 +18,7 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 
 ## ------------------------------------------------------------------------------------------------##
 
-## [v3.0.1] 2022-02-19
+## [v3.0.1] 2022-02-21
 
 ### Added
 - High DPI support allowing app scaling for high resolution monitors in Windows 10 via: 
