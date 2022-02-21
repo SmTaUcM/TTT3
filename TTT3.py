@@ -5163,7 +5163,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.transparentBGHelm = ""
                 self.preview.cb_TransparentBG.setChecked(False)
 
-                self.renderPreview()
+            self.renderPreview()
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
