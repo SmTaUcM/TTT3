@@ -64,7 +64,7 @@ class TTT3(QMainWindow):
             # Version info.
             version = "3.0.1"
             devVersion = ""
-            date = "21 February 2022"
+            date = "27 February 2022"
             self.saveFileVersion = 1  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
@@ -307,6 +307,7 @@ class TTT3(QMainWindow):
             self.logo2Mirrored = True
             self.unitType = None
             self.unitProperty = None
+            self.fastPreview = False
 
             # PovRay Template Constants.
             self.RANK_OFFSET_RIBBONS_00_TO_08 = ["-18.8939990997314,0.351000010967255,7.92899990081787",  # Rotate
@@ -954,6 +955,7 @@ class TTT3(QMainWindow):
         self.preview.lbl_LightX.mouseReleaseEvent = self.lbl_LightXFunc
         self.preview.lbl_LightY.mouseReleaseEvent = self.lbl_LightYFunc
         self.preview.lbl_LightZ.mouseReleaseEvent = self.lbl_LightZFunc
+        self.preview.cb_fastPreview.stateChanged.connect(self.fastPreviewFunc)
 
         # Set widgets to auto update on their mouseReleaseEvent.
         self.preview.cb_Refresh.stateChanged.connect(self.cb_previewRefreshFunc)
@@ -1155,6 +1157,7 @@ class TTT3(QMainWindow):
             self.preview.lbl_LightY.setText(self.convertIntToFloatStr(self.lightY, 10))
             self.preview.vs_LightZ.setValue(self.lightZ)
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZ, 10))
+            self.preview.cb_fastPreview.setChecked(self.fastPreview)
         else:
             # Helmet Style.
             # Add the styles to the comboBox.
@@ -1354,6 +1357,25 @@ class TTT3(QMainWindow):
 
             elif self.uniform == "helmet":
                 self.createHelmetPov()
+        else:
+            if self.fastPreview:
+                if self.uniform == "dress":
+                    self.createDressPov(fastPreview=True)
+
+                elif self.uniform == "duty":
+                    self.createDutyPov(fastPreview=True)
+
+                elif self.uniform == "helmet":
+                    self.createHelmetPov()
+            else:
+                if self.uniform == "dress":
+                    self.createDressPov()
+
+                elif self.uniform == "duty":
+                    self.createDutyPov()
+
+                elif self.uniform == "helmet":
+                    self.createHelmetPov()
 
         if self.uniform == "dress":
             width = self.width
@@ -1407,8 +1429,12 @@ class TTT3(QMainWindow):
                 template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W390 +H334 +Q{quality}{trans} -A -D /EXIT'.format(
                     quality=quality, trans=self.transparentBGHelm)
             else:
-                template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W390 +H520 +Q{quality}{trans} -A -D /EXIT'.format(
-                    quality=quality, trans=self.transparentBG)
+                if self.preview.cb_fastPreview.isChecked():
+                    template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W390 +H520 +Q3{trans} -A -D /EXIT'.format(
+                        quality=quality, trans=self.transparentBG)
+                else:
+                    template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W390 +H520 +Q{quality}{trans} -A -D /EXIT'.format(
+                        quality=quality, trans=self.transparentBG)
 
         template = template.replace("&TTTPATH&", os.getcwd())
 
@@ -1880,13 +1906,18 @@ class TTT3(QMainWindow):
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def createDressPov(self):
+    def createDressPov(self, fastPreview=False):
         r'''Method that loads in '\data\dress.tpt' parses in the correct uniform data and creates a new 'data\dress.pov' file.'''
+
+        if fastPreview:
+            template = r"data\fastPreview.tpt"
+        else:
+            template = r"data\dress.tpt"
 
         quantity = 1
 
         # Read in the template data.
-        with open(r"data\dress.tpt", "r") as tptFile:
+        with open(template, "r") as tptFile:
             template = tptFile.readlines()
 
         # Header text.
@@ -2244,13 +2275,18 @@ color_map
             povFile.writelines(povData)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def createDutyPov(self):
+    def createDutyPov(self, fastPreview=False):
         r'''Method that loads in '\data\duty.tpt' parses in the correct uniform data and creates a new 'data\duty.pov' file.'''
+
+        if fastPreview:
+            template = r"data\fastPreview.tpt"
+        else:
+            template = r"data\duty.tpt"
 
         quantity = 1
 
         # Read in the template data.
-        with open(r"data\duty.tpt", "r") as tptFile:
+        with open(template, "r") as tptFile:
             template = tptFile.readlines()
 
         # Header text.
@@ -6596,6 +6632,19 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                            float(label.text()), min, max, decimals, Qt.WindowFlags(), step)
         if ok:
             slider.setValue(int(value * scale))
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def fastPreviewFunc(self):
+        '''Method used when the Fast Preview checkbox is selected.'''
+
+        if self.preview.cb_fastPreview.isChecked():
+            self.fastPreview = True
+        else:
+            self.fastPreview = False
+
+        # Refresh the preview image.
+        self.lastRenderData = None
+        self.renderPreview()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def mirrorLogo(self, intLogo):
