@@ -1,4 +1,4 @@
-#  TIE Corps Tailoring Tool 3
+#  TIECorps Tailoring Tool 3
 A 3D graphical rendering tool produced in Python to read in PHP from a website, parse the data into XML format and then dynamically launch POV-Ray to render a high-quality ray-traced jpeg image.
 
 - **Description:** As a member of an online sci-fi video gaming club, members took on the alias of naval officers. A requirement of being a member included the creation of a uniform consisting of rank, position, squadron patch and medals. The club's existing tool was old, out of date and required maintenance. It was also compiled with no available source code. Using Python, Qt and POV-Ray I recreated the tool from scratch, implemented existing functionality and added enhanced features.

@@ -28,7 +28,7 @@ import time
 import datetime
 import winreg
 from PyQt5 import uic  # python -m pip install pyqt5
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMenu, QColorDialog  # python -m pip install pyqt5-tools
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QMenu, QColorDialog, QInputDialog  # python -m pip install pyqt5-tools
 from PyQt5.QtGui import QPixmap, QColor, QFont, QImage, QPainter, QPen, QBrush
 from PyQt5.QtCore import Qt, QEvent, pyqtSignal, QSize, QRectF
 from PIL import Image, ImageOps  # python -m pip install pillow
@@ -42,6 +42,7 @@ import hashlib
 import threading
 import queue
 import Slider
+import ftfy  # python -m pip install ftfy
 # python -m pip install pyinstaller - for compiler.
 #----------------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -61,9 +62,9 @@ class TTT3(QMainWindow):
 
         try:
             # Version info.
-            version = "3.0.0"
+            version = "3.0.1"
             devVersion = ""
-            date = "1 May 2021"
+            date = "21 February 2022"
             self.saveFileVersion = 1  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
@@ -180,6 +181,8 @@ class TTT3(QMainWindow):
             self.gui.cb_dutyLightsaber.stateChanged.connect(self.cb_dutyLightsaberFunc)
             self.gui.rb_dressSaberLeft.clicked.connect(self.saberDaggerDeconflict)
             self.gui.rb_dressSaberRight.clicked.connect(self.saberDaggerDeconflict)
+            self.gui.cb_dressSaberStyles.currentIndexChanged.connect(self.lightsaberDressSelectedFunc)
+            self.gui.cb_dutySaberStyles.currentIndexChanged.connect(self.lightsaberDutySelectedFunc)
             # GOE Options.
             self.gui.rb_daggerLeft.clicked.connect(self.daggerSaberDeconflict)
             self.gui.rb_daggerRight.clicked.connect(self.daggerSaberDeconflict)
@@ -215,8 +218,8 @@ class TTT3(QMainWindow):
             self.gui.lbl_povray.mouseReleaseEvent = self.povrayLink
             self.gui.lbl_pic_io.mouseReleaseEvent = self.ioLink
             self.gui.lbl_io.mouseReleaseEvent = self.ioLink
-            self.gui.label_11.mouseReleaseEvent = self.eeLink
-            self.gui.label_10.mouseReleaseEvent = self.devModeLink
+            self.gui.lbl_Turtle.mouseReleaseEvent = self.eeLink
+            self.gui.lbl_SkyShadow.mouseReleaseEvent = self.devModeLink
 
             # ----- POV-Ray Variables. -----
 
@@ -244,36 +247,51 @@ class TTT3(QMainWindow):
             self.antiAliasing = True
             self.shadowless = False
             self.mosaicPreview = False
-            self.camX = -2608
-            self.camY = -13311
-            self.camZ = 2090
+            self.ambientHelm = 30
+            self.specularHelm = 50
+            self.roughHelm = 1
+            self.reflectionHelm = 10
+            self.camX = -2500
+            self.camY = -13300
+            self.camZ = 2100
             self.lookX = 0
             self.lookY = -128
             self.lookZ = 28
             self.lightX = 13000
             self.lightY = -15000
             self.lightZ = 13000
-            self.helmColour = QColor(33, 33, 33)
-            self.bgColourHelm = QColor(69, 79, 112)
-            self.decColour = QColor(147, 147, 147)
-            self.lightColour = QColor(255, 255, 255)
+            self.loadingHelm = False
+            self.helmColourDEFAULT = QColor(33, 33, 33)
+            self.helmColour = self.helmColourDEFAULT
+            self.apiHelmColour = self.helmColourDEFAULT
+            self.decColourDEFAULT = QColor(147, 147, 147)
+            self.decColour = self.decColourDEFAULT
+            self.apiDecColour = self.decColourDEFAULT
+            self.bgColourHelmDEFAULT = QColor(69, 79, 112)
+            self.bgColourHelm = self.bgColourHelmDEFAULT
+            self.apiBgColourHelm = self.bgColourHelmDEFAULT
+            self.lightColourDEFAULT = QColor(255, 255, 255)
+            self.lightColour = self.lightColourDEFAULT
+            self.apiLightColour = self.lightColourDEFAULT
             self.transparentBGHelm = ""
-            self.ambientHelm = 30
-            self.specularHelm = 50
-            self.roughHelm = 1
-            self.reflectionHelm = 10
-            self.camXHelm = 2170
-            self.camYHelm = -6519
-            self.camZHelm = 3146
-            self.lookXHelm = -568
-            self.lookYHelm = -445
-            self.lookZHelm = 1052
-            self.lightXHelm = 2244
-            self.lightYHelm = -5089
-            self.lightZHelm = 5282
+            self.camXHelmDefault = 0
+            self.camXHelm = self.camXHelmDefault
+            self.camYHelmDefault = 0
+            self.camYHelm = self.camYHelmDefault
+            self.camZHelmDefault = 0
+            self.camZHelm = self.camZHelmDefault
+            self.lookXHelmDefault = 0
+            self.lookXHelm = self.lookXHelmDefault
+            self.lookYHelmDefault = 0
+            self.lookYHelm = self.lookYHelmDefault
+            self.lookZHelmDefault = 0
+            self.lookZHelm = self.lookZHelmDefault
+            self.lightXHelm = 0
+            self.lightYHelm = 0
+            self.lightZHelm = 0
             self.widthHelm = 640
             self.heightHelm = 548
-            self.qualityHelm = 7  # More than 7 creates graphical glitches around the nametag. Suspected due to createHelmetFaceCoulour()
+            self.qualityHelm = 9
             self.antiAliasingHelm = True
             self.shadowlessHelm = False
             self.homoHelm = False
@@ -282,8 +300,13 @@ class TTT3(QMainWindow):
             self.fontHelmQFront = QFont("impact")
             self.logo1TypeHelm = "Image - stencil mask"
             self.logo2TypeHelm = "Squadron Patch"
-            self.logo1FilepathHelm = os.getcwd() + "\\data\\misc\\implogo.gif"
+            self.logo1FilepathHelm = os.getcwd() + "\\data\\misc\\Helmet Stencils\\tclogo.gif"
             self.logo2FilepathHelm = ""
+            self.helmetStyle = "Imperial"
+            self.logo1Mirrored = True
+            self.logo2Mirrored = True
+            self.unitType = None
+            self.unitProperty = None
 
             # PovRay Template Constants.
             self.RANK_OFFSET_RIBBONS_00_TO_08 = ["-18.8939990997314,0.351000010967255,7.92899990081787",  # Rotate
@@ -321,21 +344,24 @@ class TTT3(QMainWindow):
             self.rb_upgradeablesConnected = False
             self.imagePath = None
             self.launchingPOVRay = False
+            self.previewLoaded = False
 
             # ----- Application logic. -----
+            self.queingAllowed = True
             self.queue = queue.Queue()
             threading.Thread(target=self.taskQueuer, daemon=True).start()
             self.fastRendering = False  # Forces POV-Ray to render at a lower quality for quicker rendering during testing.
             self.continueRender = True
             self.uniform = None
+            self.loadHelmetData()
             self.loadSettings()
             self.loadFleetData()
             self.lastRenderData = None
+            self.loadPinData()
             self.updateProgressBar.connect(self.updaterSlot)
             self.update = threading.Thread(target=self.checkForUpdates)
             self.update.start()
             self.initialGUISetup()
-            self.loadPinData()
             self.maxedRibbons = False
         except Exception as e:
             handleException(e)
@@ -389,8 +415,8 @@ class TTT3(QMainWindow):
         try:
             self.eeCount += 1
             if self.eeCount >= 3:
-                self.gui.label_11.setText("PRAETORIAN MODE")
-                self.gui.label_11.setStyleSheet("color: rgb(255, 0, 0);")
+                self.gui.lbl_Turtle.setText("  PRAETORIAN")
+                self.gui.lbl_Turtle.setStyleSheet("color: rgb(255, 0, 0);")
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -401,8 +427,8 @@ class TTT3(QMainWindow):
         try:
             self.devModeCount += 1
             if self.devModeCount >= 3:
-                self.gui.label_10.setText("DEV MODE")
-                self.gui.label_10.setStyleSheet("color: rgb(255, 0, 0);")
+                self.gui.lbl_SkyShadow.setText("     DEV MODE")
+                self.gui.lbl_SkyShadow.setStyleSheet("color: rgb(255, 0, 0);")
                 self.fastRendering = True
         except Exception as e:
             handleException(e)
@@ -477,8 +503,6 @@ class TTT3(QMainWindow):
         self.hideMedalOptions()
         self.gui.cbFCHG.setCurrentIndex(0)
 
-        self.gui.btn_helmet.setEnabled(True)
-
         # TODO Disabled Dress Lightsaber Customisation.
         self.gui.btn_dressSaberCustom.setEnabled(False)
 
@@ -507,9 +531,16 @@ class TTT3(QMainWindow):
                 radioButton.setChecked(False)
                 radioButton.setAutoExclusive(True)
 
+            # Reset helmet colouring.
+            self.loadHelmetData()
+            self.helmColour = QColor(33, 33, 33)
+            self.apiHelmColour = QColor(33, 33, 33)
+            self.decColour = QColor(147, 147, 147)
+            self.apiDecColour = QColor(147, 147, 147)
+
             # Initialise method constants.
             # Ranks:
-                # Line Ranks.
+            # Line Ranks.
             CT = 0
             SL = 1
             LT = 2
@@ -583,6 +614,7 @@ class TTT3(QMainWindow):
                         self.gui.lw_squad.clear()
                         self.sqn = ""
                         self.enableWingAndSqnTab(True)
+                        self.loadHelmetData()
                         break
 
                     # Commodore.
@@ -600,6 +632,7 @@ class TTT3(QMainWindow):
                         self.gui.lw_squad.clear()
                         self.sqn = ""
                         self.enableWingAndSqnTab(True)
+                        self.loadHelmetData()
                         break
 
                     # TE Corps Command Staff.
@@ -607,6 +640,7 @@ class TTT3(QMainWindow):
                         self.showRanks(RA, HA)
                         self.position = "TCCS"
                         self.enableWingAndSqnTab(False)
+                        self.loadHelmetData()
                         break
 
                     # Imperial Advisor.
@@ -614,6 +648,7 @@ class TTT3(QMainWindow):
                         self.showRanks(RA, SA)
                         self.position = "IA"
                         self.enableWingAndSqnTab(False)
+                        self.loadHelmetData()
                         break
 
                     # Command Attache.
@@ -621,6 +656,7 @@ class TTT3(QMainWindow):
                         self.showRanks(RA, SA)
                         self.position = "CA"
                         self.enableWingAndSqnTab(False)
+                        self.loadHelmetData()
                         break
 
                     # Sub-Group Commander.
@@ -628,6 +664,7 @@ class TTT3(QMainWindow):
                         self.showRanks(RA, GA)
                         self.position = "SGCOM"
                         self.enableWingAndSqnTab(False)
+                        self.loadHelmetData()
                         break
 
                     # Command Staff.
@@ -635,6 +672,7 @@ class TTT3(QMainWindow):
                         self.showRanks(RA, GA)
                         self.position = "CS"
                         self.enableWingAndSqnTab(False)
+                        self.loadHelmetData()
                         break
 
                     # Executive Officer.
@@ -642,6 +680,7 @@ class TTT3(QMainWindow):
                         self.showRanks(RA, GA)
                         self.position = "XO"
                         self.enableWingAndSqnTab(False)
+                        self.loadHelmetData()
                         break
 
                     # Fleet Commander.
@@ -651,6 +690,7 @@ class TTT3(QMainWindow):
                         self.gui.rb_rank_ga.setChecked(True)
                         self.rankRBLogic()
                         self.enableWingAndSqnTab(False)
+                        self.loadHelmetData()
                         break
 
                     # Line Ranks.
@@ -855,6 +895,7 @@ class TTT3(QMainWindow):
     def showPreviewDialog(self):
         '''Method to open the render preview / options GUI.'''
 
+        self.previewLoaded = False
         # Load our GUI file 'data\uis\preview.ui'.
         self.preview = uic.loadUi(r"data\uis\preview.ui")
 
@@ -866,6 +907,8 @@ class TTT3(QMainWindow):
         setPixelSizes(self.preview)
         self.preview.closeEvent = self.previewCloseEvent
         self.gui.hide()
+        self.preview.lbl_wait.setAttribute(Qt.WA_TranslucentBackground)
+        self.preview.lbl_wait.setHidden(True)
 
         # Apply setttings.
         self.applyPreviewSettings()
@@ -902,13 +945,18 @@ class TTT3(QMainWindow):
         self.preview.cb_PresetCam.currentIndexChanged.connect(self.cb_previewPresetCamFunc)
         self.preview.cb_PresetLook.currentIndexChanged.connect(self.cb_previewPresetLookFunc)
         self.preview.cb_PresetLight.currentIndexChanged.connect(self.cb_previewPresetLightFunc)
+        self.preview.lbl_CamX.mouseReleaseEvent = self.lbl_CamXFunc
+        self.preview.lbl_CamY.mouseReleaseEvent = self.lbl_CamYFunc
+        self.preview.lbl_CamZ.mouseReleaseEvent = self.lbl_CamZFunc
+        self.preview.lbl_LookX.mouseReleaseEvent = self.lbl_LookXFunc
+        self.preview.lbl_LookY.mouseReleaseEvent = self.lbl_LookYFunc
+        self.preview.lbl_LookZ.mouseReleaseEvent = self.lbl_LookZFunc
+        self.preview.lbl_LightX.mouseReleaseEvent = self.lbl_LightXFunc
+        self.preview.lbl_LightY.mouseReleaseEvent = self.lbl_LightYFunc
+        self.preview.lbl_LightZ.mouseReleaseEvent = self.lbl_LightZFunc
 
         # Set widgets to auto update on their mouseReleaseEvent.
         self.preview.cb_Refresh.stateChanged.connect(self.cb_previewRefreshFunc)
-
-        # Colours.
-        for label in [self.preview.lbl_PaletteSpot, self.preview.lbl_PaletteEnv, self.preview.lbl_PaletteBack]:
-            label.paintEvent = self.previewAutoRefresh
 
         # Checkboxes.
         for checkbox in [self.preview.cb_TransparentBG, self.preview.cb_Shadowless]:
@@ -933,11 +981,13 @@ class TTT3(QMainWindow):
 
         # Get a preview uniform render.
         self.renderPreview()
+        self.previewLoaded = True
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def showPreviewHelmDialog(self):
         '''Method to open the render preview / options GUI.'''
 
+        self.previewLoaded = False
         # Load our GUI file 'data\uis\preview.ui'.
         self.preview = uic.loadUi(r"data\uis\previewHelm.ui")
 
@@ -946,6 +996,8 @@ class TTT3(QMainWindow):
         setPixelSizes(self.preview)
         self.preview.closeEvent = self.previewCloseEvent
         self.gui.hide()
+        self.preview.lbl_wait.setAttribute(Qt.WA_TranslucentBackground)
+        self.preview.lbl_wait.setHidden(True)
 
         # Apply setttings.
         self.applyPreviewSettings()
@@ -997,13 +1049,25 @@ class TTT3(QMainWindow):
         self.preview.cb_PresetCam.currentIndexChanged.connect(self.cb_previewPresetCamHelmFunc)
         self.preview.cb_PresetLook.currentIndexChanged.connect(self.cb_previewPresetLookHelmFunc)
         self.preview.cb_PresetLight.currentIndexChanged.connect(self.cb_previewPresetLightHelmFunc)
+        self.preview.lbl_CamX.mouseReleaseEvent = self.lbl_CamXHelmFunc
+        self.preview.lbl_CamY.mouseReleaseEvent = self.lbl_CamYHelmFunc
+        self.preview.lbl_CamZ.mouseReleaseEvent = self.lbl_CamZHelmFunc
+        self.preview.lbl_LookX.mouseReleaseEvent = self.lbl_LookXHelmFunc
+        self.preview.lbl_LookY.mouseReleaseEvent = self.lbl_LookYHelmFunc
+        self.preview.lbl_LookZ.mouseReleaseEvent = self.lbl_LookZHelmFunc
+        self.preview.lbl_LightX.mouseReleaseEvent = self.lbl_LightXHelmFunc
+        self.preview.lbl_LightY.mouseReleaseEvent = self.lbl_LightYHelmFunc
+        self.preview.lbl_LightZ.mouseReleaseEvent = self.lbl_LightZHelmFunc
+        self.preview.lbl_Ambient.mouseReleaseEvent = self.lbl_AmbientFunc
+        self.preview.lbl_Specular.mouseReleaseEvent = self.lbl_SpecularFunc
+        self.preview.lbl_Roughness.mouseReleaseEvent = self.lbl_RoughnessFunc
+        self.preview.lbl_Reflection.mouseReleaseEvent = self.lbl_ReflectionFunc
+        self.preview.cb_Logo1Mirrored.stateChanged.connect(lambda: self.mirrorLogo(1))
+        self.preview.cb_Logo2Mirrored.stateChanged.connect(lambda: self.mirrorLogo(2))
+        self.preview.cb_helmStyle.currentIndexChanged.connect(self.cb_previewHemlStyleFunc)
 
         # Set widgets to auto update on their mouseReleaseEvent.
         self.preview.cb_Refresh.stateChanged.connect(self.cb_previewRefreshFunc)
-
-        # Colours.
-        for label in [self.preview.lbl_PaletteHelm, self.preview.lbl_PaletteDec, self.preview.lbl_PaletteBack, self.preview.lbl_PaletteLight]:
-            label.paintEvent = self.previewAutoRefresh
 
         # Checkboxes.
         for checkbox in [self.preview.cb_TransparentBG, self.preview.cb_Shadowless, self.preview.cb_Homo]:
@@ -1031,9 +1095,13 @@ class TTT3(QMainWindow):
         self.preview.le_helmLogo1Filepath.textChanged.connect(self.previewAutoRefresh)
         self.preview.le_helmLogo2Filepath.textChanged.connect(self.previewAutoRefresh)
         self.preview.le_helmText.editingFinished.connect(self.previewAutoRefresh)
+        self.preview.cb_Logo1Mirrored.stateChanged.connect(self.previewAutoRefresh)
+        self.preview.cb_Logo2Mirrored.stateChanged.connect(self.previewAutoRefresh)
+        self.preview.cb_helmStyle.currentIndexChanged.connect(self.previewAutoRefresh)
 
         # Get a preview uniform render.
         self.renderPreview()
+        self.previewLoaded = True
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def applyPreviewSettings(self):
@@ -1088,6 +1156,39 @@ class TTT3(QMainWindow):
             self.preview.vs_LightZ.setValue(self.lightZ)
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZ, 10))
         else:
+            # Helmet Style.
+            # Add the styles to the comboBox.
+            helmStyle = self.helmetStyle
+            self.preview.cb_helmStyle.clear()
+
+            # Find helmet styles that can be used by the selected squadron.
+            for style in self.helmetConfig.sections():
+                if self.sqn == "" and self.position is None:  # User just clicks "Pilot's Helmet" without making/importing a pilot profile.
+                    self.preview.cb_helmStyle.addItem(style)  # Add everything.
+
+                elif style.lower() == "imperial" or style.lower() == "infiltrator":  # Add the default "clean" Imperial and Infiltrator helmet styles.
+                    self.preview.cb_helmStyle.addItem(style)
+
+                # Add non-squadron-specific helmet styles.
+                elif self.helmetStyle in style.lower() and self.helmetConfig.get(style, "squad") == "None":
+                    self.preview.cb_helmStyle.addItem(style)
+
+                else:
+                    if self.helmetConfig.get(style, "squad") == self.sqn:  # Adds squad specific helmet styles.
+                        self.preview.cb_helmStyle.addItem(style)
+
+            # Set the Helmet Style combo box to the default selection.
+            self.helmetStyle = helmStyle
+            helmStyle = self.preview.cb_helmStyle.findText(self.helmetStyle, Qt.MatchExactly | Qt.MatchCaseSensitive)
+            if helmStyle == -1:
+                helmStyle = 0  # Used if a profile is loaded in which has a style not listed in the combo box.
+                msg = "Error! The profile you have loaded contains a Helmet Style (%s) this is not available for this pilot.\n\nThe Imperial Helmet style will be used instead." % self.helmetStyle
+                ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+            self.preview.cb_helmStyle.setCurrentIndex(helmStyle)
+
+            # Render the preview.
+            self.cb_previewHemlStyleFunc(None)
+
             # Colours.
             # Helmet Colour.
             self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
@@ -1125,20 +1226,29 @@ class TTT3(QMainWindow):
             self.preview.vs_Reflection.setValue(self.reflectionHelm)
             self.preview.lbl_Reflection.setText(self.convertIntToFloatStr(self.reflectionHelm, 100))
             self.preview.vs_CamX.setValue(self.camXHelm)
+            self.preview.lbl_CamX.setText(self.convertIntToFloatStr(self.camXHelm, 100))
             self.preview.vs_CamY.setValue(self.camYHelm)
+            self.preview.lbl_CamY.setText(self.convertIntToFloatStr(self.camYHelm, 100))
             self.preview.vs_CamZ.setValue(self.camZHelm)
+            self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(self.camZHelm, 100))
             self.preview.vs_LookX.setValue(self.lookXHelm)
+            self.preview.lbl_LookX.setText(self.convertIntToFloatStr(self.lookXHelm, 100))
             self.preview.vs_LookY.setValue(self.lookYHelm)
+            self.preview.lbl_LookY.setText(self.convertIntToFloatStr(self.lookYHelm, 100))
             self.preview.vs_LookZ.setValue(self.lookZHelm)
+            self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(self.lookZHelm, 100))
             self.preview.vs_LightX.setValue(self.lightXHelm)
+            self.preview.lbl_LightX.setText(self.convertIntToFloatStr(self.lightXHelm, 100))
             self.preview.vs_LightY.setValue(self.lightYHelm)
+            self.preview.lbl_LightY.setText(self.convertIntToFloatStr(self.lightYHelm, 100))
             self.preview.vs_LightZ.setValue(self.lightZHelm)
+            self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZHelm, 100))
 
             # Decorations.
             # Helmet Text.
             if self.nameHelm == "EH TC":
                 if self.callsign != "None":
-                    self.nameHelm = self.callsign.upper()[:12].rstrip(" ")
+                    self.nameHelm = self.callsign[:12].rstrip(" ")
             self.preview.le_helmText.setText(self.nameHelm)
             self.preview.fcb_helmFont.setCurrentFont(self.fontHelmQFront)
 
@@ -1162,10 +1272,12 @@ class TTT3(QMainWindow):
             logo2TypeInt = self.preview.cb_hemlLogo2Type.findText(self.logo2TypeHelm, Qt.MatchExactly | Qt.MatchCaseSensitive)
             self.preview.cb_hemlLogo1Type.setCurrentIndex(logo1TypeInt)
             self.preview.cb_hemlLogo2Type.setCurrentIndex(logo2TypeInt)
+            self.preview.cb_Logo1Mirrored.setChecked(self.logo1Mirrored)
+            self.preview.cb_Logo2Mirrored.setChecked(self.logo2Mirrored)
 
             if self.preview.cb_hemlLogo2Type.currentText() == "":  # If previous setting was 'Squadron Patch' (default) but it's not longer available.
                 self.preview.cb_hemlLogo2Type.setCurrentIndex(1)
-                self.logo2FilepathHelm = os.getcwd() + "\\data\\misc\\tiecorps_logo_new.png"
+                self.logo2FilepathHelm = os.getcwd() + "\\data\\misc\\Helmet Stencils\\tiecorps_logo_new.png"
 
             self.preview.le_helmLogo1Filepath.setText(self.logo1FilepathHelm)
             self.preview.le_helmLogo2Filepath.setText(self.logo2FilepathHelm)
@@ -1176,16 +1288,17 @@ class TTT3(QMainWindow):
     def renderPreview(self):
         '''Method for rendering a preview image.'''
 
-        if self.getUniformData() != self.lastRenderData:
-            self.preview.lbl_preview.clear()
-            self.preview.lbl_preview.setText("Please wait for preview to load...")
-            if self.uniform == "dress":
-                self.createDressPov()
-            elif self.uniform == "duty":
-                self.createDutyPov()
-            elif self.uniform == "helmet":
-                self.createHelmetPov()
-            self.queue.put(None)
+        if self.queingAllowed:
+            if self.getUniformData() != self.lastRenderData:
+                if self.previewLoaded:
+                    self.preview.lbl_wait.setHidden(False)
+                if self.uniform == "dress":
+                    self.createDressPov()
+                elif self.uniform == "duty":
+                    self.createDutyPov()
+                elif self.uniform == "helmet":
+                    self.createHelmetPov()
+                self.queue.put(None)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def taskQueuer(self):
@@ -1358,6 +1471,7 @@ class TTT3(QMainWindow):
 
         self.imagePath = r"data\%s%s" % (self.uniform, ext)
         self.preview.lbl_preview.setPixmap(QPixmap(self.imagePath))
+        self.preview.lbl_wait.setHidden(True)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def showOutputDialog(self, uniform):
@@ -1534,10 +1648,21 @@ class TTT3(QMainWindow):
 
         img = Image.open(src)
         new_img = img.resize((width, height))
-        newFilePath = dest.split(".")[0] + ext
+        newFilePath = dest.replace(ext, "") + ext
         if ext == ".jpg":
             ext = ".jpeg"
-        new_img.save(newFilePath, ext.replace(".", ""))
+        try:
+            new_img.save(newFilePath, ext.replace(".", ""))
+        except PermissionError:
+            msg = "Error: TTT3 does not have permission to save files to %s\n\nPlease try saving to a different location." % newFilePath
+            return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def loadHelmetData(self):
+        r'''Method to load in the helmet style data from TTT3\Settings\helmets.ini'''
+
+        self.helmetConfig = configparser.ConfigParser()
+        self.helmetConfig.read(r"settings\helmets.ini")
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def loadSettings(self):
@@ -1870,8 +1995,6 @@ class TTT3(QMainWindow):
             elif "&EE&" in line:
                 if self.eeCount >= 3:
                     povData.append(line.replace("&EE&", "#declare prae = 1;"))
-                    self.gui.label_11.setText("FA Turtle Jerrar,")
-                    self.gui.label_11.setStyleSheet("")
 
             elif "&CLOTH&" in line:
                 povData.append(line.replace("&CLOTH&", str(self.clothDetail)))
@@ -2297,13 +2420,18 @@ color_map
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def createHelmetPov(self):
-        r'''Method that loads in '\data\helmet.tpt' parses in the correct uniform data and creates a new 'data\helmet.pov' file.'''
+        r'''Method that loads in '\data\helmXXX.tpt' parses in the correct uniform data and creates a new 'data\helmet.pov' file.'''
+
+        template = os.getcwd() + "\\data\\" + self.helmetConfig.get(self.helmetStyle, "template")
 
         # Create the Pilot Helmet nametag.
         self.createHelmetNameTag()
 
+        # Colour ther helmet.
+        self.createHelmetColour(self.helmColour)
+
         # Read in the template data.
-        with open(r"data\helmet.tpt", "r") as tptFile:
+        with open(template, "r") as tptFile:
             template = tptFile.readlines()
 
         # Header text.
@@ -2407,7 +2535,6 @@ color_map
 
             # ----- Helmet Settings -----
             elif "&HELMCOLOUR&" in line:
-                self.creatHelmetFaceColour(self.helmColour)
                 povData.append(line.replace("&HELMCOLOUR&", "%s" % self.convertToPOVRGB(self.helmColour)))
 
             elif "&AMBIENT&" in line:
@@ -2437,7 +2564,7 @@ color_map
 
                     if self.logo1TypeHelm == "Image - stencil mask":
                         filePath = self.logo1FilepathHelm.replace("\\", "/")
-                        ext = filePath.split(".")[1]
+                        ext = filePath.rsplit(".", 1)[1]
                         if ext == "jpg":
                             ext = "jpeg"
                         povData.append(line.replace("&LOGO1STENCIL&", r'%s "%s"' % (ext, filePath)))
@@ -2446,19 +2573,19 @@ color_map
                         self.createMask(self.logo1FilepathHelm)
                         filePath = self.logo1FilepathHelm.replace("\\", "/")
                         # Change file path to mask file.
-                        filePath = filePath.split(".")[0] + "_mask.png"
+                        filePath = filePath.rsplit('.', 1)[0] + "_mask.png"
                         povData.append(line.replace("&LOGO1STENCIL&", r'png "%s"' % (filePath)))
 
                     # None selected.
                     else:
                         povData.append(line.replace("&LOGO1STENCIL&", r'gif "helmet/fallback_mask.gif"'))
 
-                elif self.logo1TypeHelm == "Squadron Patch":
+                elif self.sqn != "" and self.logo1TypeHelm == "Squadron Patch":
                     self.createMask()
                     ext, filePath = self.findSquadPatch()
                     ext = ext.replace(".", "")
                     filePath = filePath.replace("data\\", "").replace("\\", "/")
-                    filePath = filePath.split(".")[0] + "_mask.png"
+                    filePath = filePath.rsplit(".", 1)[0] + "_mask.png"
                     povData.append(line.replace("&LOGO1STENCIL&", r'%s "%s"' % (ext, filePath)))
 
                 # No image selected.
@@ -2473,7 +2600,7 @@ color_map
 
                     elif self.logo1TypeHelm == "Image - bg. transparent":
                         filePath = self.logo1FilepathHelm.replace("\\", "/")
-                        ext = filePath.split(".")[1]
+                        ext = filePath.rsplit(".", 1)[1]
                         if ext == "jpg":
                             ext = "jpeg"
                         povData.append(line.replace("&LOGO1PIGMENT&", r'image_map { %s "%s" }' % (ext, filePath)))
@@ -2485,7 +2612,7 @@ color_map
                                 "&LOGO1PIGMENT&",
                                 r'image_map { png "helmet/fallback.png" interpolate 2 }'))
 
-                elif self.logo1TypeHelm == "Squadron Patch":
+                elif self.sqn != "" and self.logo1TypeHelm == "Squadron Patch":
                     ext, filePath = self.findSquadPatch()
                     ext = ext.replace(".", "")
                     filePath = filePath.replace("data\\", "").replace("\\", "/")
@@ -2503,7 +2630,7 @@ color_map
 
                     if self.logo2TypeHelm == "Image - stencil mask":
                         filePath = self.logo2FilepathHelm.replace("\\", "/")
-                        ext = filePath.split(".")[1]
+                        ext = filePath.rsplit(".", 1)[1]
                         if ext == "jpg":
                             ext = "jpeg"
                         povData.append(line.replace("&LOGO2STENCIL&", r'%s "%s"' % (ext, filePath)))
@@ -2512,19 +2639,19 @@ color_map
                         self.createMask(self.logo2FilepathHelm)
                         filePath = self.logo2FilepathHelm.replace("\\", "/")
                         # Change file path to mask file.
-                        filePath = filePath.split(".")[0] + "_mask.png"
+                        filePath = filePath.rsplit(".", 1)[0] + "_mask.png"
                         povData.append(line.replace("&LOGO2STENCIL&", r'png "%s"' % (filePath)))
 
                     # None selected.
                     else:
                         povData.append(line.replace("&LOGO2STENCIL&", r'gif "helmet/fallback_mask.gif"'))
 
-                elif self.logo2TypeHelm == "Squadron Patch":
+                elif self.sqn != "" and self.logo2TypeHelm == "Squadron Patch":
                     self.createMask()
                     ext, filePath = self.findSquadPatch()
                     ext = ext.replace(".", "")
                     filePath = filePath.replace("data\\", "").replace("\\", "/")
-                    filePath = filePath.split(".")[0] + "_mask.png"
+                    filePath = filePath.rsplit(".", 1)[0] + "_mask.png"
                     povData.append(line.replace("&LOGO2STENCIL&", r'%s "%s"' % (ext, filePath)))
 
                 # No image selected.
@@ -2539,7 +2666,7 @@ color_map
 
                     elif self.logo2TypeHelm == "Image - bg. transparent":
                         filePath = self.logo2FilepathHelm.replace("\\", "/")
-                        ext = filePath.split(".")[1]
+                        ext = filePath.rsplit(".", 1)[1]
                         if ext == "jpg":
                             ext = "jpeg"
                         povData.append(line.replace("&LOGO2PIGMENT&", r'image_map { %s "%s" }' % (ext, filePath)))
@@ -2551,7 +2678,7 @@ color_map
                                 "&LOGO2PIGMENT&",
                                 r'image_map { png "helmet/fallback.png" interpolate 2 }'))
 
-                elif self.logo2TypeHelm == "Squadron Patch":
+                elif self.sqn != "" and self.logo2TypeHelm == "Squadron Patch":
                     ext, filePath = self.findSquadPatch()
                     ext = ext.replace(".", "")
                     filePath = filePath.replace("data\\", "").replace("\\", "/")
@@ -2572,6 +2699,32 @@ color_map
                         povData.append(line.replace("&HOMOGENOUS&", "object{ P_backdrop }"))
                 else:
                     povData.append(line.replace("&HOMOGENOUS&", ""))
+
+            elif "&IMPLOGOMIRRORING&" in line:
+                if self.logo1Mirrored:
+                    povData.append(line.replace("&IMPLOGOMIRRORING&", "P_implogo_Mirrored"))
+                else:
+                    povData.append(line.replace("&IMPLOGOMIRRORING&", "P_implogo_Unmirrored"))
+
+            elif "&JAWLOGOMIRRORING&" in line:
+                if self.logo2Mirrored:
+                    povData.append(line.replace("&JAWLOGOMIRRORING&", "P_jawlogo_Mirrored"))
+                else:
+                    povData.append(line.replace("&JAWLOGOMIRRORING&", "P_jawlogo_Unmirrored"))
+
+            elif "&COLOURMAP&" in line:
+                colourFile = self.helmetConfig.get(self.helmetStyle, "colourMapImage")
+                fileType = colourFile.split(".")[1]
+                if fileType.lower() == "bmp":
+                    fileType = "sys"
+                povData.append(line.replace("&COLOURMAP&", '{type} "helmet/{fileName}"'.format(type=fileType, fileName=colourFile)))
+
+            elif "&NORMALMAP&" in line:
+                normalFile = self.helmetConfig.get(self.helmetStyle, "normalMapImage")
+                fileType = normalFile.split(".")[1]
+                if fileType.lower() == "bmp":
+                    fileType = "sys"
+                povData.append(line.replace("&NORMALMAP&", '{type} "helmet/{fileName}"'.format(type=fileType, fileName=normalFile)))
 
             # ----- Non-Editable Data. -----
             else:
@@ -2663,7 +2816,7 @@ color_map
             extension, fileName = self.findSquadPatch()
         else:
             fileName = filepath
-            extension = "." + fileName.split(".")[1]
+            extension = "." + fileName.rsplit(".", 1)[1]
 
         try:
             # Primary Mask Creation. Requires a transparent background.
@@ -2708,6 +2861,7 @@ color_map
             try:
                 # Save the selected option.
                 self.ship = self.gui.lw_ship.currentItem().text()
+                self.setHelmetColouring("ships", self.ship)
 
                 if self.position not in ["TRN", "COM", "TCCS", "IA", "CA", "SGCOM", "CS",
                                          "XO", "FC"]:  # Stops Wings and Squadrons showing for COMs and above.
@@ -2751,8 +2905,12 @@ color_map
             try:
                 # Save the selected option.
                 self.wing = self.gui.lw_wing.currentItem().text()
+                self.setHelmetColouring("wings", self.wing)
 
                 if self.position not in ["WC"]:  # Stops Squadrons showing for WCs.
+                    self.sqn = ""
+                    self.gui.btn_dress.setEnabled(False)
+                    self.gui.btn_duty.setEnabled(False)
 
                     # Populate the 'Squadron' List Widget with the Squadrons for the selected Wing.
                     # Get the wing's ID.
@@ -2779,10 +2937,62 @@ color_map
 
         try:
             # Save the selected option.
+            self.gui.btn_dress.setEnabled(True)
+            self.gui.btn_duty.setEnabled(True)
             self.sqn = self.gui.lw_squad.currentItem().text()
+            self.setHelmetColouring("squadrons", self.sqn)
 
         except AttributeError:
             pass  # Prevents the application throwing an error when the 'Wing' List Widget clears and tries to populate squadrons from a 'blank' wing.
+    #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def setHelmetColouring(self, unitType, unitProperty):
+        '''Method sets a selected position's helmet colour scheme from the fleet API..'''
+
+        # Apply the Fleet API settings for helmet colouring.
+        self.unitType = unitType
+        self.unitProperty = unitProperty
+        for unit in self.fleetConfig.get(unitType):
+            if unit.get("name") == unitProperty:
+                if unit.get("uniformData").get("helmetStyle") is not None:
+                    if unit.get("uniformData").get("colorHelmetBase") is not None:
+                        self.helmColour = self.getAPIHelmColour(unit.get("uniformData").get("colorHelmetBase"))
+                        self.apiHelmColour = self.helmColour
+
+                    if unit.get("uniformData").get("colorHelmetDecoration") is not None:
+                        self.decColour = self.getAPIHelmColour(unit.get("uniformData").get("colorHelmetDecoration"))
+                        self.apiDecColour = self.decColour
+
+                    # API returns an Infiltrator helmet.
+                    if unit.get("uniformData").get("helmetStyle") != "imperial":
+                        self.helmetStyle = unit.get("uniformData").get("helmetStyle").title() + " - " + unitProperty.title()
+                        # If there's a custom unit infiltrator colourmap.
+                        if self.helmetStyle in unit.helmetConfig.sections():
+                            pass
+
+                        # Else use the clean infiltrator design.
+                        else:
+                            self.helmetStyle = unit.get("uniformData").get("helmetStyle").title()
+
+                    # Use imperial helmet.
+                    else:
+                        self.helmetStyle = unit.get("uniformData").get("helmetStyle").title()
+
+                else:
+                    self.loadHelmetData()
+                    self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
+                    self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
+                break
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def getAPIHelmColour(self, colourStr):
+        '''Method that convers the api string e.g. "#112233"Hex into a QColor(Int, Int, Int).'''
+
+        colourStr = colourStr.replace("#", "")
+        red = int(colourStr[0:2], 16)
+        green = int(colourStr[2:4], 16)
+        blue = int(colourStr[4:6], 16)
+        return QColor(red, green, blue)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def eliteSqnSelectionLogic(self, value):
@@ -3060,12 +3270,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     else:
                         self.gui.cb_singleMedal.setChecked(False)
 
+                self.gui.cb_singleMedal.show()
+                self.showUpgradeableRadioButtons()
+
                 if not self.cb_singleMedalConnected:
                     self.gui.cb_singleMedal.stateChanged.connect(self.cb_singleMedalSelectionLogic)
                     self.cb_singleMedalConnected = True
-
-                self.gui.cb_singleMedal.show()
-                self.showUpgradeableRadioButtons()
 
                 # ----- SubRibbons type ribbon awards. (MoS, MoT, IS, CoX)
             elif award.get("type") == "subRibbons":
@@ -3203,11 +3413,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.neckRibbonDeconfliction()
 
             # === Ribbons ===
-                # ----- Upgradeable type ribbon awards. (MoI)
+                # ----- Upgradeable type ribbon awards. (MoI, MoC LoC, LoS, DFC)
             elif award.get("type") == "upgradeable":
 
-                widgets = [self.gui.rb_upgradeable_0, self.gui.rb_upgradeable_1, self.gui.rb_upgradeable_2,
-                           self.gui.rb_upgradeable_3, self.gui.rb_upgradeable_4, self.gui.rb_upgradeable_5]
+                self.disconnectRibbonUpgrades()
 
                 if self.gui.cb_singleMedal.isChecked():
 
@@ -3230,17 +3439,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
                     # Reset the selection.
                     self.gui.rb_upgradeable_0.setChecked(True)
-
-                    # Hide and disconnect the radio buttons.
-                    for widget in widgets:
-                        widget.hide()
-                        # Disconnect the radio buttons.
-                        if self.rb_upgradeablesConnected:
-                            try:
-                                widget.clicked.disconnect()
-                            except TypeError:
-                                pass  # Prevents a crash when trying to disconnect a widget that isn't connected to aything.
-                    self.rb_upgradeablesConnected = False
+                    self.disconnectRibbonUpgrades()
 
                 # ----- Ranged type ribbon awards. (OV)
             elif award.get("type") == "ranged":
@@ -3269,6 +3468,24 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def disconnectRibbonUpgrades(self):
+        '''Method that disconnects the ribbon upgrade radio buttons.'''
+
+        widgets = [self.gui.rb_upgradeable_0, self.gui.rb_upgradeable_1, self.gui.rb_upgradeable_2,
+                   self.gui.rb_upgradeable_3, self.gui.rb_upgradeable_4, self.gui.rb_upgradeable_5]
+
+        # Hide and disconnect the radio buttons.
+        for widget in widgets:
+            widget.hide()
+            # Disconnect the radio buttons.
+            if self.rb_upgradeablesConnected:
+                try:
+                    widget.clicked.disconnect()
+                except TypeError:
+                    pass  # Prevents a crash when trying to disconnect a widget that isn't connected to aything.
+        self.rb_upgradeablesConnected = False
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def showUpgradeableRadioButtons(self):
@@ -3816,6 +4033,15 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.gui.btn_dress.setEnabled(False)
             self.gui.btn_duty.setEnabled(False)
 
+            # Reset Helmet Colours.
+            self.unitType = None
+            self.unitProperty = None
+            self.helmColour = QColor(33, 33, 33)
+            self.apiHelmColour = QColor(33, 33, 33)
+            self.decColour = QColor(147, 147, 147)
+            self.apiDecColour = QColor(147, 147, 147)
+            self.loadHelmetData()
+
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -3832,7 +4058,11 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             if fileName:
 
                 with open(fileName, "rb") as dataFile:
-                    saveData = pickle.load(dataFile)
+                    try:
+                        saveData = pickle.load(dataFile)
+                    except pickle.UnpicklingError:
+                        msg = "%s is not compatible with TTT3.\nPlease save a new profile." % fileName.split("\\")[-1]
+                        return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
 
                 if saveData[0] == self.saveFileVersion:
                     # Apply the saved settings.
@@ -4007,7 +4237,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getRetrieveAPIData(self, url, pin):
-        '''Method to retrieve TIE Corps Website API returned data and return it as a Python Disctionary.'''
+        '''Method to retrieve TIE Corps Website API returned data and return it as a Python Dictionary.'''
 
         http = urllib3.PoolManager()
         response = http.request("GET", url + pin)
@@ -4034,9 +4264,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
                     # Name
                     self.name = apiData.get("name")
+                    self.name = ftfy.ftfy(self.name, uncurl_quotes=False)  # Correct JSON's incoprrect interprtation of UTF-8 extended characters.
 
                     # Callsign
                     self.callsign = apiData.get("callsign")
+                    # Correct JSON's incoprrect interprtation of UTF-8 extended characters.
+                    self.callsign = ftfy.ftfy(self.callsign, uncurl_quotes=False)
 
                     # PIN
                     self.pin = apiData.get("PIN")
@@ -4180,6 +4413,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     # Write to information box.
                     msg = "Imported uniform data for {label}\nCallsign '{callsign}'\n{idLine}\n\nImport finished.".format(
                         label=apiData.get("label"), callsign=apiData.get("callsign"), idLine=apiData.get("IDLine"))
+                    msg = ftfy.ftfy(msg, uncurl_quotes=False)  # Correct JSON's incoprrect interprtation of UTF-8 extended characters.
                     self.writeToImportTextBox(msg)
 
                     # PIN number saving.
@@ -4193,6 +4427,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
             except urllib3.exceptions.MaxRetryError:
                 self.writeToImportTextBox("Error! No Internet Connection!")
+
+            except json.JSONDecodeError:
+                self.writeToImportTextBox("Error! Profile not available from the Emperor's Hammer database.")
 
         except Exception as e:
             handleException(e)
@@ -4291,13 +4528,17 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         try:
             if (event.type() == QEvent.ContextMenu and source is self.gui.lw_presets):
                 menu = QMenu()
-                menu.addAction('delete      Del')
-                if menu.exec_(event.globalPos()):
-                    item = source.itemAt(event.pos())
+                autoImport = menu.addAction('Import on Launch')
+                delete = menu.addAction('Delete')
+                action = menu.exec_(event.globalPos())
+                item = source.itemAt(event.pos())
+                if action == delete:
                     try:
                         self.deletePreset(item.text())
                     except AttributeError:
                         pass  # User has not clicked on a name.
+                elif action == autoImport:
+                    self.autoImportPreset(item.text())
                 return True
 
             elif (event.type() == QEvent.ContextMenu and source is self.output_gui.lbl_output):
@@ -4325,6 +4566,29 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         for pin in self.pinData:
             if name in pin:
                 self.pinData.pop(self.pinData.index(pin))
+        self.savePinData()
+        self.loadPinData()
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def autoImportPreset(self, name):
+        '''Method to select a PIN to auto import on launch.'''
+
+        # Remove the old auto import tag.
+        for pin in self.pinData:
+            if " - Auto" in pin:
+                pinIndex = self.pinData.index(pin)
+                pinData = self.pinData[pinIndex].split("#")
+                pinData[0] = pinData[0].replace(" - Auto", "")
+                self.pinData[pinIndex] = pinData[0] + "#" + pinData[1]
+
+        # Set the new pin to auto import.
+        for pin in self.pinData:
+            if name in pin and " - Auto" not in name:
+                pinIndex = self.pinData.index(pin)
+                pinData = self.pinData[pinIndex].split("#")
+                pinData[0] = pinData[0] + " - Auto"
+                self.pinData[pinIndex] = pinData[0] + "#" + pinData[1]
+
         self.savePinData()
         self.loadPinData()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4410,6 +4674,28 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     item.show()
                 else:
                     item.hide()
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lightsaberDressSelectedFunc(self):
+        '''Method that synchronises the duty saber with the dress saber when a lightsaber is selected from the dress combo box'''
+
+        try:
+            self.gui.cb_dutySaberStyles.currentIndexChanged.disconnect(self.lightsaberDutySelectedFunc)
+            self.gui.cb_dutySaberStyles.setCurrentIndex(self.gui.cb_dressSaberStyles.currentIndex())
+            self.gui.cb_dutySaberStyles.currentIndexChanged.connect(self.lightsaberDutySelectedFunc)
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lightsaberDutySelectedFunc(self):
+        '''Method that synchronises the dress saber with the duty saber when a lightsaber is selected from the duty combo box'''
+
+        try:
+            self.gui.cb_dressSaberStyles.currentIndexChanged.disconnect(self.lightsaberDressSelectedFunc)
+            self.gui.cb_dressSaberStyles.setCurrentIndex(self.gui.cb_dutySaberStyles.currentIndex())
+            self.gui.cb_dressSaberStyles.currentIndexChanged.connect(self.lightsaberDressSelectedFunc)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4526,9 +4812,18 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def checkForUpdates(self):
         '''Method for checking for online updates for TTT.'''
 
-        # Fleet data updates.
         try:
             self.updateMsg = ""
+
+            # Get current ranks for members listed on the Info tab.
+            # SkyShadow
+            self.gui.lbl_SkyShadow.setText(self.getRetrieveAPIData(self.config.get("TCDB", "pinapi"), "6958").get("rankAbbr") + " SkyShadow,")
+            # Turtle
+            self.gui.lbl_Turtle.setText(self.getRetrieveAPIData(self.config.get("TCDB", "pinapi"), "238").get("rankAbbr") + " Turtle Jerrar")
+            # Jedi Eclipse
+            self.gui.lbl_Eclipse.setText("& " + self.getRetrieveAPIData(self.config.get("TCDB", "pinapi"), "8171").get("rankAbbr") + " Jedi Eclipse")
+
+            # Fleet data updates.
             apiFleetData = self.getRetrieveAPIData(self.config.get("TCDB", "fleetapi"), "")
 
             if "error" in apiFleetData.keys():
@@ -4596,13 +4891,27 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                 sqnFound = True
                         if not sqnFound:
                             os.remove(os.getcwd() + "\\data\\squads\\" + name)
-                self.updateProgressBar.emit("complete", 0)
                 self.updateProgressBar.emit("message", None)
+                self.updateProgressBar.emit("complete", 0)
 
         except urllib3.exceptions.MaxRetryError:
             self.updateProgressBar.emit("error", 0)
             self.updateMsg += "Checking for updates failed.\nNo internet connection.\n"
             self.updateProgressBar.emit("message", None)
+            self.gui.btn_helmet.setEnabled(True)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def autoImportProfile(self):
+        '''Method for auto importing the selected user's profile.'''
+
+        for pin in self.pinData:
+            if " - Auto" in pin:
+                self.gui.sbPin.setValue(int(pin.split("#")[1]))
+                break
+
+        self.gui.btn_helmet.setEnabled(True)
+        if self.gui.sbPin.value() != 0:
+            self.btn_importFunc()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def downloadPatchFile(self, name, url):
@@ -4654,18 +4963,21 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             elif type == "complete":
                 self.gui.pb_update.hide()
                 self.gui.lbl_update.hide()
+                self.autoImportProfile()
 
             elif type == "error":
-                self.gui.lbl_update.setText("Squadron Patch Update Error! No Internet Connection!")
+                self.gui.lbl_update.setText("Update Error! No Internet Connection!")
                 self.gui.pb_update.setStyleSheet(r"background-color: rgb(170, 0, 0);border-color: rgb(170, 0, 0);text-align: right;")
                 self.gui.pb_update.show()
                 self.gui.lbl_update.show()
+                self.autoImportProfile()
 
             elif type == "code400":
                 self.gui.lbl_update.setText("Squadron Patch Update Error! Invalid Fleet API setting!")
                 self.gui.pb_update.setStyleSheet(r"background-color: rgb(170, 0, 0);border-color: rgb(170, 0, 0);text-align: right;")
                 self.gui.pb_update.show()
                 self.gui.lbl_update.show()
+                self.autoImportProfile()
 
             elif type == "message":
                 self.writeToImportTextBox(self.updateMsg)
@@ -4702,7 +5014,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             if self.uniform != "helmet":
                 self.openColourPicker(self.bgColour, "bgColour", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
             else:
-                self.openColourPicker(self.bgColourHelm, "bgColourHelm", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
+                self.openColourPicker(self.bgColourHelm, ["bgColourHelm", "apiBgColourHelm"],
+                                      self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4711,7 +5024,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method to open the QColorDialog.'''
 
         try:
-            # Prevent auto-refrsh from spamming changes when picking a colour.
+            # Prevent auto-refresh from spamming changes to the render que when picking a colour.
+            oldColourOption = colourOption
             oldRefreshSetting = self.preview.cb_Refresh.isChecked()
             self.preview.cb_Refresh.setChecked(False)
 
@@ -4719,7 +5033,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.colourDlg = QColorDialog()
             self.colourDlg.setCurrentColor(colourOption)
             self.colourDlg.show()
-            self.colourDlg.currentColorChanged.connect(lambda: self.colourSelected(self.colourDlg.currentColor(), optionStr, label, lineEdit))
+            # Connections.
+            self.colourDlg.accepted.connect(lambda: self.colourSelected(self.colourDlg.currentColor(), optionStr, label, lineEdit))
+            self.colourDlg.rejected.connect(lambda: self.cancelColourPicker(oldColourOption, optionStr, label, lineEdit))
             self.colourDlg.finished.connect(lambda: self.closeColourPicker(oldRefreshSetting))
         except Exception as e:
             handleException(e)
@@ -4731,13 +5047,24 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         self.preview.cb_Refresh.setChecked(setting)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
+    def cancelColourPicker(self, oldColourOption, optionStr, label, lineEdit):
+        '''Method for closing the colour picker.'''
+
+        self.colourSelected(oldColourOption, optionStr, label, lineEdit)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
     def colourSelected(self, colour, optionStr, label, lineEdit):
         '''Method for handling colour selection from within the ColourPicker.'''
 
         # Set the class member.
-        setattr(self, optionStr, colour)
+        if isinstance(optionStr, str):
+            setattr(self, optionStr, colour)
+        elif isinstance(optionStr, list):
+            for option in optionStr:
+                setattr(self, option, colour)
+                optionStr = option
 
-        # Conver values.
+        # Convert values.
         realRGB = getattr(self, optionStr).getRgb()
         hexRGB = "#%02x%02x%02x" % (realRGB[0], realRGB[1], realRGB[2])
 
@@ -4754,6 +5081,25 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             colourPov.append(col / 255.0)
         colourPov = str(tuple(colourPov)).replace("(", "").replace(")", "")
         return colourPov
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def convertHexRGBtoIntRGB(self, strHexRGB):
+        '''Method to convert a string of hex RGB to a QColor Tuple of integer RGB values'''
+
+        strHexRGB = strHexRGB.replace("#", "")
+        try:
+            r = int(strHexRGB[0:2], 16)
+        except ValueError:
+            r = 0
+        try:
+            g = int(strHexRGB[2:4], 16)
+        except ValueError:
+            g = 0
+        try:
+            b = int(strHexRGB[4:6], 16)
+        except ValueError:
+            b = 0
+        return QColor(r, g, b)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetColoursFunc(self):
@@ -4773,10 +5119,39 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.transparentBG = ""
                 self.preview.cb_TransparentBG.setChecked(False)
             else:
-                self.helmColour = QColor(33, 33, 33)
-                self.bgColourHelm = QColor(69, 79, 112)
-                self.decColour = QColor(147, 147, 147)
-                self.lightColour = QColor(255, 255, 255)
+                if self.unitType is not None:
+                    # Reset the colours to the API/Config setting.
+                    helmetStyle = self.helmetStyle
+                    self.setHelmetColouring(self.unitType, self.unitProperty)
+                    self.helmetStyle = helmetStyle
+                else:
+                    # Reset to hard coded defaults.
+                    self.apiHelmColour = QColor(33, 33, 33)
+                    self.apiDecColour = QColor(147, 147, 147)
+
+                self.apiBgColourHelm = QColor(69, 79, 112)
+                self.apiLightColour = QColor(255, 255, 255)
+
+                if self.helmetConfig.get(self.helmetStyle, "helmColour").lower() != "default":
+                    self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
+                else:
+                    self.helmColour = self.apiHelmColour
+
+                if self.helmetConfig.get(self.helmetStyle, "decColour").lower() != "default":
+                    self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
+                else:
+                    self.decColour = self.apiDecColour
+
+                if self.helmetConfig.get(self.helmetStyle, "bgColour").lower() != "default":
+                    self.bgColourHelm = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "bgColour"))
+                else:
+                    self.bgColourHelm = self.apiBgColourHelm
+
+                if self.helmetConfig.get(self.helmetStyle, "lightColour").lower() != "default":
+                    self.lightColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "lightColour"))
+                else:
+                    self.lightColour = self.apiLightColour
+
                 # Helmet Colour.
                 self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
                 # Decoration Colour.
@@ -4787,6 +5162,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.colourSelected(self.lightColour, "lightColour", self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
                 self.transparentBGHelm = ""
                 self.preview.cb_TransparentBG.setChecked(False)
+
+            self.renderPreview()
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4829,7 +5206,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.widthHelm = 640
                 self.preview.sb_Width.setValue(self.widthHelm)
                 self.sb_previewWidthFunc(self.widthHelm)
-                self.qualityHelm = 7
+                self.qualityHelm = 9
                 self.preview.sb_Quality.setValue(self.qualityHelm)
                 self.antiAliasingHelm = True
                 self.preview.cb_AA.setChecked(self.antiAliasingHelm)
@@ -4953,7 +5330,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.camXHelm = value
             self.preview.lbl_CamX.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetCam.setCurrentIndex(10)
+        if value != self.camXHelmDefault:
+            self.preview.cb_PresetCam.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewCamYFunc(self, value):
@@ -4966,7 +5344,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.camYHelm = value
             self.preview.lbl_CamY.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetCam.setCurrentIndex(10)
+        if value != self.camYHelmDefault:
+            self.preview.cb_PresetCam.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewCamZFunc(self, value):
@@ -4979,7 +5358,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.camZHelm = value
             self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetCam.setCurrentIndex(10)
+        if value != self.camZHelmDefault:
+            self.preview.cb_PresetCam.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookXFunc(self, value):
@@ -4992,7 +5372,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lookXHelm = value
             self.preview.lbl_LookX.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetLook.setCurrentIndex(10)
+        if value != self.lookXHelmDefault:
+            self.preview.cb_PresetLook.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookYFunc(self, value):
@@ -5005,7 +5386,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lookYHelm = value
             self.preview.lbl_LookY.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetLook.setCurrentIndex(10)
+        if value != self.lookYHelmDefault:
+            self.preview.cb_PresetLook.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookZFunc(self, value):
@@ -5018,7 +5400,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lookZHelm = value
             self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(value, 100))
 
-        self.preview.cb_PresetLook.setCurrentIndex(10)
+        if value != self.lookZHelmDefault:
+            self.preview.cb_PresetLook.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetCameraFunc(self):
@@ -5026,13 +5409,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         try:
             if self.uniform != "helmet":
-                self.camX = -2608
+                self.camX = -2500
                 self.preview.vs_CamX.setValue(self.camX)
                 self.preview.lbl_CamX.setText(self.convertIntToFloatStr(self.camX, 10))
-                self.camY = -13311
+                self.camY = -13300
                 self.preview.vs_CamY.setValue(self.camY)
                 self.preview.lbl_CamY.setText(self.convertIntToFloatStr(self.camY, 10))
-                self.camZ = 2090
+                self.camZ = 2100
                 self.preview.vs_CamZ.setValue(self.camZ)
                 self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(self.camZ, 10))
                 self.lookX = 0
@@ -5045,22 +5428,23 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.preview.vs_LookZ.setValue(self.lookZ)
                 self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(self.lookZ, 10))
             else:
-                self.camXHelm = 2170
+                self.camXHelm = self.camXHelmDefault
+                self.camYHelm = self.camYHelmDefault
+                self.camZHelm = self.camZHelmDefault
+                self.lookXHelm = self.lookXHelmDefault
+                self.lookYHelm = self.lookYHelmDefault
+                self.lookZHelm = self.lookZHelmDefault
+
                 self.preview.vs_CamX.setValue(self.camXHelm)
                 self.preview.lbl_CamX.setText(self.convertIntToFloatStr(self.camXHelm, 100))
-                self.camYHelm = -6519
                 self.preview.vs_CamY.setValue(self.camYHelm)
                 self.preview.lbl_CamY.setText(self.convertIntToFloatStr(self.camYHelm, 100))
-                self.camZHelm = 3146
                 self.preview.vs_CamZ.setValue(self.camZHelm)
                 self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(self.camZHelm, 100))
-                self.lookXHelm = -568
                 self.preview.vs_LookX.setValue(self.lookXHelm)
                 self.preview.lbl_LookX.setText(self.convertIntToFloatStr(self.lookXHelm, 100))
-                self.lookYHelm = -445
                 self.preview.vs_LookY.setValue(self.lookYHelm)
                 self.preview.lbl_LookY.setText(self.convertIntToFloatStr(self.lookYHelm, 100))
-                self.lookZHelm = 1052
                 self.preview.vs_LookZ.setValue(self.lookZHelm)
                 self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(self.lookZHelm, 100))
 
@@ -5076,11 +5460,11 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         if self.uniform != "helmet":
             self.lightX = value
             self.preview.lbl_LightX.setText(self.convertIntToFloatStr(value, 10))
+            self.preview.cb_PresetLight.setCurrentIndex(11)
         else:
             self.lightXHelm = value
             self.preview.lbl_LightX.setText(self.convertIntToFloatStr(value, 100))
-
-        self.preview.cb_PresetLight.setCurrentIndex(11)
+            self.preview.cb_PresetLight.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLightYFunc(self, value):
@@ -5089,11 +5473,11 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         if self.uniform != "helmet":
             self.lightY = value
             self.preview.lbl_LightY.setText(self.convertIntToFloatStr(value, 10))
+            self.preview.cb_PresetLight.setCurrentIndex(11)
         else:
             self.lightYHelm = value
             self.preview.lbl_LightY.setText(self.convertIntToFloatStr(value, 100))
-
-        self.preview.cb_PresetLight.setCurrentIndex(11)
+            self.preview.cb_PresetLight.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLightZFunc(self, value):
@@ -5102,11 +5486,11 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         if self.uniform != "helmet":
             self.lightZ = value
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(value, 10))
+            self.preview.cb_PresetLight.setCurrentIndex(11)
         else:
             self.lightZHelm = value
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(value, 100))
-
-        self.preview.cb_PresetLight.setCurrentIndex(11)
+            self.preview.cb_PresetLight.setCurrentIndex(10)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetLightFunc(self):
@@ -5143,12 +5527,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method to reset all preview window options / profile.'''
 
         try:
+            self.queingAllowed = False
             if self.uniform != "helmet":
                 self.btn_previewResetColoursFunc()
                 self.btn_previewResetCameraFunc()
                 self.btn_previewResetOptionsFunc()
                 self.btn_previewResetLightFunc()
-                self.renderPreview()
             else:
                 self.btn_previewResetColoursFunc()
                 self.btn_previewResetSurfPropsFunc()
@@ -5156,7 +5540,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.btn_previewResetLightFunc()
                 self.btn_previewResetDecsFunc()
                 self.btn_previewResetOptionsFunc()
-                self.renderPreview()
+
+            self.queingAllowed = True
+            self.renderPreview()
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -5176,7 +5562,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         self.lookXHelm, self.lookYHelm, self.lookZHelm, self.lightXHelm, self.lightYHelm, self.lightZHelm,
                         self.fontHelmQFront.family(), self.nameHelm, self.logo1FilepathHelm, self.logo1TypeHelm,
                         self.logo2FilepathHelm, self.logo2TypeHelm, self.mosaicPreviewHelm, self.homoHelm, self.shadowlessHelm,
-                        self.antiAliasingHelm, self.qualityHelm, self.widthHelm, self.heightHelm, self.rank, self.position, self.sqn)
+                        self.antiAliasingHelm, self.qualityHelm, self.widthHelm, self.heightHelm, self.rank, self.position, self.sqn,
+                        self.logo1Mirrored, self.logo2Mirrored, self.helmetStyle)
 
         return saveData
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -5277,7 +5664,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.lightYHelm = saveData[16]
                     self.lightZHelm = saveData[17]
                     self.fontHelmQFront = QFont(saveData[18])
-                    self.nameHelm = saveData[19]
+##                    self.nameHelm = saveData[19]
                     self.logo1FilepathHelm = saveData[20]
                     self.logo1TypeHelm = saveData[21]
                     self.logo2FilepathHelm = saveData[22]
@@ -5289,16 +5676,30 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.qualityHelm = saveData[28]
                     self.widthHelm = saveData[29]
                     self.heightHelm = saveData[30]
-                    self.rank = saveData[31]
-                    self.position = saveData[32]
-                    self.sqn = saveData[33]
+##                    self.rank = saveData[31]
+##                    self.position = saveData[32]
+##                    self.sqn = saveData[33]
+                    try:
+                        self.logo1Mirrored = saveData[34]
+                    except BaseException:
+                        self.logo1Mirrored = True
+                    try:
+                        self.logo2Mirrored = saveData[35]
+                    except BaseException:
+                        self.logo2Mirrored = True
+                    try:
+                        self.helmetStyle = saveData[36].title()
+                    except BaseException:
+                        self.helmetStyle = "Imperial"
 
                 oldRefreshSetting = self.preview.cb_Refresh.isChecked()
                 # Turn off auto refresh to prevent applying the loaded settings to trigger multiple refreshes.
                 self.preview.cb_Refresh.setChecked(False)
+                self.loadingHelm = True
                 self.applyPreviewSettings()
                 self.preview.cb_Refresh.setChecked(oldRefreshSetting)
-                self.renderPreview()
+                if not self.preview.cb_Refresh.isChecked():
+                    self.renderPreview()
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -5380,28 +5781,36 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for opening a colour palette dialog.'''
 
         try:
-            self.openColourPicker(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
+            self.openColourPicker(self.helmColour, ["helmColour", "apiHelmColour"], self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def creatHelmetFaceColour(self, colour):
-        r'''Method used to create "data\helmet\hemltex.bmp with the user's selected helmet colour.'''
+    def createHelmetColour(self, colour):
+        r'''Method used to create user's selected helmet colour.'''
 
-        # creating an image object
-        img = Image.open(os.getcwd() + "\\data\\helmet\\helmtex_m.gif").convert("L")
+        try:
+            # creating an image object
+            img = Image.open(os.getcwd() + "\\data\\helmet\\" + self.helmetConfig.get(self.helmetStyle, "colourMapImage")).convert("RGBA")
 
-        # image colorize function
-        rgb = colour.getRgb()[:3]
-        colouredImg = ImageOps.colorize(img, black="black", white=rgb)
-        colouredImg.save(os.getcwd() + "\\data\\helmet\\helmtex.bmp")
+            # image colorize function
+            rgb = colour.getRgb()[:3]
+            bgImg = Image.new("RGBA", img.size, rgb)
+            alphaComposite = Image.alpha_composite(bgImg, img)
+
+            # Save the final colourmap image.
+            alphaComposite.save(os.getcwd() + "\\data\\helmet\\helmtex.bmp")
+        except FileNotFoundError:
+            msg = "Error! File - " + self.helmetConfig.get(self.helmetStyle, "colourMapImage") + \
+                " cannot be found within the TTT3\\data\\helmet\\ folder."
+            return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_PaletteHelmDecFunc(self):
         '''Method for opening a colour palette dialog.'''
 
         try:
-            self.openColourPicker(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
+            self.openColourPicker(self.decColour, ["decColour", "apiDecColour"], self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -5410,7 +5819,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for opening a colour palette dialog.'''
 
         try:
-            self.openColourPicker(self.lightColour, "lightColour", self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
+            self.openColourPicker(self.lightColour, ["lightColour", "apiLightColour"], self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -5472,7 +5881,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def le_previewHelmTextFunc(self, text):
         '''Method to handle text entry into the Helmet Text textbox.'''
 
-        self.nameHelm = str(self.preview.le_helmText.text()).upper()
+        self.nameHelm = str(self.preview.le_helmText.text())
         self.preview.le_helmText.setText(self.nameHelm)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -5501,6 +5910,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def cb_previewHemlLogo1TypeFunc(self):
         '''Method for handling Decoration Logo ComboBox actions.'''
 
+        self.preview.le_helmLogo1Filepath.setEnabled(True)
+        self.preview.btn_helmLogo1Filepath.setEnabled(True)
+
         if self.preview.cb_hemlLogo1Type.currentText() == "Squadron Patch":
             self.preview.le_helmLogo1Filepath.setEnabled(False)
             self.preview.btn_helmLogo1Filepath.setEnabled(False)
@@ -5513,25 +5925,23 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 else:
                     self.logo1TypeHelm = self.preview.cb_hemlLogo1Type.currentText()
                     if not self.loadingHelm:
-                        self.preview.le_helmLogo1Filepath.setText("")
                         self.logo1FilepathHelm = ""
                         # Show error message.
-                        msg = "%s does not have a transparent background." % self.preview.le_helmLogo1Filepath.text().split("\\")[-1]
-                        return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+                        self.preview.le_helmLogo1Filepath.setText("")
+                        return
 
         elif self.preview.cb_hemlLogo1Type.currentText() == "None":
             self.preview.le_helmLogo1Filepath.setEnabled(False)
             self.preview.btn_helmLogo1Filepath.setEnabled(False)
-
-        else:
-            self.preview.le_helmLogo1Filepath.setEnabled(True)
-            self.preview.btn_helmLogo1Filepath.setEnabled(True)
 
         self.logo1TypeHelm = self.preview.cb_hemlLogo1Type.currentText()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewHemlLogo2TypeFunc(self):
         '''Method for handling Decoration Logo ComboBox actions.'''
+
+        self.preview.le_helmLogo2Filepath.setEnabled(True)
+        self.preview.btn_helmLogo2Filepath.setEnabled(True)
 
         if self.preview.cb_hemlLogo2Type.currentText() == "Squadron Patch":
             self.preview.le_helmLogo2Filepath.setEnabled(False)
@@ -5545,19 +5955,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 else:
                     self.logo2TypeHelm = self.preview.cb_hemlLogo2Type.currentText()
                     if not self.loadingHelm:
-                        self.preview.le_helmLogo2Filepath.setText("")
                         self.logo2FilepathHelm = ""
-                        # Show error message.
-                        msg = "%s does not have a transparent background." % self.preview.le_helmLogo2Filepath.text().split("\\")[-1]
-                        return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+                        self.preview.le_helmLogo2Filepath.setText("")
+                        return
 
         elif self.preview.cb_hemlLogo2Type.currentText() == "None":
             self.preview.le_helmLogo2Filepath.setEnabled(False)
             self.preview.btn_helmLogo2Filepath.setEnabled(False)
-
-        else:
-            self.preview.le_helmLogo2Filepath.setEnabled(True)
-            self.preview.btn_helmLogo2Filepath.setEnabled(True)
 
         self.logo2TypeHelm = self.preview.cb_hemlLogo2Type.currentText()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -5568,18 +5972,16 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         try:
             # Specify the starting directory to open the file picker from.
             if logoNum == 1:
-                if self.logo1FilepathHelm != "":
-                    path = os.path.dirname(self.logo1FilepathHelm) + "\\"
-                else:
-                    path = os.getcwd() + "\\data\\misc\\"
+                if self.preview.cb_hemlLogo1Type.currentText() == "Image - bg. transparent":
+                    path = os.getcwd() + "\\data\\misc\\Helmet Transparencies\\"
+                elif self.preview.cb_hemlLogo1Type.currentText() == "Image - stencil mask":
+                    path = os.getcwd() + "\\data\\misc\\Helmet Stencils\\"
+
             elif logoNum == 2:
-                if self.logo2FilepathHelm != "":
-                    path = os.path.dirname(self.logo2FilepathHelm) + "\\"
-                else:
-                    if self.logo1FilepathHelm != "":
-                        path = os.path.dirname(self.logo1FilepathHelm) + "\\"
-                    else:
-                        path = os.getcwd() + "\\data\\misc\\"
+                if self.preview.cb_hemlLogo2Type.currentText() == "Image - bg. transparent":
+                    path = os.getcwd() + "\\data\\misc\\Helmet Transparencies\\"
+                elif self.preview.cb_hemlLogo2Type.currentText() == "Image - stencil mask":
+                    path = os.getcwd() + "\\data\\misc\\Helmet Stencils\\"
 
             # Open the file picker.
             options = QFileDialog.Options()
@@ -5613,7 +6015,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                             self.preview.le_helmLogo2Filepath.setText(fileName)
                         else:
                             self.preview.le_helmLogo2Filepath.setText("")
-                            elf.logo2FilepathHelm = ""
+                            self.logo2FilepathHelm = ""
                             self.lastRenderData = self.getUniformData()
                             msg = "%s does not have a transparent background." % fileName.split("\\")[-1]
                             return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
@@ -5641,19 +6043,20 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.le_helmText.setText(self.nameHelm)
         else:
             self.preview.le_helmText.setText(self.callsign)
+            self.nameHelm = self.callsign
 
         self.fontHelmQFront = QFont("impact")
         self.preview.fcb_helmFont.setCurrentFont(self.fontHelmQFront)
 
         self.logo1TypeHelm = "Image - stencil mask"
-        self.logo1FilepathHelm = os.getcwd() + "\\data\\misc\\implogo.gif"
+        self.logo1FilepathHelm = os.getcwd() + "\\data\\misc\\Helmet Stencils\\tclogo.gif"
 
         if self.sqn != "":
             self.logo2TypeHelm = "Squadron Patch"
             self.logo2FilepathHelm = ""
         else:
             self.logo2TypeHelm = "Image - stencil mask"
-            self.logo2FilepathHelm = os.getcwd() + "\\data\\misc\\tiecorps_logo_new.png"
+            self.logo2FilepathHelm = os.getcwd() + "\\data\\misc\\Helmet Stencils\\tiecorps_logo_new.png"
 
         logo1Type = self.preview.cb_hemlLogo1Type.findText(self.logo1TypeHelm, Qt.MatchExactly | Qt.MatchCaseSensitive)
         logo2Type = self.preview.cb_hemlLogo2Type.findText(self.logo2TypeHelm, Qt.MatchExactly | Qt.MatchCaseSensitive)
@@ -5666,69 +6069,74 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         self.preview.le_helmLogo1Filepath.setText(self.logo1FilepathHelm)
         self.preview.le_helmLogo2Filepath.setText(self.logo2FilepathHelm)
+
+        self.logo1Mirrored = True
+        self.logo2Mirrored = True
+        self.preview.cb_Logo1Mirrored.setChecked(self.logo1Mirrored)
+        self.preview.cb_Logo2Mirrored.setChecked(self.logo2Mirrored)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewPresetCamFunc(self, intIndex):
         '''Method for preview camera presets.'''
 
         if intIndex == 0:
-            self.camX = -2608
-            self.camY = -13311
-            self.camZ = 2090
+            self.camX = -2500
+            self.camY = -13300
+            self.camZ = 2100
 
         # Top Left.
         elif intIndex == 1:
             self.camX = -10000
-            self.camY = -13311
-            self.camZ = 10000
+            self.camY = -8000
+            self.camZ = 8000
 
         # Top Centre.
         elif intIndex == 2:
             self.camX = 0
-            self.camY = -13311
-            self.camZ = 10000
+            self.camY = -11000
+            self.camZ = 8000
 
         # Top Right.
         elif intIndex == 3:
             self.camX = 10000
-            self.camY = -13311
-            self.camZ = 10000
+            self.camY = -8000
+            self.camZ = 8000
 
         # Middle Left.
         elif intIndex == 4:
-            self.camX = -10000
-            self.camY = -13311
+            self.camX = -9000
+            self.camY = -11000
             self.camZ = 0
 
         # Middle Centre.
         elif intIndex == 5:
             self.camX = 0
-            self.camY = -13311
+            self.camY = -13300
             self.camZ = 0
 
         # Middle Right.
         elif intIndex == 6:
-            self.camX = 10000
-            self.camY = -13311
+            self.camX = 9000
+            self.camY = -11000
             self.camZ = 0
 
         # Bottom Left.
         elif intIndex == 7:
-            self.camX = -10000
-            self.camY = -13311
-            self.camZ = -10000
+            self.camX = -8000
+            self.camY = -11000
+            self.camZ = -8000
 
         # Bottom Centre.
         elif intIndex == 8:
             self.camX = 0
-            self.camY = -13311
-            self.camZ = -10000
+            self.camY = -12000
+            self.camZ = -8000
 
         # Bottom Right.
         elif intIndex == 9:
-            self.camX = 10000
-            self.camY = -13311
-            self.camZ = -10000
+            self.camX = 8000
+            self.camY = -11000
+            self.camZ = -8000
 
         if intIndex != 10:
             self.renderPreview()
@@ -5747,63 +6155,63 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for preview camera presets.'''
 
         if intIndex == 0:
-            self.camXHelm = 2170
-            self.camYHelm = -6519
-            self.camZHelm = 3146
+            self.camXHelm = self.camXHelmDefault
+            self.camYHelm = self.camYHelmDefault
+            self.camZHelm = self.camZHelmDefault
 
         # Top Left.
         elif intIndex == 1:
             self.camXHelm = -5000
-            self.camYHelm = -6519
+            self.camYHelm = -6510
             self.camZHelm = 5000
 
         # Top Centre.
         elif intIndex == 2:
             self.camXHelm = 0
-            self.camYHelm = -6519
+            self.camYHelm = -7000
             self.camZHelm = 5000
 
         # Top Right.
         elif intIndex == 3:
             self.camXHelm = 5000
-            self.camYHelm = -6519
+            self.camYHelm = -6510
             self.camZHelm = 5000
 
         # Middle Left.
         elif intIndex == 4:
             self.camXHelm = -5000
-            self.camYHelm = -6519
-            self.camZHelm = 0
+            self.camYHelm = -6510
+            self.camZHelm = 1500
 
         # Middle Centre.
         elif intIndex == 5:
             self.camXHelm = 0
-            self.camYHelm = -6519
-            self.camZHelm = 0
+            self.camYHelm = -6510
+            self.camZHelm = 1500
 
         # Middle Right.
         elif intIndex == 6:
             self.camXHelm = 5000
-            self.camYHelm = -6519
-            self.camZHelm = 0
+            self.camYHelm = -6510
+            self.camZHelm = 1500
 
         # Bottom Left.
         elif intIndex == 7:
             self.camXHelm = -5000
-            self.camYHelm = -6519
-            self.camZHelm = -5000
+            self.camYHelm = -6510
+            self.camZHelm = -2000
 
         # Bottom Centre.
         elif intIndex == 8:
             self.camXHelm = 0
-            self.camYHelm = -6519
-            self.camZHelm = -5000
+            self.camYHelm = -6510
+            self.camZHelm = -2000
 
         # Bottom Right.
         elif intIndex == 9:
             self.camXHelm = 5000
-            self.camYHelm = -6519
-            self.camZHelm = -5000
+            self.camYHelm = -6510
+            self.camZHelm = -2000
 
         if intIndex != 10:
             self.renderPreview()
@@ -5897,9 +6305,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         '''Method for preview look presets.'''
 
         if intIndex == 0:
-            self.lookXHelm = -568
-            self.lookYHelm = -445
-            self.lookZHelm = 1052
+            self.lookXHelm = self.lookXHelmDefault
+            self.lookYHelm = self.lookYHelmDefault
+            self.lookZHelm = self.lookZHelmDefault
 
         # Top Left.
         elif intIndex == 1:
@@ -6047,6 +6455,262 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.cb_PresetLight.currentIndexChanged.disconnect()
             self.preview.cb_PresetLight.setCurrentIndex(intIndex)
             self.preview.cb_PresetLight.currentIndexChanged.connect(self.cb_previewPresetLightFunc)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lbl_CamXFunc(self, sender):
+        '''Method that is triggered why a slider's label is clicked.'''
+
+        self.sliderValueInput(self.preview.vs_CamX, "Camera X", self.preview.lbl_CamX, -2000, 2000, 10)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lbl_CamYFunc(self, sender):
+        '''Method that is triggered why a slider's label is clicked.'''
+
+        self.sliderValueInput(self.preview.vs_CamY, "Camera Y", self.preview.lbl_CamY, -2000, 2000, 10)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lbl_CamZFunc(self, sender):
+        '''Method that is triggered why a slider's label is clicked.'''
+
+        self.sliderValueInput(self.preview.vs_CamZ, "Camera Z", self.preview.lbl_CamZ, -2000, 2000, 10)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lbl_LookXFunc(self, sender):
+        '''Method that is triggered why a slider's label is clicked.'''
+
+        self.sliderValueInput(self.preview.vs_LookX, "Look X", self.preview.lbl_LookX, -2000, 2000, 10)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lbl_LookYFunc(self, sender):
+        '''Method that is triggered why a slider's label is clicked.'''
+
+        self.sliderValueInput(self.preview.vs_LookY, "Look Y", self.preview.lbl_LookY, -2000, 2000, 10)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lbl_LookZFunc(self, sender):
+        '''Method that is triggered why a slider's label is clicked.'''
+
+        self.sliderValueInput(self.preview.vs_LookZ, "Look Z", self.preview.lbl_LookZ, -2000, 2000, 10)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lbl_LightXFunc(self, sender):
+        '''Method that is triggered why a slider's label is clicked.'''
+
+        self.sliderValueInput(self.preview.vs_LightX, "Light X", self.preview.lbl_LightX, -2000, 2000, 10)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lbl_LightYFunc(self, sender):
+        '''Method that is triggered why a slider's label is clicked.'''
+
+        self.sliderValueInput(self.preview.vs_LightY, "Light Y", self.preview.lbl_LightY, -2000, 2000, 10)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lbl_LightZFunc(self, sender):
+        '''Method that is triggered why a slider's label is clicked.'''
+
+        self.sliderValueInput(self.preview.vs_LightZ, "Light Z", self.preview.lbl_LightZ, -2000, 2000, 10)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lbl_CamXHelmFunc(self, sender):
+        '''Method that is triggered why a slider's label is clicked.'''
+
+        self.sliderValueInput(self.preview.vs_CamX, "Camera X", self.preview.lbl_CamX, -100, 100, 100, 2)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lbl_CamYHelmFunc(self, sender):
+        '''Method that is triggered why a slider's label is clicked.'''
+
+        self.sliderValueInput(self.preview.vs_CamY, "Camera Y", self.preview.lbl_CamY, -100, 100, 100, 2)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lbl_CamZHelmFunc(self, sender):
+        '''Method that is triggered why a slider's label is clicked.'''
+
+        self.sliderValueInput(self.preview.vs_CamZ, "Camera Z", self.preview.lbl_CamZ, -100, 100, 100, 2)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lbl_LookXHelmFunc(self, sender):
+        '''Method that is triggered why a slider's label is clicked.'''
+
+        self.sliderValueInput(self.preview.vs_LookX, "Look X", self.preview.lbl_LookX, -100, 100, 100, 2)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lbl_LookYHelmFunc(self, sender):
+        '''Method that is triggered why a slider's label is clicked.'''
+
+        self.sliderValueInput(self.preview.vs_LookY, "Look Y", self.preview.lbl_LookY, -100, 100, 100, 2)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lbl_LookZHelmFunc(self, sender):
+        '''Method that is triggered why a slider's label is clicked.'''
+
+        self.sliderValueInput(self.preview.vs_LookZ, "Look Z", self.preview.lbl_LookZ, -100, 100, 100, 2)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lbl_LightXHelmFunc(self, sender):
+        '''Method that is triggered why a slider's label is clicked.'''
+
+        self.sliderValueInput(self.preview.vs_LightX, "Light X", self.preview.lbl_LightX, -100, 100, 100, 2)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lbl_LightYHelmFunc(self, sender):
+        '''Method that is triggered why a slider's label is clicked.'''
+
+        self.sliderValueInput(self.preview.vs_LightY, "Light Y", self.preview.lbl_LightY, -100, 100, 100, 2)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lbl_LightZHelmFunc(self, sender):
+        '''Method that is triggered why a slider's label is clicked.'''
+
+        self.sliderValueInput(self.preview.vs_LightZ, "Light Z", self.preview.lbl_LightZ, -100, 100, 100, 2)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lbl_AmbientFunc(self, sender):
+        '''Method that is triggered why a slider's label is clicked.'''
+
+        self.sliderValueInput(self.preview.vs_Ambient, "Ambient", self.preview.lbl_Ambient, 0, 1, 100, 2, 0.01)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lbl_SpecularFunc(self, sender):
+        '''Method that is triggered why a slider's label is clicked.'''
+
+        self.sliderValueInput(self.preview.vs_Specular, "Specular", self.preview.lbl_Specular, 0, 1, 100, 2, 0.01)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lbl_RoughnessFunc(self, sender):
+        '''Method that is triggered why a slider's label is clicked.'''
+
+        self.sliderValueInput(self.preview.vs_Roughness, "Roughness", self.preview.lbl_Roughness, 0, 1, 100, 2, 0.01)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def lbl_ReflectionFunc(self, sender):
+        '''Method that is triggered why a slider's label is clicked.'''
+
+        self.sliderValueInput(self.preview.vs_Reflection, "Reflection", self.preview.lbl_Reflection, 0, 1, 100, 2, 0.01)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def sliderValueInput(self, slider, name, label, min, max, scale, decimals=1, step=1):
+        '''Method directly asks the user for a slider input.'''
+
+        value, ok = QInputDialog.getDouble(self, "%s Value" % name, slider.toolTip() + "\n\nEnter new value:",
+                                           float(label.text()), min, max, decimals, Qt.WindowFlags(), step)
+        if ok:
+            slider.setValue(int(value * scale))
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def mirrorLogo(self, intLogo):
+        '''Method to handle helmet logo mirroring selection.'''
+
+        if intLogo == 1:
+            self.logo1Mirrored = self.preview.cb_Logo1Mirrored.isChecked()
+        elif intLogo == 2:
+            self.logo2Mirrored = self.preview.cb_Logo2Mirrored.isChecked()
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def cb_previewHemlStyleFunc(self, value):
+        '''Method to handle helmet style selection.'''
+
+        try:
+            self.helmetStyle = self.preview.cb_helmStyle.currentText()
+            if not self.loadingHelm:
+                # Helmet & Decoration Colour.
+                if self.helmetConfig.get(self.helmetStyle, "helmColour").lower() != "default":
+                    self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
+                else:
+                    self.helmColour = self.apiHelmColour
+
+                if self.helmetConfig.get(self.helmetStyle, "decColour").lower() != "default":
+                    self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
+                else:
+                    self.decColour = self.apiDecColour
+
+                if self.helmetConfig.get(self.helmetStyle, "bgColour").lower() != "default":
+                    self.bgColourHelm = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "bgColour"))
+                else:
+                    self.bgColourHelm = self.apiBgColourHelm
+
+                if self.helmetConfig.get(self.helmetStyle, "lightColour").lower() != "default":
+                    self.lightColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "lightColour"))
+                else:
+                    self.lightColour = self.apiLightColour
+
+                # Set the colouring within the GUI.
+                self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
+                self.colourSelected(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
+
+                # Background Colour.
+                self.colourSelected(self.bgColourHelm, "bgColourHelm", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
+
+                # Light Colour.
+                self.colourSelected(self.lightColour, "lightColour", self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
+
+                # Decorations.
+                self.queingAllowed = False
+                try:
+                    self.logo1TypeHelm = self.helmetConfig.get(self.helmetStyle, "logo1Type")
+                except configparser.NoOptionError:
+                    self.logo1TypeHelm = "None"
+
+                try:
+                    if self.helmetConfig.get(self.helmetStyle, "logo1Filepath") != "None":
+                        self.logo1FilepathHelm = os.getcwd() + self.helmetConfig.get(self.helmetStyle, "logo1Filepath")
+                    else:
+                        self.logo1FilepathHelm = ""
+                except configparser.NoOptionError:
+                    self.logo1FilepathHelm = ""
+
+                try:
+                    self.logo2TypeHelm = self.helmetConfig.get(self.helmetStyle, "logo2Type")
+                except configparser.NoOptionError:
+                    self.logo2TypeHelm = "None"
+
+                try:
+                    if self.helmetConfig.get(self.helmetStyle, "logo2Filepath") != "None":
+                        self.logo2FilepathHelm = os.getcwd() + self.helmetConfig.get(self.helmetStyle, "logo2Filepath")
+                    else:
+                        self.logo2FilepathHelm = ""
+                except configparser.NoOptionError:
+                    self.logo2FilepathHelm = ""
+
+                # Apply decorations settings to the UX.
+                logo1TypeInt = self.preview.cb_hemlLogo1Type.findText(self.logo1TypeHelm, Qt.MatchExactly | Qt.MatchCaseSensitive)
+                logo2TypeInt = self.preview.cb_hemlLogo2Type.findText(self.logo2TypeHelm, Qt.MatchExactly | Qt.MatchCaseSensitive)
+                self.preview.cb_hemlLogo1Type.setCurrentIndex(logo1TypeInt)
+                self.preview.cb_hemlLogo2Type.setCurrentIndex(logo2TypeInt)
+                if self.preview.cb_hemlLogo2Type.currentText() == "":  # If previous setting was 'Squadron Patch' (default) but it's not longer available.
+                    self.preview.cb_hemlLogo2Type.setCurrentIndex(1)
+                    self.logo2FilepathHelm = os.getcwd() + "\\data\\misc\\Helmet Stencils\\tiecorps_logo_new.png"
+                self.preview.le_helmLogo1Filepath.setText(self.logo1FilepathHelm)
+                self.preview.le_helmLogo2Filepath.setText(self.logo2FilepathHelm)
+                self.queingAllowed = True
+
+                # Cameras.
+                self.camXHelm = self.helmetConfig.getint(self.helmetStyle, "camX")
+                self.camXHelmDefault = self.camXHelm
+                self.preview.vs_CamX.setValue(self.camXHelm)
+                self.camYHelm = self.helmetConfig.getint(self.helmetStyle, "camY")
+                self.camYHelmDefault = self.camYHelm
+                self.preview.vs_CamY.setValue(self.camYHelm)
+                self.camZHelm = self.helmetConfig.getint(self.helmetStyle, "camZ")
+                self.camZHelmDefault = self.camZHelm
+                self.preview.vs_CamZ.setValue(self.camZHelm)
+                self.lookXHelm = self.helmetConfig.getint(self.helmetStyle, "lookX")
+                self.lookXHelmDefault = self.lookXHelm
+                self.preview.vs_LookX.setValue(self.lookXHelm)
+                self.lookYHelm = self.helmetConfig.getint(self.helmetStyle, "lookY")
+                self.lookYHelmDefault = self.lookYHelm
+                self.preview.vs_LookY.setValue(self.lookYHelm)
+                self.lookZHelm = self.helmetConfig.getint(self.helmetStyle, "lookZ")
+                self.lookZHelmDefault = self.lookZHelm
+                self.preview.vs_LookZ.setValue(self.lookZHelm)
+                self.lightXHelm = self.helmetConfig.getint(self.helmetStyle, "lightX")
+                self.preview.vs_LightX.setValue(self.lightXHelm)
+                self.lightYHelm = self.helmetConfig.getint(self.helmetStyle, "lightY")
+                self.preview.vs_LightY.setValue(self.lightYHelm)
+                self.lightZHelm = self.helmetConfig.getint(self.helmetStyle, "lightZ")
+                self.preview.vs_LightZ.setValue(self.lightZHelm)
+        except Exception as e:
+            handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewPresetLightHelmFunc(self, intIndex):
@@ -6289,6 +6953,9 @@ if __name__ == "__main__":
     logging.basicConfig(filename="TTT3 Crash.log", filemode="a", level=logging.ERROR)
 
     # Start the QT application.
+    os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
     app = QApplication(sys.argv)
     ttt3 = TTT3()
     sys.exit(app.exec_())

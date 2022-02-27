@@ -2684,6 +2684,31 @@ QListWidget:!enabled
        <string>^ remember ^</string>
       </property>
      </widget>
+     <widget class="QLabel" name="label_35">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>8</y>
+        <width>151</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>8</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>false</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>Right click to select a profile to auto import on launch.</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="tabInfo">
      <attribute name="title">
@@ -2808,15 +2833,15 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>Created 2021 by</string>
+       <string>Created 2022 by</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_10">
+     <widget class="QLabel" name="lbl_SkyShadow">
       <property name="geometry">
        <rect>
         <x>109</x>
         <y>75</y>
-        <width>121</width>
+        <width>111</width>
         <height>20</height>
        </rect>
       </property>
@@ -2829,7 +2854,7 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>LCM SkyShadow, </string>
+       <string>MAJ SkyShadow, </string>
       </property>
      </widget>
      <widget class="QLabel" name="lblVersion">
@@ -3292,10 +3317,10 @@ QListWidget:!enabled
        <string>.</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_11">
+     <widget class="QLabel" name="lbl_Turtle">
       <property name="geometry">
        <rect>
-        <x>224</x>
+        <x>222</x>
         <y>75</y>
         <width>131</width>
         <height>20</height>
@@ -3310,13 +3335,13 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>FA Turtle Jerrar,</string>
+       <string>FA Turtle Jerrar</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_12">
+     <widget class="QLabel" name="lbl_Eclipse">
       <property name="geometry">
        <rect>
-        <x>333</x>
+        <x>325</x>
         <y>75</y>
         <width>121</width>
         <height>20</height>
@@ -3395,7 +3420,7 @@ QListWidget:!enabled
      <widget class="QLabel" name="label_32">
       <property name="geometry">
        <rect>
-        <x>449</x>
+        <x>441</x>
         <y>75</y>
         <width>71</width>
         <height>20</height>
@@ -3417,7 +3442,7 @@ QListWidget:!enabled
      <zorder>label_7</zorder>
      <zorder>label_8</zorder>
      <zorder>label_9</zorder>
-     <zorder>label_10</zorder>
+     <zorder>lbl_SkyShadow</zorder>
      <zorder>lblVersion</zorder>
      <zorder>lbl_pic_python</zorder>
      <zorder>lbl_pic_povray</zorder>
@@ -3434,8 +3459,8 @@ QListWidget:!enabled
      <zorder>label_29</zorder>
      <zorder>lbl_uniforms</zorder>
      <zorder>label_31</zorder>
-     <zorder>label_11</zorder>
-     <zorder>label_12</zorder>
+     <zorder>lbl_Turtle</zorder>
+     <zorder>lbl_Eclipse</zorder>
      <zorder>lbl_pic_io</zorder>
      <zorder>lbl_io</zorder>
      <zorder>label_32</zorder>

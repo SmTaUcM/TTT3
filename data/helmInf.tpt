@@ -1,0 +1,201 @@
+
+
+// GLOBAL
+
+
+#version 3.7;
+&BGCOLOUR&
+global_settings
+{
+  assumed_gamma 2  
+  ambient_light color rgb <0.4, 0.4, 0.4>
+}
+
+
+// LIGHT
+
+
+#declare P_light =
+light_source // main light
+{
+  <&LIGHT&>
+  colour rgb <&SPOTLIGHTCOLOUR&>
+  area_light <20, 0, 0>, <0, 0, 20>, 5, 5
+  adaptive 1
+  jitter
+  &SHADOWLESS&
+}
+
+  
+// CAMERA
+
+
+#declare P_cam =
+camera
+{
+  sky <0, 0, 1>
+  up y
+  right x*-7/6
+  location <&CAMERA&>
+  look_at <&TARGET&>
+  angle 40
+}
+
+  
+// TEXTURES
+                      
+#declare fin_T_helmet = 
+finish
+{
+  ambient &AMBIENT&
+  diffuse 0.8
+  specular &SPECULAR&
+  roughness &ROUGHNESS&
+  reflection &REFLECTION&
+  emission 0
+}
+    
+
+#declare T_helm = 
+texture // Helmet_Material
+{
+    pigment
+    {
+	    image_map
+        {
+		  sys "helmet/helmtex.bmp"
+        } 
+    }
+    normal
+    {
+        bump_map
+        {
+		    &NORMALMAP&
+            //bump_size 2
+        }
+    }
+    finish  { fin_T_helmet }
+}
+
+#declare T_visor = 
+texture // Visor_Material
+{
+    pigment
+    {
+	    image_map
+        {
+		  sys "helmet/helmtex.bmp"
+          transmit all 0.7
+        }
+    }
+    normal
+    {
+        bump_map
+        {
+			&NORMALMAP&
+            //bump_size 2
+        }
+    }
+    finish  { fin_T_helmet }
+}
+
+
+#declare T_posrank = 
+texture
+{
+  material_map
+  {
+    gif "helmet stripes/&POSRANKFILE&.gif"
+    texture 
+    { //index 0
+      pigment { color rgbt <0, 0, 0, 1> }
+      finish  { ambient 1 emission 0 }
+    }
+    texture 
+    { //index 1
+      pigment { color rgb <&DECOCOLOUR&> }
+      finish  { fin_T_helmet } 
+    }
+  }
+}
+    
+
+#declare T_logo = 
+texture
+{
+  material_map
+  {
+    &LOGO1STENCIL&
+    texture 
+    { //index 0
+      pigment { color rgbt <0, 0, 0, 1> }
+      finish  { ambient 1 emission 0 }
+    }
+    texture 
+    { //index 1
+      pigment { &LOGO1PIGMENT& }
+      finish  { fin_T_helmet } 
+    }
+  }
+}
+
+
+#declare T_logo2 = 
+texture
+{
+  material_map
+  {
+    &LOGO2STENCIL&
+    texture 
+    { //index 0
+      pigment { color rgbt <0, 0, 0, 1> }
+      finish  { ambient 1 emission 0 }
+    }
+    texture 
+    { //index 1
+      pigment { &LOGO2PIGMENT& }
+      finish  { fin_T_helmet } 
+    }
+  }
+}
+
+
+#declare T_nametag = 
+texture
+{
+  material_map
+  {
+    png "helmet/nametag.png"
+    texture 
+    { //index 0
+      pigment { color rgbt <0, 0, 0, 1> }
+      finish  { ambient 1 emission 0 }
+    }
+    texture 
+    { //index 1
+      pigment { color rgb <&DECOCOLOUR&> }
+      finish  { fin_T_helmet } 
+    }
+  }
+}
+
+
+#include "helmInf_g.inc"
+#include "helmInf_o.inc"
+
+
+
+// SCENE
+
+camera{ P_cam }
+object{ P_light }
+object{ P_helm }
+object{ P_visor }
+object{ &IMPLOGOMIRRORING& no_shadow }
+object{ &JAWLOGOMIRRORING& no_shadow }
+object{ P_nametag no_shadow }
+object{ P_mohawk no_shadow }
+&HOMOGENOUS&  
+ 
+ 
+//TTT3HELMETPOVEOF

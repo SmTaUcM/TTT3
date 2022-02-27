@@ -10,19 +10,19 @@
     <x>0</x>
     <y>0</y>
     <width>785</width>
-    <height>590</height>
+    <height>670</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>785</width>
-    <height>590</height>
+    <height>670</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>785</width>
-    <height>590</height>
+    <height>670</height>
    </size>
   </property>
   <property name="contextMenuPolicy">
@@ -47,7 +47,7 @@
     <property name="geometry">
      <rect>
       <x>645</x>
-      <y>10</y>
+      <y>29</y>
       <width>91</width>
       <height>22</height>
      </rect>
@@ -94,7 +94,7 @@ QPushButton:!enabled
     <property name="geometry">
      <rect>
       <x>645</x>
-      <y>41</y>
+      <y>60</y>
       <width>91</width>
       <height>22</height>
      </rect>
@@ -140,7 +140,7 @@ QPushButton:!enabled
       <x>188</x>
       <y>9</y>
       <width>410</width>
-      <height>423</height>
+      <height>476</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -156,13 +156,13 @@ QPushButton:!enabled
      </size>
     </property>
     <property name="title">
-     <string>POV-Ray preview</string>
+     <string>POV-Ray Preview</string>
     </property>
     <widget class="QLabel" name="lbl_preview">
      <property name="geometry">
       <rect>
        <x>11</x>
-       <y>21</y>
+       <y>49</y>
        <width>390</width>
        <height>334</height>
       </rect>
@@ -196,7 +196,7 @@ QPushButton:!enabled
      <property name="geometry">
       <rect>
        <x>132</x>
-       <y>369</y>
+       <y>413</y>
        <width>151</width>
        <height>23</height>
       </rect>
@@ -212,7 +212,7 @@ QPushButton:!enabled
      <property name="geometry">
       <rect>
        <x>167</x>
-       <y>396</y>
+       <y>440</y>
        <width>81</width>
        <height>17</height>
       </rect>
@@ -224,13 +224,155 @@ QPushButton:!enabled
       <bool>true</bool>
      </property>
     </widget>
+    <widget class="QLabel" name="lbl_wait">
+     <property name="geometry">
+      <rect>
+       <x>96</x>
+       <y>39</y>
+       <width>221</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="palette">
+      <palette>
+       <active>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Button">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>163</red>
+           <green>163</green>
+           <blue>163</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>163</red>
+           <green>163</green>
+           <blue>163</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Window">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>163</red>
+           <green>163</green>
+           <blue>163</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>255</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Button">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>163</red>
+           <green>163</green>
+           <blue>163</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>163</red>
+           <green>163</green>
+           <blue>163</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Window">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>163</red>
+           <green>163</green>
+           <blue>163</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled>
+        <colorrole role="WindowText">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>120</red>
+           <green>120</green>
+           <blue>120</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Button">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>163</red>
+           <green>163</green>
+           <blue>163</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>163</red>
+           <green>163</green>
+           <blue>163</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Window">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>163</red>
+           <green>163</green>
+           <blue>163</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </disabled>
+      </palette>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <italic>true</italic>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Please Wait...</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="gb_colours">
     <property name="geometry">
      <rect>
-      <x>9</x>
-      <y>64</y>
-      <width>173</width>
+      <x>10</x>
+      <y>117</y>
+      <width>172</width>
       <height>181</height>
      </rect>
     </property>
@@ -340,7 +482,7 @@ QLineEdit:!enabled
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="label_51">
+    <widget class="QLabel" name="lbl_helm">
      <property name="geometry">
       <rect>
        <x>5</x>
@@ -625,7 +767,7 @@ QLineEdit:!enabled
     <zorder>btn_PaletteDec</zorder>
     <zorder>btn_PaletteBack</zorder>
     <zorder>le_PaletteHelm</zorder>
-    <zorder>label_51</zorder>
+    <zorder>lbl_helm</zorder>
     <zorder>lbl_PaletteHelm</zorder>
     <zorder>lbl_PaletteDec</zorder>
     <zorder>le_PaletteDec</zorder>
@@ -641,7 +783,7 @@ QLineEdit:!enabled
     <property name="geometry">
      <rect>
       <x>604</x>
-      <y>65</y>
+      <y>94</y>
       <width>172</width>
       <height>181</height>
      </rect>
@@ -793,7 +935,7 @@ QSpinBox:!enabled
       <number>1</number>
      </property>
      <property name="value">
-      <number>7</number>
+      <number>9</number>
      </property>
     </widget>
     <widget class="QCheckBox" name="cb_AA">
@@ -852,8 +994,8 @@ QSpinBox:!enabled
    <widget class="QGroupBox" name="gb_camera">
     <property name="geometry">
      <rect>
-      <x>9</x>
-      <y>431</y>
+      <x>10</x>
+      <y>484</y>
       <width>485</width>
       <height>151</height>
      </rect>
@@ -887,7 +1029,7 @@ QSpinBox:!enabled
       </rect>
      </property>
      <property name="toolTip">
-      <string>Rotates the camera around the image Right (+) to Left (-).</string>
+      <string>Rotates the camera around the helmet: Right (+) to Left (-).</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -917,7 +1059,7 @@ QSlider::handle:horizontal:hover
       <number>10000</number>
      </property>
      <property name="value">
-      <number>2170</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -978,7 +1120,7 @@ QSlider::handle:horizontal:hover
       </rect>
      </property>
      <property name="toolTip">
-      <string>Zooms the camera In (+) and Out (-).</string>
+      <string>Zooms the camera: In (+) and Out (-).</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -1011,7 +1153,7 @@ QSlider::handle:horizontal:hover
       <number>1</number>
      </property>
      <property name="value">
-      <number>-6519</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -1085,7 +1227,7 @@ QSlider::handle:horizontal:hover
       </rect>
      </property>
      <property name="toolTip">
-      <string>Rotates the camera around the image Top (+) to Bottom (-).</string>
+      <string>Rotates the camera around the helmet: Top (+) to Bottom (-).</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -1115,7 +1257,7 @@ QSlider::handle:horizontal:hover
       <number>10000</number>
      </property>
      <property name="value">
-      <number>3146</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -1168,11 +1310,14 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Rotates the camera around the helmet: Right (+) to Left (-).</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(170, 0, 0);</string>
      </property>
      <property name="text">
-      <string>21.70</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_10">
@@ -1234,11 +1379,14 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Zooms the camera: In (+) and Out (-).</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(19, 104, 0);</string>
      </property>
      <property name="text">
-      <string>-65.19</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_23">
@@ -1278,11 +1426,14 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Rotates the camera around the helmet: Top (+) to Bottom (-).</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(0, 0, 127);</string>
      </property>
      <property name="text">
-      <string>31.46</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_24">
@@ -1319,11 +1470,14 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Changes the point the camera is looking at: Far (+) to Near (-).</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(19, 104, 0);</string>
      </property>
      <property name="text">
-      <string>-4.45</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_25">
@@ -1382,11 +1536,14 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Changes the point the camera is looking at: Right (+) and Left (-).</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(170, 0, 0);</string>
      </property>
      <property name="text">
-      <string>-5.68</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_33">
@@ -1421,7 +1578,7 @@ QSlider::handle:horizontal:hover
       </rect>
      </property>
      <property name="toolTip">
-      <string>Pans the camera source Right (+) and Left (-).</string>
+      <string>Changes the point the camera is looking at: Right (+) and Left (-).</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -1451,7 +1608,7 @@ QSlider::handle:horizontal:hover
       <number>10000</number>
      </property>
      <property name="value">
-      <number>-568</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -1478,11 +1635,14 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Changes the point the camera is looking at: Up (+) and Down (-).</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(0, 0, 127);</string>
      </property>
      <property name="text">
-      <string>10.52</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="Slider" name="vs_LookY">
@@ -1495,7 +1655,7 @@ QSlider::handle:horizontal:hover
       </rect>
      </property>
      <property name="toolTip">
-      <string>Pans the camera source Back (+) to Front (-).</string>
+      <string>Changes the point the camera is looking at: Far (+) to Near (-).</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -1528,7 +1688,7 @@ QSlider::handle:horizontal:hover
       <number>1</number>
      </property>
      <property name="value">
-      <number>-445</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -1572,7 +1732,7 @@ QSlider::handle:horizontal:hover
       </rect>
      </property>
      <property name="toolTip">
-      <string>Pans the camera source Up (+) and Down (-).</string>
+      <string>Changes the point the camera is looking at: Up (+) and Down (-).</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -1602,7 +1762,7 @@ QSlider::handle:horizontal:hover
       <number>10000</number>
      </property>
      <property name="value">
-      <number>1052</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -1923,7 +2083,7 @@ QSlider::handle:horizontal:hover
     <property name="geometry">
      <rect>
       <x>501</x>
-      <y>431</y>
+      <y>484</y>
       <width>276</width>
       <height>151</height>
      </rect>
@@ -1957,7 +2117,7 @@ QSlider::handle:horizontal:hover
       </rect>
      </property>
      <property name="toolTip">
-      <string>Pans the light source Back (+) to Front (-).</string>
+      <string>Pans the light source: Back (+) to Front (-).</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -1990,7 +2150,7 @@ QSlider::handle:horizontal:hover
       <number>1</number>
      </property>
      <property name="value">
-      <number>-5089</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -2012,7 +2172,7 @@ QSlider::handle:horizontal:hover
       </rect>
      </property>
      <property name="toolTip">
-      <string>Pans the light source Up (+) and Down (-).</string>
+      <string>Pans the light source: Up (+) and Down (-).</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -2042,7 +2202,7 @@ QSlider::handle:horizontal:hover
       <number>10000</number>
      </property>
      <property name="value">
-      <number>5282</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -2064,7 +2224,7 @@ QSlider::handle:horizontal:hover
       </rect>
      </property>
      <property name="toolTip">
-      <string>Pans the light source Right (+) and Left (-).</string>
+      <string>Pans the light source: Right (+) and Left (-).</string>
      </property>
      <property name="toolTipDuration">
       <number>10000</number>
@@ -2094,7 +2254,7 @@ QSlider::handle:horizontal:hover
       <number>10000</number>
      </property>
      <property name="value">
-      <number>2244</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -2121,11 +2281,14 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Pans the light source: Right (+) and Left (-).</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(170, 0, 0);</string>
      </property>
      <property name="text">
-      <string>22.44</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_50">
@@ -2228,11 +2391,14 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Pans the light source: Up (+) and Down (-).</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(0, 0, 127);</string>
      </property>
      <property name="text">
-      <string>52.82</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="QLabel" name="lbl_LightY">
@@ -2250,11 +2416,14 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Pans the light source: Back (+) to Front (-).</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">color: rgb(19, 104, 0);</string>
      </property>
      <property name="text">
-      <string>-50.89</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_21">
@@ -2533,9 +2702,9 @@ QSlider::handle:horizontal:hover
    <widget class="QGroupBox" name="gb_surfProps">
     <property name="geometry">
      <rect>
-      <x>9</x>
-      <y>244</y>
-      <width>173</width>
+      <x>10</x>
+      <y>297</y>
+      <width>172</width>
       <height>188</height>
      </rect>
     </property>
@@ -2573,6 +2742,9 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Controls the level of surface ambience.</string>
+     </property>
      <property name="text">
       <string>Ambient:</string>
      </property>
@@ -2591,6 +2763,9 @@ QSlider::handle:horizontal:hover
        <family>Arial</family>
        <pointsize>8</pointsize>
       </font>
+     </property>
+     <property name="toolTip">
+      <string>Controls the level of surface specularity.</string>
      </property>
      <property name="text">
       <string>Specular:</string>
@@ -2611,6 +2786,9 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Controls the level of surface roughness.</string>
+     </property>
      <property name="text">
       <string>Roughness:</string>
      </property>
@@ -2630,6 +2808,9 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Controls the level of surface reflection.</string>
+     </property>
      <property name="text">
       <string>Reflection:</string>
      </property>
@@ -2642,6 +2823,9 @@ QSlider::handle:horizontal:hover
        <width>151</width>
        <height>16</height>
       </rect>
+     </property>
+     <property name="toolTip">
+      <string>Controls the level of surface ambience.</string>
      </property>
      <property name="styleSheet">
       <string notr="true">QSlider::groove:horizontal {
@@ -2673,7 +2857,7 @@ QSlider::handle:horizontal:hover
       <number>1</number>
      </property>
      <property name="value">
-      <number>30</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -2694,6 +2878,9 @@ QSlider::handle:horizontal:hover
        <height>16</height>
       </rect>
      </property>
+     <property name="toolTip">
+      <string>Controls the level of surface specularity.</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">QSlider::groove:horizontal {
     ;
@@ -2721,7 +2908,7 @@ QSlider::handle:horizontal:hover
       <number>100</number>
      </property>
      <property name="value">
-      <number>50</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -2742,6 +2929,9 @@ QSlider::handle:horizontal:hover
        <height>16</height>
       </rect>
      </property>
+     <property name="toolTip">
+      <string>Controls the level of surface roughness.</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">QSlider::groove:horizontal {
     ;
@@ -2769,7 +2959,7 @@ QSlider::handle:horizontal:hover
       <number>100</number>
      </property>
      <property name="value">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -2790,6 +2980,9 @@ QSlider::handle:horizontal:hover
        <height>16</height>
       </rect>
      </property>
+     <property name="toolTip">
+      <string>Controls the level of surface reflection.</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">QSlider::groove:horizontal {
     ;
@@ -2817,7 +3010,7 @@ QSlider::handle:horizontal:hover
       <number>100</number>
      </property>
      <property name="value">
-      <number>10</number>
+      <number>0</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -2844,8 +3037,11 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Controls the level of surface ambience.</string>
+     </property>
      <property name="text">
-      <string>0.3</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="QLabel" name="lbl_Specular">
@@ -2863,8 +3059,11 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Controls the level of surface specularity.</string>
+     </property>
      <property name="text">
-      <string>0.5</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="QLabel" name="lbl_Roughness">
@@ -2882,8 +3081,11 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Controls the level of surface roughness.</string>
+     </property>
      <property name="text">
-      <string>0.01</string>
+      <string>0</string>
      </property>
     </widget>
     <widget class="QLabel" name="lbl_Reflection">
@@ -2901,8 +3103,11 @@ QSlider::handle:horizontal:hover
        <pointsize>8</pointsize>
       </font>
      </property>
+     <property name="toolTip">
+      <string>Controls the level of surface reflection.</string>
+     </property>
      <property name="text">
-      <string>0.1</string>
+      <string>0</string>
      </property>
     </widget>
     <zorder>lbl_Specular</zorder>
@@ -2923,9 +3128,9 @@ QSlider::handle:horizontal:hover
     <property name="geometry">
      <rect>
       <x>604</x>
-      <y>245</y>
+      <y>274</y>
       <width>172</width>
-      <height>187</height>
+      <height>211</height>
      </rect>
     </property>
     <property name="title">
@@ -2935,7 +3140,7 @@ QSlider::handle:horizontal:hover
      <property name="geometry">
       <rect>
        <x>7</x>
-       <y>155</y>
+       <y>179</y>
        <width>159</width>
        <height>23</height>
       </rect>
@@ -2953,7 +3158,7 @@ QSlider::handle:horizontal:hover
        <x>7</x>
        <y>16</y>
        <width>158</width>
-       <height>81</height>
+       <height>101</height>
       </rect>
      </property>
      <property name="font">
@@ -3063,6 +3268,19 @@ QLineEdit:!enabled
         <bool>true</bool>
        </property>
       </widget>
+      <widget class="QCheckBox" name="cb_Logo1Mirrored">
+       <property name="geometry">
+        <rect>
+         <x>25</x>
+         <y>57</y>
+         <width>101</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Images Mirrored</string>
+       </property>
+      </widget>
      </widget>
      <widget class="QWidget" name="tab_9">
       <attribute name="title">
@@ -3151,13 +3369,26 @@ QLineEdit:!enabled
         <string>...</string>
        </property>
       </widget>
+      <widget class="QCheckBox" name="cb_Logo2Mirrored">
+       <property name="geometry">
+        <rect>
+         <x>25</x>
+         <y>57</y>
+         <width>101</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Images Mirrored</string>
+       </property>
+      </widget>
      </widget>
     </widget>
     <widget class="QLineEdit" name="le_helmText">
      <property name="geometry">
       <rect>
        <x>36</x>
-       <y>102</y>
+       <y>124</y>
        <width>129</width>
        <height>20</height>
       </rect>
@@ -3184,7 +3415,7 @@ QLineEdit:!enabled
      <property name="geometry">
       <rect>
        <x>7</x>
-       <y>129</y>
+       <y>153</y>
        <width>31</width>
        <height>16</height>
       </rect>
@@ -3203,7 +3434,7 @@ QLineEdit:!enabled
      <property name="geometry">
       <rect>
        <x>7</x>
-       <y>104</y>
+       <y>126</y>
        <width>25</width>
        <height>16</height>
       </rect>
@@ -3222,7 +3453,7 @@ QLineEdit:!enabled
      <property name="geometry">
       <rect>
        <x>36</x>
-       <y>126</y>
+       <y>150</y>
        <width>129</width>
        <height>20</height>
       </rect>
@@ -3238,6 +3469,70 @@ QLineEdit:!enabled
      </property>
     </widget>
    </widget>
+   <widget class="QLabel" name="label_36">
+    <property name="geometry">
+     <rect>
+      <x>258</x>
+      <y>643</y>
+      <width>271</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>* Click on the slider bar values to set manually.</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignHCenter|Qt::AlignTop</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="gb_style">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>63</y>
+      <width>172</width>
+      <height>55</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Helmet Style</string>
+    </property>
+    <widget class="QComboBox" name="cb_helmStyle">
+     <property name="geometry">
+      <rect>
+       <x>14</x>
+       <y>22</y>
+       <width>145</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(211, 211, 211);</string>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <item>
+      <property name="text">
+       <string>Imperial</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Infiltrator</string>
+      </property>
+     </item>
+    </widget>
+   </widget>
    <zorder>btn_raytrace</zorder>
    <zorder>btn_close</zorder>
    <zorder>gb_preview</zorder>
@@ -3248,6 +3543,8 @@ QLineEdit:!enabled
    <zorder>gb_light</zorder>
    <zorder>gb_surfProps</zorder>
    <zorder>gb_options_3</zorder>
+   <zorder>label_36</zorder>
+   <zorder>gb_style</zorder>
   </widget>
  </widget>
  <customwidgets>
