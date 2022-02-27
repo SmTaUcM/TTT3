@@ -1435,7 +1435,7 @@ class TTT3(QMainWindow):
                 template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W390 +H334 +Q{quality}{trans} -A -D /EXIT'.format(
                     quality=quality, trans=self.transparentBGHelm)
             else:
-                if self.preview.cb_fastPreview.isChecked():
+                if self.fastPreview:
                     template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W390 +H520 +Q3{trans} -A -D /EXIT'.format(
                         quality=quality, trans=self.transparentBG)
                 else:
