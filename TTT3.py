@@ -1296,9 +1296,15 @@ class TTT3(QMainWindow):
                 if self.previewLoaded:
                     self.preview.lbl_wait.setHidden(False)
                 if self.uniform == "dress":
-                    self.createDressPov()
+                    if self.fastPreview:
+                        self.createDressPov(fastPreview=True)
+                    else:
+                        self.createDressPov()
                 elif self.uniform == "duty":
-                    self.createDutyPov()
+                    if self.fastPreview:
+                        self.createDutyPov(fastPreview=True)
+                    else:
+                        self.createDutyPov()
                 elif self.uniform == "helmet":
                     self.createHelmetPov()
                 self.queue.put(None)
