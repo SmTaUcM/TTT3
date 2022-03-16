@@ -4320,7 +4320,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.rank = apiData.get("rankAbbr")
 
                     # Position.
-                    if apiData.get("position") == "":
+                    if apiData.get("position") == "" or apiData.get("position") == "RSV" or apiData.get("position") == None:
                         if self.rank in ["CT", "SL", "LT", "LCM", "CM", "CPT", "MAJ", "LC", "COL", "GN"]:
                             self.position = "LR"
                         else:
