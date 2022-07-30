@@ -18,6 +18,22 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 
 ## ------------------------------------------------------------------------------------------------##
 
+## [v3.0.2] 2022-07-30
+
+### Added
+- Fast uniform rendering option.
+
+### Changed
+- None
+
+### Fixed
+- Vulture Squadron patch always downloading on launch when there isn't one.
+
+### Removed
+- None
+
+## ------------------------------------------------------------------------------------------------##
+
 ## [v3.0.1] 2022-02-27
 
 ### Added
@@ -31,7 +47,6 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 - Helmet logos can now be selected as mirrored or un-mirrored.
 - Infiltrator Style Helmets.
 - Added auto import of a user selected PIN upon TTT3 launch.
-- Fast uniform rendering option.
 
 ### Changed
 - New TIE Corps Logo is now the default graphic on helmets replacing the imperial cog.
