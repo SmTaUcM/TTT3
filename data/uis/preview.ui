@@ -2705,6 +2705,22 @@ QSlider::handle:vertical:hover
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QCheckBox" name="cb_fastPreview">
+    <property name="geometry">
+     <rect>
+      <x>645</x>
+      <y>565</y>
+      <width>91</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Fast Preview</string>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
+    </property>
+   </widget>
   </widget>
  </widget>
  <customwidgets>
