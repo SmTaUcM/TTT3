@@ -18,7 +18,23 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 
 ## ------------------------------------------------------------------------------------------------##
 
-## [v3.0.1] 2022-02-21
+## [v3.0.2] 2022-07-30
+
+### Added
+- Fast uniform rendering option.
+
+### Changed
+- None
+
+### Fixed
+- Vulture Squadron patch always downloading on launch when there isn't one.
+
+### Removed
+- None
+
+## ------------------------------------------------------------------------------------------------##
+
+## [v3.0.1] 2022-02-27
 
 ### Added
 - High DPI support allowing app scaling for high resolution monitors in Windows 10 via: 
