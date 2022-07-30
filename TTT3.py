@@ -4848,39 +4848,40 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
                 for squadron in self.fleetConfig.get("squadrons"):
                     dbSqnName = squadron.get("name")
-                    dbSqnList.append(dbSqnName)
-                    dbPatchURL = squadron.get("uniformData").get("patchURL")
-                    dbPatchHash = squadron.get("uniformData").get("patchHash")
-                    self.updateProgressBar.emit(dbSqnName, 0)
+                    if dbSqnName != "Vulture":
+                        dbSqnList.append(dbSqnName)
+                        dbPatchURL = squadron.get("uniformData").get("patchURL")
+                        dbPatchHash = squadron.get("uniformData").get("patchHash")
+                        self.updateProgressBar.emit(dbSqnName, 0)
 
-                    for root, dirs, files in os.walk(os.getcwd() + "\\data\\squads\\", topdown=False):
+                        for root, dirs, files in os.walk(os.getcwd() + "\\data\\squads\\", topdown=False):
 
-                        # Search for patch files that TTT3 doesn't currently have locally at all.
-                        squadFound = False
+                            # Search for patch files that TTT3 doesn't currently have locally at all.
+                            squadFound = False
 
-                        for name in files:
-                            # Filter for missing squadrons.
-                            if dbSqnName in name:
-                                squadFound = True
+                            for name in files:
+                                # Filter for missing squadrons.
+                                if dbSqnName in name:
+                                    squadFound = True
 
-                                # Delete squad patch masks.
-                                if "_mask" in name:
-                                    os.remove(os.getcwd() + "\\data\\squads\\" + name)
+                                    # Delete squad patch masks.
+                                    if "_mask" in name:
+                                        os.remove(os.getcwd() + "\\data\\squads\\" + name)
 
-                                else:
-                                    # Check if exisiting files are up to date using MD5 hashes and if not download new versions.
-                                    hash = getHash(os.getcwd() + "\\data\\squads\\" + name)
-                                    if hash != dbPatchHash:
-                                        self.updateProgressBar.emit("show", 0)
-                                        self.downloadPatchFile(dbSqnName, dbPatchURL)
-                                        self.updateMsg += "Downloaded updated squadron patch for %s squadron.\n" % dbSqnName
-                                        break
+                                    else:
+                                        # Check if exisiting files are up to date using MD5 hashes and if not download new versions.
+                                        hash = getHash(os.getcwd() + "\\data\\squads\\" + name)
+                                        if hash != dbPatchHash:
+                                            self.updateProgressBar.emit("show", 0)
+                                            self.downloadPatchFile(dbSqnName, dbPatchURL)
+                                            self.updateMsg += "Downloaded updated squadron patch for %s squadron.\n" % dbSqnName
+                                            break
 
-                        # Download missing patches.
-                        if not squadFound:
-                            self.updateProgressBar.emit("show", 0)
-                            self.downloadPatchFile(dbSqnName, dbPatchURL)
-                            self.updateMsg += "Downloaded new squadron patch for %s squadron.\n" % dbSqnName
+                            # Download missing patches.
+                            if not squadFound:
+                                self.updateProgressBar.emit("show", 0)
+                                self.downloadPatchFile(dbSqnName, dbPatchURL)
+                                self.updateMsg += "Downloaded new squadron patch for %s squadron.\n" % dbSqnName
 
                 # Remove redundant patch files that are no longer in use.
                 for root, dirs, files in os.walk(os.getcwd() + "\\data\\squads\\", topdown=False):
