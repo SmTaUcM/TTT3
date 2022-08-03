@@ -2044,6 +2044,25 @@ QListWidget:!enabled
           <string>Right-handed</string>
          </property>
         </widget>
+        <widget class="QRadioButton" name="rb_daggerNone">
+         <property name="geometry">
+          <rect>
+           <x>228</x>
+           <y>23</y>
+           <width>90</width>
+           <height>17</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Arial</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>No Dagger</string>
+         </property>
+        </widget>
        </widget>
        <widget class="QGroupBox" name="gb_dressSaberMounting">
         <property name="geometry">

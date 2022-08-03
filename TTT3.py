@@ -65,7 +65,7 @@ class TTT3(QMainWindow):
             version = "3.0.2"
             devVersion = ""
             date = "30 July 2022"
-            self.saveFileVersion = 1  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
+            self.saveFileVersion = 2  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
             # Initialise an instance of a QT Main Window and load our GUI file 'data\uis\ttt.ui'.
@@ -3716,6 +3716,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
                             # Add the object to our dress.pov file.
                             medalObjects.append(objRef)
+
+                            # Remove GOE Dagger upon user selection.
+                            if self.gui.rb_daggerNone.isChecked():
+                                if objRef == "dagger_left" or objRef == "dagger_right":
+                                    medalObjects.remove(objRef)
+
                         except KeyError:
                             break
 
@@ -4224,6 +4230,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     # Callsign.
                     self.callsign = saveData[20]
 
+                    # No GOE Dagger option.
+                    if saveData[21]:
+                        self.gui.rb_daggerNone.setChecked(True)
+
                 else:
                     # Show error message.
                     msg = "%s is not compatible with this version of TTT3.\nPlease save a new profile." % fileName.split("\\")[-1]
@@ -4246,7 +4256,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         self.gui.cb_dressSaberStyles.currentIndex(), self.gui.rb_dressSaberRight.isChecked(), self.gui.rb_daggerLeft.isChecked(),
                         self.gui.cb_dutyLightsaber.isChecked(), self.gui.cb_dutySaberStyles.currentIndex(), self.gui.rb_dutySaberRight.isChecked(),
                         self.gui.cb_dutyBlaster.isChecked(), self.gui.cb_dutyBlasterStyles.currentIndex(), self.gui.rb_blasterLeft.isChecked(),
-                        self.callsign)
+                        self.callsign, self.gui.rb_daggerNone.isChecked())
 
             # Save the data.
             fileName = self.saveUniformFileDialog()
@@ -4766,11 +4776,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         try:
             if self.gui.rb_dressSaberLeft.isChecked():
                 self.gui.rb_dutySaberLeft.setChecked(True)
-                self.gui.rb_daggerRight.setChecked(True)
+                if not self.gui.rb_daggerNone.isChecked():
+                    self.gui.rb_daggerRight.setChecked(True)
                 self.gui.rb_blasterRight.setChecked(True)
             else:
                 self.gui.rb_dutySaberRight.setChecked(True)
-                self.gui.rb_daggerLeft.setChecked(True)
+                if not self.gui.rb_daggerNone.isChecked():
+                    self.gui.rb_daggerLeft.setChecked(True)
                 self.gui.rb_blasterLeft.setChecked(True)
         except Exception as e:
             handleException(e)
@@ -4842,11 +4854,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         try:
             if self.gui.rb_blasterLeft.isChecked():
-                self.gui.rb_daggerLeft.setChecked(True)
+                if not self.gui.rb_daggerNone.isChecked():
+                    self.gui.rb_daggerLeft.setChecked(True)
                 self.gui.rb_dutySaberRight.setChecked(True)
                 self.gui.rb_dressSaberRight.setChecked(True)
             else:
-                self.gui.rb_daggerRight.setChecked(True)
+                if not self.gui.rb_daggerNone.isChecked():
+                    self.gui.rb_daggerRight.setChecked(True)
                 self.gui.rb_dutySaberLeft.setChecked(True)
                 self.gui.rb_dressSaberLeft.setChecked(True)
         except Exception as e:
@@ -4860,11 +4874,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             if self.gui.rb_dutySaberLeft.isChecked():
                 self.gui.rb_dressSaberLeft.setChecked(True)
                 self.gui.rb_blasterRight.setChecked(True)
-                self.gui.rb_daggerRight.setChecked(True)
+                if not self.gui.rb_daggerNone.isChecked():
+                    self.gui.rb_daggerRight.setChecked(True)
             else:
                 self.gui.rb_dressSaberRight.setChecked(True)
                 self.gui.rb_blasterLeft.setChecked(True)
-                self.gui.rb_daggerLeft.setChecked(True)
+                if not self.gui.rb_daggerNone.isChecked():
+                    self.gui.rb_daggerLeft.setChecked(True)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
