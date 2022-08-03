@@ -4343,6 +4343,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                             self.position = "FR"
                     else:
                         self.position = apiData.get("TTT").get("position")
+                        if self.position is None:
+                            self.position = apiData.get("position")
 
                     # Special handling of FC and XO positions.
                     idLine = apiData.get("IDLine")
