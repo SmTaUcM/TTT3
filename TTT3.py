@@ -2835,12 +2835,19 @@ color_map
     def findSquadPatch(self):
         '''Method that retrieves the squadron patch file for the user's selected squadron.'''
 
+        patchFound = False
+
         for ext in [".png", ".jpg"]:
             extension = ext
             fileName = "data\\squads\\{squad}{extension}".format(squad=self.sqn, extension=ext)
             if os.path.isfile(fileName):
+                patchFound = True
                 break
-        return ext, fileName
+
+        if patchFound:
+            return ext, fileName
+        else:
+            return None, None
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def createMask(self, filepath=None):
@@ -2852,37 +2859,38 @@ color_map
             fileName = filepath
             extension = "." + fileName.rsplit(".", 1)[1]
 
-        try:
-            # Primary Mask Creation. Requires a transparent background.
-            # Load image with alpha channel.
-            img = cv2.imread(fileName, cv2.IMREAD_UNCHANGED)
-
-            # Get mask from alpha channel.
+        if fileName:
             try:
-                mask = img[:, :, 3]
-            except TypeError:
-                # Show error message.
-                msg = "%s does not have a transparent background." % fileName.split("\\")[-1]
-                return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+                # Primary Mask Creation. Requires a transparent background.
+                # Load image with alpha channel.
+                img = cv2.imread(fileName, cv2.IMREAD_UNCHANGED)
 
-            # Save the mask.
-            fileName = fileName.replace(extension, "_mask.png")
-            cv2.imwrite(fileName, mask)
+                # Get mask from alpha channel.
+                try:
+                    mask = img[:, :, 3]
+                except TypeError:
+                    # Show error message.
+                    msg = "%s does not have a transparent background." % fileName.split("\\")[-1]
+                    return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
 
-        # Bacground likely not transparent. Doesn't need a transparent background but does not work well with high color / shaded patches.
-        except IndexError:
-            # Alternate Mask creation.
-            image = cv2.imread(fileName)
-            mask = numpy.ones(image.shape, dtype=numpy.uint8) * 255
-            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-            cnts = cv2.findContours(gray, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            cnts = cnts[0] if len(cnts) == 2 else cnts[1]
-            for c in cnts:
-                cv2.drawContours(mask, [c], -1, (0, 0, 0), cv2.FILLED)
-            mask = cv2.bitwise_not(mask)
-            # Save the mask.
-            fileName = fileName.replace(extension, "_mask.png")
-            cv2.imwrite(fileName, mask)
+                # Save the mask.
+                fileName = fileName.replace(extension, "_mask.png")
+                cv2.imwrite(fileName, mask)
+
+            # Bacground likely not transparent. Doesn't need a transparent background but does not work well with high color / shaded patches.
+            except IndexError:
+                # Alternate Mask creation.
+                image = cv2.imread(fileName)
+                mask = numpy.ones(image.shape, dtype=numpy.uint8) * 255
+                gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+                cnts = cv2.findContours(gray, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+                cnts = cnts[0] if len(cnts) == 2 else cnts[1]
+                for c in cnts:
+                    cv2.drawContours(mask, [c], -1, (0, 0, 0), cv2.FILLED)
+                mask = cv2.bitwise_not(mask)
+                # Save the mask.
+                fileName = fileName.replace(extension, "_mask.png")
+                cv2.imwrite(fileName, mask)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def shipSelectionLogic(self, value):
@@ -4881,40 +4889,39 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
                 for squadron in self.fleetConfig.get("squadrons"):
                     dbSqnName = squadron.get("name")
-                    if dbSqnName != "Vulture":
-                        dbSqnList.append(dbSqnName)
-                        dbPatchURL = squadron.get("uniformData").get("patchURL")
-                        dbPatchHash = squadron.get("uniformData").get("patchHash")
-                        self.updateProgressBar.emit(dbSqnName, 0)
+                    dbSqnList.append(dbSqnName)
+                    dbPatchURL = squadron.get("uniformData").get("patchURL")
+                    dbPatchHash = squadron.get("uniformData").get("patchHash")
+                    self.updateProgressBar.emit(dbSqnName, 0)
 
-                        for root, dirs, files in os.walk(os.getcwd() + "\\data\\squads\\", topdown=False):
+                    for root, dirs, files in os.walk(os.getcwd() + "\\data\\squads\\", topdown=False):
 
-                            # Search for patch files that TTT3 doesn't currently have locally at all.
-                            squadFound = False
+                        # Search for patch files that TTT3 doesn't currently have locally at all.
+                        squadFound = False
 
-                            for name in files:
-                                # Filter for missing squadrons.
-                                if dbSqnName in name:
-                                    squadFound = True
+                        for name in files:
+                            # Filter for missing squadrons.
+                            if dbSqnName in name:
+                                squadFound = True
 
-                                    # Delete squad patch masks.
-                                    if "_mask" in name:
-                                        os.remove(os.getcwd() + "\\data\\squads\\" + name)
+                                # Delete squad patch masks.
+                                if "_mask" in name:
+                                    os.remove(os.getcwd() + "\\data\\squads\\" + name)
 
-                                    else:
-                                        # Check if exisiting files are up to date using MD5 hashes and if not download new versions.
-                                        hash = getHash(os.getcwd() + "\\data\\squads\\" + name)
-                                        if hash != dbPatchHash:
-                                            self.updateProgressBar.emit("show", 0)
-                                            self.downloadPatchFile(dbSqnName, dbPatchURL)
-                                            self.updateMsg += "Downloaded updated squadron patch for %s squadron.\n" % dbSqnName
-                                            break
+                                else:
+                                    # Check if exisiting files are up to date using MD5 hashes and if not download new versions.
+                                    hash = getHash(os.getcwd() + "\\data\\squads\\" + name)
+                                    if hash != dbPatchHash:
+                                        self.updateProgressBar.emit("show", 0)
+                                        self.downloadPatchFile(dbSqnName, dbPatchURL)
+                                        self.updateMsg += "Downloaded updated squadron patch for %s squadron.\n" % dbSqnName
+                                    break
 
-                            # Download missing patches.
-                            if not squadFound:
-                                self.updateProgressBar.emit("show", 0)
-                                self.downloadPatchFile(dbSqnName, dbPatchURL)
-                                self.updateMsg += "Downloaded new squadron patch for %s squadron.\n" % dbSqnName
+                        # Download missing patches.
+                        if not squadFound and dbPatchHash != None:
+                            self.updateProgressBar.emit("show", 0)
+                            self.downloadPatchFile(dbSqnName, dbPatchURL)
+                            self.updateMsg += "Downloaded new squadron patch for %s squadron.\n" % dbSqnName
 
                 # Remove redundant patch files that are no longer in use.
                 for root, dirs, files in os.walk(os.getcwd() + "\\data\\squads\\", topdown=False):

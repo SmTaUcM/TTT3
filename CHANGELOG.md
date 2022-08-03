@@ -22,12 +22,13 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 
 ### Added
 - Fast uniform rendering option.
+- Support for SQXO position.
 
 ### Changed
 - None
 
 ### Fixed
-- Vulture Squadron patch always downloading on launch when there isn't one.
+- Squadron patches always downloading on launch when there isn't one.
 
 ### Removed
 - None
