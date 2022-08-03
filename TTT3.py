@@ -864,9 +864,12 @@ class TTT3(QMainWindow):
         try:
             self.uniform = "dress"
             # Check to see if the user has made the correct selections for their position and rank.
-            if self.position in ["FM", "FL", "SQXO", "CMDR", "WC"]:
-                if not self.ship or not self.wing:
-                    msg = "Error: As a pilot you need to specify at least a ship and wing before a dress uniform can be created."
+            if self.position in ["FM", "FL", "SQXO", "CMDR"]:
+                self.showPreviewDialog()
+
+            elif self.position in ["WC"]:
+                if not self.wing:
+                    msg = "Error: As a WC you need to specify a wing before a dress uniform can be created."
                     return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
                 else:
                     self.showPreviewDialog()
