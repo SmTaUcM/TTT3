@@ -342,6 +342,46 @@ texture
 }
 texture { T_unilayer scale 2}
 
+#declare T_r_ora =
+texture
+{
+  pigment { image_map { gif "ribbons/ora.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_ora_1c =
+texture
+{
+  pigment { image_map { gif "ribbons/ora-1c.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_ora_2c =
+texture
+{
+  pigment { image_map { gif "ribbons/ora-2c.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_ora_3c =
+texture
+{
+  pigment { image_map { gif "ribbons/ora-3c.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_ora_4c =
+texture
+{
+  pigment { image_map { gif "ribbons/ora-4c.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
 #declare T_r_loc =
 texture
 {
