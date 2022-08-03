@@ -2584,7 +2584,21 @@ color_map
                 povData.append(line.replace("&REFLECTION&", "%s" % self.convertIntToFloatStr(self.reflectionHelm, 100)))
 
             elif "&POSRANKFILE&" in line:
-                if self.position not in ["FM", "FL", "SQXO", "CMDR", "WC"] or self.rank not in ["SL", "LT", "LCM", "CM", "CPT", "MAJ", "LC", "COL", "GN"]:
+                if self.position not in [
+                        "FM",
+                        "FL",
+                        "SQXO",
+                        "CMDR",
+                        "WC"] or self.rank not in [
+                        "SL",
+                        "LT",
+                        "LCM",
+                        "CM",
+                        "CPT",
+                        "MAJ",
+                        "LC",
+                        "COL",
+                        "GN"]:
                     povData.append(line.replace("&POSRANKFILE&", "NIL"))
                 else:
                     fileName = self.position + "_" + self.rank
@@ -4319,7 +4333,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.rank = apiData.get("rankAbbr")
 
                     # Position.
-                    if apiData.get("position") == "" or apiData.get("position") == "RSV" or apiData.get("position") == None:
+                    if apiData.get("position") == "" or apiData.get("position") == "RSV" or apiData.get("position") is None:
                         if self.rank in ["CT", "SL", "LT", "LCM", "CM", "CPT", "MAJ", "LC", "COL", "GN"]:
                             self.position = "LR"
                         else:
@@ -4918,7 +4932,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                     break
 
                         # Download missing patches.
-                        if not squadFound and dbPatchHash != None:
+                        if not squadFound and dbPatchHash is not None:
                             self.updateProgressBar.emit("show", 0)
                             self.downloadPatchFile(dbSqnName, dbPatchURL)
                             self.updateMsg += "Downloaded new squadron patch for %s squadron.\n" % dbSqnName
