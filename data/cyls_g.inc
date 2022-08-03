@@ -100,6 +100,8 @@ union
 
 #declare P_FL = object { P_cylinder_2_3 }  
 
+#declare P_SQXO = object { P_cylinder_2_3 }  
+
 #declare P_CMDR = object { P_cylinder_2_2 } 
 
 #declare P_WC =
