@@ -10,19 +10,19 @@
     <x>0</x>
     <y>0</y>
     <width>661</width>
-    <height>443</height>
+    <height>451</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>661</width>
-    <height>443</height>
+    <height>451</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>661</width>
-    <height>443</height>
+    <height>451</height>
    </size>
   </property>
   <property name="contextMenuPolicy">
@@ -74,7 +74,7 @@
       <x>10</x>
       <y>62</y>
       <width>541</width>
-      <height>361</height>
+      <height>379</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -124,7 +124,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
         <x>13</x>
         <y>10</y>
         <width>251</width>
-        <height>311</height>
+        <height>333</height>
        </rect>
       </property>
       <property name="font">
@@ -181,7 +181,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <property name="geometry">
         <rect>
          <x>14</x>
-         <y>87</y>
+         <y>107</y>
          <width>231</width>
          <height>17</height>
         </rect>
@@ -200,7 +200,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <property name="geometry">
         <rect>
          <x>14</x>
-         <y>107</y>
+         <y>127</y>
          <width>231</width>
          <height>17</height>
         </rect>
@@ -219,7 +219,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <property name="geometry">
         <rect>
          <x>14</x>
-         <y>147</y>
+         <y>167</y>
          <width>231</width>
          <height>17</height>
         </rect>
@@ -238,7 +238,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <property name="geometry">
         <rect>
          <x>14</x>
-         <y>167</y>
+         <y>187</y>
          <width>231</width>
          <height>17</height>
         </rect>
@@ -257,7 +257,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <property name="geometry">
         <rect>
          <x>14</x>
-         <y>187</y>
+         <y>207</y>
          <width>231</width>
          <height>17</height>
         </rect>
@@ -276,7 +276,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <property name="geometry">
         <rect>
          <x>14</x>
-         <y>207</y>
+         <y>227</y>
          <width>231</width>
          <height>17</height>
         </rect>
@@ -295,7 +295,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <property name="geometry">
         <rect>
          <x>14</x>
-         <y>227</y>
+         <y>247</y>
          <width>231</width>
          <height>17</height>
         </rect>
@@ -314,7 +314,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <property name="geometry">
         <rect>
          <x>14</x>
-         <y>247</y>
+         <y>267</y>
          <width>231</width>
          <height>17</height>
         </rect>
@@ -333,7 +333,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <property name="geometry">
         <rect>
          <x>14</x>
-         <y>267</y>
+         <y>287</y>
          <width>231</width>
          <height>17</height>
         </rect>
@@ -352,7 +352,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <property name="geometry">
         <rect>
          <x>66</x>
-         <y>289</y>
+         <y>309</y>
          <width>91</width>
          <height>17</height>
         </rect>
@@ -372,7 +372,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <property name="geometry">
         <rect>
          <x>155</x>
-         <y>289</y>
+         <y>309</y>
          <width>91</width>
          <height>17</height>
         </rect>
@@ -392,7 +392,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <property name="geometry">
         <rect>
          <x>14</x>
-         <y>292</y>
+         <y>312</y>
          <width>46</width>
          <height>13</height>
         </rect>
@@ -453,7 +453,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <property name="geometry">
         <rect>
          <x>14</x>
-         <y>127</y>
+         <y>147</y>
          <width>231</width>
          <height>17</height>
         </rect>
@@ -468,6 +468,25 @@ margin-top: 2px; /* make non-selected tabs look smaller */
         <string>Commodore (COM)</string>
        </property>
       </widget>
+      <widget class="QRadioButton" name="rb_pos_sqxo">
+       <property name="geometry">
+        <rect>
+         <x>14</x>
+         <y>87</y>
+         <width>231</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Squadron Executive Officer (SQXO)</string>
+       </property>
+      </widget>
      </widget>
      <widget class="QGroupBox" name="groupBox_2">
       <property name="geometry">
@@ -475,7 +494,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
         <x>273</x>
         <y>10</y>
         <width>251</width>
-        <height>311</height>
+        <height>333</height>
        </rect>
       </property>
       <property name="font">
@@ -844,7 +863,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
      <widget class="QLabel" name="label_17">
       <property name="geometry">
        <rect>
-        <x>23</x>
+        <x>25</x>
         <y>18</y>
         <width>131</width>
         <height>16</height>
@@ -869,10 +888,10 @@ margin-top: 2px; /* make non-selected tabs look smaller */
       </property>
       <property name="geometry">
        <rect>
-        <x>23</x>
+        <x>25</x>
         <y>43</y>
         <width>131</width>
-        <height>211</height>
+        <height>287</height>
        </rect>
       </property>
       <property name="font">
@@ -892,51 +911,16 @@ QListWidget:!enabled
 }</string>
       </property>
      </widget>
-     <widget class="QGroupBox" name="groupBox_3">
-      <property name="geometry">
-       <rect>
-        <x>7</x>
-        <y>275</y>
-        <width>521</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="title">
-       <string/>
-      </property>
-      <widget class="QCheckBox" name="cb_eliteSqn">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="geometry">
-        <rect>
-         <x>205</x>
-         <y>17</y>
-         <width>111</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>9</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Elite Squadron</string>
-       </property>
-      </widget>
-     </widget>
      <widget class="QListWidget" name="lw_wing">
       <property name="enabled">
        <bool>true</bool>
       </property>
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>202</x>
         <y>43</y>
         <width>131</width>
-        <height>211</height>
+        <height>287</height>
        </rect>
       </property>
       <property name="font">
@@ -959,7 +943,7 @@ QListWidget:!enabled
      <widget class="QLabel" name="label_18">
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>202</x>
         <y>18</y>
         <width>131</width>
         <height>16</height>
@@ -984,10 +968,10 @@ QListWidget:!enabled
       </property>
       <property name="geometry">
        <rect>
-        <x>377</x>
+        <x>379</x>
         <y>43</y>
         <width>131</width>
-        <height>211</height>
+        <height>287</height>
        </rect>
       </property>
       <property name="font">
@@ -1010,7 +994,7 @@ QListWidget:!enabled
      <widget class="QLabel" name="label_19">
       <property name="geometry">
        <rect>
-        <x>377</x>
+        <x>379</x>
         <y>18</y>
         <width>131</width>
         <height>16</height>
@@ -1037,9 +1021,9 @@ QListWidget:!enabled
      <widget class="QGroupBox" name="groupBox_4">
       <property name="geometry">
        <rect>
-        <x>7</x>
-        <y>275</y>
-        <width>521</width>
+        <x>4</x>
+        <y>283</y>
+        <width>529</width>
         <height>51</height>
        </rect>
       </property>
@@ -1994,7 +1978,7 @@ QListWidget:!enabled
         <x>12</x>
         <y>10</y>
         <width>512</width>
-        <height>311</height>
+        <height>328</height>
        </rect>
       </property>
       <property name="currentIndex">
@@ -2655,7 +2639,7 @@ QListWidget:!enabled
         <x>20</x>
         <y>163</y>
         <width>497</width>
-        <height>161</height>
+        <height>170</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -2885,7 +2869,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>157</x>
-        <y>224</y>
+        <y>225</y>
         <width>76</width>
         <height>81</height>
        </rect>
@@ -2913,7 +2897,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>410</x>
-        <y>224</y>
+        <y>225</y>
         <width>101</width>
         <height>81</height>
        </rect>
@@ -2941,7 +2925,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>131</x>
-        <y>309</y>
+        <y>310</y>
         <width>128</width>
         <height>16</height>
        </rect>
@@ -2971,7 +2955,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>390</x>
-        <y>302</y>
+        <y>303</y>
         <width>141</width>
         <height>31</height>
        </rect>
@@ -3007,7 +2991,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>292</x>
-        <y>224</y>
+        <y>225</y>
         <width>81</width>
         <height>81</height>
        </rect>
@@ -3035,7 +3019,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>312</x>
-        <y>309</y>
+        <y>310</y>
         <width>41</width>
         <height>16</height>
        </rect>
@@ -3363,7 +3347,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>36</x>
-        <y>220</y>
+        <y>221</y>
         <width>61</width>
         <height>81</height>
        </rect>
@@ -3391,7 +3375,7 @@ QListWidget:!enabled
       <property name="geometry">
        <rect>
         <x>2</x>
-        <y>309</y>
+        <y>310</y>
         <width>128</width>
         <height>16</height>
        </rect>
@@ -3523,7 +3507,7 @@ QPushButton:!enabled
     <property name="geometry">
      <rect>
       <x>560</x>
-      <y>400</y>
+      <y>419</y>
       <width>91</width>
       <height>23</height>
      </rect>
@@ -3711,7 +3695,7 @@ QPushButton:!enabled
     <property name="geometry">
      <rect>
       <x>560</x>
-      <y>350</y>
+      <y>389</y>
       <width>91</width>
       <height>23</height>
      </rect>
@@ -3758,7 +3742,7 @@ QPushButton:!enabled
     <property name="geometry">
      <rect>
       <x>560</x>
-      <y>233</y>
+      <y>235</y>
       <width>91</width>
       <height>23</height>
      </rect>
@@ -3805,7 +3789,7 @@ QPushButton:!enabled
     <property name="geometry">
      <rect>
       <x>560</x>
-      <y>263</y>
+      <y>265</y>
       <width>91</width>
       <height>23</height>
      </rect>
@@ -3852,7 +3836,7 @@ QPushButton:!enabled
     <property name="geometry">
      <rect>
       <x>560</x>
-      <y>293</y>
+      <y>295</y>
       <width>91</width>
       <height>23</height>
      </rect>
@@ -3975,7 +3959,6 @@ QPushButton:!enabled
   <tabstop>lw_ship</tabstop>
   <tabstop>lw_wing</tabstop>
   <tabstop>lw_squad</tabstop>
-  <tabstop>cb_eliteSqn</tabstop>
   <tabstop>lw_medals</tabstop>
   <tabstop>cb_singleMedal</tabstop>
   <tabstop>sb_multi_center1</tabstop>
@@ -4010,7 +3993,6 @@ QPushButton:!enabled
   <tabstop>btn_dress</tabstop>
   <tabstop>btn_duty</tabstop>
   <tabstop>btn_helmet</tabstop>
-  <tabstop>btn_medals</tabstop>
   <tabstop>btn_newProf</tabstop>
   <tabstop>btn_openProf</tabstop>
   <tabstop>btn_saveProf</tabstop>
