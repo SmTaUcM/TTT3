@@ -64,7 +64,7 @@ class TTT3(QMainWindow):
             # Version info.
             version = "3.0.2"
             devVersion = ""
-            date = "03 August 2022"
+            date = "11 August 2022"
             self.saveFileVersion = 2  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
@@ -2846,6 +2846,11 @@ color_map
                     for section in self.ribbonConfig.sections():
                         if self.ribbonConfig.get(section, "name") == award:
                             ribbonCount += 1
+                elif self.awards.get(award)["type"] == "ranged" and self.awards.get(award)["baseAward"] == "True":
+                    if self.awards.get(award)["upgrades"][quantity] == 0:
+                        for section in self.ribbonConfig.sections():
+                            if self.ribbonConfig.get(section, "name") == award:
+                                ribbonCount += 1
         return ribbonCount
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -3162,14 +3167,19 @@ color_map
                 rangeMin = int(self.ribbonConfig.get(ribbon, "rangeMin"))
                 rangeMax = int(self.ribbonConfig.get(ribbon, "rangeMax"))
 
+                if self.ribbonConfig.get(ribbon, "baseAward") == "True":
+                    filename = ribbon + "." + self.ribbonConfig.get(ribbon, "filename").split(".")[1]
+                    ribbons_g += self.addToRibbonIncludes(filename)
+
                 for i in range(rangeMin, rangeMax + 1):  # + 1 as Python omits the last number in a range.
 
                     filename = self.ribbonConfig.get(ribbon, "filename").replace("&RANGE&", str(i))
                     ribbons_g += self.addToRibbonIncludes(filename)
 
                 # Store the ribbon data to the 'self.awards' dictionary.
-                self.awards[name]["upgrades"] = [self.ribbonConfig.get(ribbon, "incrementName"), 0]
+                self.awards[name]["upgrades"] = [self.ribbonConfig.get(ribbon, "incrementName"), -1]
                 self.awards[name]["ranges"] = [rangeMin, rangeMax]
+                self.awards[name]["baseAward"] = self.ribbonConfig.get(ribbon, "baseAward")
 
             # All other ribbons.
             else:
@@ -3397,7 +3407,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     spinLabels[subRibbon].show()
                     self.subRibbonAwards.append([self.gui.lw_medals.currentItem().text(), upgrades[subRibbon][name], spinBoxes[subRibbon]])
 
-                # ----- Ranged type ribbon awards. (OV)
+                # ----- Ranged type ribbon awards. (OV & ORA)
             elif award.get("type") == "ranged":
                 self.gui.cb_singleMedal.setText(item.text())
 
@@ -3407,7 +3417,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.subRibbonAwards.append(self.gui.sb_multi_center2)
 
                 # Set the checkbox state.
-                if award.get("upgrades")[quantity] > 0:
+                if award.get("upgrades")[quantity] > 0 and award.get("baseAward") == "False":
+                    self.gui.cb_singleMedal.setChecked(True)
+                    self.cb_singleMedalSelectionLogic()
+                elif award.get("upgrades")[quantity] == 0 and award.get("baseAward") == "True":
                     self.gui.cb_singleMedal.setChecked(True)
                     self.cb_singleMedalSelectionLogic()
                 else:
@@ -3500,13 +3513,15 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.gui.rb_upgradeable_0.setChecked(True)
                     self.disconnectRibbonUpgrades()
 
-                # ----- Ranged type ribbon awards. (OV)
+                # ----- Ranged type ribbon awards. (OV & ORA)
             elif award.get("type") == "ranged":
 
                 if self.gui.cb_singleMedal.isChecked():
 
                     # Setup and display the ribbon's spinbox and label.
                     rangeMin = int(award.get("ranges")[0])
+                    if award.get("baseAward") == "True":
+                        rangeMin -= 1
                     rangeMax = int(award.get("ranges")[1])
                     self.gui.sb_multi_center2.setRange(rangeMin, rangeMax)
                     self.gui.sb_multi_center2.setValue(award.get("upgrades")[quantity])
@@ -3519,7 +3534,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 else:
                     self.gui.sb_multi_center2.hide()
                     self.gui.lbl_ranged.hide()
-                    award.get("upgrades")[quantity] = 0
+                    if award.get("baseAward") == "True":
+                        award.get("upgrades")[quantity] = -1
+                    else:
+                        award.get("upgrades")[quantity] = 0
 
             # Check to see if the user has selected more than the maximum number of allowed ribbons.
             if award.get("type") != "single" and award.get("type") != "multi":
@@ -3817,6 +3835,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                             awardName = "T_r_" + self.ribbonConfig.get(section, "filename").split(".")[0].lower().replace("-", "_")
                             awardName = awardName.replace("&range&", str(self.awards.get(award)["upgrades"][quantity]))
                             ribbonObjects.append("P_r&NUM& translate <0,0,%s> texture { %s }" % (yOffset, awardName))
+                elif self.awards.get(award)["upgrades"][quantity] == 0 and self.awards.get(award)["baseAward"] == "True":
+                    for section in self.ribbonConfig.sections():
+                        if self.ribbonConfig.get(section, "name") == award:
+                            awardName = "T_r_" + self.ribbonConfig.get(section,
+                                                                       "filename").split(".")[0].lower().replace("-",
+                                                                                                                 "_").split("&range&")[0][:-1]
+                            ribbonObjects.append("P_r&NUM& translate <0,0,%s> texture { %s }" % (yOffset, awardName))
 
             # Multi type awards.
             elif self.awards.get(award)["type"] == "multiRibbon":
@@ -3925,7 +3950,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     if upgrade[name] == subRibbonName:
                         self.awards.get(awardName)["upgrades"][sender][1] = spinBox.value()
 
-            # ----- Ranged type ribbon awards. (OV)
+            # ----- Ranged type ribbon awards. (OV & ORA)
             elif award.get("type") == "ranged":
                 awardName = self.subRibbonAwards[0]
                 spinBox = self.subRibbonAwards[1]
