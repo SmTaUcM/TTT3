@@ -18,7 +18,7 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 
 ## ------------------------------------------------------------------------------------------------##
 
-## [v3.0.2] 2022-08-03
+## [v3.0.2] 2022-08-13
 
 ### Added
 - Fast uniform rendering option within the Dress and Duty uniform preview window.

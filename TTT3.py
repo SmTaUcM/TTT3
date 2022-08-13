@@ -64,7 +64,7 @@ class TTT3(QMainWindow):
             # Version info.
             version = "3.0.2"
             devVersion = ""
-            date = "11 August 2022"
+            date = "13 August 2022"
             self.saveFileVersion = 2  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
@@ -2869,7 +2869,7 @@ color_map
         if patchFound:
             return ext, fileName
         else:
-            return None, None
+            return ".png", "data\\squads\\no_patch.png"
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def createMask(self, filepath=None):
@@ -2921,6 +2921,8 @@ color_map
         try:
             # Clear the 'Wing' ListWidget.
             self.gui.lw_wing.clear()
+            self.wing = ""
+            self.sqn = ""
 
             try:
                 # Save the selected option.
@@ -2945,8 +2947,14 @@ color_map
                     # If only one Wing exists, select it by default.
                     if self.gui.lw_wing.count() == 1:
                         self.gui.lw_wing.setCurrentRow(0)
+                        self.wingSelectionLogic(None)
 
-                    self.wingSelectionLogic(None)
+                    # If the user has selected a Ship that contains no wings.
+                    elif self.gui.lw_wing.count() == 0:
+                        self.wingIsNoneSelectionLogic()
+
+                    else:
+                        self.wingSelectionLogic(None)
 
                 else:
                     if self.position not in ["COM"]:  # Stops Ship List Widget from being cleared.
@@ -2987,6 +2995,44 @@ color_map
                         if squad.get("uniformData").get("parentId") == wingId:
                             self.gui.lw_squad.addItem(squad.get("name"))
                     setLWPixelSizes(self.gui.lw_squad)
+                else:
+                    self.gui.lw_squad.clear()
+
+            except AttributeError:
+                pass  # Prevents the application throwing an error when the 'Wing' List Widget is clears and tries to populate squadrons from a 'blank' wing.
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def wingIsNoneSelectionLogic(self):
+        '''Method that handles the actions once a Wing is selected from the 'Wing' section in the 'Wing and Squadron' tab.'''
+
+        try:
+            # Clear the 'Squadron' ListWidget.
+            self.gui.lw_squad.clear()
+
+            try:
+                # Save the selected option.
+                self.wing = ""
+                self.setHelmetColouring("wings", self.wing)
+
+                if self.position not in ["WC"]:  # Stops Squadrons showing for WCs.
+                    self.sqn = ""
+                    self.gui.btn_dress.setEnabled(False)
+                    self.gui.btn_duty.setEnabled(False)
+
+                    # Populate the 'Squadron' List Widget with the Squadrons for the selected Wing.
+                    # Get the wing's ID.
+                    for ship in self.fleetConfig.get("ships"):
+                        if ship.get("name") == self.ship:
+                            shipId = ship.get("id")
+
+                    # Add squadrons that have the wingId as a parentId.
+                    for squad in self.fleetConfig.get("squadrons"):
+                        if squad.get("uniformData").get("parentId") == shipId:
+                            self.gui.lw_squad.addItem(squad.get("name"))
+                    setLWPixelSizes(self.gui.lw_squad)
+
                 else:
                     self.gui.lw_squad.clear()
 
@@ -4944,7 +4990,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.updateMsg += "TIE Corps fleet structure already up to date.\n"
 
                 # Squadron Patch checks.
-                dbSqnList = []
+                dbSqnList = ["no_patch"]
                 self.updateProgressBar.emit("init", len(self.fleetConfig.get("squadrons")))
 
                 for squadron in self.fleetConfig.get("squadrons"):
