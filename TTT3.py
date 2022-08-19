@@ -64,7 +64,7 @@ class TTT3(QMainWindow):
             # Version info.
             version = "3.0.2"
             devVersion = ""
-            date = "13 August 2022"
+            date = "19 August 2022"
             self.saveFileVersion = 2  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
