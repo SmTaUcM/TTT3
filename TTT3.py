@@ -4534,7 +4534,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                        self.awards.get(award)["type"] == "ranged":
 
                                         if medal == "ORA":
-                                            self.awards.get(award)["upgrades"][1] = int(apiMedalData.get(medal).replace("ORA-", "").replace("C", ""))
+                                            if apiMedalData.get(medal) != "ORA":
+                                                self.awards.get(award)["upgrades"][1] = int(apiMedalData.get(medal).replace("ORA-", "").replace("C", ""))
+                                            else:
+                                                self.awards.get(award)["upgrades"][1] = 0
                                         else:
                                             self.awards.get(award)["upgrades"][1] = apiMedalData.get(medal)
 
