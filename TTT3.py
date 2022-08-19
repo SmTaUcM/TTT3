@@ -3466,7 +3466,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 if award.get("upgrades")[quantity] > 0 and award.get("baseAward") == "False":
                     self.gui.cb_singleMedal.setChecked(True)
                     self.cb_singleMedalSelectionLogic()
-                elif award.get("upgrades")[quantity] == 0 and award.get("baseAward") == "True":
+                elif award.get("upgrades")[quantity] >= 0 and award.get("baseAward") == "True":
                     self.gui.cb_singleMedal.setChecked(True)
                     self.cb_singleMedalSelectionLogic()
                 else:
@@ -3879,7 +3879,11 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     for section in self.ribbonConfig.sections():
                         if self.ribbonConfig.get(section, "name") == award:
                             awardName = "T_r_" + self.ribbonConfig.get(section, "filename").split(".")[0].lower().replace("-", "_")
-                            awardName = awardName.replace("&range&", str(self.awards.get(award)["upgrades"][quantity]))
+                            amount = self.awards.get(award)["upgrades"][quantity]
+                            maxAmount = self.awards.get(award)["ranges"][1]
+                            if amount > maxAmount:
+                                amount = maxAmount
+                            awardName = awardName.replace("&range&", str(amount))
                             ribbonObjects.append("P_r&NUM& translate <0,0,%s> texture { %s }" % (yOffset, awardName))
                 elif self.awards.get(award)["upgrades"][quantity] == 0 and self.awards.get(award)["baseAward"] == "True":
                     for section in self.ribbonConfig.sections():
@@ -4529,7 +4533,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                        self.awards.get(award)["type"] == "multiRibbon" or \
                                        self.awards.get(award)["type"] == "ranged":
 
-                                        self.awards.get(award)["upgrades"][1] = apiMedalData.get(medal)
+                                        if medal == "ORA":
+                                            self.awards.get(award)["upgrades"][1] = int(apiMedalData.get(medal).replace("ORA-", "").replace("C", ""))
+                                        else:
+                                            self.awards.get(award)["upgrades"][1] = apiMedalData.get(medal)
 
                                     # Upgradeable and SubRibbons type awards.
                                     elif self.awards.get(award)["type"] == "upgradeable" or \
