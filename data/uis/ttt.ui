@@ -2857,7 +2857,7 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>MAJ SkyShadow, </string>
+       <string>LC SkyShadow, </string>
       </property>
      </widget>
      <widget class="QLabel" name="lblVersion">
@@ -2964,7 +2964,7 @@ QListWidget:!enabled
        <string notr="true">color: rgb(6, 22, 125);</string>
       </property>
       <property name="text">
-       <string>Python v3.8.7 32-bit</string>
+       <string>Python v3.10.6 32-bit</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
