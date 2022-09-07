@@ -62,10 +62,10 @@ class TTT3(QMainWindow):
 
         try:
             # Version info.
-            version = "3.0.1"
+            version = "3.0.2"
             devVersion = ""
-            date = "21 February 2022"
-            self.saveFileVersion = 1  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
+            date = "04 September 2022"
+            self.saveFileVersion = 2  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
             # Initialise an instance of a QT Main Window and load our GUI file 'data\uis\ttt.ui'.
@@ -104,6 +104,7 @@ class TTT3(QMainWindow):
             self.gui.rb_pos_trn.clicked.connect(self.posRBLogic)
             self.gui.rb_pos_fm.clicked.connect(self.posRBLogic)
             self.gui.rb_pos_fl.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_sqxo.clicked.connect(self.posRBLogic)
             self.gui.rb_pos_cmdr.clicked.connect(self.posRBLogic)
             self.gui.rb_pos_wc.clicked.connect(self.posRBLogic)
             self.gui.rb_pos_com.clicked.connect(self.posRBLogic)
@@ -142,9 +143,10 @@ class TTT3(QMainWindow):
                                      self.gui.rb_rank_ra, self.gui.rb_rank_va, self.gui.rb_rank_ad, self.gui.rb_rank_fa, self.gui.rb_rank_ha,
                                      self.gui.rb_rank_sa, self.gui.rb_rank_ga]
 
-            self.positionRadioButtons = [self.gui.rb_pos_trn, self.gui.rb_pos_fm, self.gui.rb_pos_fl, self.gui.rb_pos_cmdr, self.gui.rb_pos_wc,
-                                         self.gui.rb_pos_com, self.gui.rb_pos_tccs, self.gui.rb_pos_ia, self.gui.rb_pos_ca, self.gui.rb_pos_sgcom,
-                                         self.gui.rb_pos_cs, self.gui.rb_pos_xo, self.gui.rb_pos_fc, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
+            self.positionRadioButtons = [self.gui.rb_pos_trn, self.gui.rb_pos_fm, self.gui.rb_pos_fl, self.gui.rb_pos_sqxo, self.gui.rb_pos_cmdr,
+                                         self.gui.rb_pos_wc, self.gui.rb_pos_com, self.gui.rb_pos_tccs, self.gui.rb_pos_ia, self.gui.rb_pos_ca,
+                                         self.gui.rb_pos_sgcom, self.gui.rb_pos_cs, self.gui.rb_pos_xo, self.gui.rb_pos_fc, self.gui.rb_pos_lr,
+                                         self.gui.rb_pos_fr]
 
             # ----- 'Wing and Squadron' Tab. -----
 
@@ -152,8 +154,6 @@ class TTT3(QMainWindow):
             self.gui.lw_ship.itemClicked.connect(self.shipSelectionLogic)
             self.gui.lw_wing.itemClicked.connect(self.wingSelectionLogic)
             self.gui.lw_squad.itemClicked.connect(self.squadSelectionLogic)
-            # CheckBox.
-            self.gui.cb_eliteSqn.stateChanged.connect(self.eliteSqnSelectionLogic)
 
             # ----- 'Medals, Ribbons and FCHG' Tab. -----
 
@@ -307,6 +307,7 @@ class TTT3(QMainWindow):
             self.logo2Mirrored = True
             self.unitType = None
             self.unitProperty = None
+            self.fastPreview = False
 
             # PovRay Template Constants.
             self.RANK_OFFSET_RIBBONS_00_TO_08 = ["-18.8939990997314,0.351000010967255,7.92899990081787",  # Rotate
@@ -465,7 +466,6 @@ class TTT3(QMainWindow):
             with open("settings\\fleet.json", "r") as fleetConfigFile:
                 fleetData = fleetConfigFile.read()
             self.fleetConfig = json.loads(fleetData)
-            self.gui.cb_eliteSqn.setEnabled(False)
 
         except json.JSONDecodeError:
             pass  # Will cause update to trigger if fleet.json is corrupted.
@@ -560,10 +560,6 @@ class TTT3(QMainWindow):
             SA = 15
             GA = 16
 
-            # Enable all options from the 'Wing and Squadron' Tab.
-            if self.gui.cb_eliteSqn.isChecked() == False:  # Stops the ship and wing tabs from repopulating if 'Elite Squadron' is checked.
-                self.enableWingAndSqnTab(True)
-
             # Clean up the ranks group box.
             self.hideAllRanks()
 
@@ -595,6 +591,13 @@ class TTT3(QMainWindow):
                         self.enableWingAndSqnTab(True)
                         break
 
+                    # Squadron Executive Officer.
+                    elif radioButton == self.gui.rb_pos_sqxo:
+                        self.showRanks(LT, GN)
+                        self.position = "SQXO"
+                        self.enableWingAndSqnTab(True)
+                        break
+
                     # Squadron Commander.
                     elif radioButton == self.gui.rb_pos_cmdr:
                         self.showRanks(CM, GN)
@@ -608,8 +611,6 @@ class TTT3(QMainWindow):
                         self.position = "WC"
 
                         # Set the options available to the user in the 'Wing and Squadron' tab.
-                        self.gui.cb_eliteSqn.setChecked(False)
-                        self.gui.cb_eliteSqn.setEnabled(False)
                         self.gui.lw_squad.setEnabled(False)
                         self.gui.lw_squad.clear()
                         self.sqn = ""
@@ -623,8 +624,6 @@ class TTT3(QMainWindow):
                         self.position = "COM"
 
                         # Set the options available to the user in the 'Wing and Squadron' tab.
-                        self.gui.cb_eliteSqn.setChecked(False)
-                        self.gui.cb_eliteSqn.setEnabled(False)
                         self.gui.lw_wing.setEnabled(False)
                         self.gui.lw_wing.clear()
                         self.wing = ""
@@ -722,7 +721,6 @@ class TTT3(QMainWindow):
             setLWPixelSizes(self.gui.lw_ship)
 
         else:
-            self.gui.cb_eliteSqn.setChecked(False)
             self.gui.lw_ship.clear()
             self.ship = ""
             self.gui.lw_wing.clear()
@@ -733,7 +731,6 @@ class TTT3(QMainWindow):
         self.gui.lw_ship.setEnabled(boolEnabled)
         self.gui.lw_wing.setEnabled(boolEnabled)
         self.gui.lw_squad.setEnabled(boolEnabled)
-# self.gui.cb_eliteSqn.setEnabled(boolEnabled)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def rankRBLogic(self):
@@ -867,16 +864,15 @@ class TTT3(QMainWindow):
         try:
             self.uniform = "dress"
             # Check to see if the user has made the correct selections for their position and rank.
-            if self.position in ["FM", "FL", "CMDR", "WC"] and self.gui.cb_eliteSqn.isChecked() == False:
-                if not self.ship or not self.wing:
-                    msg = "Error: As a pilot you need to specify at least a ship and wing before a dress uniform can be created."
+            if self.position in ["FM", "FL", "SQXO", "CMDR"]:
+                self.showPreviewDialog()
+
+            elif self.position in ["WC"]:
+                if not self.wing:
+                    msg = "Error: As a WC you need to specify a wing before a dress uniform can be created."
                     return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
                 else:
                     self.showPreviewDialog()
-
-            elif self.gui.cb_eliteSqn.isChecked() and not self.sqn:
-                msg = "Error: As an elite pilot you need to specify a squadron before a dress uniform can be created."
-                return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
 
             elif self.position in ["COM"]:
                 if not self.ship:
@@ -954,6 +950,7 @@ class TTT3(QMainWindow):
         self.preview.lbl_LightX.mouseReleaseEvent = self.lbl_LightXFunc
         self.preview.lbl_LightY.mouseReleaseEvent = self.lbl_LightYFunc
         self.preview.lbl_LightZ.mouseReleaseEvent = self.lbl_LightZFunc
+        self.preview.cb_fastPreview.stateChanged.connect(self.fastPreviewFunc)
 
         # Set widgets to auto update on their mouseReleaseEvent.
         self.preview.cb_Refresh.stateChanged.connect(self.cb_previewRefreshFunc)
@@ -1155,6 +1152,7 @@ class TTT3(QMainWindow):
             self.preview.lbl_LightY.setText(self.convertIntToFloatStr(self.lightY, 10))
             self.preview.vs_LightZ.setValue(self.lightZ)
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZ, 10))
+            self.preview.cb_fastPreview.setChecked(self.fastPreview)
         else:
             # Helmet Style.
             # Add the styles to the comboBox.
@@ -1293,9 +1291,15 @@ class TTT3(QMainWindow):
                 if self.previewLoaded:
                     self.preview.lbl_wait.setHidden(False)
                 if self.uniform == "dress":
-                    self.createDressPov()
+                    if self.fastPreview:
+                        self.createDressPov(fastPreview=True)
+                    else:
+                        self.createDressPov()
                 elif self.uniform == "duty":
-                    self.createDutyPov()
+                    if self.fastPreview:
+                        self.createDutyPov(fastPreview=True)
+                    else:
+                        self.createDutyPov()
                 elif self.uniform == "helmet":
                     self.createHelmetPov()
                 self.queue.put(None)
@@ -1354,6 +1358,25 @@ class TTT3(QMainWindow):
 
             elif self.uniform == "helmet":
                 self.createHelmetPov()
+        else:
+            if self.fastPreview:
+                if self.uniform == "dress":
+                    self.createDressPov(fastPreview=True)
+
+                elif self.uniform == "duty":
+                    self.createDutyPov(fastPreview=True)
+
+                elif self.uniform == "helmet":
+                    self.createHelmetPov()
+            else:
+                if self.uniform == "dress":
+                    self.createDressPov()
+
+                elif self.uniform == "duty":
+                    self.createDutyPov()
+
+                elif self.uniform == "helmet":
+                    self.createHelmetPov()
 
         if self.uniform == "dress":
             width = self.width
@@ -1407,8 +1430,12 @@ class TTT3(QMainWindow):
                 template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W390 +H334 +Q{quality}{trans} -A -D /EXIT'.format(
                     quality=quality, trans=self.transparentBGHelm)
             else:
-                template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W390 +H520 +Q{quality}{trans} -A -D /EXIT'.format(
-                    quality=quality, trans=self.transparentBG)
+                if self.fastPreview:
+                    template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W390 +H520 +Q3{trans} -A -D /EXIT'.format(
+                        quality=quality, trans=self.transparentBG)
+                else:
+                    template = r'"&POVPATH&" /RENDER "&TTTPATH&\data\" +I&TYPE&.pov +W390 +H520 +Q{quality}{trans} -A -D /EXIT'.format(
+                        quality=quality, trans=self.transparentBG)
 
         template = template.replace("&TTTPATH&", os.getcwd())
 
@@ -1880,13 +1907,18 @@ class TTT3(QMainWindow):
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def createDressPov(self):
+    def createDressPov(self, fastPreview=False):
         r'''Method that loads in '\data\dress.tpt' parses in the correct uniform data and creates a new 'data\dress.pov' file.'''
+
+        if fastPreview:
+            template = r"data\fastPreview.tpt"
+        else:
+            template = r"data\dress.tpt"
 
         quantity = 1
 
         # Read in the template data.
-        with open(r"data\dress.tpt", "r") as tptFile:
+        with open(template, "r") as tptFile:
             template = tptFile.readlines()
 
         # Header text.
@@ -2244,13 +2276,18 @@ color_map
             povFile.writelines(povData)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def createDutyPov(self):
+    def createDutyPov(self, fastPreview=False):
         r'''Method that loads in '\data\duty.tpt' parses in the correct uniform data and creates a new 'data\duty.pov' file.'''
+
+        if fastPreview:
+            template = r"data\fastPreview.tpt"
+        else:
+            template = r"data\duty.tpt"
 
         quantity = 1
 
         # Read in the template data.
-        with open(r"data\duty.tpt", "r") as tptFile:
+        with open(template, "r") as tptFile:
             template = tptFile.readlines()
 
         # Header text.
@@ -2550,7 +2587,21 @@ color_map
                 povData.append(line.replace("&REFLECTION&", "%s" % self.convertIntToFloatStr(self.reflectionHelm, 100)))
 
             elif "&POSRANKFILE&" in line:
-                if self.position not in ["FM", "FL", "CMDR", "WC"] or self.rank not in ["SL", "LT", "LCM", "CM", "CPT", "MAJ", "LC", "COL", "GN"]:
+                if self.position not in [
+                        "FM",
+                        "FL",
+                        "SQXO",
+                        "CMDR",
+                        "WC"] or self.rank not in [
+                        "SL",
+                        "LT",
+                        "LCM",
+                        "CM",
+                        "CPT",
+                        "MAJ",
+                        "LC",
+                        "COL",
+                        "GN"]:
                     povData.append(line.replace("&POSRANKFILE&", "NIL"))
                 else:
                     fileName = self.position + "_" + self.rank
@@ -2795,18 +2846,30 @@ color_map
                     for section in self.ribbonConfig.sections():
                         if self.ribbonConfig.get(section, "name") == award:
                             ribbonCount += 1
+                elif self.awards.get(award)["type"] == "ranged" and self.awards.get(award)["baseAward"] == "True":
+                    if self.awards.get(award)["upgrades"][quantity] == 0:
+                        for section in self.ribbonConfig.sections():
+                            if self.ribbonConfig.get(section, "name") == award:
+                                ribbonCount += 1
         return ribbonCount
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def findSquadPatch(self):
         '''Method that retrieves the squadron patch file for the user's selected squadron.'''
 
+        patchFound = False
+
         for ext in [".png", ".jpg"]:
             extension = ext
             fileName = "data\\squads\\{squad}{extension}".format(squad=self.sqn, extension=ext)
             if os.path.isfile(fileName):
+                patchFound = True
                 break
-        return ext, fileName
+
+        if patchFound:
+            return ext, fileName
+        else:
+            return ".png", "data\\squads\\no_patch.png"
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def createMask(self, filepath=None):
@@ -2818,37 +2881,38 @@ color_map
             fileName = filepath
             extension = "." + fileName.rsplit(".", 1)[1]
 
-        try:
-            # Primary Mask Creation. Requires a transparent background.
-            # Load image with alpha channel.
-            img = cv2.imread(fileName, cv2.IMREAD_UNCHANGED)
-
-            # Get mask from alpha channel.
+        if fileName:
             try:
-                mask = img[:, :, 3]
-            except TypeError:
-                # Show error message.
-                msg = "%s does not have a transparent background." % fileName.split("\\")[-1]
-                return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
+                # Primary Mask Creation. Requires a transparent background.
+                # Load image with alpha channel.
+                img = cv2.imread(fileName, cv2.IMREAD_UNCHANGED)
 
-            # Save the mask.
-            fileName = fileName.replace(extension, "_mask.png")
-            cv2.imwrite(fileName, mask)
+                # Get mask from alpha channel.
+                try:
+                    mask = img[:, :, 3]
+                except TypeError:
+                    # Show error message.
+                    msg = "%s does not have a transparent background." % fileName.split("\\")[-1]
+                    return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
 
-        # Bacground likely not transparent. Doesn't need a transparent background but does not work well with high color / shaded patches.
-        except IndexError:
-            # Alternate Mask creation.
-            image = cv2.imread(fileName)
-            mask = numpy.ones(image.shape, dtype=numpy.uint8) * 255
-            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-            cnts = cv2.findContours(gray, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            cnts = cnts[0] if len(cnts) == 2 else cnts[1]
-            for c in cnts:
-                cv2.drawContours(mask, [c], -1, (0, 0, 0), cv2.FILLED)
-            mask = cv2.bitwise_not(mask)
-            # Save the mask.
-            fileName = fileName.replace(extension, "_mask.png")
-            cv2.imwrite(fileName, mask)
+                # Save the mask.
+                fileName = fileName.replace(extension, "_mask.png")
+                cv2.imwrite(fileName, mask)
+
+            # Bacground likely not transparent. Doesn't need a transparent background but does not work well with high color / shaded patches.
+            except IndexError:
+                # Alternate Mask creation.
+                image = cv2.imread(fileName)
+                mask = numpy.ones(image.shape, dtype=numpy.uint8) * 255
+                gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+                cnts = cv2.findContours(gray, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+                cnts = cnts[0] if len(cnts) == 2 else cnts[1]
+                for c in cnts:
+                    cv2.drawContours(mask, [c], -1, (0, 0, 0), cv2.FILLED)
+                mask = cv2.bitwise_not(mask)
+                # Save the mask.
+                fileName = fileName.replace(extension, "_mask.png")
+                cv2.imwrite(fileName, mask)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def shipSelectionLogic(self, value):
@@ -2857,6 +2921,8 @@ color_map
         try:
             # Clear the 'Wing' ListWidget.
             self.gui.lw_wing.clear()
+            self.wing = ""
+            self.sqn = ""
 
             try:
                 # Save the selected option.
@@ -2881,8 +2947,14 @@ color_map
                     # If only one Wing exists, select it by default.
                     if self.gui.lw_wing.count() == 1:
                         self.gui.lw_wing.setCurrentRow(0)
+                        self.wingSelectionLogic(None)
 
-                    self.wingSelectionLogic(None)
+                    # If the user has selected a Ship that contains no wings.
+                    elif self.gui.lw_wing.count() == 0:
+                        self.wingIsNoneSelectionLogic()
+
+                    else:
+                        self.wingSelectionLogic(None)
 
                 else:
                     if self.position not in ["COM"]:  # Stops Ship List Widget from being cleared.
@@ -2923,6 +2995,44 @@ color_map
                         if squad.get("uniformData").get("parentId") == wingId:
                             self.gui.lw_squad.addItem(squad.get("name"))
                     setLWPixelSizes(self.gui.lw_squad)
+                else:
+                    self.gui.lw_squad.clear()
+
+            except AttributeError:
+                pass  # Prevents the application throwing an error when the 'Wing' List Widget is clears and tries to populate squadrons from a 'blank' wing.
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def wingIsNoneSelectionLogic(self):
+        '''Method that handles the actions once a Wing is selected from the 'Wing' section in the 'Wing and Squadron' tab.'''
+
+        try:
+            # Clear the 'Squadron' ListWidget.
+            self.gui.lw_squad.clear()
+
+            try:
+                # Save the selected option.
+                self.wing = ""
+                self.setHelmetColouring("wings", self.wing)
+
+                if self.position not in ["WC"]:  # Stops Squadrons showing for WCs.
+                    self.sqn = ""
+                    self.gui.btn_dress.setEnabled(False)
+                    self.gui.btn_duty.setEnabled(False)
+
+                    # Populate the 'Squadron' List Widget with the Squadrons for the selected Wing.
+                    # Get the wing's ID.
+                    for ship in self.fleetConfig.get("ships"):
+                        if ship.get("name") == self.ship:
+                            shipId = ship.get("id")
+
+                    # Add squadrons that have the wingId as a parentId.
+                    for squad in self.fleetConfig.get("squadrons"):
+                        if squad.get("uniformData").get("parentId") == shipId:
+                            self.gui.lw_squad.addItem(squad.get("name"))
+                    setLWPixelSizes(self.gui.lw_squad)
+
                 else:
                     self.gui.lw_squad.clear()
 
@@ -3103,14 +3213,19 @@ color_map
                 rangeMin = int(self.ribbonConfig.get(ribbon, "rangeMin"))
                 rangeMax = int(self.ribbonConfig.get(ribbon, "rangeMax"))
 
+                if self.ribbonConfig.get(ribbon, "baseAward") == "True":
+                    filename = ribbon + "." + self.ribbonConfig.get(ribbon, "filename").split(".")[1]
+                    ribbons_g += self.addToRibbonIncludes(filename)
+
                 for i in range(rangeMin, rangeMax + 1):  # + 1 as Python omits the last number in a range.
 
                     filename = self.ribbonConfig.get(ribbon, "filename").replace("&RANGE&", str(i))
                     ribbons_g += self.addToRibbonIncludes(filename)
 
                 # Store the ribbon data to the 'self.awards' dictionary.
-                self.awards[name]["upgrades"] = [self.ribbonConfig.get(ribbon, "incrementName"), 0]
+                self.awards[name]["upgrades"] = [self.ribbonConfig.get(ribbon, "incrementName"), -1]
                 self.awards[name]["ranges"] = [rangeMin, rangeMax]
+                self.awards[name]["baseAward"] = self.ribbonConfig.get(ribbon, "baseAward")
 
             # All other ribbons.
             else:
@@ -3338,7 +3453,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     spinLabels[subRibbon].show()
                     self.subRibbonAwards.append([self.gui.lw_medals.currentItem().text(), upgrades[subRibbon][name], spinBoxes[subRibbon]])
 
-                # ----- Ranged type ribbon awards. (OV)
+                # ----- Ranged type ribbon awards. (OV & ORA)
             elif award.get("type") == "ranged":
                 self.gui.cb_singleMedal.setText(item.text())
 
@@ -3348,7 +3463,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.subRibbonAwards.append(self.gui.sb_multi_center2)
 
                 # Set the checkbox state.
-                if award.get("upgrades")[quantity] > 0:
+                if award.get("upgrades")[quantity] > 0 and award.get("baseAward") == "False":
+                    self.gui.cb_singleMedal.setChecked(True)
+                    self.cb_singleMedalSelectionLogic()
+                elif award.get("upgrades")[quantity] >= 0 and award.get("baseAward") == "True":
                     self.gui.cb_singleMedal.setChecked(True)
                     self.cb_singleMedalSelectionLogic()
                 else:
@@ -3441,13 +3559,15 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.gui.rb_upgradeable_0.setChecked(True)
                     self.disconnectRibbonUpgrades()
 
-                # ----- Ranged type ribbon awards. (OV)
+                # ----- Ranged type ribbon awards. (OV & ORA)
             elif award.get("type") == "ranged":
 
                 if self.gui.cb_singleMedal.isChecked():
 
                     # Setup and display the ribbon's spinbox and label.
                     rangeMin = int(award.get("ranges")[0])
+                    if award.get("baseAward") == "True":
+                        rangeMin -= 1
                     rangeMax = int(award.get("ranges")[1])
                     self.gui.sb_multi_center2.setRange(rangeMin, rangeMax)
                     self.gui.sb_multi_center2.setValue(award.get("upgrades")[quantity])
@@ -3460,7 +3580,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 else:
                     self.gui.sb_multi_center2.hide()
                     self.gui.lbl_ranged.hide()
-                    award.get("upgrades")[quantity] = 0
+                    if award.get("baseAward") == "True":
+                        award.get("upgrades")[quantity] = -1
+                    else:
+                        award.get("upgrades")[quantity] = 0
 
             # Check to see if the user has selected more than the maximum number of allowed ribbons.
             if award.get("type") != "single" and award.get("type") != "multi":
@@ -3657,6 +3780,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
                             # Add the object to our dress.pov file.
                             medalObjects.append(objRef)
+
+                            # Remove GOE Dagger upon user selection.
+                            if self.gui.rb_daggerNone.isChecked():
+                                if objRef == "dagger_left" or objRef == "dagger_right":
+                                    medalObjects.remove(objRef)
+
                         except KeyError:
                             break
 
@@ -3750,7 +3879,18 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     for section in self.ribbonConfig.sections():
                         if self.ribbonConfig.get(section, "name") == award:
                             awardName = "T_r_" + self.ribbonConfig.get(section, "filename").split(".")[0].lower().replace("-", "_")
-                            awardName = awardName.replace("&range&", str(self.awards.get(award)["upgrades"][quantity]))
+                            amount = self.awards.get(award)["upgrades"][quantity]
+                            maxAmount = self.awards.get(award)["ranges"][1]
+                            if amount > maxAmount:
+                                amount = maxAmount
+                            awardName = awardName.replace("&range&", str(amount))
+                            ribbonObjects.append("P_r&NUM& translate <0,0,%s> texture { %s }" % (yOffset, awardName))
+                elif self.awards.get(award)["upgrades"][quantity] == 0 and self.awards.get(award)["baseAward"] == "True":
+                    for section in self.ribbonConfig.sections():
+                        if self.ribbonConfig.get(section, "name") == award:
+                            awardName = "T_r_" + self.ribbonConfig.get(section,
+                                                                       "filename").split(".")[0].lower().replace("-",
+                                                                                                                 "_").split("&range&")[0][:-1]
                             ribbonObjects.append("P_r&NUM& translate <0,0,%s> texture { %s }" % (yOffset, awardName))
 
             # Multi type awards.
@@ -3860,7 +4000,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     if upgrade[name] == subRibbonName:
                         self.awards.get(awardName)["upgrades"][sender][1] = spinBox.value()
 
-            # ----- Ranged type ribbon awards. (OV)
+            # ----- Ranged type ribbon awards. (OV & ORA)
             elif award.get("type") == "ranged":
                 awardName = self.subRibbonAwards[0]
                 spinBox = self.subRibbonAwards[1]
@@ -4069,10 +4209,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
                     # Position.
                     self.position = saveData[1]
-                    radioBtns = [self.gui.rb_pos_trn, self.gui.rb_pos_fm, self.gui.rb_pos_fl, self.gui.rb_pos_cmdr,
-                                 self.gui.rb_pos_wc, self.gui.rb_pos_com, self.gui.rb_pos_tccs, self.gui.rb_pos_ia,
-                                 self.gui.rb_pos_ca, self.gui.rb_pos_sgcom, self.gui.rb_pos_cs, self.gui.rb_pos_xo,
-                                 self.gui.rb_pos_fc, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
+                    radioBtns = [self.gui.rb_pos_trn, self.gui.rb_pos_fm, self.gui.rb_pos_fl, self.gui.rb_pos_sqxo,
+                                 self.gui.rb_pos_cmdr, self.gui.rb_pos_wc, self.gui.rb_pos_com, self.gui.rb_pos_tccs,
+                                 self.gui.rb_pos_ia, self.gui.rb_pos_ca, self.gui.rb_pos_sgcom, self.gui.rb_pos_cs,
+                                 self.gui.rb_pos_xo, self.gui.rb_pos_fc, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
 
                     if self.position:
                         for radioButton in radioBtns:
@@ -4115,7 +4255,6 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         self.wingSelectionLogic(None)
 
                         # Squadron.
-                    self.gui.cb_eliteSqn.setChecked(saveData[5])
                     self.sqn = saveData[6]
                     if self.sqn:
                         for row in range(self.gui.lw_squad.count()):
@@ -4166,6 +4305,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     # Callsign.
                     self.callsign = saveData[20]
 
+                    # No GOE Dagger option.
+                    if saveData[21]:
+                        self.gui.rb_daggerNone.setChecked(True)
+
                 else:
                     # Show error message.
                     msg = "%s is not compatible with this version of TTT3.\nPlease save a new profile." % fileName.split("\\")[-1]
@@ -4183,12 +4326,12 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         try:
             # Collect the data to be saved into a list.
-            saveData = (self.saveFileVersion, self.position, self.rank, self.ship, self.wing, self.gui.cb_eliteSqn.isChecked(),
+            saveData = (self.saveFileVersion, self.position, self.rank, self.ship, self.wing, None,
                         self.sqn, self.awards, self.deconflictNeckRibbons, self.gui.cbFCHG.currentText(), self.gui.cb_dressLightsaber.isChecked(),
                         self.gui.cb_dressSaberStyles.currentIndex(), self.gui.rb_dressSaberRight.isChecked(), self.gui.rb_daggerLeft.isChecked(),
                         self.gui.cb_dutyLightsaber.isChecked(), self.gui.cb_dutySaberStyles.currentIndex(), self.gui.rb_dutySaberRight.isChecked(),
                         self.gui.cb_dutyBlaster.isChecked(), self.gui.cb_dutyBlasterStyles.currentIndex(), self.gui.rb_blasterLeft.isChecked(),
-                        self.callsign)
+                        self.callsign, self.gui.rb_daggerNone.isChecked())
 
             # Save the data.
             fileName = self.saveUniformFileDialog()
@@ -4278,13 +4421,15 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.rank = apiData.get("rankAbbr")
 
                     # Position.
-                    if apiData.get("position") == "":
+                    if apiData.get("position") == "" or apiData.get("position") == "RSV" or apiData.get("position") is None:
                         if self.rank in ["CT", "SL", "LT", "LCM", "CM", "CPT", "MAJ", "LC", "COL", "GN"]:
                             self.position = "LR"
                         else:
                             self.position = "FR"
                     else:
                         self.position = apiData.get("TTT").get("position")
+                        if self.position is None:
+                            self.position = apiData.get("position")
 
                     # Special handling of FC and XO positions.
                     idLine = apiData.get("IDLine")
@@ -4293,10 +4438,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         self.position = pos
 
                     # Apply the Position setting to the GUI.
-                    radioBtns = [self.gui.rb_pos_trn, self.gui.rb_pos_fm, self.gui.rb_pos_fl, self.gui.rb_pos_cmdr,
-                                 self.gui.rb_pos_wc, self.gui.rb_pos_com, self.gui.rb_pos_tccs, self.gui.rb_pos_ia,
-                                 self.gui.rb_pos_ca, self.gui.rb_pos_sgcom, self.gui.rb_pos_cs, self.gui.rb_pos_xo,
-                                 self.gui.rb_pos_fc, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
+                    radioBtns = [self.gui.rb_pos_trn, self.gui.rb_pos_fm, self.gui.rb_pos_fl, self.gui.rb_pos_sqxo,
+                                 self.gui.rb_pos_cmdr, self.gui.rb_pos_wc, self.gui.rb_pos_com, self.gui.rb_pos_tccs,
+                                 self.gui.rb_pos_ia, self.gui.rb_pos_ca, self.gui.rb_pos_sgcom, self.gui.rb_pos_cs,
+                                 self.gui.rb_pos_xo, self.gui.rb_pos_fc, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
 
                     # Apply the Rank setting to the GUI.
                     if self.position:
@@ -4388,7 +4533,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                        self.awards.get(award)["type"] == "multiRibbon" or \
                                        self.awards.get(award)["type"] == "ranged":
 
-                                        self.awards.get(award)["upgrades"][1] = apiMedalData.get(medal)
+                                        if medal == "ORA":
+                                            if apiMedalData.get(medal) != "ORA":
+                                                self.awards.get(award)["upgrades"][1] = int(apiMedalData.get(medal).replace("ORA-", "").replace("C", ""))
+                                            else:
+                                                self.awards.get(award)["upgrades"][1] = 0
+                                        else:
+                                            self.awards.get(award)["upgrades"][1] = apiMedalData.get(medal)
 
                                     # Upgradeable and SubRibbons type awards.
                                     elif self.awards.get(award)["type"] == "upgradeable" or \
@@ -4706,11 +4857,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         try:
             if self.gui.rb_dressSaberLeft.isChecked():
                 self.gui.rb_dutySaberLeft.setChecked(True)
-                self.gui.rb_daggerRight.setChecked(True)
+                if not self.gui.rb_daggerNone.isChecked():
+                    self.gui.rb_daggerRight.setChecked(True)
                 self.gui.rb_blasterRight.setChecked(True)
             else:
                 self.gui.rb_dutySaberRight.setChecked(True)
-                self.gui.rb_daggerLeft.setChecked(True)
+                if not self.gui.rb_daggerNone.isChecked():
+                    self.gui.rb_daggerLeft.setChecked(True)
                 self.gui.rb_blasterLeft.setChecked(True)
         except Exception as e:
             handleException(e)
@@ -4782,11 +4935,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         try:
             if self.gui.rb_blasterLeft.isChecked():
-                self.gui.rb_daggerLeft.setChecked(True)
+                if not self.gui.rb_daggerNone.isChecked():
+                    self.gui.rb_daggerLeft.setChecked(True)
                 self.gui.rb_dutySaberRight.setChecked(True)
                 self.gui.rb_dressSaberRight.setChecked(True)
             else:
-                self.gui.rb_daggerRight.setChecked(True)
+                if not self.gui.rb_daggerNone.isChecked():
+                    self.gui.rb_daggerRight.setChecked(True)
                 self.gui.rb_dutySaberLeft.setChecked(True)
                 self.gui.rb_dressSaberLeft.setChecked(True)
         except Exception as e:
@@ -4800,11 +4955,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             if self.gui.rb_dutySaberLeft.isChecked():
                 self.gui.rb_dressSaberLeft.setChecked(True)
                 self.gui.rb_blasterRight.setChecked(True)
-                self.gui.rb_daggerRight.setChecked(True)
+                if not self.gui.rb_daggerNone.isChecked():
+                    self.gui.rb_daggerRight.setChecked(True)
             else:
                 self.gui.rb_dressSaberRight.setChecked(True)
                 self.gui.rb_blasterLeft.setChecked(True)
-                self.gui.rb_daggerLeft.setChecked(True)
+                if not self.gui.rb_daggerNone.isChecked():
+                    self.gui.rb_daggerLeft.setChecked(True)
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4843,7 +5000,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.updateMsg += "TIE Corps fleet structure already up to date.\n"
 
                 # Squadron Patch checks.
-                dbSqnList = []
+                dbSqnList = ["no_patch"]
                 self.updateProgressBar.emit("init", len(self.fleetConfig.get("squadrons")))
 
                 for squadron in self.fleetConfig.get("squadrons"):
@@ -4874,10 +5031,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                         self.updateProgressBar.emit("show", 0)
                                         self.downloadPatchFile(dbSqnName, dbPatchURL)
                                         self.updateMsg += "Downloaded updated squadron patch for %s squadron.\n" % dbSqnName
-                                        break
+                                    break
 
                         # Download missing patches.
-                        if not squadFound:
+                        if not squadFound and dbPatchHash is not None:
                             self.updateProgressBar.emit("show", 0)
                             self.downloadPatchFile(dbSqnName, dbPatchURL)
                             self.updateMsg += "Downloaded new squadron patch for %s squadron.\n" % dbSqnName
@@ -6596,6 +6753,19 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                            float(label.text()), min, max, decimals, Qt.WindowFlags(), step)
         if ok:
             slider.setValue(int(value * scale))
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def fastPreviewFunc(self):
+        '''Method used when the Fast Preview checkbox is selected.'''
+
+        if self.preview.cb_fastPreview.isChecked():
+            self.fastPreview = True
+        else:
+            self.fastPreview = False
+
+        # Refresh the preview image.
+        self.lastRenderData = None
+        self.renderPreview()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
     def mirrorLogo(self, intLogo):

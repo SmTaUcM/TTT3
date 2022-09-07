@@ -18,7 +18,30 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 
 ## ------------------------------------------------------------------------------------------------##
 
-## [v3.0.1] 2022-02-21
+## [v3.0.2] 2022-09-04
+
+### Added
+- Fast uniform rendering option within the Dress and Duty uniform preview window.
+- Support for SQXO position.
+- Support for the Operational Readiness Award (ORA).
+- Option to not render the GOE Dagger under the weapons tab.
+
+### Changed
+- None
+
+### Fixed
+- Squadron patches always downloading on launch when there isn't one.
+- Crash when importing and rendering a Cadet's uniform.
+- Crash when importing and rendering a Reservist's uniform.
+- Crash when importing members of Vulture squadron.
+
+
+### Removed
+- None
+
+## ------------------------------------------------------------------------------------------------##
+
+## [v3.0.1] 2022-02-27
 
 ### Added
 - High DPI support allowing app scaling for high resolution monitors in Windows 10 via: 
