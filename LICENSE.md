@@ -1,7 +1,7 @@
 ## End-User License Agreement (EULA) of TIE Corps Tailoring Tool (TTT3)
 
-- Copyright 2020-2021 Stuart M. Macintosh  
-- Copyright 1994-2021 Emperor’s Hammer, Inc.
+- Copyright 2020-2022 Stuart M. Macintosh  
+- Copyright 1994-2022 Emperor’s Hammer, Inc.
 
 This End-User License Agreement ("EULA") is a legal agreement between you and Emperor’s Hammer, Inc.
 
