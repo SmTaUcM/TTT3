@@ -62,9 +62,9 @@ class TTT3(QMainWindow):
 
         try:
             # Version info.
-            version = "3.0.2"
+            version = "3.0.2 Fix 1"
             devVersion = ""
-            date = "04 September 2022"
+            date = "11 September 2022"
             self.saveFileVersion = 2  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
             self.version = "{v} {a}".format(v=version, a=devVersion)
 

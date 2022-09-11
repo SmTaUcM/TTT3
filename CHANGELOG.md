@@ -18,6 +18,24 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 
 ## ------------------------------------------------------------------------------------------------##
 
+## [v3.0.2 Fix 1] 2022-09-11
+
+### Added
+- None
+
+### Changed
+- None
+
+### Fixed
+- TUA-BW+ and MUA-BW+ not being imported.
+- MUA-PW & MUA-PW missing.
+
+
+### Removed
+- None
+
+## ------------------------------------------------------------------------------------------------##
+
 ## [v3.0.2] 2022-09-04
 
 ### Added
