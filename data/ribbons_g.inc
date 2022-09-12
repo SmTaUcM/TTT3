@@ -206,26 +206,34 @@ texture
 }
 texture { T_unilayer scale 2}
 
-#declare T_r_tua_b =
+#declare T_r_tua_bw =
 texture
 {
-  pigment { image_map { gif "ribbons/tua-b.gif" } }
+  pigment { image_map { gif "ribbons/tua-bw.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
 
-#declare T_r_tua_s =
+#declare T_r_tua_sw =
 texture
 {
-  pigment { image_map { gif "ribbons/tua-s.gif" } }
+  pigment { image_map { gif "ribbons/tua-sw.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
 
-#declare T_r_tua_g =
+#declare T_r_tua_gw =
 texture
 {
-  pigment { image_map { gif "ribbons/tua-g.gif" } }
+  pigment { image_map { gif "ribbons/tua-gw.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_tua_pw =
+texture
+{
+  pigment { image_map { gif "ribbons/tua-pw.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
@@ -238,26 +246,34 @@ texture
 }
 texture { T_unilayer scale 2}
 
-#declare T_r_mua_b =
+#declare T_r_mua_bw =
 texture
 {
-  pigment { image_map { gif "ribbons/mua-b.gif" } }
+  pigment { image_map { gif "ribbons/mua-bw.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
 
-#declare T_r_mua_s =
+#declare T_r_mua_sw =
 texture
 {
-  pigment { image_map { gif "ribbons/mua-s.gif" } }
+  pigment { image_map { gif "ribbons/mua-sw.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
 
-#declare T_r_mua_g =
+#declare T_r_mua_gw =
 texture
 {
-  pigment { image_map { gif "ribbons/mua-g.gif" } }
+  pigment { image_map { gif "ribbons/mua-gw.gif" } }
+  finish  { fin_T_uni }
+}
+texture { T_unilayer scale 2}
+
+#declare T_r_mua_pw =
+texture
+{
+  pigment { image_map { gif "ribbons/mua-pw.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
