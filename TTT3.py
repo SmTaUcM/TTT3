@@ -580,9 +580,6 @@ class TTT3(QMainWindow):
                 self.gui.rb_pos_13.setHidden(True)
                 self.gui.rb_pos_14.setText("")
                 self.gui.rb_pos_14.setHidden(True)
-
-            print(str(index))
-            pass # ToDo Rank_systemFunc
         except Exception as e:
             handleException(e)
         #--------------------------------------------------------------------------------------------------------------------------------------------#
@@ -709,7 +706,7 @@ class TTT3(QMainWindow):
                         break
 
                     # Battlegroup Commander.
-                    elif radioButton == self.gui.rb_pos_8: # ToDo Fix these...
+                    elif radioButton == self.gui.rb_pos_8:
                         self.showRanks(RA, HA)
                         self.position = "BGCOM"
                         self.enableWingAndSqnTab(False)
@@ -4525,7 +4522,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                             self.gui.cb_rank_system.setCurrentIndex(self.gui.cb_rank_system.currentIndex() + 1)
                             for radioButton in radioBtns:
                                 if "(" in radioButton.text():
-                                    if self.position.lower() == radioButton.text().lower().split("(")[1].split(")")[0]: # ToDo Import
+                                    if self.position.lower() == radioButton.text().lower().split("(")[1].split(")")[0]:
                                         radioButton.setChecked(True)
                                         positionFound = True
                                         break
