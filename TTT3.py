@@ -98,23 +98,28 @@ class TTT3(QMainWindow):
 
             # ----- 'Position and Rank' Tab. -----
 
+            # Combo Box connections.
+            self.gui.cb_rank_system.currentIndexChanged.connect(self.cb_rank_systemFunc)
+            self.gui.cb_rank_system.setCurrentIndex(0)
+            self.cb_rank_systemFunc(0)
+
             # Radio Button Connections.
 
             # Positions.
-            self.gui.rb_pos_trn.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_fm.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_fl.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_sqxo.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_cmdr.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_wc.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_com.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_tccs.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_ia.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_ca.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_sgcom.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_cs.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_xo.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_fc.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_1.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_2.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_3.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_4.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_5.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_6.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_7.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_8.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_9.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_10.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_11.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_12.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_13.clicked.connect(self.posRBLogic)
+            self.gui.rb_pos_14.clicked.connect(self.posRBLogic)
             self.gui.rb_pos_lr.clicked.connect(self.posRBLogic)
             self.gui.rb_pos_fr.clicked.connect(self.posRBLogic)
 
@@ -143,9 +148,9 @@ class TTT3(QMainWindow):
                                      self.gui.rb_rank_ra, self.gui.rb_rank_va, self.gui.rb_rank_ad, self.gui.rb_rank_fa, self.gui.rb_rank_ha,
                                      self.gui.rb_rank_sa, self.gui.rb_rank_ga]
 
-            self.positionRadioButtons = [self.gui.rb_pos_trn, self.gui.rb_pos_fm, self.gui.rb_pos_fl, self.gui.rb_pos_sqxo, self.gui.rb_pos_cmdr,
-                                         self.gui.rb_pos_wc, self.gui.rb_pos_com, self.gui.rb_pos_tccs, self.gui.rb_pos_ia, self.gui.rb_pos_ca,
-                                         self.gui.rb_pos_sgcom, self.gui.rb_pos_cs, self.gui.rb_pos_xo, self.gui.rb_pos_fc, self.gui.rb_pos_lr,
+            self.positionRadioButtons = [self.gui.rb_pos_1, self.gui.rb_pos_2, self.gui.rb_pos_3, self.gui.rb_pos_4, self.gui.rb_pos_5,
+                                         self.gui.rb_pos_6, self.gui.rb_pos_7, self.gui.rb_pos_8, self.gui.rb_pos_9, self.gui.rb_pos_10,
+                                         self.gui.rb_pos_11, self.gui.rb_pos_12, self.gui.rb_pos_13, self.gui.rb_pos_14, self.gui.rb_pos_lr,
                                          self.gui.rb_pos_fr]
 
             # ----- 'Wing and Squadron' Tab. -----
@@ -513,6 +518,75 @@ class TTT3(QMainWindow):
         self.gui.btn_remember.hide()
         #--------------------------------------------------------------------------------------------------------------------------------------------#
 
+    def cb_rank_systemFunc(self, index):
+        '''Method that triggers when the 'Rank System' combo box is changed'''
+
+        try:
+            if self.gui.cb_rank_system.currentText() == "Emperor's Hammer Ranks":
+                self.gui.rb_pos_1.setText("")
+                self.gui.rb_pos_1.setHidden(True)
+                self.gui.rb_pos_2.setText("")
+                self.gui.rb_pos_2.setHidden(True)
+                self.gui.rb_pos_3.setText("")
+                self.gui.rb_pos_3.setHidden(True)
+                self.gui.rb_pos_4.setText("")
+                self.gui.rb_pos_4.setHidden(True)
+                self.gui.rb_pos_5.setText("")
+                self.gui.rb_pos_5.setHidden(True)
+                self.gui.rb_pos_6.setText("")
+                self.gui.rb_pos_6.setHidden(True)
+                self.gui.rb_pos_7.setText("")
+                self.gui.rb_pos_7.setHidden(True)
+                self.gui.rb_pos_8.setText("")
+                self.gui.rb_pos_8.setHidden(True)
+                self.gui.rb_pos_9.setText("Imperial Advisor (IA)")
+                self.gui.rb_pos_9.setHidden(False)
+                self.gui.rb_pos_10.setText("Command Attache (CA)")
+                self.gui.rb_pos_10.setHidden(False)
+                self.gui.rb_pos_11.setText("Group Commanding Officer (GCO)")
+                self.gui.rb_pos_11.setHidden(False)
+                self.gui.rb_pos_12.setText("Command Staff (CS)")
+                self.gui.rb_pos_12.setHidden(False)
+                self.gui.rb_pos_13.setText("Executive Officer (XO)")
+                self.gui.rb_pos_13.setHidden(False)
+                self.gui.rb_pos_14.setText("Fleet Commander (FC)")
+                self.gui.rb_pos_14.setHidden(False)
+            elif self.gui.cb_rank_system.currentText() == "TIE Corps Ranks":
+                self.gui.rb_pos_1.setText("Trainee (TRN)")
+                self.gui.rb_pos_1.setHidden(False)
+                self.gui.rb_pos_2.setText("Flight Member (FM)")
+                self.gui.rb_pos_2.setHidden(False)
+                self.gui.rb_pos_3.setText("Flight Leader (FL)")
+                self.gui.rb_pos_3.setHidden(False)
+                self.gui.rb_pos_4.setText("Squadron Executive Officer (SQXO)")
+                self.gui.rb_pos_4.setHidden(False)
+                self.gui.rb_pos_5.setText("Squadron Commander (CMDR)")
+                self.gui.rb_pos_5.setHidden(False)
+                self.gui.rb_pos_6.setText("Wing Commander (WC)")
+                self.gui.rb_pos_6.setHidden(False)
+                self.gui.rb_pos_7.setText("Commodore (COM)")
+                self.gui.rb_pos_7.setHidden(False)
+                self.gui.rb_pos_8.setText("Battlegroup Commander (BGCOM)")
+                self.gui.rb_pos_8.setHidden(False)
+                self.gui.rb_pos_9.setText("Combat Operations Officer (COO)")
+                self.gui.rb_pos_9.setHidden(False)
+                self.gui.rb_pos_10.setText("Strategic Operations Officer (SOO)")
+                self.gui.rb_pos_10.setHidden(False)
+                self.gui.rb_pos_11.setText("TIE Corps Commander (TCCOM)")
+                self.gui.rb_pos_11.setHidden(False)
+                self.gui.rb_pos_12.setText("")
+                self.gui.rb_pos_12.setHidden(True)
+                self.gui.rb_pos_13.setText("")
+                self.gui.rb_pos_13.setHidden(True)
+                self.gui.rb_pos_14.setText("")
+                self.gui.rb_pos_14.setHidden(True)
+
+            print(str(index))
+            pass # ToDo Rank_systemFunc
+        except Exception as e:
+            handleException(e)
+        #--------------------------------------------------------------------------------------------------------------------------------------------#
+
     def posRBLogic(self):
         '''Method that controls the Position Radio Button Logic - Showing or hiding the required rank options.'''
 
@@ -569,7 +643,7 @@ class TTT3(QMainWindow):
 
                     # Show the correct rank radio buttons for the selected position.
                     # Trainee.
-                    if radioButton == self.gui.rb_pos_trn:
+                    if radioButton == self.gui.rb_pos_1:
                         self.showRanks(CT, CT)
                         self.position = "TRN"
                         self.gui.rb_rank_ct.setChecked(True)
@@ -578,35 +652,35 @@ class TTT3(QMainWindow):
                         break
 
                     # Flight Member.
-                    elif radioButton == self.gui.rb_pos_fm:
+                    elif radioButton == self.gui.rb_pos_2:
                         self.showRanks(SL, GN)
                         self.position = "FM"
                         self.enableWingAndSqnTab(True)
                         break
 
                     # Flight Leader.
-                    elif radioButton == self.gui.rb_pos_fl:
+                    elif radioButton == self.gui.rb_pos_3:
                         self.showRanks(LT, GN)
                         self.position = "FL"
                         self.enableWingAndSqnTab(True)
                         break
 
                     # Squadron Executive Officer.
-                    elif radioButton == self.gui.rb_pos_sqxo:
+                    elif radioButton == self.gui.rb_pos_4:
                         self.showRanks(LT, GN)
                         self.position = "SQXO"
                         self.enableWingAndSqnTab(True)
                         break
 
                     # Squadron Commander.
-                    elif radioButton == self.gui.rb_pos_cmdr:
+                    elif radioButton == self.gui.rb_pos_5:
                         self.showRanks(CM, GN)
                         self.position = "CMDR"
                         self.enableWingAndSqnTab(True)
                         break
 
                     # Wing Commander.
-                    elif radioButton == self.gui.rb_pos_wc:
+                    elif radioButton == self.gui.rb_pos_6:
                         self.showRanks(MAJ, GN)
                         self.position = "WC"
 
@@ -619,8 +693,8 @@ class TTT3(QMainWindow):
                         break
 
                     # Commodore.
-                    elif radioButton == self.gui.rb_pos_com:
-                        self.showRanks(RA, GA)
+                    elif radioButton == self.gui.rb_pos_7:
+                        self.showRanks(RA, HA)
                         self.position = "COM"
 
                         # Set the options available to the user in the 'Wing and Squadron' tab.
@@ -634,16 +708,16 @@ class TTT3(QMainWindow):
                         self.loadHelmetData()
                         break
 
-                    # TE Corps Command Staff.
-                    elif radioButton == self.gui.rb_pos_tccs:
+                    # Battlegroup Commander.
+                    elif radioButton == self.gui.rb_pos_8: # ToDo Fix these...
                         self.showRanks(RA, HA)
-                        self.position = "TCCS"
+                        self.position = "BGCOM"
                         self.enableWingAndSqnTab(False)
                         self.loadHelmetData()
                         break
 
                     # Imperial Advisor.
-                    elif radioButton == self.gui.rb_pos_ia:
+                    elif radioButton == self.gui.rb_pos_9:
                         self.showRanks(RA, SA)
                         self.position = "IA"
                         self.enableWingAndSqnTab(False)
@@ -651,7 +725,7 @@ class TTT3(QMainWindow):
                         break
 
                     # Command Attache.
-                    elif radioButton == self.gui.rb_pos_ca:
+                    elif radioButton == self.gui.rb_pos_10:
                         self.showRanks(RA, SA)
                         self.position = "CA"
                         self.enableWingAndSqnTab(False)
@@ -659,15 +733,15 @@ class TTT3(QMainWindow):
                         break
 
                     # Sub-Group Commander.
-                    elif radioButton == self.gui.rb_pos_sgcom:
+                    elif radioButton == self.gui.rb_pos_11:
                         self.showRanks(RA, GA)
-                        self.position = "SGCOM"
+                        self.position = "GCO"
                         self.enableWingAndSqnTab(False)
                         self.loadHelmetData()
                         break
 
                     # Command Staff.
-                    elif radioButton == self.gui.rb_pos_cs:
+                    elif radioButton == self.gui.rb_pos_12:
                         self.showRanks(RA, GA)
                         self.position = "CS"
                         self.enableWingAndSqnTab(False)
@@ -675,7 +749,7 @@ class TTT3(QMainWindow):
                         break
 
                     # Executive Officer.
-                    elif radioButton == self.gui.rb_pos_xo:
+                    elif radioButton == self.gui.rb_pos_13:
                         self.showRanks(RA, GA)
                         self.position = "XO"
                         self.enableWingAndSqnTab(False)
@@ -683,7 +757,7 @@ class TTT3(QMainWindow):
                         break
 
                     # Fleet Commander.
-                    elif radioButton == self.gui.rb_pos_fc:
+                    elif radioButton == self.gui.rb_pos_14:
                         self.showRanks(GA, GA)
                         self.position = "FC"
                         self.gui.rb_rank_ga.setChecked(True)
@@ -2143,7 +2217,7 @@ color_map
                 if self.position in ["CS", "XO", "FC"]:
                     povData.append(line.replace("&PADINCLUDE&", '#include "pad_braids_g.inc"'))
 
-                elif self.position in ["IA", "CA", "SGCOM"]:
+                elif self.position in ["IA", "CA", "GCO"]:
                     povData.append(line.replace("&PADINCLUDE&", '#include "pad_braid_g.inc"'))
 
                 else:
@@ -2929,7 +3003,7 @@ color_map
                 self.ship = self.gui.lw_ship.currentItem().text()
                 self.setHelmetColouring("ships", self.ship)
 
-                if self.position not in ["TRN", "COM", "TCCS", "IA", "CA", "SGCOM", "CS",
+                if self.position not in ["TRN", "COM", "BGCOM", "IA", "CA", "GCO", "CS",
                                          "XO", "FC"]:  # Stops Wings and Squadrons showing for COMs and above.
 
                     # Populate the 'Wing' List Widget with the Wings for the selected Ship.
@@ -4148,10 +4222,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
             # GUI Cleanup.
             # Position Radio Buttons.
-            self.gui.rb_pos_trn.setChecked(True)
-            self.gui.rb_pos_trn.setAutoExclusive(False)
-            self.gui.rb_pos_trn.setChecked(False)
-            self.gui.rb_pos_trn.setAutoExclusive(True)
+            self.gui.rb_pos_1.setChecked(True)
+            self.gui.rb_pos_1.setAutoExclusive(False)
+            self.gui.rb_pos_1.setChecked(False)
+            self.gui.rb_pos_1.setAutoExclusive(True)
             # Ship, Wing and Squadron ListWidgets.
             self.enableWingAndSqnTab(False)
             # Set default Misc Tab Options.
@@ -4209,10 +4283,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
                     # Position.
                     self.position = saveData[1]
-                    radioBtns = [self.gui.rb_pos_trn, self.gui.rb_pos_fm, self.gui.rb_pos_fl, self.gui.rb_pos_sqxo,
-                                 self.gui.rb_pos_cmdr, self.gui.rb_pos_wc, self.gui.rb_pos_com, self.gui.rb_pos_tccs,
-                                 self.gui.rb_pos_ia, self.gui.rb_pos_ca, self.gui.rb_pos_sgcom, self.gui.rb_pos_cs,
-                                 self.gui.rb_pos_xo, self.gui.rb_pos_fc, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
+                    radioBtns = [self.gui.rb_pos_1, self.gui.rb_pos_2, self.gui.rb_pos_3, self.gui.rb_pos_4,
+                                 self.gui.rb_pos_5, self.gui.rb_pos_6, self.gui.rb_pos_7, self.gui.rb_pos_8,
+                                 self.gui.rb_pos_9, self.gui.rb_pos_10, self.gui.rb_pos_11, self.gui.rb_pos_12,
+                                 self.gui.rb_pos_13, self.gui.rb_pos_14, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
 
                     if self.position:
                         for radioButton in radioBtns:
@@ -4427,7 +4501,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         else:
                             self.position = "FR"
                     else:
-                        self.position = apiData.get("TTT").get("position")
+                        self.position = apiData.get("position")
                         if self.position is None:
                             self.position = apiData.get("position")
 
@@ -4438,17 +4512,26 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         self.position = pos
 
                     # Apply the Position setting to the GUI.
-                    radioBtns = [self.gui.rb_pos_trn, self.gui.rb_pos_fm, self.gui.rb_pos_fl, self.gui.rb_pos_sqxo,
-                                 self.gui.rb_pos_cmdr, self.gui.rb_pos_wc, self.gui.rb_pos_com, self.gui.rb_pos_tccs,
-                                 self.gui.rb_pos_ia, self.gui.rb_pos_ca, self.gui.rb_pos_sgcom, self.gui.rb_pos_cs,
-                                 self.gui.rb_pos_xo, self.gui.rb_pos_fc, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
+                    radioBtns = [self.gui.rb_pos_1, self.gui.rb_pos_2, self.gui.rb_pos_3, self.gui.rb_pos_4,
+                                 self.gui.rb_pos_5, self.gui.rb_pos_6, self.gui.rb_pos_7, self.gui.rb_pos_8,
+                                 self.gui.rb_pos_9, self.gui.rb_pos_10, self.gui.rb_pos_11, self.gui.rb_pos_12,
+                                 self.gui.rb_pos_13, self.gui.rb_pos_14, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
 
                     # Apply the Rank setting to the GUI.
                     if self.position:
-                        for radioButton in radioBtns:
-                            if self.position.lower() == radioButton.objectName().replace("rb_pos_", ""):
-                                radioButton.setChecked(True)
-                                break
+                        positionFound = False
+                        self.gui.cb_rank_system.setCurrentIndex(-1)
+                        while not positionFound:
+                            self.gui.cb_rank_system.setCurrentIndex(self.gui.cb_rank_system.currentIndex() + 1)
+                            for radioButton in radioBtns:
+                                if "(" in radioButton.text():
+                                    if self.position.lower() == radioButton.text().lower().split("(")[1].split(")")[0]: # ToDo Import
+                                        radioButton.setChecked(True)
+                                        positionFound = True
+                                        break
+                            if self.gui.cb_rank_system.currentIndex() == -1:
+                                self.position = apiData.get("TTT").get("position") # Fallback position detection.
+
                         self.posRBLogic()
                         self.rank = apiData.get("rankAbbr")  # Added again because self.posRBLogic() sets self.rank to None.
 
