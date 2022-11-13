@@ -5069,7 +5069,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             # Turtle
             self.gui.lbl_Turtle.setText(self.getRetrieveAPIData(self.config.get("TCDB", "pinapi"), "238").get("rankAbbr") + " Turtle Jerrar")
             # Jedi Eclipse
-            self.gui.lbl_Eclipse.setText("& " + self.getRetrieveAPIData(self.config.get("TCDB", "pinapi"), "8171").get("rankAbbr") + " Jedi Eclipse")
+            self.gui.lbl_Eclipse.setText(", & " + self.getRetrieveAPIData(self.config.get("TCDB", "pinapi"), "8171").get("rankAbbr") + " Jedi Eclipse")
 
             # Fleet data updates.
             apiFleetData = self.getRetrieveAPIData(self.config.get("TCDB", "fleetapi"), "")

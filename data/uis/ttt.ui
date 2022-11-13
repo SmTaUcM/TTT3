@@ -2848,7 +2848,7 @@ QListWidget:!enabled
        <rect>
         <x>10</x>
         <y>95</y>
-        <width>121</width>
+        <width>131</width>
         <height>20</height>
        </rect>
       </property>
@@ -2859,13 +2859,13 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>Created 2022 by</string>
+       <string>Created 2021-2022 by</string>
       </property>
      </widget>
      <widget class="QLabel" name="lbl_SkyShadow">
       <property name="geometry">
        <rect>
-        <x>109</x>
+        <x>140</x>
         <y>95</y>
         <width>111</width>
         <height>20</height>
@@ -3346,7 +3346,7 @@ QListWidget:!enabled
      <widget class="QLabel" name="lbl_Turtle">
       <property name="geometry">
        <rect>
-        <x>222</x>
+        <x>245</x>
         <y>95</y>
         <width>131</width>
         <height>20</height>
@@ -3367,7 +3367,7 @@ QListWidget:!enabled
      <widget class="QLabel" name="lbl_Eclipse">
       <property name="geometry">
        <rect>
-        <x>325</x>
+        <x>345</x>
         <y>95</y>
         <width>121</width>
         <height>20</height>
@@ -3382,7 +3382,7 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>&amp; AD Jedi Eclipse</string>
+       <string>, &amp; AD Jedi Eclipse</string>
       </property>
      </widget>
      <widget class="QLabel" name="lbl_pic_io">
@@ -3446,9 +3446,9 @@ QListWidget:!enabled
      <widget class="QLabel" name="label_32">
       <property name="geometry">
        <rect>
-        <x>441</x>
+        <x>469</x>
         <y>95</y>
-        <width>71</width>
+        <width>61</width>
         <height>20</height>
        </rect>
       </property>

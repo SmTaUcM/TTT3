@@ -24,7 +24,7 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 - Support for BGCOM position.
 
 ### Changed
-- TCCS Position/Cuff Stripes
+- Realigned position cuff stripes for TCCS based on fleet-wide standard. (@238)
 
 ## ------------------------------------------------------------------------------------------------##
 
