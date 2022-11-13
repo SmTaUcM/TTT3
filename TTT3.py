@@ -62,9 +62,9 @@ class TTT3(QMainWindow):
 
         try:
             # Version info.
-            version = "3.0.3"
+            version = "3.0.4"
             devVersion = ""
-            date = "12 September 2022"
+            date = "13 November 2022"
             self.saveFileVersion = 2  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
@@ -522,7 +522,7 @@ class TTT3(QMainWindow):
         '''Method that triggers when the 'Rank System' combo box is changed'''
 
         try:
-            if self.gui.cb_rank_system.currentText() == "Emperor's Hammer Ranks":
+            if self.gui.cb_rank_system.currentText() == "Emperor's Hammer Positions":
                 self.gui.rb_pos_1.setText("")
                 self.gui.rb_pos_1.setHidden(True)
                 self.gui.rb_pos_2.setText("")
@@ -551,7 +551,7 @@ class TTT3(QMainWindow):
                 self.gui.rb_pos_13.setHidden(False)
                 self.gui.rb_pos_14.setText("Fleet Commander (FC)")
                 self.gui.rb_pos_14.setHidden(False)
-            elif self.gui.cb_rank_system.currentText() == "TIE Corps Ranks":
+            elif self.gui.cb_rank_system.currentText() == "TIE Corps Positions":
                 self.gui.rb_pos_1.setText("Trainee (TRN)")
                 self.gui.rb_pos_1.setHidden(False)
                 self.gui.rb_pos_2.setText("Flight Member (FM)")

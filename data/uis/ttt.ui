@@ -864,14 +864,17 @@ margin-top: 2px; /* make non-selected tabs look smaller */
         <height>22</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(211, 211, 211);</string>
+      </property>
       <item>
        <property name="text">
-        <string>Emperor's Hammer Ranks</string>
+        <string>Emperor's Hammer Positions</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>TIE Corps Ranks</string>
+        <string>TIE Corps Positions</string>
        </property>
       </item>
      </widget>
