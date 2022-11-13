@@ -4526,6 +4526,17 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                         radioButton.setChecked(True)
                                         positionFound = True
                                         break
+
+                                elif self.position == "LR" and "_lr" in radioButton.objectName():
+                                    radioButton.setChecked(True)
+                                    positionFound = True
+                                    break
+
+                                elif self.position == "FR" and "_fr" in radioButton.objectName():
+                                    radioButton.setChecked(True)
+                                    positionFound = True
+                                    break
+
                             if self.gui.cb_rank_system.currentIndex() == -1:
                                 self.position = apiData.get("TTT").get("position") # Fallback position detection.
 
