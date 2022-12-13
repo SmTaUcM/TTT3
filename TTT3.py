@@ -5821,7 +5821,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.lightYHelm = saveData[16]
                     self.lightZHelm = saveData[17]
                     self.fontHelmQFront = QFont(saveData[18])
-##                    self.nameHelm = saveData[19]
+                    self.nameHelm = saveData[19]
                     self.logo1FilepathHelm = saveData[20]
                     self.logo1TypeHelm = saveData[21]
                     self.logo2FilepathHelm = saveData[22]
