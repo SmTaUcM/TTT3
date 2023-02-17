@@ -567,10 +567,13 @@ object
   #if (!strcmp(position,"FC")) #declare P_acollar = P_collar_fc; #end
   #if (!strcmp(position,"XO")) #declare P_acollar = P_collar_cs; #end
   #if (!strcmp(position,"CS")) #declare P_acollar = P_collar_cs; #end
-  #if (!strcmp(position,"SGCOM")) #declare P_acollar = P_collar_sgcom; #end
+  #if (!strcmp(position,"GCO")) #declare P_acollar = P_collar_sgcom; #end
   #if (!strcmp(position,"CA")) #declare P_acollar = P_collar_ca; #end
   #if (!strcmp(position,"IA")) #declare P_acollar = P_collar_ia; #end
   #if (!strcmp(position,"TCCS")) #declare P_acollar = P_collar_tccs; #end
+  #if (!strcmp(position,"COO")) #declare P_acollar = P_collar_tccs; #end
+  #if (!strcmp(position,"SOO")) #declare P_acollar = P_collar_tccs; #end
+  #if (!strcmp(position,"GCO")) #declare P_acollar = P_collar_tccs; #end
   #if (!strcmp(position,"COM")) #declare P_acollar = P_collar_com; #end
 #end
 #if (!strcmp(category,"line"))

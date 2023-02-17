@@ -18,6 +18,16 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 
 ## ------------------------------------------------------------------------------------------------##
 
+## [v3.0.4] 2023-02-17
+
+### Added
+- Support for BGCOM position.
+
+### Changed
+- Realigned position cuff stripes for TCCS based on fleet-wide standard. (@238)
+
+## ------------------------------------------------------------------------------------------------##
+
 ## [v3.0.3] 2022-09-12
 
 ### Added
