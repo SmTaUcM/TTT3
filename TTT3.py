@@ -10,9 +10,9 @@
 # Licence:     Open Source
 #-------------------------------------------------------------------------------------------------------------------------------------------------#'''
 
-#----------------------------------------------------------------------------------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                      Imports.                                                                      #
-#----------------------------------------------------------------------------------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------------------------------------------------------------------------------#
 # Developed using Python v3.8.7 32-bit.
 # External dependencies are commented. Imports with no comments are included with the regular Python installation.
 # Alternatively run "TTT3\Useful Info\Dependency Installer.bat"
@@ -44,12 +44,12 @@ import queue
 import Slider
 import ftfy  # python -m pip install ftfy
 # python -m pip install pyinstaller - for compiler.
-#----------------------------------------------------------------------------------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
-#----------------------------------------------------------------------------------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                      Classes.                                                                      #
-#----------------------------------------------------------------------------------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
 class TTT3(QMainWindow):
@@ -64,7 +64,7 @@ class TTT3(QMainWindow):
             # Version info.
             version = "3.0.4"
             devVersion = ""
-            date = "13 November 2022"
+            date = "17 February 2023"
             self.saveFileVersion = 2  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
@@ -97,6 +97,17 @@ class TTT3(QMainWindow):
             self.gui.btn_exit.clicked.connect(self.closeEvent)
 
             # ----- 'Position and Rank' Tab. -----
+
+            # Radio Button lists.
+            self.rankRadioButtons = [self.gui.rb_rank_ct, self.gui.rb_rank_sl, self.gui.rb_rank_lt, self.gui.rb_rank_lcm, self.gui.rb_rank_cm,
+                                     self.gui.rb_rank_cpt, self.gui.rb_rank_maj, self.gui.rb_rank_lc, self.gui.rb_rank_col, self.gui.rb_rank_gn,
+                                     self.gui.rb_rank_ra, self.gui.rb_rank_va, self.gui.rb_rank_ad, self.gui.rb_rank_fa, self.gui.rb_rank_ha,
+                                     self.gui.rb_rank_sa, self.gui.rb_rank_ga]
+
+            self.positionRadioButtons = [self.gui.rb_pos_1, self.gui.rb_pos_2, self.gui.rb_pos_3, self.gui.rb_pos_4, self.gui.rb_pos_5,
+                                         self.gui.rb_pos_6, self.gui.rb_pos_7, self.gui.rb_pos_8, self.gui.rb_pos_9, self.gui.rb_pos_10,
+                                         self.gui.rb_pos_11, self.gui.rb_pos_12, self.gui.rb_pos_13, self.gui.rb_pos_14, self.gui.rb_pos_lr,
+                                         self.gui.rb_pos_fr]
 
             # Combo Box connections.
             self.gui.cb_rank_system.currentIndexChanged.connect(self.cb_rank_systemFunc)
@@ -141,17 +152,6 @@ class TTT3(QMainWindow):
             self.gui.rb_rank_ha.clicked.connect(self.rankRBLogic)
             self.gui.rb_rank_sa.clicked.connect(self.rankRBLogic)
             self.gui.rb_rank_ga.clicked.connect(self.rankRBLogic)
-
-            # Radio Button lists.
-            self.rankRadioButtons = [self.gui.rb_rank_ct, self.gui.rb_rank_sl, self.gui.rb_rank_lt, self.gui.rb_rank_lcm, self.gui.rb_rank_cm,
-                                     self.gui.rb_rank_cpt, self.gui.rb_rank_maj, self.gui.rb_rank_lc, self.gui.rb_rank_col, self.gui.rb_rank_gn,
-                                     self.gui.rb_rank_ra, self.gui.rb_rank_va, self.gui.rb_rank_ad, self.gui.rb_rank_fa, self.gui.rb_rank_ha,
-                                     self.gui.rb_rank_sa, self.gui.rb_rank_ga]
-
-            self.positionRadioButtons = [self.gui.rb_pos_1, self.gui.rb_pos_2, self.gui.rb_pos_3, self.gui.rb_pos_4, self.gui.rb_pos_5,
-                                         self.gui.rb_pos_6, self.gui.rb_pos_7, self.gui.rb_pos_8, self.gui.rb_pos_9, self.gui.rb_pos_10,
-                                         self.gui.rb_pos_11, self.gui.rb_pos_12, self.gui.rb_pos_13, self.gui.rb_pos_14, self.gui.rb_pos_lr,
-                                         self.gui.rb_pos_fr]
 
             # ----- 'Wing and Squadron' Tab. -----
 
@@ -371,49 +371,49 @@ class TTT3(QMainWindow):
             self.maxedRibbons = False
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def readmeLink(self, event):
         '''Method event for when 'TTT3readme.htm' is clicked on the 'Info' tab.'''
 
         subprocess.Popen("start TTT3_readme.htm", shell=True)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def ioLink(self, event):
         '''Method event for when 'Internet Office' is clicked on the 'Info' tab.'''
 
         subprocess.Popen("start https://ehnet.org/", shell=True)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def tcpmLink(self, event):
         '''Method event for when 'TIE Corps Pilot Manual' is clicked on the 'Info' tab.'''
 
         subprocess.Popen("start https://tc.emperorshammer.org/downloads/TCPM.pdf", shell=True)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def uniformsLink(self, event):
         '''Method event for when 'TIE Corps Personnel Uniforms' is clicked on the 'Info' tab.'''
 
         subprocess.Popen("start https://emperorshammer.org/uniforms.php", shell=True)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def pythonLink(self, event):
         '''Method event for when 'Python' is clicked on the 'Info' tab.'''
 
         subprocess.Popen("start https://www.python.org/about/", shell=True)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def qtLink(self, event):
         '''Method event for when 'QT' is clicked on the 'Info' tab.'''
 
         subprocess.Popen("start https://www.qt.io/", shell=True)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def povrayLink(self, event):
         '''Method event for when 'POV-Ray' is clicked on the 'Info' tab.'''
 
         subprocess.Popen("start http://www.povray.org/", shell=True)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def eeLink(self, event):
         '''Method event for ee.'''
@@ -425,7 +425,7 @@ class TTT3(QMainWindow):
                 self.gui.lbl_Turtle.setStyleSheet("color: rgb(255, 0, 0);")
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def devModeLink(self, event):
         '''Method event for ee.'''
@@ -438,7 +438,7 @@ class TTT3(QMainWindow):
                 self.fastRendering = True
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def closeEvent(self, event):
         '''Method that overloads the self.gui close event and the application.'''
@@ -447,21 +447,21 @@ class TTT3(QMainWindow):
         if os.stat("TTT3 Crash.log").st_size == 0:
             os.remove("TTT3 Crash.log")
         sys.exit()
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def outputCloseEvent(self, event):
         '''Method that overloads the self.output_gui close event and the application.'''
 
         self.preview.show()
         self.output_gui.close()
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def previewCloseEvent(self, event):
         '''Method that overloads the self.output_gui close event and the application.'''
 
         self.gui.show()
         self.preview.close()
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def loadFleetData(self):
         '''Method to read in the locally stored fleet data.'''
@@ -479,7 +479,7 @@ class TTT3(QMainWindow):
             self.fleetConfig = json.loads('{"squadrons" : [{"name" : "NULL"}], "wings" : [{"name" : "NULL"}], "ships" : [{"nameShort" : "NULL"}]}')
             with open("settings\\fleet.json", "w") as fleetConfigFile:
                 fleetConfigFile.write(json.dumps(self.fleetConfig))
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def initialGUISetup(self):
         '''Method that sets the application's GUI for initial use.
@@ -516,12 +516,28 @@ class TTT3(QMainWindow):
 
         # Hide the remember button.
         self.gui.btn_remember.hide()
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_rank_systemFunc(self, index):
         '''Method that triggers when the 'Rank System' combo box is changed'''
 
         try:
+            # Disable the Dress and Duty Uniform buttons.
+            self.gui.btn_dress.setEnabled(False)
+            self.gui.btn_duty.setEnabled(False)
+
+            # Deselect any previous position selection.
+            for radioButton in self.positionRadioButtons:
+                radioButton.setAutoExclusive(False)
+                radioButton.setChecked(False)
+                radioButton.setAutoExclusive(True)
+
+            # Deselect any previous rank selection.
+            for radioButton in self.rankRadioButtons:
+                radioButton.setAutoExclusive(False)
+                radioButton.setChecked(False)
+                radioButton.setAutoExclusive(True)
+
             if self.gui.cb_rank_system.currentText() == "Emperor's Hammer Positions":
                 self.gui.rb_pos_1.setText("")
                 self.gui.rb_pos_1.setHidden(True)
@@ -582,7 +598,7 @@ class TTT3(QMainWindow):
                 self.gui.rb_pos_14.setHidden(True)
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def posRBLogic(self):
         '''Method that controls the Position Radio Button Logic - Showing or hiding the required rank options.'''
@@ -716,7 +732,10 @@ class TTT3(QMainWindow):
                     # Imperial Advisor.
                     elif radioButton == self.gui.rb_pos_9:
                         self.showRanks(RA, SA)
-                        self.position = "IA"
+                        if self.gui.cb_rank_system.currentText() == "TIE Corps Positions":
+                            self.position = "SOO"
+                        else:
+                            self.position = "IA"
                         self.enableWingAndSqnTab(False)
                         self.loadHelmetData()
                         break
@@ -724,7 +743,10 @@ class TTT3(QMainWindow):
                     # Command Attache.
                     elif radioButton == self.gui.rb_pos_10:
                         self.showRanks(RA, SA)
-                        self.position = "CA"
+                        if self.gui.cb_rank_system.currentText() == "TIE Corps Positions":
+                            self.position = "COO"
+                        else:
+                            self.position = "CA"
                         self.enableWingAndSqnTab(False)
                         self.loadHelmetData()
                         break
@@ -778,7 +800,7 @@ class TTT3(QMainWindow):
                         break
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def enableWingAndSqnTab(self, boolEnabled):
         '''Method that enables all options in the 'Wing and Squadron' tab.'''
@@ -802,7 +824,7 @@ class TTT3(QMainWindow):
         self.gui.lw_ship.setEnabled(boolEnabled)
         self.gui.lw_wing.setEnabled(boolEnabled)
         self.gui.lw_squad.setEnabled(boolEnabled)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def rankRBLogic(self):
         '''Method that controls the Rank Radio Button Logic - Showing the 'Dress and Duty Uniform' buttons.'''
@@ -908,7 +930,7 @@ class TTT3(QMainWindow):
             self.gui.btn_duty.setEnabled(True)
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def hideAllRanks(self):
         '''Method used to hide all rank radio buttons on the 'Position and Rank' tab.'''
@@ -917,7 +939,7 @@ class TTT3(QMainWindow):
             rankRadioButton.hide()
 
         self.rank = None
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def showRanks(self, rankMin, rankMax):
         '''Method used to show a range of ranks in the 'Position and Rank' tab.
@@ -925,7 +947,7 @@ class TTT3(QMainWindow):
 
         for rankRadioButton in self.rankRadioButtons[rankMin: rankMax + 1]:  # + 1 because Python doesn't include the last item when indexing.
             rankRadioButton.show()
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_dressMethod(self):
         '''Method that is triggered when the 'Dress Uniform' button is clicked.
@@ -957,7 +979,7 @@ class TTT3(QMainWindow):
                 self.showPreviewDialog()
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def showPreviewDialog(self):
         '''Method to open the render preview / options GUI.'''
@@ -1050,7 +1072,7 @@ class TTT3(QMainWindow):
         # Get a preview uniform render.
         self.renderPreview()
         self.previewLoaded = True
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def showPreviewHelmDialog(self):
         '''Method to open the render preview / options GUI.'''
@@ -1170,7 +1192,7 @@ class TTT3(QMainWindow):
         # Get a preview uniform render.
         self.renderPreview()
         self.previewLoaded = True
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def applyPreviewSettings(self):
         '''Method to apply the currently loaded preview settings.'''
@@ -1352,7 +1374,7 @@ class TTT3(QMainWindow):
             self.preview.le_helmLogo2Filepath.setText(self.logo2FilepathHelm)
             self.cb_previewHemlLogo1TypeFunc()
             self.cb_previewHemlLogo2TypeFunc()
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def renderPreview(self):
         '''Method for rendering a preview image.'''
@@ -1374,7 +1396,7 @@ class TTT3(QMainWindow):
                 elif self.uniform == "helmet":
                     self.createHelmetPov()
                 self.queue.put(None)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def taskQueuer(self):
         '''Method used to queuing preview requests.'''
@@ -1384,7 +1406,7 @@ class TTT3(QMainWindow):
             if self.getUniformData() != self.lastRenderData:
                 self.lastRenderData = self.getUniformData()
                 self.launchPOVRay(preview=True)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_dutyMethod(self):
         '''Method that is triggered when the 'Duty Uniform' button is clicked.
@@ -1396,7 +1418,7 @@ class TTT3(QMainWindow):
             self.showPreviewDialog()
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_helmetMethod(self):
         '''Method that is triggered when the 'Pilot's Helmet' button is clicked.
@@ -1408,7 +1430,7 @@ class TTT3(QMainWindow):
             self.showPreviewHelmDialog()
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def launchPOVRay(self, preview=False):
         '''Method that dynamically launches POV-Ray with the correct paths.
@@ -1549,7 +1571,7 @@ class TTT3(QMainWindow):
             self.queue.task_done()
 
         self.launchingPOVRay = False
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def showPreviewImage(self):
         '''Method to show a preview image in the preview GUI.'''
@@ -1570,7 +1592,7 @@ class TTT3(QMainWindow):
         self.imagePath = r"data\%s%s" % (self.uniform, ext)
         self.preview.lbl_preview.setPixmap(QPixmap(self.imagePath))
         self.preview.lbl_wait.setHidden(True)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def showOutputDialog(self, uniform):
         '''Method to display the POV-Ray rendered image.'''
@@ -1615,7 +1637,7 @@ class TTT3(QMainWindow):
         self.output_gui.btn_close.clicked.connect(self.outputCloseEvent)
         self.output_gui.closeEvent = self.outputCloseEvent
         self.preview.hide()
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def resizeOutput(self):
         '''Method to resize the output window to match the user's height and width settings.'''
@@ -1690,7 +1712,7 @@ class TTT3(QMainWindow):
                 pass
             pos.setY(pos.y() + yOffset)
             button.move(pos)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_saveAsFunc(self):
         '''Method to Save As the rendered image file.'''
@@ -1712,13 +1734,13 @@ class TTT3(QMainWindow):
 
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_openFunc(self):
         '''Method to open rendered image files once displayed and saved in the output window.'''
 
         subprocess.Popen(os.getcwd() + "\\data\\" + self.uniform + ".png", shell=True)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def povrayMonitor(self, pid):
         '''Monitors for POV-Ray running in the background and signals when it has closed.'''
@@ -1732,7 +1754,7 @@ class TTT3(QMainWindow):
             if psutil.pid_exists(pid):
                 povRunning = True
                 time.sleep(0.1)  # Save some CPU cycles
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def convertImage(self, src, ext, dest):
         '''Converts a given .bpf file into .jpg, .gif, .png or .bmp'''
@@ -1754,21 +1776,21 @@ class TTT3(QMainWindow):
         except PermissionError:
             msg = "Error: TTT3 does not have permission to save files to %s\n\nPlease try saving to a different location." % newFilePath
             return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def loadHelmetData(self):
         r'''Method to load in the helmet style data from TTT3\Settings\helmets.ini'''
 
         self.helmetConfig = configparser.ConfigParser()
         self.helmetConfig.read(r"settings\helmets.ini")
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def loadSettings(self):
         r'''Method that reads in 'settings\TT3.ini' and stores the data as a configparser object.'''
 
         self.config = configparser.ConfigParser()
         self.config.read(r"settings\TTT3.ini")
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def applySettings(self):
         '''Method that applies the settings to the 'Configuration' window.'''
@@ -1791,14 +1813,14 @@ class TTT3(QMainWindow):
         self.config_gui.le_fleetAPI.setText(self.config.get("TCDB", "fleetapi"))
         self.config_gui.le_roster.setText(self.config.get("TCDB", "roster"))
         self.config_gui.le_search.setText(self.config.get("TCDB", "search"))
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def saveSettings(self):
         r'''Method that saves the user's settings to 'settings\TT3.ini'.'''
 
         with open(r"settings\TTT3.ini", "w") as settingsFile:
             self.config.write(settingsFile)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_configMethod(self):
         '''Method that opens and handles control of the 'Configuration' window.'''
@@ -1824,7 +1846,7 @@ class TTT3(QMainWindow):
 
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def config_rb_reg_logic(self, value=None):
         '''Method that controls what happens within the 'Configuration' window if a 'POV' radio button is clicked.'''
@@ -1843,7 +1865,7 @@ class TTT3(QMainWindow):
             self.config.set("POV-Ray", "detection_mode", "registry")
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def config_rb_specific_logic(self, value=None):
         '''Method that controls what happens within the 'Configuration' window if a 'POV' radio button is clicked.'''
@@ -1861,7 +1883,7 @@ class TTT3(QMainWindow):
             self.config.set("POV-Ray", "detection_mode", "specific")
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def config_btn_ok_method(self):
         '''Method that handles the functionality when the 'OK' button is pressed within  the 'Configuration' screen.'''
@@ -1893,7 +1915,7 @@ class TTT3(QMainWindow):
             self.config_gui.close()
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getPathFromRegistry(self):
         '''Method to detect the installation path of POV-Ray from the Windows registry using the provided options..'''
@@ -1961,7 +1983,7 @@ class TTT3(QMainWindow):
         self.config.set("POV-Ray", "registry_detected_path", path)
         self.saveSettings()
         return path
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def config_browse(self):
         '''Method that allows the user to select an executable file from a file picker.'''
@@ -1976,7 +1998,7 @@ class TTT3(QMainWindow):
                 self.config_gui.le_specPath.setText(fileName)
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def createDressPov(self, fastPreview=False):
         r'''Method that loads in '\data\dress.tpt' parses in the correct uniform data and creates a new 'data\dress.pov' file.'''
@@ -2345,7 +2367,7 @@ color_map
         # Write the parsed data to '\data\dress.pov'.
         with open(r"data\dress.pov", "w") as povFile:
             povFile.writelines(povData)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def createDutyPov(self, fastPreview=False):
         r'''Method that loads in '\data\duty.tpt' parses in the correct uniform data and creates a new 'data\duty.pov' file.'''
@@ -2525,7 +2547,7 @@ color_map
         # Write the parsed data to '\data\dress.pov'.
         with open(r"data\duty.pov", "w") as povFile:
             povFile.writelines(povData)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def createHelmetPov(self):
         r'''Method that loads in '\data\helmXXX.tpt' parses in the correct uniform data and creates a new 'data\helmet.pov' file.'''
@@ -2855,7 +2877,7 @@ color_map
         # Write the parsed data to '\data\dress.pov'.
         with open(r"data\helmet.pov", "w") as povFile:
             povFile.writelines(povData)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getRankRotateOffset(self):
         '''Method that returns the correct rank rotate value for the user's medal and ribbon selections.'''
@@ -2874,7 +2896,7 @@ color_map
             return self.RANK_OFFSET_RIBBONS_21_TO_28[0]
         else:
             return self.RANK_OFFSET_RIBBONS_21_TO_28[0]
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getRankTranslateOffset(self):
         '''Method that returns the correct rank rotate value for the user's medal and ribbon selections.'''
@@ -2893,7 +2915,7 @@ color_map
             return self.RANK_OFFSET_RIBBONS_21_TO_28[1]
         else:
             return self.RANK_OFFSET_RIBBONS_21_TO_28[1]
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getRibbonAwardCount(self):
         '''Method that returns the number of indicidual ribbons that the user has selected.'''
@@ -2923,7 +2945,7 @@ color_map
                             if self.ribbonConfig.get(section, "name") == award:
                                 ribbonCount += 1
         return ribbonCount
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def findSquadPatch(self):
         '''Method that retrieves the squadron patch file for the user's selected squadron.'''
@@ -2941,7 +2963,7 @@ color_map
             return ext, fileName
         else:
             return ".png", "data\\squads\\no_patch.png"
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def createMask(self, filepath=None):
         '''Method that will create a mask file for the desired image.'''
@@ -2984,7 +3006,7 @@ color_map
                 # Save the mask.
                 fileName = fileName.replace(extension, "_mask.png")
                 cv2.imwrite(fileName, mask)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def shipSelectionLogic(self, value):
         '''Method that handles the actions once a ship is selected from the 'Ship' section in the 'Wing and Squadron' tab.'''
@@ -3036,7 +3058,7 @@ color_map
                 pass  # Prevents the application throwing an error when the 'Ship' List Widget is clears and tries to populate wings from a 'blank' ship.
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def wingSelectionLogic(self, value):
         '''Method that handles the actions once a Wing is selected from the 'Wing' section in the 'Wing and Squadron' tab.'''
@@ -3073,7 +3095,7 @@ color_map
                 pass  # Prevents the application throwing an error when the 'Wing' List Widget is clears and tries to populate squadrons from a 'blank' wing.
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def wingIsNoneSelectionLogic(self):
         '''Method that handles the actions once a Wing is selected from the 'Wing' section in the 'Wing and Squadron' tab.'''
@@ -3111,7 +3133,7 @@ color_map
                 pass  # Prevents the application throwing an error when the 'Wing' List Widget is clears and tries to populate squadrons from a 'blank' wing.
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def squadSelectionLogic(self, value):
         '''Method that handles the actions once a Wing is selected from the 'Wing' section in the 'Wing and Squadron' tab.'''
@@ -3125,7 +3147,7 @@ color_map
 
         except AttributeError:
             pass  # Prevents the application throwing an error when the 'Wing' List Widget clears and tries to populate squadrons from a 'blank' wing.
-    #--------------------------------------------------------------------------------------------------------------------------------------------#
+    # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def setHelmetColouring(self, unitType, unitProperty):
         '''Method sets a selected position's helmet colour scheme from the fleet API..'''
@@ -3164,7 +3186,7 @@ color_map
                     self.helmColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "helmColour"))
                     self.decColour = self.convertHexRGBtoIntRGB(self.helmetConfig.get(self.helmetStyle, "decColour"))
                 break
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getAPIHelmColour(self, colourStr):
         '''Method that convers the api string e.g. "#112233"Hex into a QColor(Int, Int, Int).'''
@@ -3174,7 +3196,7 @@ color_map
         green = int(colourStr[2:4], 16)
         blue = int(colourStr[4:6], 16)
         return QColor(red, green, blue)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def eliteSqnSelectionLogic(self, value):
         '''Method that handles the actions once the 'Elite Squadron' CheckBox is selected.
@@ -3211,7 +3233,7 @@ color_map
                 self.wing = ""
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def loadMedals(self):
         r'''Method that reads in data from 'settings\medals.ini' adds the medals to the 'Medals, Ribbons and FCHG' tab.'''
@@ -3239,7 +3261,7 @@ color_map
             # Add the medal name to the GUI.
             self.gui.lw_medals.addItem(self.medalConfig.get(medal, "name"))
         setLWPixelSizes(self.gui.lw_medals)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def loadRibbons(self):
         '''Method that reads in data from 'settings\ribbons.ini' adds the ribbons to the 'Medals, Ribbons and FCHG' tab
@@ -3321,12 +3343,12 @@ color_map
 
         with open("data\\ribbons_g.inc", "w") as ribbonFile:
             ribbonFile.write(ribbons_g)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getFilename(self, award):
         '''Method that determines an award's filename from it's abbreviation.'''
         return award.replace("(s)", "").split("(")[1].replace(")", "").lower() + ".gif"
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def addToRibbonIncludes(self, filename):
         '''Method that creates the include data for a single ribbon. This include data goes on to build ribbons_g.inc'''
@@ -3342,7 +3364,7 @@ texture
 texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         return includeTemplate
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def hideMedalOptions(self):
         '''Method that hides all Medal Spin Boxes, checkboxes and Radio Buttons.'''
@@ -3394,7 +3416,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         # Ranged type award.
         self.gui.lbl_ranged.hide()
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def medalSelectionLogic(self, item):
         '''Method that handles the actions once a medal is selected from the 'Medals, Ribbons and FCHG tab.'''
@@ -3552,7 +3574,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def checkRibbonCount(self):
         '''Method to ensure that the user has not selected more than the maxiumum number of allowed ribbons (24)'''
@@ -3578,7 +3600,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.gui.btn_dress.setEnabled(True)
                 self.gui.btn_duty.setEnabled(True)
             self.maxedRibbons = False
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_singleMedalSelectionLogic(self):
         '''Method that handles the actions once a medal is selected in the 'Medals, Ribbons and FCHG tab.'''
@@ -3662,7 +3684,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def disconnectRibbonUpgrades(self):
         '''Method that disconnects the ribbon upgrade radio buttons.'''
@@ -3680,7 +3702,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 except TypeError:
                     pass  # Prevents a crash when trying to disconnect a widget that isn't connected to aything.
         self.rb_upgradeablesConnected = False
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def showUpgradeableRadioButtons(self):
         '''Method that shows the Upgradeable ribbon type radio buttonsd'''
@@ -3710,7 +3732,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 widgets[upgradeCount].show()
                 upgradeCount += 1
             self.rb_upgradeablesConnected = True
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def rb_upgradableSelectionLogic(self):
         '''Method to control the logic upon upgradeable ribbon type award selection.'''
@@ -3739,7 +3761,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def neckRibbonDeconfliction(self):
         '''Method for handling the display and selection logic for neck ribbon deconfliction.'''
@@ -3786,7 +3808,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
             # Set deconfliction back to False.
             self.deconflictNeckRibbons = False
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def combo_neckRibbonDeconflictLogic(self):
         '''Method that stores the user's preference to deconflicting the IC and GOE neck ribbons.'''
@@ -3798,7 +3820,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.deconflictNeckRibbons = True
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def buildMedalIncludes(self):
         '''Method that gathers all of the include files required for the user's medal selections..'''
@@ -3829,7 +3851,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             medalIncludes.insert(0, "ic_goe_g.inc")  # Must be first for all other medals to render properly.
 
         return medalIncludes
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def buildMedalObjects(self):
         '''Method that gathers all of the object references required for the user's medal selections.'''
@@ -3865,7 +3887,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             medalObjects.remove("P_goe")
 
         return self.determineMultiMedalOrders(medalObjects)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def determineMultiMedalOrders(self, medalObjecRefs):
         '''Used to determine the ordering for the GS to ISM medals and then upate their objRefs.'''
@@ -3894,7 +3916,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 modifiedObjectRefs.append(ref)
 
         return modifiedObjectRefs
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def buildRibbonObjects(self):
         '''Method that gathers all of the object references required for the user's ribbon selections.'''
@@ -3971,7 +3993,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     ribbonObjects.append("P_r&NUM& translate <0,0,%s> texture { %s }" % (yOffset, awardName))
 
         return self.ribbonNumberOrdering(ribbonObjects)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def ribbonNumberOrdering(self, ribbons):
         '''Method that arranged the awarded ribbons into the correct order.'''
@@ -4026,7 +4048,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 ribbonCounter += 1
 
         return ribbonObjects
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def disconnectAllMedalWidgets(self):
         '''Method for disconnecting all medal widgets.'''
@@ -4046,7 +4068,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 spinBox.valueChanged.disconnect()
             except TypeError:
                 pass  # Prevents a crash if the spinBox isn't currently connected.
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def sb_masterLogic(self, sender, value):
         '''Method for handling the all spinbox logic.'''
@@ -4083,103 +4105,103 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def sb_multi_center1Logic(self, value):
         '''Method for handling the Center Top spinbox logic.'''
 
         self.sb_masterLogic(0, value)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def sb_multi_center2Logic(self, value):
         '''Method for handling the Center Top Middle spinbox logic.'''
 
         self.sb_masterLogic(1, value)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def sb_multi_center3Logic(self, value):
         '''Method for handling the Center Bottom Middle spinbox logic.'''
 
         self.sb_masterLogic(2, value)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def sb_multi_center4Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(3, value)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def sb_multi_left1Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(0, value)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def sb_multi_left2Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(1, value)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def sb_multi_left3Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(2, value)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def sb_multi_left4Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(3, value)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def sb_multi_left5Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(4, value)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def sb_multi_right1Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(5, value)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def sb_multi_right2Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(6, value)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def sb_multi_right3Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(7, value)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def sb_multi_right4Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(8, value)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def sb_multi_right5Logic(self, value):
         '''Method for handling the Center Bottom spinbox logic.'''
 
         self.sb_masterLogic(9, value)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_browseRosterFunc(self, event):
         '''Method event for when the 'Browse Fleet Roster' button is clicked on the 'Import' tab.'''
 
         subprocess.Popen("start " + self.config.get("TCDB", "roster"), shell=True)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_searchFunc(self, event):
         '''Method event for when the 'Personnel Search' button is clicked on the 'Import' tab.'''
 
         subprocess.Popen("start " + self.config.get("TCDB", "search"), shell=True)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_newProfMethod(self, event):
         '''Method event for when the 'New Profile' button is clicked.'''
@@ -4255,7 +4277,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_openProfMethod(self, event):
         '''Method event for when the 'Open Profile' button is clicked.'''
@@ -4390,7 +4412,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_saveProfMethod(self, event):
         '''Method event for when the 'Save Profile' button is clicked.'''
@@ -4412,7 +4434,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def saveUniformFileDialog(self):
         '''Method that opens a QT File Save dialog to save a uniform.'''
@@ -4433,7 +4455,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def loadUniformFileDialog(self):
         '''Method that opens a QT File Open dialog to save a uniform.'''
@@ -4448,7 +4470,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getRetrieveAPIData(self, url, pin):
         '''Method to retrieve TIE Corps Website API returned data and return it as a Python Dictionary.'''
@@ -4458,7 +4480,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         data = json.loads(response.data)
 
         return data
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_importFunc(self):
         '''Method to parse the API data in the form of a Python Dictionary and apply those settings to TTT3.'''
@@ -4538,7 +4560,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                     break
 
                             if self.gui.cb_rank_system.currentIndex() == -1:
-                                self.position = apiData.get("TTT").get("position") # Fallback position detection.
+                                self.position = apiData.get("TTT").get("position")  # Fallback position detection.
 
                         self.posRBLogic()
                         self.rank = apiData.get("rankAbbr")  # Added again because self.posRBLogic() sets self.rank to None.
@@ -4626,7 +4648,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
                                         if medal == "ORA":
                                             if apiMedalData.get(medal) != "ORA":
-                                                self.awards.get(award)["upgrades"][1] = int(apiMedalData.get(medal).replace("ORA-", "").replace("C", ""))
+                                                self.awards.get(award)["upgrades"][1] = int(
+                                                    apiMedalData.get(medal).replace("ORA-", "").replace("C", ""))
                                             else:
                                                 self.awards.get(award)["upgrades"][1] = 0
                                         else:
@@ -4675,7 +4698,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def writeToImportTextBox(self, message):
         '''Method that will display text in the 'Import' tab text box.'''
@@ -4683,7 +4706,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         # self.gui.textEdit.clear()
         self.gui.textEdit.append(message)
         QApplication.processEvents()  # Required to refresh the textbox widget.
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_rememberFunc(self):
         '''Method to remember imported PINS.'''
@@ -4697,7 +4720,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def savePinData(self):
         '''Method to save imported PINS.'''
@@ -4713,7 +4736,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def loadPinData(self):
         '''Method to load imported PINS.'''
@@ -4731,7 +4754,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except FileNotFoundError:
             pass  # No pin.dat file is saved.
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def checkForNewPIN(self):
         '''Method to check if a pin has already been saved..'''
@@ -4750,7 +4773,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         else:
             self.gui.btn_remember.show()
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lw_presetsFunc(self):
         '''Method to remember imported PINS.'''
@@ -4762,7 +4785,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def eventFilter(self, source, event):
         '''Widget context menus.'''
@@ -4800,7 +4823,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def deletePreset(self, name):
         '''Method to remove a reset stored PIN.'''
@@ -4810,7 +4833,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.pinData.pop(self.pinData.index(pin))
         self.savePinData()
         self.loadPinData()
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def autoImportPreset(self, name):
         '''Method to select a PIN to auto import on launch.'''
@@ -4833,7 +4856,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         self.savePinData()
         self.loadPinData()
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def keyPressEvent(self, event):
         '''Method to detect keyboard input.'''
@@ -4854,7 +4877,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.btn_importFunc()
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def loadLighsabers(self):
         '''Method to detect and load the number of lightsaber styles within the data folder.'''
@@ -4886,7 +4909,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         # Prepare the GUI for initial use.
         self.gui.rb_dressSaberRight.setChecked(True)
         self.gui.rb_dutySaberRight.setChecked(True)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_dressLightsaberFunc(self):
         '''Method that triggers when the 'Use Lightsaber' checkbox is selected'''
@@ -4902,7 +4925,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     item.hide()
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_dutyLightsaberFunc(self):
         '''Method that triggers when the 'Use Lightsaber' checkbox is selected'''
@@ -4918,7 +4941,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     item.hide()
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lightsaberDressSelectedFunc(self):
         '''Method that synchronises the duty saber with the dress saber when a lightsaber is selected from the dress combo box'''
@@ -4929,7 +4952,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.gui.cb_dutySaberStyles.currentIndexChanged.connect(self.lightsaberDutySelectedFunc)
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lightsaberDutySelectedFunc(self):
         '''Method that synchronises the dress saber with the duty saber when a lightsaber is selected from the duty combo box'''
@@ -4940,7 +4963,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.gui.cb_dressSaberStyles.currentIndexChanged.connect(self.lightsaberDressSelectedFunc)
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def saberDaggerDeconflict(self):
         '''Method to deconflict the lightsaber and dagger if a saber mounting option is selected.'''
@@ -4958,7 +4981,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.gui.rb_blasterLeft.setChecked(True)
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def daggerSaberDeconflict(self):
         '''Method to deconflict the dagger and lightsaber if a dagger mounting option is selected.'''
@@ -4974,7 +4997,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.gui.rb_dutySaberLeft.setChecked(True)
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def loadBlasters(self):
         '''Method to detect and load the number of blaster styles within the data folder.'''
@@ -5004,7 +5027,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         # Prepare the GUI for initial use.
         self.gui.rb_blasterLeft.setChecked(True)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_dutyBlasterFunc(self):
         '''Method that triggers when the 'Use sidearm' checkbox is selected.'''
@@ -5019,7 +5042,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     item.hide()
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def blasterSaberDeconflict(self):
         '''Method to deconflict the blaster and lightsaber if a blaster mounting option is selected.'''
@@ -5037,7 +5060,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.gui.rb_dressSaberLeft.setChecked(True)
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def saberBlasterDeconflict(self):
         '''Method to deconflict the lightsaber and blaster if a saber mounting option is selected.'''
@@ -5055,7 +5078,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.gui.rb_daggerLeft.setChecked(True)
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def checkForUpdates(self):
         '''Method for checking for online updates for TTT.'''
@@ -5069,7 +5092,14 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             # Turtle
             self.gui.lbl_Turtle.setText(self.getRetrieveAPIData(self.config.get("TCDB", "pinapi"), "238").get("rankAbbr") + " Turtle Jerrar")
             # Jedi Eclipse
-            self.gui.lbl_Eclipse.setText(", & " + self.getRetrieveAPIData(self.config.get("TCDB", "pinapi"), "8171").get("rankAbbr") + " Jedi Eclipse")
+            self.gui.lbl_Eclipse.setText(
+                ", & " +
+                self.getRetrieveAPIData(
+                    self.config.get(
+                        "TCDB",
+                        "pinapi"),
+                    "8171").get("rankAbbr") +
+                " Jedi Eclipse")
 
             # Fleet data updates.
             apiFleetData = self.getRetrieveAPIData(self.config.get("TCDB", "fleetapi"), "")
@@ -5147,7 +5177,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.updateMsg += "Checking for updates failed.\nNo internet connection.\n"
             self.updateProgressBar.emit("message", None)
             self.gui.btn_helmet.setEnabled(True)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def autoImportProfile(self):
         '''Method for auto importing the selected user's profile.'''
@@ -5160,7 +5190,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         self.gui.btn_helmet.setEnabled(True)
         if self.gui.sbPin.value() != 0:
             self.btn_importFunc()
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def downloadPatchFile(self, name, url):
         '''Method for downloading squadron patches.'''
@@ -5195,7 +5225,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 imgFile.write(response.data)
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def updaterSlot(self, type, value):
         '''PyQt Slot for updating the progress bar from an external thread.'''
@@ -5235,7 +5265,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.gui.pb_update.setValue(int(self.gui.pb_update.value()) + 1)
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_PaletteSpotFunc(self):
         '''Method for opening a colour palette dialog.'''
@@ -5244,7 +5274,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.openColourPicker(self.spotColour, "spotColour", self.preview.lbl_PaletteSpot, self.preview.le_PaletteSpot)
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_PaletteEnvFunc(self):
         '''Method for opening a colour palette dialog.'''
@@ -5253,7 +5283,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.openColourPicker(self.envColour, "envColour", self.preview.lbl_PaletteEnv, self.preview.le_PaletteEnv)
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_PaletteBackFunc(self):
         '''Method for opening a colour palette dialog.'''
@@ -5266,7 +5296,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                       self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def openColourPicker(self, colourOption, optionStr, label, lineEdit):
         '''Method to open the QColorDialog.'''
@@ -5287,19 +5317,19 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.colourDlg.finished.connect(lambda: self.closeColourPicker(oldRefreshSetting))
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def closeColourPicker(self, setting):
         '''Method for closing the colour picker.'''
 
         self.preview.cb_Refresh.setChecked(setting)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cancelColourPicker(self, oldColourOption, optionStr, label, lineEdit):
         '''Method for closing the colour picker.'''
 
         self.colourSelected(oldColourOption, optionStr, label, lineEdit)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def colourSelected(self, colour, optionStr, label, lineEdit):
         '''Method for handling colour selection from within the ColourPicker.'''
@@ -5319,7 +5349,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         # Apply values to GUI.
         label.setStyleSheet("background-color: rgb(%s, %s, %s);" % (realRGB[0], realRGB[1], realRGB[2]))
         lineEdit.setText(hexRGB)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def convertToPOVRGB(self, colour):
         '''Method to convert a QColor RGB item into a POV-Ray RGB Item.'''
@@ -5329,7 +5359,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             colourPov.append(col / 255.0)
         colourPov = str(tuple(colourPov)).replace("(", "").replace(")", "")
         return colourPov
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def convertHexRGBtoIntRGB(self, strHexRGB):
         '''Method to convert a string of hex RGB to a QColor Tuple of integer RGB values'''
@@ -5348,7 +5378,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         except ValueError:
             b = 0
         return QColor(r, g, b)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetColoursFunc(self):
         '''Method for reseting the preview window colour options.'''
@@ -5414,7 +5444,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.renderPreview()
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def sb_previewWidthFunc(self, value=None):
         '''Method for handling user input to the preview GUI width spin box.'''
@@ -5430,7 +5460,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.preview.le_Height.setText(str(self.heightHelm))
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetOptionsFunc(self):
         '''Method for reseting the preview window options.'''
@@ -5466,7 +5496,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.preview.cb_Mosaic.setChecked(self.mosaicPreviewHelm)
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def sb_previewQualityFunc(self, value):
         '''Method for applying the quality setting within the preview window.'''
@@ -5475,13 +5505,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.quality = value
         else:
             self.qualityHelm = value
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewDetailFunc(self, value):
         '''Method for applying the cloth detail setting within the preview window.'''
 
         self.clothDetail = value
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewAAFunc(self, value):
         '''Method for applying the anti aliasing setting within the preview window.'''
@@ -5496,7 +5526,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.antiAliasingHelm = True
             else:
                 self.antiAliasingHelm = False
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewShadowlessFunc(self, value):
         '''Method for applying the shadowless setting within the preview window.'''
@@ -5511,7 +5541,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.shadowlessHelm = True
             else:
                 self.shadowlessHelm = False
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewMosaicFunc(self, value):
         '''Method for applying the mosaic preview mode setting within the preview window.'''
@@ -5526,7 +5556,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.mosaicPreviewHelm = True
             else:
                 self.mosaicPreviewHelm = False
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewHomoFunc(self, value):
         '''Method for applying the mosaic preview mode setting within the preview window.'''
@@ -5535,7 +5565,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.homoHelm = True
         else:
             self.homoHelm = False
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewTransparentFunc(self, value):
         '''Method for applying the transparent background setting setting within the preview window.'''
@@ -5566,7 +5596,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewCamXFunc(self, value):
         '''Method for applying the camera angle setting within the preview window.'''
@@ -5580,7 +5610,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         if value != self.camXHelmDefault:
             self.preview.cb_PresetCam.setCurrentIndex(10)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewCamYFunc(self, value):
         '''Method for applying the camera angle setting within the preview window.'''
@@ -5594,7 +5624,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         if value != self.camYHelmDefault:
             self.preview.cb_PresetCam.setCurrentIndex(10)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewCamZFunc(self, value):
         '''Method for applying the camera angle setting within the preview window.'''
@@ -5608,7 +5638,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         if value != self.camZHelmDefault:
             self.preview.cb_PresetCam.setCurrentIndex(10)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookXFunc(self, value):
         '''Method for applying the look at angle setting within the preview window.'''
@@ -5622,7 +5652,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         if value != self.lookXHelmDefault:
             self.preview.cb_PresetLook.setCurrentIndex(10)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookYFunc(self, value):
         '''Method for applying the look at angle setting within the preview window.'''
@@ -5636,7 +5666,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         if value != self.lookYHelmDefault:
             self.preview.cb_PresetLook.setCurrentIndex(10)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookZFunc(self, value):
         '''Method for applying the look at angle setting within the preview window.'''
@@ -5650,7 +5680,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         if value != self.lookZHelmDefault:
             self.preview.cb_PresetLook.setCurrentIndex(10)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetCameraFunc(self):
         '''Method for reseting the preview window camera.'''
@@ -5700,7 +5730,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.cb_PresetLook.setCurrentIndex(0)
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLightXFunc(self, value):
         '''Method for applying the light angle setting within the preview window.'''
@@ -5713,7 +5743,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lightXHelm = value
             self.preview.lbl_LightX.setText(self.convertIntToFloatStr(value, 100))
             self.preview.cb_PresetLight.setCurrentIndex(10)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLightYFunc(self, value):
         '''Method for applying the light angle setting within the preview window.'''
@@ -5726,7 +5756,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lightYHelm = value
             self.preview.lbl_LightY.setText(self.convertIntToFloatStr(value, 100))
             self.preview.cb_PresetLight.setCurrentIndex(10)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLightZFunc(self, value):
         '''Method for applying the light angle setting within the preview window.'''
@@ -5739,7 +5769,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lightZHelm = value
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(value, 100))
             self.preview.cb_PresetLight.setCurrentIndex(10)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetLightFunc(self):
         '''Method for reseting the preview window light source.'''
@@ -5769,7 +5799,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.cb_PresetLight.setCurrentIndex(0)
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetFunc(self):
         '''Method to reset all preview window options / profile.'''
@@ -5793,7 +5823,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.renderPreview()
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getUniformData(self):
         '''Method that collects all of the user's selections and returns them as a tuple.'''
@@ -5814,7 +5844,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         self.logo1Mirrored, self.logo2Mirrored, self.helmetStyle)
 
         return saveData
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewSaveFunc(self):
         '''Method for when the preview 'Save' button is clicked.'''
@@ -5830,7 +5860,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def savePreviewFileDialog(self):
         '''Method that opens a QT File Save dialog to save a preview profile.'''
@@ -5856,7 +5886,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewLoadFunc(self):
         '''Method for when the preview 'Load' button is clicked.'''
@@ -5950,7 +5980,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.renderPreview()
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def loadPreviewFileDialog(self):
         '''Method that opens a QT File Open dialog to save a profile.'''
@@ -5970,7 +6000,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def createHelmetNameTag(self):
         '''Method for creating nametag.png which is used to diasply the name on the pilot helmet.'''
@@ -6023,7 +6053,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         self.painter.drawText(self.image.rect(), Qt.AlignCenter | Qt.AlignVCenter, text)
         self.painter.end()
         self.image.save(os.getcwd() + "\\data\\helmet\\" + "nametag.png")
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_PaletteHelmFunc(self):
         '''Method for opening a colour palette dialog.'''
@@ -6032,7 +6062,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.openColourPicker(self.helmColour, ["helmColour", "apiHelmColour"], self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def createHelmetColour(self, colour):
         r'''Method used to create user's selected helmet colour.'''
@@ -6052,7 +6082,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             msg = "Error! File - " + self.helmetConfig.get(self.helmetStyle, "colourMapImage") + \
                 " cannot be found within the TTT3\\data\\helmet\\ folder."
             return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_PaletteHelmDecFunc(self):
         '''Method for opening a colour palette dialog.'''
@@ -6061,7 +6091,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.openColourPicker(self.decColour, ["decColour", "apiDecColour"], self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_PaletteHelmLightFunc(self):
         '''Method for opening a colour palette dialog.'''
@@ -6070,41 +6100,41 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.openColourPicker(self.lightColour, ["lightColour", "apiLightColour"], self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def convertIntToFloatStr(self, num, divisor):
         '''Method to convert a integer into a /10 float stgring for the slider values.'''
 
         return str(round(num / float(divisor), str(divisor).count("0")))
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewAmbientFunc(self, value):
         '''Method for applying the light angle setting within the preview window.'''
 
         self.ambientHelm = value
         self.preview.lbl_Ambient.setText(self.convertIntToFloatStr(value, 100))
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewSpecularFunc(self, value):
         '''Method for applying the light angle setting within the preview window.'''
 
         self.specularHelm = value
         self.preview.lbl_Specular.setText(self.convertIntToFloatStr(value, 100))
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewRoughnessFunc(self, value):
         '''Method for applying the light angle setting within the preview window.'''
 
         self.roughHelm = value
         self.preview.lbl_Roughness.setText(self.convertIntToFloatStr(value, 100))
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewReflectionFunc(self, value):
         '''Method for applying the light angle setting within the preview window.'''
 
         self.reflectionHelm = value
         self.preview.lbl_Reflection.setText(self.convertIntToFloatStr(value, 100))
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetSurfPropsFunc(self):
         '''Method for reseting the preview window light source.'''
@@ -6124,20 +6154,20 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.vs_Reflection.setValue(self.reflectionHelm)
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def le_previewHelmTextFunc(self, text):
         '''Method to handle text entry into the Helmet Text textbox.'''
 
         self.nameHelm = str(self.preview.le_helmText.text())
         self.preview.le_helmText.setText(self.nameHelm)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def fcb_previewHelmFontFunc(self, font):
         '''Method for handling helmet font selection'''
 
         self.fontHelmQFront = font
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def checkForAlpha(self, filepath):
         '''Method to check if an image has an alpha channel.'''
@@ -6153,7 +6183,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             return False
         except IndexError:
             return True
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewHemlLogo1TypeFunc(self):
         '''Method for handling Decoration Logo ComboBox actions.'''
@@ -6183,7 +6213,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.btn_helmLogo1Filepath.setEnabled(False)
 
         self.logo1TypeHelm = self.preview.cb_hemlLogo1Type.currentText()
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewHemlLogo2TypeFunc(self):
         '''Method for handling Decoration Logo ComboBox actions.'''
@@ -6212,7 +6242,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.btn_helmLogo2Filepath.setEnabled(False)
 
         self.logo2TypeHelm = self.preview.cb_hemlLogo2Type.currentText()
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getLogoFile(self, logoNum):
         '''Method that allows the user to select an image file from a file picker.'''
@@ -6272,7 +6302,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def le_previewHelmLogoXFilepathFunc(self, logoNum):
         '''Method to handle manual text entry of logo filepaths.'''
@@ -6281,7 +6311,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.logo1FilepathHelm = self.preview.le_helmLogo1Filepath.text()
         elif logoNum == 2:
             self.logo2FilepathHelm = self.preview.le_helmLogo2Filepath.text()
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetDecsFunc(self):
         '''Method for restting helmet decorations options.'''
@@ -6322,7 +6352,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         self.logo2Mirrored = True
         self.preview.cb_Logo1Mirrored.setChecked(self.logo1Mirrored)
         self.preview.cb_Logo2Mirrored.setChecked(self.logo2Mirrored)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewPresetCamFunc(self, intIndex):
         '''Method for preview camera presets.'''
@@ -6397,7 +6427,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.cb_PresetCam.currentIndexChanged.disconnect()
             self.preview.cb_PresetCam.setCurrentIndex(intIndex)
             self.preview.cb_PresetCam.currentIndexChanged.connect(self.cb_previewPresetCamFunc)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewPresetCamHelmFunc(self, intIndex):
         '''Method for preview camera presets.'''
@@ -6472,7 +6502,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.cb_PresetCam.currentIndexChanged.disconnect()
             self.preview.cb_PresetCam.setCurrentIndex(intIndex)
             self.preview.cb_PresetCam.currentIndexChanged.connect(self.cb_previewPresetCamHelmFunc)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewPresetLookFunc(self, intIndex):
         '''Method for preview look presets.'''
@@ -6547,7 +6577,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.cb_PresetLook.currentIndexChanged.disconnect()
             self.preview.cb_PresetLook.setCurrentIndex(intIndex)
             self.preview.cb_PresetLook.currentIndexChanged.connect(self.cb_previewPresetLookFunc)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewPresetLookHelmFunc(self, intIndex):
         '''Method for preview look presets.'''
@@ -6622,7 +6652,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.cb_PresetLook.currentIndexChanged.disconnect()
             self.preview.cb_PresetLook.setCurrentIndex(intIndex)
             self.preview.cb_PresetLook.currentIndexChanged.connect(self.cb_previewPresetLookHelmFunc)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewPresetLightFunc(self, intIndex):
         '''Method for preview light presets.'''
@@ -6703,139 +6733,139 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.cb_PresetLight.currentIndexChanged.disconnect()
             self.preview.cb_PresetLight.setCurrentIndex(intIndex)
             self.preview.cb_PresetLight.currentIndexChanged.connect(self.cb_previewPresetLightFunc)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_CamXFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
         self.sliderValueInput(self.preview.vs_CamX, "Camera X", self.preview.lbl_CamX, -2000, 2000, 10)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_CamYFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
         self.sliderValueInput(self.preview.vs_CamY, "Camera Y", self.preview.lbl_CamY, -2000, 2000, 10)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_CamZFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
         self.sliderValueInput(self.preview.vs_CamZ, "Camera Z", self.preview.lbl_CamZ, -2000, 2000, 10)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_LookXFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
         self.sliderValueInput(self.preview.vs_LookX, "Look X", self.preview.lbl_LookX, -2000, 2000, 10)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_LookYFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
         self.sliderValueInput(self.preview.vs_LookY, "Look Y", self.preview.lbl_LookY, -2000, 2000, 10)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_LookZFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
         self.sliderValueInput(self.preview.vs_LookZ, "Look Z", self.preview.lbl_LookZ, -2000, 2000, 10)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_LightXFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
         self.sliderValueInput(self.preview.vs_LightX, "Light X", self.preview.lbl_LightX, -2000, 2000, 10)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_LightYFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
         self.sliderValueInput(self.preview.vs_LightY, "Light Y", self.preview.lbl_LightY, -2000, 2000, 10)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_LightZFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
         self.sliderValueInput(self.preview.vs_LightZ, "Light Z", self.preview.lbl_LightZ, -2000, 2000, 10)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_CamXHelmFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
         self.sliderValueInput(self.preview.vs_CamX, "Camera X", self.preview.lbl_CamX, -100, 100, 100, 2)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_CamYHelmFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
         self.sliderValueInput(self.preview.vs_CamY, "Camera Y", self.preview.lbl_CamY, -100, 100, 100, 2)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_CamZHelmFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
         self.sliderValueInput(self.preview.vs_CamZ, "Camera Z", self.preview.lbl_CamZ, -100, 100, 100, 2)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_LookXHelmFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
         self.sliderValueInput(self.preview.vs_LookX, "Look X", self.preview.lbl_LookX, -100, 100, 100, 2)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_LookYHelmFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
         self.sliderValueInput(self.preview.vs_LookY, "Look Y", self.preview.lbl_LookY, -100, 100, 100, 2)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_LookZHelmFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
         self.sliderValueInput(self.preview.vs_LookZ, "Look Z", self.preview.lbl_LookZ, -100, 100, 100, 2)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_LightXHelmFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
         self.sliderValueInput(self.preview.vs_LightX, "Light X", self.preview.lbl_LightX, -100, 100, 100, 2)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_LightYHelmFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
         self.sliderValueInput(self.preview.vs_LightY, "Light Y", self.preview.lbl_LightY, -100, 100, 100, 2)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_LightZHelmFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
         self.sliderValueInput(self.preview.vs_LightZ, "Light Z", self.preview.lbl_LightZ, -100, 100, 100, 2)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_AmbientFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
         self.sliderValueInput(self.preview.vs_Ambient, "Ambient", self.preview.lbl_Ambient, 0, 1, 100, 2, 0.01)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_SpecularFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
         self.sliderValueInput(self.preview.vs_Specular, "Specular", self.preview.lbl_Specular, 0, 1, 100, 2, 0.01)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_RoughnessFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
         self.sliderValueInput(self.preview.vs_Roughness, "Roughness", self.preview.lbl_Roughness, 0, 1, 100, 2, 0.01)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_ReflectionFunc(self, sender):
         '''Method that is triggered why a slider's label is clicked.'''
 
         self.sliderValueInput(self.preview.vs_Reflection, "Reflection", self.preview.lbl_Reflection, 0, 1, 100, 2, 0.01)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def sliderValueInput(self, slider, name, label, min, max, scale, decimals=1, step=1):
         '''Method directly asks the user for a slider input.'''
@@ -6844,7 +6874,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                            float(label.text()), min, max, decimals, Qt.WindowFlags(), step)
         if ok:
             slider.setValue(int(value * scale))
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def fastPreviewFunc(self):
         '''Method used when the Fast Preview checkbox is selected.'''
@@ -6857,7 +6887,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         # Refresh the preview image.
         self.lastRenderData = None
         self.renderPreview()
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def mirrorLogo(self, intLogo):
         '''Method to handle helmet logo mirroring selection.'''
@@ -6866,7 +6896,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.logo1Mirrored = self.preview.cb_Logo1Mirrored.isChecked()
         elif intLogo == 2:
             self.logo2Mirrored = self.preview.cb_Logo2Mirrored.isChecked()
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewHemlStyleFunc(self, value):
         '''Method to handle helmet style selection.'''
@@ -6972,7 +7002,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.preview.vs_LightZ.setValue(self.lightZHelm)
         except Exception as e:
             handleException(e)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewPresetLightHelmFunc(self, intIndex):
         '''Method for preview light presets.'''
@@ -7047,14 +7077,14 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.cb_PresetLight.currentIndexChanged.disconnect()
             self.preview.cb_PresetLight.setCurrentIndex(intIndex)
             self.preview.cb_PresetLight.currentIndexChanged.connect(self.cb_previewPresetLightHelmFunc)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def previewAutoRefresh(self, event=None):
         '''Method to handle auto refreshing of the preview windows.'''
 
         if self.preview.cb_Refresh.isChecked():
             self.renderPreview()
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewRefreshFunc(self):
         '''Method to handle actions upon selection of the Auto-refresh checkbox.'''
@@ -7064,39 +7094,39 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.renderPreview()
         else:
             self.preview.btn_preview.setEnabled(True)
-        #--------------------------------------------------------------------------------------------------------------------------------------------#
-#----------------------------------------------------------------------------------------------------------------------------------------------------#
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
-#----------------------------------------------------------------------------------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                      Functions.                                                                    #
-#----------------------------------------------------------------------------------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------------------------------------------------------------------------------#
 def getYHelm(x):
     '''Function to return an aspect ratio locked value for any given x.'''
 
     return round(float(x) / 1.1678)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+    # ------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
 def getXHelm(y):
     '''Function to return an aspect ratio locked value for any given y.'''
 
     return round(float(y) * 1.1678)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+    # ------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
 def getY(x):
     '''Function to return an aspect ratio locked value for any given x.'''
 
     return round(float(x) / 0.7502)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+    # ------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
 def getX(y):
     '''Function to return an aspect ratio locked value for any given y.'''
 
     return round(float(y) * 0.7502)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+    # ------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
 def getHash(strSource):
@@ -7108,7 +7138,7 @@ def getHash(strSource):
 
     # Get MD5 has of source file and return it.
     return hashlib.md5(data).hexdigest()
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+    # ------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
 def getScreenResolution():
@@ -7116,7 +7146,7 @@ def getScreenResolution():
 
     user32 = ctypes.windll.user32
     return user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+    # ------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
 def setPixelSizes(tgtGUI):
@@ -7130,7 +7160,7 @@ def setPixelSizes(tgtGUI):
             vars(tgtGUI).get(widget).setFont(font)
         except AttributeError:
             pass
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+    # ------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
 def setLWPixelSizes(listWidget, pixelSize=13):
@@ -7141,7 +7171,7 @@ def setLWPixelSizes(listWidget, pixelSize=13):
         font = listWidget.item(entry).font()
         font.setPixelSize(pixelSize)
         listWidget.item(entry).setFont(font)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
+    # ------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
 def handleException(exception):
@@ -7201,13 +7231,13 @@ def handleException(exception):
     # Show error message.
     msg = r"Error: Uh-Oh! TTT3 has encountered an error. Please submit 'TTT3\TTT3 Crash.log' to the Internet Office."
     return ctypes.windll.user32.MessageBoxA(0, msg.encode('ascii'), "TTT3".encode('ascii'), 0)
-    #------------------------------------------------------------------------------------------------------------------------------------------------#
-#----------------------------------------------------------------------------------------------------------------------------------------------------#
+    # ------------------------------------------------------------------------------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
-#----------------------------------------------------------------------------------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                     Main Program.                                                                  #
-#----------------------------------------------------------------------------------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------------------------------------------------------------------------------#
 if __name__ == "__main__":
 
     # Error logging.
@@ -7220,4 +7250,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     ttt3 = TTT3()
     sys.exit(app.exec_())
-#----------------------------------------------------------------------------------------------------------------------------------------------------#
+# ----------------------------------------------------------------------------------------------------------------------------------------------------#

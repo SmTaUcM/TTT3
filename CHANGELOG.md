@@ -18,7 +18,7 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 
 ## ------------------------------------------------------------------------------------------------##
 
-## [v3.0.4] 2022-11-13
+## [v3.0.4] 2023-02-17
 
 ### Added
 - Support for BGCOM position.
