@@ -2859,7 +2859,7 @@ QListWidget:!enabled
        </font>
       </property>
       <property name="text">
-       <string>Created 2021-2022 by</string>
+       <string>Created 2021-2023 by</string>
       </property>
      </widget>
      <widget class="QLabel" name="lbl_SkyShadow">
