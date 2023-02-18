@@ -43,6 +43,8 @@ import threading
 import queue
 import Slider
 import ftfy  # python -m pip install ftfy
+import certifi # python -m pip install certifi
+import ssl
 # python -m pip install pyinstaller - for compiler.
 # ----------------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -4644,8 +4646,16 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def getRetrieveAPIData(self, url, pin):
         '''Method to retrieve TIE Corps Website API returned data and return it as a Python Dictionary.'''
 
-        http = urllib3.PoolManager()
-        response = http.request("GET", url + pin)
+        try:
+            http = urllib3.PoolManager()
+            response = http.request("GET", url + pin)
+        except urllib3.exceptions.MaxRetryError as error:
+            if "CERTIFICATE_VERIFY_FAILED" in str(error):
+                http = urllib3.PoolManager(cert_reqs='CERT_REQUIRED', ca_certs=certifi.where())
+                response = http.request("GET", url + pin)
+            else:
+                response = http.request("GET", url + pin)
+
         data = json.loads(response.data)
 
         return data
@@ -5384,8 +5394,15 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     pass
 
             # Download new patch.
-            http = urllib3.PoolManager()
-            response = http.request("GET", url)
+            try:
+                http = urllib3.PoolManager()
+                response = http.request("GET", url)
+            except urllib3.exceptions.MaxRetryError as error:
+                if "CERTIFICATE_VERIFY_FAILED" in str(error):
+                    http = urllib3.PoolManager(cert_reqs='CERT_REQUIRED', ca_certs=certifi.where())
+                    response = http.request("GET", url)
+                else:
+                    return
 
             # Detect the file extension.
             fileType = response.headers.get("Content-Type")
@@ -5431,7 +5448,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.autoImportProfile()
 
             elif type == "code400":
-                self.gui.lbl_update.setText("Squadron Patch Update Error! Invalid Fleet API setting!")
+                self.gui.lbl_update.setText("TTT3 Update Error! Invalid Fleet API setting!")
                 self.gui.pb_update.setStyleSheet(r"background-color: rgb(170, 0, 0);border-color: rgb(170, 0, 0);text-align: right;")
                 self.gui.pb_update.show()
                 self.gui.lbl_update.show()

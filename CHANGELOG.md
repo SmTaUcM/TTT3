@@ -85,6 +85,7 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 - Helmet logos can now be selected as mirrored or un-mirrored.
 - Infiltrator Style Helmets.
 - Added auto import of a user selected PIN upon TTT3 launch.
+- Redundancy for expired root certificates.
 
 ### Changed
 - New TIE Corps Logo is now the default graphic on helmets replacing the imperial cog.
