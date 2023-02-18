@@ -7404,8 +7404,8 @@ def handleException(exception):
         currentSelection = "None"
 
         # Uniform selections.
-    logging.error("\n" + settings + "\nPosition : " + str(ttt3.position) + "\nRank : " + str(ttt3.rank) + "\nShip : " + str(ttt3.ship) +
-                  "\nWing : " + str(ttt3.wing) + "\nSquadron : " + str(ttt3.sqn) + "\nAwards :" + str(selectedAwards) +
+    logging.error("\n" + settings + "\nPosition : " + str(ttt3.position) + "\nRank : " + str(ttt3.rank) + "\nBattlegroup : " + str(ttt3.battlegroup) +
+                  "\nShip : " + str(ttt3.ship) + "\nWing : " + str(ttt3.wing) + "\nSquadron : " + str(ttt3.sqn) + "\nAwards :" + str(selectedAwards) +
                   "\nCurrent Medal Selection: " + str(currentSelection))
 
     # Show error message.
