@@ -18,7 +18,7 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 
 ## ------------------------------------------------------------------------------------------------##
 
-## [v3.0.4] 2023-02-17
+## [v3.0.4] 2023-02-18
 
 ### Added
 - Support for BGCOM position with appropriate collar insignia. (@6958/@238)
