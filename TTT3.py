@@ -345,6 +345,8 @@ class TTT3(QMainWindow):
             self.pinData = []
 
             # ----- GUI variables. -----
+            self.positions_EH = [None,  None, None, None,    None,  None, None,   None,   "IA" ,  "CA"  ,"GCO",  "CS", "XO", "FC"]
+            self.positions_TC = ["TRN", "FM", "FL", "SQXO", "CMDR", "WC", "COM", "BGCOM", "COO", "SOO", "TCCOM", None, None, None]
             self.subRibbonAwards = []
             self.cb_singleMedalConnected = False
             self.combo_topConnected = False
@@ -4361,16 +4363,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                  self.gui.rb_pos_9, self.gui.rb_pos_10, self.gui.rb_pos_11, self.gui.rb_pos_12,
                                  self.gui.rb_pos_13, self.gui.rb_pos_14, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
 
-                    positions_EH = [None,  None, None, None,    None,  None, None,   None,   "IA" ,  "CA"  ,"GCO",  "CS", "XO", "FC"]
-                    positions_TC = ["TRN", "FM", "FL", "SQXO", "CMDR", "WC", "COM", "BGCOM", "COO", "SOO", "TCCOM", None, None, None]
-
                     if self.position:
-                        for position_group in [positions_EH, positions_TC]:
+                        for position_group in [self.positions_EH, self.positions_TC]:
                             for position in position_group:
                                 if position != None:
                                     if position == self.position:
                                         btn_index = position_group.index(position)
-                                        self.gui.cb_rank_system.setCurrentIndex([positions_EH, positions_TC].index(position_group))
+                                        self.gui.cb_rank_system.setCurrentIndex([self.positions_EH, self.positions_TC].index(position_group))
                                         radioBtns[btn_index].setChecked(True)
                                         break
                         self.posRBLogic()
@@ -4586,7 +4585,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.rank = apiData.get("rankAbbr")
 
                     # Position.
-                    if apiData.get("position") == "" or apiData.get("position") == "RSV" or apiData.get("position") == "IOA" or apiData.get("position") is None:
+                    if apiData.get("position") not in self.positions_EH and apiData.get("position") not in self.positions_TC:
                         if self.rank in ["CT", "SL", "LT", "LCM", "CM", "CPT", "MAJ", "LC", "COL", "GN"]:
                             self.position = "LR"
                         else:
