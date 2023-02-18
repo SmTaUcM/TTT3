@@ -21,10 +21,14 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 ## [v3.0.4] 2023-02-17
 
 ### Added
-- Support for BGCOM position.
+- Support for BGCOM position with appropriate collar insignia. (@6958/@238)
+- Support for battlegroup import from fleet API. (@238)
 
 ### Changed
 - Realigned position cuff stripes for TCCS based on fleet-wide standard. (@238)
+- Updated ISM to new TC logo design. (@238)
+- Updated MoS for full implementation. (@238)
+- Corrected MoC device to proper oak leaf cluster. (@238)
 
 ## ------------------------------------------------------------------------------------------------##
 
@@ -39,7 +43,6 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 ### Fixed
 - TUA-BW+ and MUA-BW+ not being imported.
 - MUA-PW & MUA-PW missing.
-
 
 ### Removed
 - None

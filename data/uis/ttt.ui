@@ -37,7 +37,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(163, 163, 163);
-</string>
+            </string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="label">
@@ -3276,13 +3276,13 @@ QListWidget:!enabled
        <string notr="true">color: rgb(6, 22, 125);</string>
       </property>
       <property name="text">
-       <string>TIE Corps Pilot Manual</string>
+       <string>Emperor's Hammer Wiki</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_29">
       <property name="geometry">
        <rect>
-        <x>475</x>
+        <x>482</x>
         <y>177</y>
         <width>16</width>
         <height>20</height>
@@ -3481,7 +3481,6 @@ QListWidget:!enabled
      <zorder>label_23</zorder>
      <zorder>lbl_email</zorder>
      <zorder>label_25</zorder>
-     <zorder>lbl_tcpm</zorder>
      <zorder>label_29</zorder>
      <zorder>lbl_uniforms</zorder>
      <zorder>label_31</zorder>
@@ -3493,6 +3492,7 @@ QListWidget:!enabled
      <zorder>label_20</zorder>
      <zorder>lbl_readme</zorder>
      <zorder>label_27</zorder>
+     <zorder>lbl_tcpm</zorder>
     </widget>
    </widget>
    <widget class="QPushButton" name="btn_dress">

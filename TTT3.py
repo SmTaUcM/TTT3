@@ -234,6 +234,7 @@ class TTT3(QMainWindow):
             self.name = "Unknown"
             self.callsign = "None"
             self.pin = None
+            self.battlegroup = ""
             self.ship = ""
             self.wing = ""
             self.sqn = ""
@@ -388,7 +389,7 @@ class TTT3(QMainWindow):
     def tcpmLink(self, event):
         '''Method event for when 'TIE Corps Pilot Manual' is clicked on the 'Info' tab.'''
 
-        subprocess.Popen("start https://tc.emperorshammer.org/downloads/TCPM.pdf", shell=True)
+        subprocess.Popen("start https://wiki.emperorshammer.org/TIE_Corps_Uniform", shell=True)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def uniformsLink(self, event):
@@ -2197,6 +2198,21 @@ color_map
                         if ship.get("nameShort") == self.ship:
                             # Get the trim colouring.
                             trimColour = ship.get("uniformData").get("trimColor")
+                            # Set the trim colouring.
+                            if trimColour:
+                                trimLine = "#declare ttt_wingcolour = color rgb %s;" % (trimColour)
+                                povData.append(line.replace("&TRIMCOLOUR&", trimLine))
+                                break
+                            else:
+                                povData.append(line.replace("&TRIMCOLOUR&", ""))
+                                break
+
+                elif self.battlegroup != "":
+                    # Find the selected battlegroup from fleetConfig.
+                    for battlegroup in self.fleetConfig.get("battlegroups"):
+                        if battlegroup.get("nameShort") == self.battlegroup:
+                            # Get the trim colouring.
+                            trimColour = battlegroup.get("uniformData").get("trimColor")
                             # Set the trim colouring.
                             if trimColour:
                                 trimLine = "#declare ttt_wingcolour = color rgb %s;" % (trimColour)
@@ -4578,6 +4594,13 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                 break
                         self.rankRBLogic()
 
+                    # Battlegroup
+                    battlegroupData = apiData.get("battlegroup")
+                    if battlegroupData:
+                        self.battlegroup = battlegroupData.get("nameShort")
+                    else:
+                        self.battlegroup = ""
+
                     # Ship
                     shipData = apiData.get("ship")
                     if shipData:
@@ -4691,7 +4714,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.writeToImportTextBox(apiData.get("error")["message"])
 
             except urllib3.exceptions.MaxRetryError:
-                self.writeToImportTextBox("Error! No Internet Connection!")
+                self.writeToImportTextBox("Error! Server connection failed.")
 
             except json.JSONDecodeError:
                 self.writeToImportTextBox("Error! Profile not available from the Emperor's Hammer database.")
@@ -5174,7 +5197,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         except urllib3.exceptions.MaxRetryError:
             self.updateProgressBar.emit("error", 0)
-            self.updateMsg += "Checking for updates failed.\nNo internet connection.\n"
+            self.updateMsg += "Checking for updates failed: server connection failed.\n"
             self.updateProgressBar.emit("message", None)
             self.gui.btn_helmet.setEnabled(True)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
@@ -5244,7 +5267,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.autoImportProfile()
 
             elif type == "error":
-                self.gui.lbl_update.setText("Update Error! No Internet Connection!")
+                self.gui.lbl_update.setText("Update Error! Server connection failed.")
                 self.gui.pb_update.setStyleSheet(r"background-color: rgb(170, 0, 0);border-color: rgb(170, 0, 0);text-align: right;")
                 self.gui.pb_update.show()
                 self.gui.lbl_update.show()

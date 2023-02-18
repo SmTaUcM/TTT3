@@ -118,42 +118,34 @@ texture
 }
 texture { T_unilayer scale 2}
 
-#declare T_r_mos_cr =
+#declare T_r_mos =
 texture
 {
-  pigment { image_map { gif "ribbons/mos-cr.gif" } }
+  pigment { image_map { gif "ribbons/mos.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
 
-#declare T_r_mos_br =
+#declare T_r_mos_boc =
 texture
 {
-  pigment { image_map { gif "ribbons/mos-br.gif" } }
+  pigment { image_map { gif "ribbons/mos-boc.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
 
-#declare T_r_mos_sr =
+#declare T_r_mos_soc =
 texture
 {
-  pigment { image_map { gif "ribbons/mos-sr.gif" } }
+  pigment { image_map { gif "ribbons/mos-soc.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}
 
-#declare T_r_mos_gr =
+#declare T_r_mos_goc =
 texture
 {
-  pigment { image_map { gif "ribbons/mos-gr.gif" } }
-  finish  { fin_T_uni }
-}
-texture { T_unilayer scale 2}
-
-#declare T_r_mos_pr =
-texture
-{
-  pigment { image_map { gif "ribbons/mos-pr.gif" } }
+  pigment { image_map { gif "ribbons/mos-goc.gif" } }
   finish  { fin_T_uni }
 }
 texture { T_unilayer scale 2}

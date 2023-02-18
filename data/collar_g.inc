@@ -518,6 +518,14 @@ union
   object { P_com_border no_shadow }
 }
 
+#declare P_collar_bgcom =
+union
+{
+  object { P_collar texture { T_collar_com } no_shadow }
+  object { P_com texture { T_collar_wing } no_shadow }
+  object { P_com_border no_shadow }
+}
+
 #declare P_collar_tccs =
 object
 {
@@ -573,7 +581,7 @@ object
   #if (!strcmp(position,"TCCS")) #declare P_acollar = P_collar_tccs; #end
   #if (!strcmp(position,"COO")) #declare P_acollar = P_collar_tccs; #end
   #if (!strcmp(position,"SOO")) #declare P_acollar = P_collar_tccs; #end
-  #if (!strcmp(position,"GCO")) #declare P_acollar = P_collar_tccs; #end
+  #if (!strcmp(position,"BGCOM")) #declare P_acollar = P_collar_bgcom; #end
   #if (!strcmp(position,"COM")) #declare P_acollar = P_collar_com; #end
 #end
 #if (!strcmp(category,"line"))
