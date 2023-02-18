@@ -886,9 +886,9 @@ margin-top: 2px; /* make non-selected tabs look smaller */
      <widget class="QLabel" name="lbl_ship">
       <property name="geometry">
        <rect>
-        <x>25</x>
+        <x>148</x>
         <y>18</y>
-        <width>131</width>
+        <width>99</width>
         <height>16</height>
        </rect>
       </property>
@@ -911,9 +911,9 @@ margin-top: 2px; /* make non-selected tabs look smaller */
       </property>
       <property name="geometry">
        <rect>
-        <x>25</x>
+        <x>148</x>
         <y>43</y>
-        <width>131</width>
+        <width>110</width>
         <height>317</height>
        </rect>
       </property>
@@ -940,9 +940,9 @@ QListWidget:!enabled
       </property>
       <property name="geometry">
        <rect>
-        <x>202</x>
+        <x>279</x>
         <y>43</y>
-        <width>131</width>
+        <width>110</width>
         <height>317</height>
        </rect>
       </property>
@@ -966,9 +966,9 @@ QListWidget:!enabled
      <widget class="QLabel" name="lbl_wing">
       <property name="geometry">
        <rect>
-        <x>202</x>
+        <x>279</x>
         <y>18</y>
-        <width>131</width>
+        <width>99</width>
         <height>16</height>
        </rect>
       </property>
@@ -991,9 +991,9 @@ QListWidget:!enabled
       </property>
       <property name="geometry">
        <rect>
-        <x>379</x>
+        <x>410</x>
         <y>43</y>
-        <width>131</width>
+        <width>110</width>
         <height>317</height>
        </rect>
       </property>
@@ -1017,9 +1017,9 @@ QListWidget:!enabled
      <widget class="QLabel" name="lbl_squad">
       <property name="geometry">
        <rect>
-        <x>379</x>
+        <x>410</x>
         <y>18</y>
-        <width>131</width>
+        <width>99</width>
         <height>16</height>
        </rect>
       </property>
@@ -1034,6 +1034,57 @@ QListWidget:!enabled
       </property>
       <property name="text">
        <string>Squadron</string>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="lw_battlegroup">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>17</x>
+        <y>43</y>
+        <width>110</width>
+        <height>317</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QListWidget
+{
+	background-color: rgb(211, 211, 211);
+}
+
+QListWidget:!enabled
+{
+	background-color: darkgray;
+}</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lbl_battlegroup">
+      <property name="geometry">
+       <rect>
+        <x>17</x>
+        <y>18</y>
+        <width>99</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+        <underline>true</underline>
+       </font>
+      </property>
+      <property name="text">
+       <string>Battlegroup</string>
       </property>
      </widget>
     </widget>
