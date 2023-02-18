@@ -806,25 +806,55 @@ class TTT3(QMainWindow):
     def enableWingAndSqnTab(self, boolEnabled):
         '''Method that enables all options in the 'Wing and Squadron' tab.'''
 
-        if boolEnabled:
-            # Add the Ships to the Ships list view.
-            if self.gui.lw_ship.count() == 0:
-                self.gui.lw_ship.clear()
-                for ship in self.fleetConfig.get("ships"):
-                    self.gui.lw_ship.addItem(ship.get("nameShort"))
-            setLWPixelSizes(self.gui.lw_ship)
+            if self.position == "BGCOM":
+                self.gui.lbl_ship.setText("Battlegroup")
+                self.gui.lw_ship.setEnabled(True)
+                self.gui.lbl_wing.setVisible(False)
+                self.gui.lbl_squad.setVisible(False)
+                self.gui.lw_wing.setVisible(False)
+                self.gui.lw_squad.setVisible(False)
+
+                # Add the Battlegroups to the Ships list view.
+                    self.gui.lw_ship.clear()
+                    try:
+                        for bg in self.fleetConfig.get("battlegroups"):
+                            self.gui.lw_ship.addItem(bg.get("nameShort"))
+                    except TypeError:
+                        pass
+                setLWPixelSizes(self.gui.lw_ship)
 
         else:
-            self.gui.lw_ship.clear()
-            self.ship = ""
-            self.gui.lw_wing.clear()
-            self.wing = ""
-            self.gui.lw_squad.clear()
-            self.sqn = ""
+            self.gui.lbl_ship.setText("Ship")
+            self.gui.lbl_wing.setVisible(True)
+            self.gui.lbl_squad.setVisible(True)
+            self.gui.lw_wing.setVisible(True)
+            self.gui.lw_squad.setVisible(True)
 
-        self.gui.lw_ship.setEnabled(boolEnabled)
-        self.gui.lw_wing.setEnabled(boolEnabled)
-        self.gui.lw_squad.setEnabled(boolEnabled)
+            # Add the Ships to the Ships list view.
+            self.gui.lw_ship.clear()
+            for ship in self.fleetConfig.get("ships"):
+                self.gui.lw_ship.addItem(ship.get("nameShort"))
+            setLWPixelSizes(self.gui.lw_ship)
+
+            if boolEnabled:
+                # Add the Ships to the Ships list view.
+                if self.gui.lw_ship.count() == 0:
+                    self.gui.lw_ship.clear()
+                    for ship in self.fleetConfig.get("ships"):
+                        self.gui.lw_ship.addItem(ship.get("nameShort"))
+                setLWPixelSizes(self.gui.lw_ship)
+
+            else:
+                self.gui.lw_ship.clear()
+                self.ship = ""
+                self.gui.lw_wing.clear()
+                self.wing = ""
+                self.gui.lw_squad.clear()
+                self.sqn = ""
+
+            self.gui.lw_ship.setEnabled(boolEnabled)
+            self.gui.lw_wing.setEnabled(boolEnabled)
+            self.gui.lw_squad.setEnabled(boolEnabled)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def rankRBLogic(self):
@@ -904,8 +934,15 @@ class TTT3(QMainWindow):
                         self.rank = "GA"
                         break
 
-            # Apply any previous Ship/Wing/Sqn options.
-            if self.ship != "":
+            # Apply any previous Battlegroup/Ship/Wing/Sqn options.
+            if self.position == "BGCOM":
+                for row in range(self.gui.lw_ship.count()):
+                    self.gui.lw_ship.setCurrentRow(row)
+                    if self.gui.lw_ship.currentItem().text() == self.battlegroup:
+                        break
+                self.shipSelectionLogic(None)
+
+            elif self.ship != "":
                 for row in range(self.gui.lw_ship.count()):
                     self.gui.lw_ship.setCurrentRow(row)
                     if self.gui.lw_ship.currentItem().text() == self.ship:
@@ -3066,7 +3103,7 @@ color_map
                         self.wingSelectionLogic(None)
 
                 else:
-                    if self.position not in ["COM"]:  # Stops Ship List Widget from being cleared.
+                    if self.position not in ["COM", "BGCOM"]:  # Stops Ship List Widget from being cleared.
                         self.gui.lw_ship.clear()
                     self.gui.lw_wing.clear()
 
@@ -4231,6 +4268,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.name = "Unknown"
             self.callsign = "None"
             self.nameHelm = "EH TC"
+            self.battlegroup = ""
             self.ship = ""
             self.wing = ""
             self.sqn = ""
@@ -4323,11 +4361,18 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                  self.gui.rb_pos_9, self.gui.rb_pos_10, self.gui.rb_pos_11, self.gui.rb_pos_12,
                                  self.gui.rb_pos_13, self.gui.rb_pos_14, self.gui.rb_pos_lr, self.gui.rb_pos_fr]
 
+                    positions_EH = [None,  None, None, None,    None,  None, None,   None,   "IA" ,  "CA"  ,"GCO",  "CS", "XO", "FC"]
+                    positions_TC = ["TRN", "FM", "FL", "SQXO", "CMDR", "WC", "COM", "BGCOM", "COO", "SOO", "TCCOM", None, None, None]
+
                     if self.position:
-                        for radioButton in radioBtns:
-                            if self.position.lower() == radioButton.objectName().replace("rb_pos_", ""):
-                                radioButton.setChecked(True)
-                                break
+                        for position_group in [positions_EH, positions_TC]:
+                            for position in position_group:
+                                if position != None:
+                                    if position == self.position:
+                                        btn_index = position_group.index(position)
+                                        self.gui.cb_rank_system.setCurrentIndex([positions_EH, positions_TC].index(position_group))
+                                        radioBtns[btn_index].setChecked(True)
+                                        break
                         self.posRBLogic()
 
                         # Ranks
@@ -4347,10 +4392,17 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
                         # Ship.
                     self.ship = saveData[3]
-                    if self.ship:
+                    if self.ship and "Battlegroup " not in self.ship:
                         for row in range(self.gui.lw_ship.count()):
                             self.gui.lw_ship.setCurrentRow(row)
                             if self.gui.lw_ship.currentItem().text() == self.ship:
+                                break
+                        self.shipSelectionLogic(None)
+                    elif self.ship and "Battlegroup " in self.ship:
+                        self.battlegroup = self.ship
+                        for row in range(self.gui.lw_ship.count()):
+                            self.gui.lw_ship.setCurrentRow(row)
+                            if self.gui.lw_ship.currentItem().text() == self.battlegroup:
                                 break
                         self.shipSelectionLogic(None)
 
@@ -4418,6 +4470,10 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     if saveData[21]:
                         self.gui.rb_daggerNone.setChecked(True)
 
+                    # Battlegroup
+                    if saveData[22]:
+                        self.battlegroup = saveData[22]
+
                 else:
                     # Show error message.
                     msg = "%s is not compatible with this version of TTT3.\nPlease save a new profile." % fileName.split("\\")[-1]
@@ -4440,7 +4496,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         self.gui.cb_dressSaberStyles.currentIndex(), self.gui.rb_dressSaberRight.isChecked(), self.gui.rb_daggerLeft.isChecked(),
                         self.gui.cb_dutyLightsaber.isChecked(), self.gui.cb_dutySaberStyles.currentIndex(), self.gui.rb_dutySaberRight.isChecked(),
                         self.gui.cb_dutyBlaster.isChecked(), self.gui.cb_dutyBlasterStyles.currentIndex(), self.gui.rb_blasterLeft.isChecked(),
-                        self.callsign, self.gui.rb_daggerNone.isChecked())
+                        self.callsign, self.gui.rb_daggerNone.isChecked(), self.battlegroup)
 
             # Save the data.
             fileName = self.saveUniformFileDialog()
@@ -4600,6 +4656,14 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         self.battlegroup = battlegroupData.get("nameShort")
                     else:
                         self.battlegroup = ""
+
+                    # Apply the Battlegroup setting to the GUI.
+                    if self.position == "BGCOM":
+                        for row in range(self.gui.lw_ship.count()):
+                            self.gui.lw_ship.setCurrentRow(row)
+                            if self.gui.lw_ship.currentItem().text() == self.battlegroup:
+                                break
+                        self.shipSelectionLogic(None)
 
                     # Ship
                     shipData = apiData.get("ship")

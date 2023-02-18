@@ -883,7 +883,7 @@ margin-top: 2px; /* make non-selected tabs look smaller */
      <attribute name="title">
       <string>Wing and Squadron</string>
      </attribute>
-     <widget class="QLabel" name="label_17">
+     <widget class="QLabel" name="lbl_ship">
       <property name="geometry">
        <rect>
         <x>25</x>
@@ -963,7 +963,7 @@ QListWidget:!enabled
 }</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_18">
+     <widget class="QLabel" name="lbl_wing">
       <property name="geometry">
        <rect>
         <x>202</x>
@@ -1014,7 +1014,7 @@ QListWidget:!enabled
 }</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_19">
+     <widget class="QLabel" name="lbl_squad">
       <property name="geometry">
        <rect>
         <x>379</x>
