@@ -346,8 +346,8 @@ class TTT3(QMainWindow):
             self.pinData = []
 
             # ----- GUI variables. -----
-            self.positions_EH = [None,  None, None, None,    None,  None, None,   None,   "IA" ,  "CA"  ,"GCO",  "CS", "XO", "FC"]
-            self.positions_TC = ["TRN", "FM", "FL", "SQXO", "CMDR", "WC", "COM", "BGCOM", "COO", "SOO", "TCCOM", None, None, None]
+            self.positions_EH = ["NULL", "NULL", "NULL", "NULL", "NULL", "NULL", "NULL", "NULL",  "IA",   "CA",  "GCO",   "CS",   "XO",   "FC"]
+            self.positions_TC = ["TRN",  "FM",   "FL",   "SQXO", "CMDR", "WC",   "COM",  "BGCOM", "COO",  "SOO", "TCCOM", "NULL", "NULL", "NULL"]
             self.subRibbonAwards = []
             self.cb_singleMedalConnected = False
             self.combo_topConnected = False
@@ -4683,21 +4683,17 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.rank = apiData.get("rankAbbr")
 
                     # Position.
-                    if apiData.get("position") not in self.positions_EH and apiData.get("position") not in self.positions_TC:
+                    if apiData.get("TTT").get("position") not in self.positions_EH and apiData.get("position") not in self.positions_TC:
                         if self.rank in ["CT", "SL", "LT", "LCM", "CM", "CPT", "MAJ", "LC", "COL", "GN"]:
                             self.position = "LR"
                         else:
                             self.position = "FR"
                     else:
-                        self.position = apiData.get("position")
-                        if self.position is None:
-                            self.position = apiData.get("position")
+                        self.position = apiData.get("TTT").get("position")
 
-                    # Special handling of FC and XO positions.
-                    idLine = apiData.get("IDLine")
-                    pos = idLine.split("/")[0]
-                    if pos == "FC" or pos == "XO":
-                        self.position = pos
+                    # Special handling for TCCS.
+                    if self.position in ["SGCOM", "TCCS"]:
+                        self.position = apiData.get("position")
 
                     # Apply the Position setting to the GUI.
                     radioBtns = [self.gui.rb_pos_1, self.gui.rb_pos_2, self.gui.rb_pos_3, self.gui.rb_pos_4,
