@@ -806,22 +806,22 @@ class TTT3(QMainWindow):
     def enableWingAndSqnTab(self, boolEnabled):
         '''Method that enables all options in the 'Wing and Squadron' tab.'''
 
-            if self.position == "BGCOM":
-                self.gui.lbl_ship.setText("Battlegroup")
-                self.gui.lw_ship.setEnabled(True)
-                self.gui.lbl_wing.setVisible(False)
-                self.gui.lbl_squad.setVisible(False)
-                self.gui.lw_wing.setVisible(False)
-                self.gui.lw_squad.setVisible(False)
+        if self.position == "BGCOM":
+            self.gui.lbl_ship.setText("Battlegroup")
+            self.gui.lw_ship.setEnabled(True)
+            self.gui.lbl_wing.setVisible(False)
+            self.gui.lbl_squad.setVisible(False)
+            self.gui.lw_wing.setVisible(False)
+            self.gui.lw_squad.setVisible(False)
 
-                # Add the Battlegroups to the Ships list view.
-                    self.gui.lw_ship.clear()
-                    try:
-                        for bg in self.fleetConfig.get("battlegroups"):
-                            self.gui.lw_ship.addItem(bg.get("nameShort"))
-                    except TypeError:
-                        pass
-                setLWPixelSizes(self.gui.lw_ship)
+            # Add the Battlegroups to the Ships list view.
+            self.gui.lw_ship.clear()
+            try:
+                for bg in self.fleetConfig.get("battlegroups"):
+                    self.gui.lw_ship.addItem(bg.get("nameShort"))
+            except TypeError:
+                pass
+            setLWPixelSizes(self.gui.lw_ship)
 
         else:
             self.gui.lbl_ship.setText("Ship")
@@ -4586,7 +4586,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.rank = apiData.get("rankAbbr")
 
                     # Position.
-                    if apiData.get("position") == "" or apiData.get("position") == "RSV" or apiData.get("position") is None:
+                    if apiData.get("position") == "" or apiData.get("position") == "RSV" or apiData.get("position") == "IOA" or apiData.get("position") is None:
                         if self.rank in ["CT", "SL", "LT", "LCM", "CM", "CPT", "MAJ", "LC", "COL", "GN"]:
                             self.position = "LR"
                         else:
