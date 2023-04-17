@@ -66,7 +66,7 @@ class TTT3(QMainWindow):
             # Version info.
             version = "3.0.4"
             devVersion = ""
-            date = "18 February 2023"
+            date = "16 April 2023"
             self.saveFileVersion = 3  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
@@ -566,7 +566,7 @@ class TTT3(QMainWindow):
                 self.gui.rb_pos_9.setHidden(False)
                 self.gui.rb_pos_10.setText("Command Attache (CA)")
                 self.gui.rb_pos_10.setHidden(False)
-                self.gui.rb_pos_11.setText("Group Commanding Officer (GCO)")
+                self.gui.rb_pos_11.setText("Subgroup Commander (SGCOM)")
                 self.gui.rb_pos_11.setHidden(False)
                 self.gui.rb_pos_12.setText("Command Staff (CS)")
                 self.gui.rb_pos_12.setHidden(False)
