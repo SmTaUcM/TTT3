@@ -118,6 +118,13 @@ union
   object { P_cylinder_2_3 }
 }
 
+#declare P_BGCOM =
+union
+{
+  object { P_cylinder_2_2 }
+  object { P_cylinder_2_3 }
+}
+
 #declare P_TCCS =
 union
 {
@@ -141,7 +148,7 @@ union
   object { P_cylinder_2_3 }
 }
 
-#declare P_SGCOM =
+#declare P_GCO =
 union
 {
   object { P_cylinder_1_1 }

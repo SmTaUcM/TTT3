@@ -162,6 +162,36 @@ texture
   }
 }
 
+#declare T_collar_bgcom =
+texture
+{
+  material_map
+  {
+    gif "collars/BGCOM.gif"
+    once
+    interpolate 2
+    texture
+    { //index 0
+      pigment { color rgbt <0, 0, 0, 1> }
+      finish  { ambient 1 emission 0 }
+    }
+    texture
+    { //index 1
+      pigment { pig_T_collar }
+      finish { fin_T_collar }
+      normal
+      {
+        bump_map
+        {
+          gif "collars/BGCOM.gif"
+          once
+          bump_size 2
+        }
+      }
+    }
+  }
+}
+
 #declare T_collar_tccs =
 texture
 {
@@ -518,6 +548,14 @@ union
   object { P_com_border no_shadow }
 }
 
+#declare P_collar_bgcom =
+object
+{
+  P_collar
+  texture { T_collar_bgcom }
+  no_shadow
+}
+
 #declare P_collar_tccs =
 object
 {
@@ -567,10 +605,13 @@ object
   #if (!strcmp(position,"FC")) #declare P_acollar = P_collar_fc; #end
   #if (!strcmp(position,"XO")) #declare P_acollar = P_collar_cs; #end
   #if (!strcmp(position,"CS")) #declare P_acollar = P_collar_cs; #end
-  #if (!strcmp(position,"SGCOM")) #declare P_acollar = P_collar_sgcom; #end
+  #if (!strcmp(position,"GCO")) #declare P_acollar = P_collar_sgcom; #end
   #if (!strcmp(position,"CA")) #declare P_acollar = P_collar_ca; #end
   #if (!strcmp(position,"IA")) #declare P_acollar = P_collar_ia; #end
   #if (!strcmp(position,"TCCS")) #declare P_acollar = P_collar_tccs; #end
+  #if (!strcmp(position,"COO")) #declare P_acollar = P_collar_tccs; #end
+  #if (!strcmp(position,"SOO")) #declare P_acollar = P_collar_tccs; #end
+  #if (!strcmp(position,"BGCOM")) #declare P_acollar = P_collar_bgcom; #end
   #if (!strcmp(position,"COM")) #declare P_acollar = P_collar_com; #end
 #end
 #if (!strcmp(category,"line"))
@@ -582,7 +623,7 @@ object
   #if (!strcmp(wing,"Wing VI")) #declare P_acollar = P_collar_wing06; #end
   #if (!strcmp(wing,"Wing VII")) #declare P_acollar = P_collar_wing07; #end
   #if (!strcmp(wing,"Wing VIII")) #declare P_acollar = P_collar_wing08; #end
-  #if (!strcmp(wing,"Wing IV")) #declare P_acollar = P_collar_wing09; #end
+  #if (!strcmp(wing,"Wing IX")) #declare P_acollar = P_collar_wing09; #end
   #if (!strcmp(wing,"Wing X")) #declare P_acollar = P_collar_wing10; #end
   #if (!strcmp(wing,"Wing XI")) #declare P_acollar = P_collar_wing11; #end
   #if (!strcmp(wing,"Wing XII")) #declare P_acollar = P_collar_wing12; #end

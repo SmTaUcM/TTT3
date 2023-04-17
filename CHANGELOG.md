@@ -18,6 +18,21 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 
 ## ------------------------------------------------------------------------------------------------##
 
+## [v3.0.4] 2023-04-16
+
+### Added
+- Support for BGCOM position with appropriate collar insignia. (@6958/@238)
+- Support for battlegroup import from fleet API. (@238)
+
+### Changed
+- Realigned position cuff stripes for TCCS based on fleet-wide standard. (@238)
+- Updated ISM to new TC logo design. (@238)
+- Updated MoS for full implementation. (@238)
+- Corrected MoC device to proper oak leaf cluster. (@238)
+- Group Commanding Officer (GCO) has been changed back to Subgroup Commander (SGCOM). (@238)
+
+## ------------------------------------------------------------------------------------------------##
+
 ## [v3.0.3] 2022-09-12
 
 ### Added
@@ -29,7 +44,6 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 ### Fixed
 - TUA-BW+ and MUA-BW+ not being imported.
 - MUA-PW & MUA-PW missing.
-
 
 ### Removed
 - None
@@ -72,6 +86,7 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 - Helmet logos can now be selected as mirrored or un-mirrored.
 - Infiltrator Style Helmets.
 - Added auto import of a user selected PIN upon TTT3 launch.
+- Redundancy for expired root certificates.
 
 ### Changed
 - New TIE Corps Logo is now the default graphic on helmets replacing the imperial cog.
