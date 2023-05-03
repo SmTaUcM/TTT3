@@ -299,7 +299,7 @@ object { P_echelon_device scale <0.75,0.75,0.75> rotate <0,180,0> translate <0,-
 // IMPERIAL ACHIEVEMENT RIBBON
 
 #declare P_ribbon_iar = 
-union
+object
 {
   object { P_single_ribbon texture { T_r_iar } }
 }
@@ -351,7 +351,7 @@ union
 // MEDAL OF INSTRUCTION
 
 #declare P_ribbon_moi =
-union
+object
 {
   object { P_single_ribbon texture { T_r_moi } }
 }
@@ -394,7 +394,7 @@ union
 // MEDAL OF SCHOLARSHIP
 
 #declare P_ribbon_mos =
-union
+object
 {
   object { P_single_ribbon texture { T_r_mos } }
 }
@@ -460,7 +460,7 @@ union
 // TIE CORPS COMMANDER'S UNIT AWARD
 
 #declare P_ribbon_tua =
-union
+object
 {
   object { P_single_ribbon texture { T_r_tua } }
 }
@@ -489,7 +489,7 @@ union
 // TIE CORPS MERITORIOUS UNIT AWARD
 
 #declare P_ribbon_mua =
-union
+object
 {
   object { P_single_ribbon texture { T_r_mua } }
 }
@@ -592,7 +592,7 @@ union
 // LEGION OF COMBAT
 
 #declare P_ribbon_loc =
-union
+object
 {
   object { P_single_ribbon texture { T_r_loc } }
 }
@@ -635,7 +635,7 @@ union
 // LEGION OF SKIRMISH
 
 #declare P_ribbon_los =
-union
+object
 {
   object { P_single_ribbon texture { T_r_los } }
 }
@@ -678,7 +678,7 @@ union
 // DISTINGUISHED FLYING CROSS
 
 #declare P_ribbon_dfc =
-union
+object
 {
   object { P_single_ribbon texture { T_r_dfc } }
 }
@@ -707,7 +707,7 @@ union
 // OPERATIONAL READINESS AWARD
 
 #declare P_ribbon_ora =
-union
+object
 {
   object { P_single_ribbon texture { T_r_ora } }
 }
@@ -801,7 +801,7 @@ union
 // LETTER OF ACHIEVEMENT
 
 #declare P_ribbon_loa =
-union
+object
 {
   object { P_single_ribbon texture { T_r_loa } }
 }
@@ -809,7 +809,7 @@ union
 // ORDER OF THE VANGUARD
 
 #declare P_ribbon_ov_1e =
-union
+object
 {
   object { P_single_ribbon texture { T_r_oov } }
 }
