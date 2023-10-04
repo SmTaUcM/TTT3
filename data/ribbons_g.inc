@@ -94,28 +94,28 @@ texture
 #include "medal_o.inc"
 
 
-#declare T_diamond =
+#declare T_diamond_rib =
 texture
 {
   pigment { color rgb <0.58, 0.58, 0.58> }
   finish  { fin_T_metal }
 }
 
-#declare T_red =
+#declare T_red_rib =
 texture
 {
   pigment { color rgb <0.5,0.25,0.25> }
   finish { fin_T_dullmetal }
 }
 
-#declare T_green =
+#declare T_green_rib =
 texture
 {
   pigment { color rgb <0.25,0.5,0.25> }
   finish { fin_T_dullmetal }
 }
 
-#declare T_blue =
+#declare T_blue_rib =
 texture
 {
   pigment { color rgb <0.25,0.25,0.5> }
@@ -299,10 +299,7 @@ object { P_echelon_device scale <0.75,0.75,0.75> rotate <0,180,0> translate <0,-
 // IMPERIAL ACHIEVEMENT RIBBON
 
 #declare P_ribbon_iar = 
-object
-{
-  object { P_single_ribbon texture { T_r_iar } }
-}
+object { P_single_ribbon texture { T_r_iar } }
 
 #declare P_ribbon_iar_bl =
 union
@@ -351,16 +348,14 @@ union
 // MEDAL OF INSTRUCTION
 
 #declare P_ribbon_moi =
-object
-{
-  object { P_single_ribbon texture { T_r_moi } }
-}
+object { P_single_ribbon texture { T_r_moi } }
+
 
 #declare P_ribbon_moi_bc =
 union
 {
   object { P_single_ribbon texture { T_r_moi } }
-  object { P_cross_ribbon_device texture { T_blue } }
+  object { P_cross_ribbon_device texture { T_blue_rib } }
 }
 
 #declare P_ribbon_moi_gc =
@@ -381,23 +376,21 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_moi } }
-  object { P_cross_ribbon_device texture { T_green } }
+  object { P_cross_ribbon_device texture { T_green_rib } }
 }
 
 #declare P_ribbon_moi_dc =
 union
 {
   object { P_single_ribbon texture { T_r_moi } }
-  object { P_cross_ribbon_device texture { T_diamond } }
+  object { P_cross_ribbon_device texture { T_diamond_rib } }
 }
 
 // MEDAL OF SCHOLARSHIP
 
 #declare P_ribbon_mos =
-object
-{
-  object { P_single_ribbon texture { T_r_mos } }
-}
+object { P_single_ribbon texture { T_r_mos } }
+
 
 #declare P_ribbon_mos_boc =
 union
@@ -454,16 +447,13 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_moc } }
-   object { P_oak_cluster_ribbon_device texture { T_diamond } }
+   object { P_oak_cluster_ribbon_device texture { T_diamond_rib } }
 }
 
 // TIE CORPS COMMANDER'S UNIT AWARD
 
 #declare P_ribbon_tua =
-object
-{
-  object { P_single_ribbon texture { T_r_tua } }
-}
+object { P_single_ribbon texture { T_r_tua } }
 
 #declare P_ribbon_tua_b =
 union
@@ -489,10 +479,7 @@ union
 // TIE CORPS MERITORIOUS UNIT AWARD
 
 #declare P_ribbon_mua =
-object
-{
-  object { P_single_ribbon texture { T_r_mua } }
-}
+object { P_single_ribbon texture { T_r_mua } }
 
 #declare P_ribbon_mua_b =
 union
@@ -592,10 +579,7 @@ union
 // LEGION OF COMBAT
 
 #declare P_ribbon_loc =
-object
-{
-  object { P_single_ribbon texture { T_r_loc } }
-}
+object { P_single_ribbon texture { T_r_loc } }
 
 #declare P_ribbon_loc_cs =
 union
@@ -608,21 +592,21 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_loc } }
-  object { P_scimitar_ribbon_device texture { T_green } }
+  object { P_scimitar_ribbon_device texture { T_green_rib } }
 }
 
 #declare P_ribbon_loc_ts =
 union
 {
   object { P_single_ribbon texture { T_r_loc } }
-  object { P_scimitar_ribbon_device texture { T_blue } }
+  object { P_scimitar_ribbon_device texture { T_blue_rib } }
 }
 
 #declare P_ribbon_loc_rs =
 union
 {
   object { P_single_ribbon texture { T_r_loc } }
-   object { P_scimitar_ribbon_device texture { T_red } }
+   object { P_scimitar_ribbon_device texture { T_red_rib } }
 }
 
 #declare P_ribbon_loc_ps =
@@ -635,10 +619,7 @@ union
 // LEGION OF SKIRMISH
 
 #declare P_ribbon_los =
-object
-{
-  object { P_single_ribbon texture { T_r_los } }
-}
+object { P_single_ribbon texture { T_r_los } }
 
 #declare P_ribbon_los_cs =
 union
@@ -651,21 +632,21 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_los } }
-  object { P_scimitar_ribbon_device texture { T_green } }
+  object { P_scimitar_ribbon_device texture { T_green_rib } }
 }
 
 #declare P_ribbon_los_ts =
 union
 {
   object { P_single_ribbon texture { T_r_los } }
-  object { P_scimitar_ribbon_device texture { T_blue } }
+  object { P_scimitar_ribbon_device texture { T_blue_rib } }
 }
 
 #declare P_ribbon_los_rs =
 union
 {
   object { P_single_ribbon texture { T_r_los } }
-  object { P_scimitar_ribbon_device texture { T_red } }
+  object { P_scimitar_ribbon_device texture { T_red_rib } }
 }
 
 #declare P_ribbon_los_ps =
@@ -678,10 +659,7 @@ union
 // DISTINGUISHED FLYING CROSS
 
 #declare P_ribbon_dfc =
-object
-{
-  object { P_single_ribbon texture { T_r_dfc } }
-}
+object { P_single_ribbon texture { T_r_dfc } }
 
 #declare P_ribbon_dfc_bw =
 union                                                                          
@@ -707,10 +685,7 @@ union
 // OPERATIONAL READINESS AWARD
 
 #declare P_ribbon_ora =
-object
-{
-  object { P_single_ribbon texture { T_r_ora } }
-}
+object { P_single_ribbon texture { T_r_ora } }
 
 #declare P_ribbon_ora_1c =
 union
@@ -801,18 +776,12 @@ union
 // LETTER OF ACHIEVEMENT
 
 #declare P_ribbon_loa =
-object
-{
-  object { P_single_ribbon texture { T_r_loa } }
-}
+object { P_single_ribbon texture { T_r_loa } }
 
 // ORDER OF THE VANGUARD
 
 #declare P_ribbon_ov_1e =
-object
-{
-  object { P_single_ribbon texture { T_r_oov } }
-}
+object { P_single_ribbon texture { T_r_oov } }
 
 #declare P_ribbon_ov_2e =
 union
@@ -898,14 +867,14 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <0,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <0,0,0> }
 }
 
 #declare P_ribbon_ov_12e =
 union
 {
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-1.385,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-1.385,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <1.385,0,0> }
 }
 
@@ -913,7 +882,7 @@ union
 union
 { 
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-2.75,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-2.75,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <0,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <2.75,0,0> }
 }
@@ -922,7 +891,7 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-4.135,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-4.135,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <-1.385,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <1.385,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <4.135,0,0> }
@@ -932,7 +901,7 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-5.5,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-5.5,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <-2.75,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <0,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <2.75,0,0> }
@@ -944,7 +913,7 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-1.385,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-1.385,0,0> }
   object { P_echelon_ribbon_device texture { T_gold } translate <1.385,0,0> }
 }
 
@@ -952,7 +921,7 @@ union
 union
 { 
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-2.75,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-2.75,0,0> }
   object { P_echelon_ribbon_device texture { T_gold } translate <0,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <2.75,0,0> }
 } 
@@ -961,7 +930,7 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-4.135,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-4.135,0,0> }
   object { P_echelon_ribbon_device texture { T_gold } translate <-1.385,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <1.385,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <4.135,0,0> }
@@ -971,7 +940,7 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-5.5,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-5.5,0,0> }
   object { P_echelon_ribbon_device texture { T_gold } translate <-2.75,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <0,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <2.75,0,0> }
@@ -982,7 +951,7 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-6.885,0,0> } 
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-6.885,0,0> } 
   object { P_echelon_ribbon_device texture { T_gold } translate <-4.135,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <-1.385,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <1.385,0,0> }
@@ -994,16 +963,16 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-1.385,0,0> }
-  object { P_echelon_ribbon_device texture { T_blue } translate <1.385,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-1.385,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <1.385,0,0> }
 }
 
 #declare P_ribbon_ov_22e =
 union
 { 
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-2.75,0,0> }
-  object { P_echelon_ribbon_device texture { T_blue } translate <0,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-2.75,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <0,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <2.75,0,0> }
 }
 
@@ -1011,8 +980,8 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-4.135,0,0> }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-1.385,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-4.135,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-1.385,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <1.385,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <4.135,0,0> }
 }
@@ -1021,8 +990,8 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-5.5,0,0> }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-2.75,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-5.5,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-2.75,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <0,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <2.75,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <5.5,0,0> }
@@ -1032,8 +1001,8 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-6.885,0,0> } 
-  object { P_echelon_ribbon_device texture { T_blue } translate <-4.135,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-6.885,0,0> } 
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-4.135,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <-1.385,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <1.385,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <4.135,0,0> }
@@ -1044,8 +1013,8 @@ union
 union
 { 
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-2.75,0,0> }
-  object { P_echelon_ribbon_device texture { T_blue } translate <0,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-2.75,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <0,0,0> }
   object { P_echelon_ribbon_device texture { T_gold } translate <2.75,0,0> }
 }
 
@@ -1053,8 +1022,8 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-4.135,0,0> }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-1.385,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-4.135,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-1.385,0,0> }
   object { P_echelon_ribbon_device texture { T_gold } translate <1.385,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <4.135,0,0> }
 }
@@ -1063,8 +1032,8 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-5.5,0,0> }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-2.75,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-5.5,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-2.75,0,0> }
   object { P_echelon_ribbon_device texture { T_gold } translate <0,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <2.75,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <5.5,0,0> }
@@ -1074,8 +1043,8 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-6.885,0,0> } 
-  object { P_echelon_ribbon_device texture { T_blue } translate <-4.135,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-6.885,0,0> } 
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-4.135,0,0> }
   object { P_echelon_ribbon_device texture { T_gold } translate <-1.385,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <1.385,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <4.135,0,0> }
@@ -1086,8 +1055,8 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-8.25,0,0> }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-5.5,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-8.25,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-5.5,0,0> }
   object { P_echelon_ribbon_device texture { T_gold } translate <-2.75,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <0,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <2.75,0,0> }
@@ -1099,18 +1068,18 @@ union
 union
 { 
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-2.75,0,0> }
-  object { P_echelon_ribbon_device texture { T_blue } translate <0,0,0> }
-  object { P_echelon_ribbon_device texture { T_blue } translate <2.75,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-2.75,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <0,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <2.75,0,0> }
 }
 
 #declare P_ribbon_ov_32e =
 union
 {
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-4.135,0,0> }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-1.385,0,0> }
-  object { P_echelon_ribbon_device texture { T_blue } translate <1.385,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-4.135,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-1.385,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <1.385,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <4.135,0,0> }
 }
 
@@ -1118,9 +1087,9 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-5.5,0,0> }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-2.75,0,0> }
-  object { P_echelon_ribbon_device texture { T_blue } translate <0,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-5.5,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-2.75,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <0,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <2.75,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <5.5,0,0> }
 }
@@ -1129,9 +1098,9 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-6.885,0,0> } 
-  object { P_echelon_ribbon_device texture { T_blue } translate <-4.135,0,0> }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-1.385,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-6.885,0,0> } 
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-4.135,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-1.385,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <1.385,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <4.135,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <6.885,0,0> }
@@ -1141,9 +1110,9 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-8.25,0,0> }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-5.5,0,0> }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-2.75,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-8.25,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-5.5,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-2.75,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <0,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <2.75,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <5.5,0,0> }
@@ -1154,9 +1123,9 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-4.135,0,0> }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-1.385,0,0> }
-  object { P_echelon_ribbon_device texture { T_blue } translate <1.385,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-4.135,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-1.385,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <1.385,0,0> }
   object { P_echelon_ribbon_device texture { T_gold } translate <4.135,0,0> }
 }
 
@@ -1164,9 +1133,9 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-5.5,0,0> }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-2.75,0,0> }
-  object { P_echelon_ribbon_device texture { T_blue } translate <0,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-5.5,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-2.75,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <0,0,0> }
   object { P_echelon_ribbon_device texture { T_gold } translate <2.75,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <5.5,0,0> }
 }
@@ -1175,9 +1144,9 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-6.885,0,0> } 
-  object { P_echelon_ribbon_device texture { T_blue } translate <-4.135,0,0> }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-1.385,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-6.885,0,0> } 
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-4.135,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-1.385,0,0> }
   object { P_echelon_ribbon_device texture { T_gold } translate <1.385,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <4.135,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <6.885,0,0> }
@@ -1187,9 +1156,9 @@ union
 union
 {
   object { P_single_ribbon texture { T_r_oov } }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-8.25,0,0> }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-5.5,0,0> }
-  object { P_echelon_ribbon_device texture { T_blue } translate <-2.75,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-8.25,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-5.5,0,0> }
+  object { P_echelon_ribbon_device texture { T_blue_rib } translate <-2.75,0,0> }
   object { P_echelon_ribbon_device texture { T_gold } translate <0,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <2.75,0,0> }
   object { P_echelon_ribbon_device texture { T_platinum } translate <5.5,0,0> }
