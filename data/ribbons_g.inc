@@ -455,25 +455,32 @@ union
 #declare P_ribbon_tua =
 object { P_single_ribbon texture { T_r_tua } }
 
-#declare P_ribbon_tua_b =
+#declare P_ribbon_tua_bw =
 union
 {
   object { P_single_ribbon texture { T_r_tua } }
   object { P_wings_ribbon_device texture { T_bronze } }
 }
 
-#declare P_ribbon_tua_s =
+#declare P_ribbon_tua_sw =
 union
 {
   object { P_single_ribbon texture { T_r_tua } }
   object { P_wings_ribbon_device texture { T_silver } }
 }
 
-#declare P_ribbon_tua_g =
+#declare P_ribbon_tua_gw =
 union
 {
   object { P_single_ribbon texture { T_r_tua } }
   object { P_wings_ribbon_device texture { T_gold } }
+}
+
+#declare P_ribbon_tua_pw =
+union
+{
+  object { P_single_ribbon texture { T_r_tua } }
+  object { P_wings_ribbon_device texture { T_platinum } }
 }
 
 // TIE CORPS MERITORIOUS UNIT AWARD
@@ -481,25 +488,32 @@ union
 #declare P_ribbon_mua =
 object { P_single_ribbon texture { T_r_mua } }
 
-#declare P_ribbon_mua_b =
+#declare P_ribbon_mua_bw =
 union
 {
   object { P_single_ribbon texture { T_r_mua } }
   object { P_wings_ribbon_device texture { T_bronze } }
 }
 
-#declare P_ribbon_mua_s =
+#declare P_ribbon_mua_sw =
 union
 {
   object { P_single_ribbon texture { T_r_mua } }
   object { P_wings_ribbon_device texture { T_silver } }
 }
 
-#declare P_ribbon_mua_g =
+#declare P_ribbon_mua_gw =
 union
 {
   object { P_single_ribbon texture { T_r_mua } }
   object { P_wings_ribbon_device texture { T_gold } }
+}
+
+#declare P_ribbon_mua_pw =
+union
+{
+  object { P_single_ribbon texture { T_r_mua } }
+  object { P_wings_ribbon_device texture { T_platinum } }
 }
 
 // IRON STAR WITH WINGS

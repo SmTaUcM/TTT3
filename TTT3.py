@@ -13,7 +13,7 @@
 # ----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                      Imports.                                                                      #
 # ----------------------------------------------------------------------------------------------------------------------------------------------------#
-# Developed using Python v3.8.7 32-bit.
+# Developed using Python v3.10.6 32-bit.
 # External dependencies are commented. Imports with no comments are included with the regular Python installation.
 # Alternatively run "TTT3\Useful Info\Dependency Installer.bat"
 import logging
@@ -64,9 +64,9 @@ class TTT3(QMainWindow):
 
         try:
             # Version info.
-            version = "3.0.4"
-            devVersion = ""
-            date = "16 April 2023"
+            version = "3.1.0"
+            devVersion = "- Beta 1"
+            date = "01 November 2023"
             self.saveFileVersion = 3  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
@@ -117,43 +117,11 @@ class TTT3(QMainWindow):
             self.cb_rank_systemFunc(0)
 
             # Radio Button Connections.
+            for posBtn in self.positionRadioButtons :
+                posBtn.clicked.connect(self.posRBLogic)
 
-            # Positions.
-            self.gui.rb_pos_1.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_2.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_3.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_4.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_5.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_6.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_7.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_8.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_9.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_10.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_11.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_12.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_13.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_14.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_lr.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_fr.clicked.connect(self.posRBLogic)
-
-            # Ranks.
-            self.gui.rb_rank_ct.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_sl.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_lt.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_lcm.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_cm.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_cpt.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_maj.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_lc.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_col.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_gn.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_ra.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_va.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_ad.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_fa.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_ha.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_sa.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_ga.clicked.connect(self.rankRBLogic)
+            for rankBtn in self.rankRadioButtons :
+                rankBtn.clicked.connect(self.rankRBLogic)
 
             # ----- 'Wing and Squadron' Tab. -----
 
