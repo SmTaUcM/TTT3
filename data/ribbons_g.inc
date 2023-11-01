@@ -8,35 +8,6 @@
  *   This contains texture definitions, transformations, and object 
  *   declarations which are essential for the ribbon devices to work 
  *   correctly.
- *   (Recommend removing addToRibbonIncludes (TTT3.py line 3260))
- *
- ************************************************************************
- *
- * The current (v3.0.3) method of instantiating ribbons is as such:
- * 
- * object { P_v1 translate <0,0,v2> texture { T_r_v3 } }
- *
- *   with
- * 
- * v1 : int    : Ribbon slot number
- *                 TTT3.py's &NUM&
- * v2 : string : Offset to account for rank plaque
- *                 TTT3.py's yOffset
- * v3 : string : Award name
- *                 TTT3.py's awardName, without the preceding "T_r_".
- *
- * Which needs to be converted into the following:
- * 
- * object { P_ribbon_v3 transform device_trans_v1 translate <0,0,v2> }
- * 
- * Thus, recommend changing TTT3.py lines 874, 887, 894, and 900 to the 
- *   following:
- * 
- * ribbonObjects.append("P_ribbon_%s transform device_trans_&NUM& 
- *   translate <0,0,yOffset>" % (awardName, yOffset))
- *
- * Based on the current methods of creating the dress.pov, no additional
- * changes should be necessary to TTT3.py
  *
  ************************************************************************
  *
