@@ -228,12 +228,18 @@ class TTT3(QMainWindow):
             self.specularHelm = 50
             self.roughHelm = 1
             self.reflectionHelm = 10
-            self.camX = -2500
-            self.camY = -13300
-            self.camZ = 2100
-            self.lookX = 0
-            self.lookY = -128
-            self.lookZ = 28
+            self.camXDefault = -2500
+            self.camYDefault = -13300
+            self.camZDefault = 2100
+            self.lookXDefault = 0
+            self.lookYDefault = -128
+            self.lookZDefault = 28
+            self.camX = self.camXDefault
+            self.camY = self.camYDefault
+            self.camZ = self.camZDefault
+            self.lookX = self.lookXDefault
+            self.lookY = self.lookYDefault
+            self.lookZ = self.lookZDefault
             self.lightX = 13000
             self.lightY = -15000
             self.lightZ = 13000
@@ -285,6 +291,7 @@ class TTT3(QMainWindow):
             self.unitType = None
             self.unitProperty = None
             self.fastPreview = False
+            self.medalsOnly = False
 
             # PovRay Template Constants.
             self.RANK_OFFSET_RIBBONS_00_TO_08 = ["-18.8939990997314,0.351000010967255,7.92899990081787",  # Rotate
@@ -2022,6 +2029,11 @@ class TTT3(QMainWindow):
             template = r"data\fastPreview.tpt"
         else:
             template = r"data\dress.tpt"
+
+        if self.medalsOnly == False:
+            template = r"data\dress.tpt"
+        else:
+            template = r"data\medals.tpt"
 
         quantity = 1
 
@@ -5768,12 +5780,16 @@ color_map
         if self.uniform != "helmet":
             self.camX = value
             self.preview.lbl_CamX.setText(self.convertIntToFloatStr(value, 10))
+
+            if value != self.camXDefault:
+                self.preview.cb_PresetCam.setCurrentIndex(11)
+
         else:
             self.camXHelm = value
             self.preview.lbl_CamX.setText(self.convertIntToFloatStr(value, 100))
 
-        if value != self.camXHelmDefault:
-            self.preview.cb_PresetCam.setCurrentIndex(10)
+            if value != self.camXHelmDefault:
+                self.preview.cb_PresetCam.setCurrentIndex(10)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewCamYFunc(self, value):
@@ -5782,12 +5798,16 @@ color_map
         if self.uniform != "helmet":
             self.camY = value
             self.preview.lbl_CamY.setText(self.convertIntToFloatStr(value, 10))
+
+            if value != self.camYDefault:
+                self.preview.cb_PresetCam.setCurrentIndex(11)
+
         else:
             self.camYHelm = value
             self.preview.lbl_CamY.setText(self.convertIntToFloatStr(value, 100))
 
-        if value != self.camYHelmDefault:
-            self.preview.cb_PresetCam.setCurrentIndex(10)
+            if value != self.camYHelmDefault:
+                self.preview.cb_PresetCam.setCurrentIndex(10)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewCamZFunc(self, value):
@@ -5796,12 +5816,16 @@ color_map
         if self.uniform != "helmet":
             self.camZ = value
             self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(value, 10))
+
+            if value != self.camZDefault:
+                self.preview.cb_PresetCam.setCurrentIndex(11)
+
         else:
             self.camZHelm = value
             self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(value, 100))
 
-        if value != self.camZHelmDefault:
-            self.preview.cb_PresetCam.setCurrentIndex(10)
+            if value != self.camZHelmDefault:
+                self.preview.cb_PresetCam.setCurrentIndex(10)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookXFunc(self, value):
@@ -5810,12 +5834,16 @@ color_map
         if self.uniform != "helmet":
             self.lookX = value
             self.preview.lbl_LookX.setText(self.convertIntToFloatStr(value, 10))
+
+            if value != self.lookXDefault:
+                self.preview.cb_PresetLook.setCurrentIndex(11)
+
         else:
             self.lookXHelm = value
             self.preview.lbl_LookX.setText(self.convertIntToFloatStr(value, 100))
 
-        if value != self.lookXHelmDefault:
-            self.preview.cb_PresetLook.setCurrentIndex(10)
+            if value != self.lookXHelmDefault:
+                self.preview.cb_PresetLook.setCurrentIndex(10)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookYFunc(self, value):
@@ -5824,12 +5852,16 @@ color_map
         if self.uniform != "helmet":
             self.lookY = value
             self.preview.lbl_LookY.setText(self.convertIntToFloatStr(value, 10))
+
+            if value != self.lookYDefault:
+                self.preview.cb_PresetLook.setCurrentIndex(11)
+
         else:
             self.lookYHelm = value
             self.preview.lbl_LookY.setText(self.convertIntToFloatStr(value, 100))
 
-        if value != self.lookYHelmDefault:
-            self.preview.cb_PresetLook.setCurrentIndex(10)
+            if value != self.lookYHelmDefault:
+                self.preview.cb_PresetLook.setCurrentIndex(10)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookZFunc(self, value):
@@ -5838,12 +5870,16 @@ color_map
         if self.uniform != "helmet":
             self.lookZ = value
             self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(value, 10))
+
+            if value != self.lookZDefault:
+                self.preview.cb_PresetLook.setCurrentIndex(11)
+
         else:
             self.lookZHelm = value
             self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(value, 100))
 
-        if value != self.lookZHelmDefault:
-            self.preview.cb_PresetLook.setCurrentIndex(10)
+            if value != self.lookZHelmDefault:
+                self.preview.cb_PresetLook.setCurrentIndex(10)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetCameraFunc(self):
@@ -5869,6 +5905,7 @@ color_map
                 self.lookZ = 28
                 self.preview.vs_LookZ.setValue(self.lookZ)
                 self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(self.lookZ, 10))
+                self.medalsOnly = False
             else:
                 self.camXHelm = self.camXHelmDefault
                 self.camYHelm = self.camYHelmDefault
@@ -5996,7 +6033,7 @@ color_map
             # Collect the data to be saved into a list.
             saveData = (self.spotColour, self.envColour, self.bgColour, self.transparentBG, self.camX, self.camY, self.camZ,
                         self.lookX, self.lookY, self.lookZ, self.width, self.height, self.quality, self.clothDetail, self.antiAliasing,
-                        self.shadowless, self.mosaicPreview, self.lightX, self.lightY, self.lightZ)
+                        self.shadowless, self.mosaicPreview, self.lightX, self.lightY, self.lightZ, self.medalsOnly)
 
         else:
             saveData = (self.helmColour, self.decColour, self.bgColourHelm, self.lightColour, self.transparentBGHelm, self.ambientHelm,
@@ -6085,6 +6122,10 @@ color_map
                     self.lightX = saveData[17]
                     self.lightY = saveData[18]
                     self.lightZ = saveData[19]
+                    try:
+                        self.medalsOnly = saveData[20]
+                    except BaseException:
+                        self.medalsOnly = False
 
                 else:
                     self.helmColour = saveData[0]
@@ -6525,62 +6566,80 @@ color_map
             self.camX = -2500
             self.camY = -13300
             self.camZ = 2100
+            self.medalsOnly = False
 
         # Top Left.
         elif intIndex == 1:
             self.camX = -10000
             self.camY = -8000
             self.camZ = 8000
+            self.medalsOnly = False
 
         # Top Centre.
         elif intIndex == 2:
             self.camX = 0
             self.camY = -11000
             self.camZ = 8000
+            self.medalsOnly = False
 
         # Top Right.
         elif intIndex == 3:
             self.camX = 10000
             self.camY = -8000
             self.camZ = 8000
+            self.medalsOnly = False
 
         # Middle Left.
         elif intIndex == 4:
             self.camX = -9000
             self.camY = -11000
             self.camZ = 0
+            self.medalsOnly = False
 
         # Middle Centre.
         elif intIndex == 5:
             self.camX = 0
             self.camY = -13300
             self.camZ = 0
+            self.medalsOnly = False
 
         # Middle Right.
         elif intIndex == 6:
             self.camX = 9000
             self.camY = -11000
             self.camZ = 0
+            self.medalsOnly = False
 
         # Bottom Left.
         elif intIndex == 7:
             self.camX = -8000
             self.camY = -11000
             self.camZ = -8000
+            self.medalsOnly = False
 
         # Bottom Centre.
         elif intIndex == 8:
             self.camX = 0
             self.camY = -12000
             self.camZ = -8000
+            self.medalsOnly = False
 
         # Bottom Right.
         elif intIndex == 9:
             self.camX = 8000
             self.camY = -11000
             self.camZ = -8000
+            self.medalsOnly = False
 
-        if intIndex != 10:
+        # Medals.
+        elif intIndex == 10:
+            self.camX = 700
+            self.camY = -3500
+            self.camZ = 1750
+            self.medalsOnly = True
+            self.preview.cb_PresetLook.setCurrentIndex(10)
+
+        if intIndex != 11:
             self.renderPreview()
             self.preview.vs_CamX.setValue(self.camX)
             self.preview.lbl_CamX.setText(self.convertIntToFloatStr(self.camX, 10))
@@ -6675,62 +6734,80 @@ color_map
             self.lookX = 0
             self.lookY = -128
             self.lookZ = 28
+            self.medalsOnly = False
 
         # Top Left.
         elif intIndex == 1:
             self.lookX = -2500
             self.lookY = -128
             self.lookZ = 2500
+            self.medalsOnly = False
 
         # Top Centre.
         elif intIndex == 2:
             self.lookX = 0
             self.lookY = -128
             self.lookZ = 2500
+            self.medalsOnly = False
 
         # Top Right.
         elif intIndex == 3:
             self.lookX = 2500
             self.lookY = -128
             self.lookZ = 2500
+            self.medalsOnly = False
 
         # Middle Left.
         elif intIndex == 4:
             self.lookX = -2500
             self.lookY = -128
             self.lookZ = 0
+            self.medalsOnly = False
 
         # Middle Centre.
         elif intIndex == 5:
             self.lookX = 0
             self.lookY = -128
             self.lookZ = 0
+            self.medalsOnly = False
 
         # Middle Right.
         elif intIndex == 6:
             self.lookX = 2500
             self.lookY = -128
             self.lookZ = 0
+            self.medalsOnly = False
 
         # Bottom Left.
         elif intIndex == 7:
             self.lookX = -2500
             self.lookY = -128
             self.lookZ = -2500
+            self.medalsOnly = False
 
         # Bottom Centre.
         elif intIndex == 8:
             self.lookX = 0
             self.lookY = -128
             self.lookZ = -2500
+            self.medalsOnly = False
 
         # Bottom Right.
         elif intIndex == 9:
             self.lookX = 2500
             self.lookY = -128
             self.lookZ = -2500
+            self.medalsOnly = False
 
-        if intIndex != 10:
+        # Medals.
+        elif intIndex == 10:
+            self.lookX = 370
+            self.lookY = 0
+            self.lookZ = 1150
+            self.medalsOnly = True
+            self.preview.cb_PresetCam.setCurrentIndex(10)
+
+        if intIndex != 11:
             self.renderPreview()
             self.preview.vs_LookX.setValue(self.lookX)
             self.preview.lbl_LookX.setText(self.convertIntToFloatStr(self.lookX, 10))
