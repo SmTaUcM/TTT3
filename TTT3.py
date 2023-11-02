@@ -7038,6 +7038,7 @@ color_map
                                            float(label.text()), min, max, decimals, Qt.WindowFlags(), step)
         if ok:
             slider.setValue(int(value * scale))
+            self.previewAutoRefresh()
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def fastPreviewFunc(self):
