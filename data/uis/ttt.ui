@@ -53,7 +53,6 @@
      <font>
       <family>Arial</family>
       <pointsize>34</pointsize>
-      <weight>75</weight>
       <italic>true</italic>
       <bold>true</bold>
      </font>
@@ -131,7 +130,6 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
         <underline>false</underline>
        </font>
@@ -421,7 +419,6 @@ margin-top: 2px; /* make non-selected tabs look smaller */
         <font>
          <family>Arial</family>
          <pointsize>10</pointsize>
-         <weight>50</weight>
          <bold>false</bold>
          <underline>true</underline>
         </font>
@@ -501,7 +498,6 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
         <underline>false</underline>
        </font>
@@ -522,7 +518,6 @@ margin-top: 2px; /* make non-selected tabs look smaller */
         <font>
          <family>Arial</family>
          <pointsize>10</pointsize>
-         <weight>50</weight>
          <bold>false</bold>
          <underline>true</underline>
         </font>
@@ -896,7 +891,6 @@ margin-top: 2px; /* make non-selected tabs look smaller */
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
         <underline>true</underline>
        </font>
@@ -976,7 +970,6 @@ QListWidget:!enabled
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
         <underline>true</underline>
        </font>
@@ -1027,7 +1020,6 @@ QListWidget:!enabled
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
         <underline>true</underline>
        </font>
@@ -1078,7 +1070,6 @@ QListWidget:!enabled
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
         <underline>true</underline>
        </font>
@@ -1117,7 +1108,6 @@ QListWidget:!enabled
         <font>
          <family>Arial</family>
          <pointsize>10</pointsize>
-         <weight>50</weight>
          <bold>false</bold>
          <underline>true</underline>
         </font>
@@ -1269,7 +1259,6 @@ QListWidget:!enabled
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
         <underline>true</underline>
        </font>
@@ -1309,7 +1298,6 @@ QListWidget:!enabled
        <font>
         <family>Arial</family>
         <pointsize>9</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
        </font>
       </property>
@@ -2581,7 +2569,6 @@ QListWidget:!enabled
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
         <underline>true</underline>
        </font>
@@ -2660,7 +2647,6 @@ QListWidget:!enabled
         <font>
          <family>Arial</family>
          <pointsize>10</pointsize>
-         <weight>50</weight>
          <bold>false</bold>
          <underline>true</underline>
         </font>
@@ -2774,7 +2760,6 @@ QListWidget:!enabled
        <font>
         <family>Arial</family>
         <pointsize>8</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
         <underline>false</underline>
        </font>
@@ -2804,7 +2789,6 @@ QListWidget:!enabled
        <font>
         <family>Arial</family>
         <pointsize>16</pointsize>
-        <weight>50</weight>
         <bold>false</bold>
         <underline>true</underline>
        </font>
@@ -2867,7 +2851,6 @@ QListWidget:!enabled
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -2926,7 +2909,6 @@ QListWidget:!enabled
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -2947,7 +2929,6 @@ QListWidget:!enabled
        <font>
         <family>Arial</family>
         <pointsize>8</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -3027,7 +3008,6 @@ QListWidget:!enabled
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -3057,7 +3037,6 @@ QListWidget:!enabled
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -3121,7 +3100,6 @@ QListWidget:!enabled
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -3407,12 +3385,11 @@ QListWidget:!enabled
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
       <property name="text">
-       <string>FA Turtle Jerrar</string>
+       <string>HA Turtle Jerrar</string>
       </property>
      </widget>
      <widget class="QLabel" name="lbl_Eclipse">
@@ -3428,7 +3405,6 @@ QListWidget:!enabled
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
@@ -3477,7 +3453,6 @@ QListWidget:!enabled
        <font>
         <family>Arial</family>
         <pointsize>10</pointsize>
-        <weight>75</weight>
         <bold>true</bold>
        </font>
       </property>
