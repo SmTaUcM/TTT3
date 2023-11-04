@@ -4810,7 +4810,7 @@ color_map
                                             else:
                                                 self.awards.get(award)["upgrades"][1] = 0
                                         else:
-                                            self.awards.get(award)["upgrades"][1] = apiMedalData.get(medal)
+                                            self.awards.get(award)["upgrades"][1] = int(apiMedalData.get(medal))
 
                                     # Upgradeable and SubRibbons type awards.
                                     elif self.awards.get(award)["type"] == "upgradeable" or \
@@ -4825,7 +4825,7 @@ color_map
 
                                             if medal == upgradeShort:
                                                 index = self.awards.get(award)["upgrades"].index(upgrade)
-                                                self.awards.get(award)["upgrades"][index][quantity] = apiMedalData.get(medal)
+                                                self.awards.get(award)["upgrades"][index][quantity] = int(apiMedalData.get(medal))
                     except AttributeError:
                         pass  # User has no medals.
 
