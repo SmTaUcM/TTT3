@@ -121,7 +121,7 @@ camera
 &PADINCLUDE&
 #include concat("rank", rank, "_g.inc")
 #include "collar_g.inc"
-#include "ribbons_g.inc"
+#include "ribbonsMO_g.inc"
 &FCHGINCLUDE&
 &SABERINCLUDE&
 &MEDALSINCLUDE&

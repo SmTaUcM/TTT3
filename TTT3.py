@@ -3978,7 +3978,15 @@ color_map
                     if incFile == "goe_g.inc" or incFile == "ic_g.inc":
                         medalIncludes.insert(0, incFile)  # Must be first for all other medals to render properly.
                     else:
-                        medalIncludes.append(self.awards.get(award)["includeFile"])
+                        if not self.medalsOnly:
+                            medalIncludes.append(self.awards.get(award)["includeFile"])
+                        else:
+                            include = self.awards.get(award)["includeFile"]
+                            if "moh" not in include and "oor" not in include:
+                                include = include.replace("_g.inc", "MO_g.inc")
+                                medalIncludes.append(include)
+                            else:
+                                medalIncludes.append(self.awards.get(award)["includeFile"])
 
         # Special handling of IC and GOE combination.
         if "ic_g.inc" in medalIncludes and "goe_g.inc" in medalIncludes and not self.deconflictNeckRibbons:
@@ -6633,9 +6641,9 @@ color_map
 
         # Medals.
         elif intIndex == 10:
-            self.camX = 700
-            self.camY = -3500
-            self.camZ = 1900
+            self.camX = 505
+            self.camY = -3600
+            self.camZ = 1410
             self.medalsOnly = True
             self.preview.cb_PresetLook.setCurrentIndex(10)
 
@@ -6801,9 +6809,9 @@ color_map
 
         # Medals.
         elif intIndex == 10:
-            self.lookX = 370
+            self.lookX = 505
             self.lookY = 0
-            self.lookZ = 1150
+            self.lookZ = 1410
             self.medalsOnly = True
             self.preview.cb_PresetCam.setCurrentIndex(10)
 
