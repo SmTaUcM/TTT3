@@ -51,7 +51,7 @@ union
   object
   {
     P_pc
-    translate <51.17,-145.351,116.2>
+    translate <51.17,-142.78,116.2>
   }
 }  
 
@@ -66,7 +66,7 @@ union
   object
   {
     P_pc
-    translate <39.4,-145.351,116.2>
+    translate <39.4,-142.78,116.2>
   }
 }
 
@@ -81,7 +81,7 @@ union
   object
   {
     P_pc
-    translate <62.95,-143.78,116.25>
+    translate <62.95,-142.78,116.25>
   }
 }
 
@@ -98,7 +98,7 @@ union
   object
   {
     P_pc
-    translate <74.75,-143.351,114.8>
+    translate <74.75,-142.78,116.25>
   }
 }   
 
@@ -110,7 +110,7 @@ union
   object
   {
     P_pc_body
-    translate <86.294,-146.746,150.253> 
+    translate <86.294,-145.351,150.253> 
   }
   object
   {
@@ -125,7 +125,7 @@ union
   object
   {
     P_pc_body
-    translate <39.381,-142.823,125.443> 
+    translate <39.381,-142.746,125.443> 
   }
   object
   {

@@ -52,7 +52,7 @@ union
   {
     object { P_gs_gold }
     object { P_gs_green }
-    translate <51.17,-144.351,114.8>
+    translate <51.17,-145.78,114.8>
   }
 }  
 
@@ -84,7 +84,7 @@ union
   {
     object { P_gs_gold }
     object { P_gs_green }
-    translate <27.75,-145.351,114.8>
+    translate <27.75,-145.78,114.8>
   }
 }
 
@@ -94,13 +94,13 @@ union
   object
   {
     P_gs_body
-    translate <15.913,-146.746,150.253> 
+    translate <15.913,-145.351,150.253> 
   }
   union
   {
     object { P_gs_gold }
     object { P_gs_green }
-    translate <15.95,-146.78,114.61>
+    translate <15.95,-145.78,114.61>
   }
 }
 
