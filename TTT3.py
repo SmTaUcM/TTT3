@@ -6643,7 +6643,7 @@ color_map
         elif intIndex == 10:
             self.camX = 505
             self.camY = -3600
-            self.camZ = 1410
+            self.camZ = 1425
             self.medalsOnly = True
             self.preview.cb_PresetLook.setCurrentIndex(10)
 
@@ -6811,7 +6811,7 @@ color_map
         elif intIndex == 10:
             self.lookX = 505
             self.lookY = 0
-            self.lookZ = 1410
+            self.lookZ = 1425
             self.medalsOnly = True
             self.preview.cb_PresetCam.setCurrentIndex(10)
 
