@@ -102,7 +102,7 @@ camera
 #declare position = "&POSITION&";
 #declare rank = "&RANK&";
 #declare rankrotate = <&RANKROTATE&>;
-#declare ranktranslate = <999,999,999>;
+#declare ranktranslate = <&RANKTRANSLATE&>;
 
 #declare category = "&CATEGORY&";
 #declare ship = "&SHIP&";

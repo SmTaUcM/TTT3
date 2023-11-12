@@ -291,7 +291,7 @@ class TTT3(QMainWindow):
             self.unitType = None
             self.unitProperty = None
             self.fastPreview = False
-            self.medalsOnly = False
+            self.medalsOnly = "No"
 
             # PovRay Template Constants.
             self.RANK_OFFSET_RIBBONS_00_TO_08 = ["-18.8939990997314,0.351000010967255,7.92899990081787",  # Rotate
@@ -2030,7 +2030,7 @@ class TTT3(QMainWindow):
         else:
             template = r"data\dress.tpt"
 
-        if self.medalsOnly == False:
+        if self.medalsOnly == "No":
             template = r"data\dress.tpt"
         else:
             template = r"data\medals.tpt"
@@ -2161,10 +2161,16 @@ class TTT3(QMainWindow):
                 povData.append(line.replace("&RANK&", self.rank))
 
             elif "&RANKROTATE&" in line:
-                povData.append(line.replace("&RANKROTATE&", self.getRankRotateOffset()))
+                if self.medalsOnly == "No":
+                    povData.append(line.replace("&RANKROTATE&", self.getRankRotateOffset()))
+                else:
+                    povData.append(line.replace("&RANKROTATE&", "0,0,0"))
 
             elif "&RANKTRANSLATE&" in line:
-                povData.append(line.replace("&RANKTRANSLATE&", self.getRankTranslateOffset()))
+                if self.medalsOnly == "No":
+                    povData.append(line.replace("&RANKTRANSLATE&", self.getRankTranslateOffset()))
+                else:
+                    povData.append(line.replace("&RANKTRANSLATE&", self.getRankTranslateOffsetMedalsOnly()))
 
             # ----- Assignment. -----
             elif "&CATEGORY&" in line:
@@ -2294,7 +2300,35 @@ color_map
                     povData.append(line.replace("&SABERINCLUDE&", include))
 
             elif "&MEDALSINCLUDE&" in line:
-                for includeRef in self.buildMedalIncludes():
+                includes = self.buildMedalIncludes()
+
+                if "Medals" in self.medalsOnly:
+                    try:
+                        includes.remove("ic_goe_g.inc")
+                    except ValueError:
+                        pass
+                    try:
+                        includes.remove("ic_g.inc")
+                    except ValueError:
+                        pass
+                    try:
+                        includes.remove("goe_g.inc")
+                    except ValueError:
+                        pass
+                    try:
+                        includes.remove("moh_g.inc")
+                    except ValueError:
+                        pass
+                    try:
+                        includes.remove("ic_g.inc")
+                    except ValueError:
+                        pass
+                    try:
+                        includes.remove("oor_g.inc")
+                    except ValueError:
+                        pass
+
+                for includeRef in includes:
                     povData.append('#include "%s"\n' % includeRef)
 
             # ----- Scene. -----
@@ -2394,7 +2428,23 @@ color_map
                     povData.append(line.replace("&PADTRIM&", "object { P_pad_left texture { T_pad_left } }  "))
 
             elif "&MEDALS&" in line:
-                for objectRef in self.buildMedalObjects():
+                medalObjects = self.buildMedalObjects()
+
+                if "Medals" in self.medalsOnly:
+                    try:
+                        medalObjects.remove("P_goe")
+                    except ValueError:
+                        pass
+                    try:
+                        medalObjects.remove("dagger_left")
+                    except ValueError:
+                        pass
+                    try:
+                        medalObjects.remove("dagger_right")
+                    except ValueError:
+                        pass
+
+                for objectRef in medalObjects:
                     povData.append('object { %s }\n' % objectRef)
 
             elif "&RIBBONS&" in line:
@@ -2941,7 +2991,7 @@ color_map
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getRankTranslateOffset(self):
-        '''Method that returns the correct rank rotate value for the user's medal and ribbon selections.'''
+        '''Method that returns the correct rank translate value for the user's medal and ribbon selections.'''
 
         ribbonCount = self.getRibbonAwardCount()
 
@@ -2958,6 +3008,44 @@ color_map
         else:
             return self.RANK_OFFSET_RIBBONS_21_TO_28[1]
         # --------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def getRankTranslateOffsetMedalsOnly(self):
+        '''Method that returns the correct rank translate value for the user's medal and ribbon selections in Medals Only Mode.'''
+
+        translate = self.getRankTranslateOffset().split(",")
+
+        ribbonCount = self.getRibbonAwardCount()
+        if ribbonCount == 0:
+            rankOffset = 190.5
+        elif ribbonCount > 0 and ribbonCount <= 4:
+            rankOffset = 205.25
+        elif ribbonCount > 4 and ribbonCount <= 8:
+            rankOffset = 210.75
+        elif ribbonCount > 8 and ribbonCount <= 12:
+            rankOffset = 216.25
+        elif ribbonCount > 12 and ribbonCount <= 16:
+            rankOffset = 221.75
+        elif ribbonCount > 16 and ribbonCount <= 20:
+            rankOffset = 226.75
+        elif ribbonCount > 20 and ribbonCount <= 24:
+            rankOffset = 232.25
+        elif ribbonCount > 24 and ribbonCount <= 28:
+            rankOffset = 232.25
+        else:
+            rankOffset = 232.25
+
+        newTranslate = []
+        for i in translate:
+            newTranslate.append(float(i))
+
+        if "Rank" in self.medalsOnly:
+            newTranslate[1] = -145.351
+        else:
+            newTranslate[1] = -5000
+        newTranslate[2] = rankOffset
+        return str(newTranslate).replace("[", "").replace("]", "")
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
+
 
     def getRibbonAwardCount(self):
         '''Method that returns the number of indicidual ribbons that the user has selected.'''
@@ -3978,7 +4066,7 @@ color_map
                     if incFile == "goe_g.inc" or incFile == "ic_g.inc":
                         medalIncludes.insert(0, incFile)  # Must be first for all other medals to render properly.
                     else:
-                        if not self.medalsOnly:
+                        if self.medalsOnly == "No":
                             medalIncludes.append(self.awards.get(award)["includeFile"])
                         else:
                             include = self.awards.get(award)["includeFile"]
@@ -5790,7 +5878,7 @@ color_map
             self.preview.lbl_CamX.setText(self.convertIntToFloatStr(value, 10))
 
             if value != self.camXDefault:
-                self.preview.cb_PresetCam.setCurrentIndex(11)
+                self.preview.cb_PresetCam.setCurrentIndex(12)
 
         else:
             self.camXHelm = value
@@ -5808,7 +5896,7 @@ color_map
             self.preview.lbl_CamY.setText(self.convertIntToFloatStr(value, 10))
 
             if value != self.camYDefault:
-                self.preview.cb_PresetCam.setCurrentIndex(11)
+                self.preview.cb_PresetCam.setCurrentIndex(12)
 
         else:
             self.camYHelm = value
@@ -5826,7 +5914,7 @@ color_map
             self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(value, 10))
 
             if value != self.camZDefault:
-                self.preview.cb_PresetCam.setCurrentIndex(11)
+                self.preview.cb_PresetCam.setCurrentIndex(12)
 
         else:
             self.camZHelm = value
@@ -5844,7 +5932,7 @@ color_map
             self.preview.lbl_LookX.setText(self.convertIntToFloatStr(value, 10))
 
             if value != self.lookXDefault:
-                self.preview.cb_PresetLook.setCurrentIndex(11)
+                self.preview.cb_PresetLook.setCurrentIndex(12)
 
         else:
             self.lookXHelm = value
@@ -5862,7 +5950,7 @@ color_map
             self.preview.lbl_LookY.setText(self.convertIntToFloatStr(value, 10))
 
             if value != self.lookYDefault:
-                self.preview.cb_PresetLook.setCurrentIndex(11)
+                self.preview.cb_PresetLook.setCurrentIndex(12)
 
         else:
             self.lookYHelm = value
@@ -5880,7 +5968,7 @@ color_map
             self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(value, 10))
 
             if value != self.lookZDefault:
-                self.preview.cb_PresetLook.setCurrentIndex(11)
+                self.preview.cb_PresetLook.setCurrentIndex(12)
 
         else:
             self.lookZHelm = value
@@ -5913,7 +6001,7 @@ color_map
                 self.lookZ = 28
                 self.preview.vs_LookZ.setValue(self.lookZ)
                 self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(self.lookZ, 10))
-                self.medalsOnly = False
+                self.medalsOnly = "No"
             else:
                 self.camXHelm = self.camXHelmDefault
                 self.camYHelm = self.camYHelmDefault
@@ -6133,7 +6221,7 @@ color_map
                     try:
                         self.medalsOnly = saveData[20]
                     except BaseException:
-                        self.medalsOnly = False
+                        self.medalsOnly = "No"
 
                 else:
                     self.helmColour = saveData[0]
@@ -6574,80 +6662,98 @@ color_map
             self.camX = -2500
             self.camY = -13300
             self.camZ = 2100
-            self.medalsOnly = False
+            self.medalsOnly = "No"
 
         # Top Left.
         elif intIndex == 1:
             self.camX = -10000
             self.camY = -8000
             self.camZ = 8000
-            self.medalsOnly = False
+            self.medalsOnly = "No"
 
         # Top Centre.
         elif intIndex == 2:
             self.camX = 0
             self.camY = -11000
             self.camZ = 8000
-            self.medalsOnly = False
+            self.medalsOnly = "No"
 
         # Top Right.
         elif intIndex == 3:
             self.camX = 10000
             self.camY = -8000
             self.camZ = 8000
-            self.medalsOnly = False
+            self.medalsOnly = "No"
 
         # Middle Left.
         elif intIndex == 4:
             self.camX = -9000
             self.camY = -11000
             self.camZ = 0
-            self.medalsOnly = False
+            self.medalsOnly = "No"
 
         # Middle Centre.
         elif intIndex == 5:
             self.camX = 0
             self.camY = -13300
             self.camZ = 0
-            self.medalsOnly = False
+            self.medalsOnly = "No"
 
         # Middle Right.
         elif intIndex == 6:
             self.camX = 9000
             self.camY = -11000
             self.camZ = 0
-            self.medalsOnly = False
+            self.medalsOnly = "No"
 
         # Bottom Left.
         elif intIndex == 7:
             self.camX = -8000
             self.camY = -11000
             self.camZ = -8000
-            self.medalsOnly = False
+            self.medalsOnly = "No"
 
         # Bottom Centre.
         elif intIndex == 8:
             self.camX = 0
             self.camY = -12000
             self.camZ = -8000
-            self.medalsOnly = False
+            self.medalsOnly = "No"
 
         # Bottom Right.
         elif intIndex == 9:
             self.camX = 8000
             self.camY = -11000
             self.camZ = -8000
-            self.medalsOnly = False
+            self.medalsOnly = "No"
 
         # Medals.
         elif intIndex == 10:
             self.camX = 505
             self.camY = -3600
             self.camZ = 1425
-            self.medalsOnly = True
-            self.preview.cb_PresetLook.setCurrentIndex(10)
+            self.lookX = 505
+            self.lookY = 0
+            self.lookZ = 1425
+            self.medalsOnly = "Medals"
+            self.preview.cb_PresetLook.currentIndexChanged.disconnect()
+            self.preview.cb_PresetLook.setCurrentIndex(intIndex)
+            self.preview.cb_PresetLook.currentIndexChanged.connect(self.cb_previewPresetLookFunc)
 
-        if intIndex != 11:
+        # Medal Rank.
+        elif intIndex == 11:
+            self.camX = 505
+            self.camY = -4450
+            self.camZ = 1665
+            self.lookX = 505
+            self.lookY = 0
+            self.lookZ = 1665
+            self.medalsOnly = "MedalsRank"
+            self.preview.cb_PresetLook.currentIndexChanged.disconnect()
+            self.preview.cb_PresetLook.setCurrentIndex(intIndex)
+            self.preview.cb_PresetLook.currentIndexChanged.connect(self.cb_previewPresetLookFunc)
+
+        if intIndex != 12:
             self.renderPreview()
             self.preview.vs_CamX.setValue(self.camX)
             self.preview.lbl_CamX.setText(self.convertIntToFloatStr(self.camX, 10))
@@ -6742,80 +6848,98 @@ color_map
             self.lookX = 0
             self.lookY = -128
             self.lookZ = 28
-            self.medalsOnly = False
+            self.medalsOnly = "No"
 
         # Top Left.
         elif intIndex == 1:
             self.lookX = -2500
             self.lookY = -128
             self.lookZ = 2500
-            self.medalsOnly = False
+            self.medalsOnly = "No"
 
         # Top Centre.
         elif intIndex == 2:
             self.lookX = 0
             self.lookY = -128
             self.lookZ = 2500
-            self.medalsOnly = False
+            self.medalsOnly = "No"
 
         # Top Right.
         elif intIndex == 3:
             self.lookX = 2500
             self.lookY = -128
             self.lookZ = 2500
-            self.medalsOnly = False
+            self.medalsOnly = "No"
 
         # Middle Left.
         elif intIndex == 4:
             self.lookX = -2500
             self.lookY = -128
             self.lookZ = 0
-            self.medalsOnly = False
+            self.medalsOnly = "No"
 
         # Middle Centre.
         elif intIndex == 5:
             self.lookX = 0
             self.lookY = -128
             self.lookZ = 0
-            self.medalsOnly = False
+            self.medalsOnly = "No"
 
         # Middle Right.
         elif intIndex == 6:
             self.lookX = 2500
             self.lookY = -128
             self.lookZ = 0
-            self.medalsOnly = False
+            self.medalsOnly = "No"
 
         # Bottom Left.
         elif intIndex == 7:
             self.lookX = -2500
             self.lookY = -128
             self.lookZ = -2500
-            self.medalsOnly = False
+            self.medalsOnly = "No"
 
         # Bottom Centre.
         elif intIndex == 8:
             self.lookX = 0
             self.lookY = -128
             self.lookZ = -2500
-            self.medalsOnly = False
+            self.medalsOnly = "No"
 
         # Bottom Right.
         elif intIndex == 9:
             self.lookX = 2500
             self.lookY = -128
             self.lookZ = -2500
-            self.medalsOnly = False
+            self.medalsOnly = "No"
 
         # Medals.
         elif intIndex == 10:
+            self.camX = 505
+            self.camY = -3600
+            self.camZ = 1425
             self.lookX = 505
             self.lookY = 0
             self.lookZ = 1425
-            self.medalsOnly = True
-            self.preview.cb_PresetCam.setCurrentIndex(10)
+            self.medalsOnly = "Medals"
+            self.preview.cb_PresetCam.currentIndexChanged.disconnect()
+            self.preview.cb_PresetCam.setCurrentIndex(intIndex)
+            self.preview.cb_PresetCam.currentIndexChanged.connect(self.cb_previewPresetCamFunc)
+        # Medal Rank.
 
-        if intIndex != 11:
+        elif intIndex == 11:
+            self.camX = 505
+            self.camY = -4450
+            self.camZ = 1665
+            self.lookX = 505
+            self.lookY = 0
+            self.lookZ = 1665
+            self.medalsOnly = "MedalsRank"
+            self.preview.cb_PresetCam.currentIndexChanged.disconnect()
+            self.preview.cb_PresetCam.setCurrentIndex(intIndex)
+            self.preview.cb_PresetCam.currentIndexChanged.connect(self.cb_previewPresetCamFunc)
+
+        if intIndex != 12:
             self.renderPreview()
             self.preview.vs_LookX.setValue(self.lookX)
             self.preview.lbl_LookX.setText(self.convertIntToFloatStr(self.lookX, 10))
