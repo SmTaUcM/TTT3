@@ -22,8 +22,8 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 
 ### Added
 - 3D ribbon devices added in place of static 2D images. (@6958/@55859)
-- Dress Uniform preview now has a new camera preset - Medals, which will present the user with a 
-  plan view of all uniform merit medals and ribbons. (@6958)
+- Dress Uniform preview now has two new camera presets - 'Medals' and 'Medal Rank', which will present 
+  the user with a plan view of all uniform merit medals and ribbons with or without the rank badge. (@6958)
 
 ### Changed
 - Updated dependency to lock Numpy at version 1.23.5. (@6958)
