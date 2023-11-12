@@ -46,12 +46,12 @@ union
   object
   {
     P_ism_body
-    translate <51.211,-145.351,150.246>
+    translate <50.4533,-145.351,150.246>
   }
   object
   {
     P_ism
-    translate <51.17,-141.78,116.2>
+    translate <50.4123,-141.78,116.2>
   }
 }  
 
@@ -61,12 +61,12 @@ union
   object
   {
     P_ism_body
-    translate <62.893,-145.351,150.246>
+    translate <62.19475,-145.351,150.246>
   }
   object
   {
     P_ism
-    translate <62.95,-141.78,116.25>
+    translate <62.25,-141.78,116.25>
   }
 }
 
@@ -76,12 +76,12 @@ union
   object
   {
     P_ism_body
-    translate <74.576,-145.351,150.246>
+    translate <73.9363,-145.351,150.246>
   }
   object
   {
     P_ism
-    translate <74.75,-141.78,116.25>
+    translate <74.15,-141.78,116.25>
   }
 }   
 
@@ -91,12 +91,12 @@ union
   object
   {
     P_ism_body
-    translate <86.294,-145.351,150.253> 
+    translate <85.67775,-145.351,150.253> 
   }
   object
   {
     P_ism
-    translate <86.8,-141.78,116.25>
+    translate <86.15,-141.78,116.25>
   }
 }   
 
@@ -106,12 +106,12 @@ union
   object
   {
     P_ism_body
-    translate <62.829,-142.746,125.443> 
+    translate <62.19475,-142.746,125.443> 
   }
   object
   {
     P_ism
-    translate <62.8,-142.096,91.442>
+    translate <62.25,-142.096,91.442>
   }
 }   
 

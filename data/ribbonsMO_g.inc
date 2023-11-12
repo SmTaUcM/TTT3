@@ -1339,17 +1339,17 @@ transform
 #declare device_trans_28 =
 transform
 {
-    translate <28.7558, -145.351, 173.677>
+    translate <27.821, -145.351, 173.677>
 } 
 
 #declare device_trans_29 =
 transform
 {
-    translate <51.3881, -145.351, 173.677>
+    translate <50.4533, -145.351, 173.677>
 }   
 
 #declare device_trans_30 =
 transform
 {
-    translate <74.0205, -145.351, 173.677>
+    translate <73.0856, -145.351, 173.677>
 }  

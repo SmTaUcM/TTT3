@@ -39,19 +39,19 @@ union
   #end
 }
                  
-                 
+             
 #declare P_bs_1_1 =
 union
 {
   object
   {
     P_bs_body
-    translate <51.211,-145.351,150.246>
+    translate <50.4533,-145.351,150.246>
   }
   object
   {
     P_bs
-    translate <51.17,-143.78,114.8>
+    translate <50.4123,-143.78,114.8>
   }
 }  
 
@@ -61,12 +61,12 @@ union
   object
   {
     P_bs_body
-    translate <39.41,-145.351,150.253> 
+    translate <38.71175,-145.351,150.253> 
   }
   object
   {
     P_bs
-    translate <39.35,-143.78,114.61>
+    translate <38.67075,-143.78,114.61>
   }
 }
 
@@ -76,12 +76,12 @@ union
   object
   {
     P_bs_body
-    translate <62.893,-145.351,150.253> 
+    translate <62.19475,-145.351,150.253> 
   }
   object
   {
     P_bs
-    translate <63.0,-143.78,114.61>
+    translate <62.15375,-143.78,114.61>
   }
 }
 
@@ -91,12 +91,12 @@ union
   object
   {
     P_bs_body
-    translate <27.655,-145.351,150.246>
+    translate <26.9703,-145.351,150.246>
   }
   object
   {
     P_bs
-    translate <27.75,-143.78,114.8>
+    translate <26.9293,-143.78,114.8>
   }
 }   
 
@@ -108,12 +108,12 @@ union
   object
   {
     P_bs_body
-    translate <74.576,-145.351,150.246>
+    translate <73.9363,-145.351,150.246>
   }
   object
   {
     P_bs
-    translate <74.75,-143.78,114.8>
+    translate <73.9773,-143.78,114.8>
   }
 }   
 

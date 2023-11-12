@@ -46,12 +46,12 @@ union
   object
   {
     P_ss_body
-    translate <51.211,-145.351,150.246>
+    translate <50.4533,-145.351,150.246>
   }
   object
   {
     P_ss
-    translate <51.17,-144.78,114.8>
+    translate <50.4123,-144.78,114.8>
   }
 }  
 
@@ -61,12 +61,12 @@ union
   object
   {
     P_ss_body
-    translate <39.41,-145.351,150.253> 
+    translate <38.71175,-145.351,150.253> 
   }
   object
   {
     P_ss
-    translate <39.35,-144.78,114.61>
+    translate <38.67075,-144.78,114.61>
   }
 }
 
@@ -76,12 +76,12 @@ union
   object
   {
     P_ss_body
-    translate <62.893,-145.351,150.253> 
+    translate <62.19475,-145.351,150.253> 
   }
   object
   {
     P_ss
-    translate <63.0,-144.78,114.61>
+    translate <62.15375,-144.78,114.61>
   }
 }
 
@@ -91,12 +91,12 @@ union
   object
   {
     P_ss_body
-    translate <27.655,-145.351,150.246> 
+    translate <26.9703,-145.351,150.246> 
   }
   object
   {
     P_ss
-    translate <27.75,-144.78,114.8>
+    translate <26.9293,-144.78,114.8>
   }
 }   
 
@@ -108,12 +108,12 @@ union
   object
   {
     P_ss_body
-    translate <15.913,-145.351,150.253> 
+    translate <15.22875,-145.351,150.253> 
   }
   object
   {
     P_ss
-    translate <15.95,-144.78,114.61>
+    translate <15.18775,-144.78,114.61>
   }
 }   
 
