@@ -59,7 +59,7 @@ class TTT3(QMainWindow):
 
     updateProgressBar = pyqtSignal(str, int)
 
-    def __init__(self):
+    def __init__(self, parent=None):
         '''Class constructor.'''
 
         try:
@@ -71,7 +71,7 @@ class TTT3(QMainWindow):
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
             # Initialise an instance of a QT Main Window and load our GUI file 'data\uis\ttt.ui'.
-            QMainWindow.__init__(self)
+            QMainWindow.__init__(self, parent=None)
             self.gui = uic.loadUi(r"data\uis\ttt.ui")
             self.gui.pb_update.hide()
             self.gui.lbl_update.hide()
@@ -236,12 +236,15 @@ class TTT3(QMainWindow):
             self.camX = self.camXDefault
             self.camY = self.camYDefault
             self.camZ = self.camZDefault
+            self.cbCamIndex = 0
             self.lookX = self.lookXDefault
             self.lookY = self.lookYDefault
             self.lookZ = self.lookZDefault
+            self.cbLookIndex = 0
             self.lightX = 13000
             self.lightY = -15000
             self.lightZ = 13000
+            self.cbLightIndex = 0
             self.loadingHelm = False
             self.helmColourDEFAULT = QColor(33, 33, 33)
             self.helmColour = self.helmColourDEFAULT
@@ -256,21 +259,28 @@ class TTT3(QMainWindow):
             self.lightColour = self.lightColourDEFAULT
             self.apiLightColour = self.lightColourDEFAULT
             self.transparentBGHelm = ""
-            self.camXHelmDefault = 0
+            self.camXHelmDefault = 217
             self.camXHelm = self.camXHelmDefault
-            self.camYHelmDefault = 0
+            self.camYHelmDefault = -6510
             self.camYHelm = self.camYHelmDefault
-            self.camZHelmDefault = 0
+            self.camZHelmDefault = 3146
             self.camZHelm = self.camZHelmDefault
-            self.lookXHelmDefault = 0
+            self.cbCamHelmIndex = 0
+            self.lookXHelmDefault = -568
             self.lookXHelm = self.lookXHelmDefault
-            self.lookYHelmDefault = 0
+            self.lookYHelmDefault = -445
             self.lookYHelm = self.lookYHelmDefault
-            self.lookZHelmDefault = 0
+            self.lookZHelmDefault = 1052
             self.lookZHelm = self.lookZHelmDefault
-            self.lightXHelm = 0
-            self.lightYHelm = 0
-            self.lightZHelm = 0
+            self.cbLookHelmIndex = 0
+            self.lightXHelmDefault = 2244
+            self.lightXHelm = self.lightXHelmDefault
+            self.lightYHelmDefault = -5089
+            self.lightYHelm = self.lightYHelmDefault
+            self.lightZHelmDefault = 5282
+            self.lightZHelm = self.lightZHelmDefault
+            self.cbLightHelmIndex = 0
+            self.helmetPresetSelected = False
             self.widthHelm = 640
             self.heightHelm = 548
             self.qualityHelm = 9
@@ -279,6 +289,7 @@ class TTT3(QMainWindow):
             self.homoHelm = False
             self.mosaicPreviewHelm = False
             self.nameHelm = "EH TC"
+            self.helmFontSize = 110
             self.fontHelmQFront = QFont("impact")
             self.logo1TypeHelm = "Image - stencil mask"
             self.logo2TypeHelm = "Squadron Patch"
@@ -1147,6 +1158,7 @@ class TTT3(QMainWindow):
         self.preview.cb_Mosaic.stateChanged.connect(self.cb_previewMosaicFunc)
         self.preview.btn_resetOptions.clicked.connect(self.btn_previewResetOptionsFunc)
         self.preview.le_helmText.textChanged.connect(self.le_previewHelmTextFunc)
+        self.preview.le_fontSize.textChanged.connect(self.fcb_previewHelmFontSizeFunc)
         self.preview.fcb_helmFont.currentFontChanged.connect(self.fcb_previewHelmFontFunc)
         self.preview.cb_hemlLogo1Type.currentIndexChanged.connect(self.cb_previewHemlLogo1TypeFunc)
         self.preview.cb_hemlLogo2Type.currentIndexChanged.connect(self.cb_previewHemlLogo2TypeFunc)
@@ -1207,6 +1219,7 @@ class TTT3(QMainWindow):
         self.preview.le_helmLogo1Filepath.textChanged.connect(self.previewAutoRefresh)
         self.preview.le_helmLogo2Filepath.textChanged.connect(self.previewAutoRefresh)
         self.preview.le_helmText.editingFinished.connect(self.previewAutoRefresh)
+        self.preview.le_fontSize.editingFinished.connect(self.previewAutoRefresh)
         self.preview.cb_Logo1Mirrored.stateChanged.connect(self.previewAutoRefresh)
         self.preview.cb_Logo2Mirrored.stateChanged.connect(self.previewAutoRefresh)
         self.preview.cb_helmStyle.currentIndexChanged.connect(self.previewAutoRefresh)
@@ -1268,6 +1281,11 @@ class TTT3(QMainWindow):
             self.preview.vs_LightZ.setValue(self.lightZ)
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZ, 10))
             self.preview.cb_fastPreview.setChecked(self.fastPreview)
+            # Combo Boxes
+            self.preview.cb_PresetCam.setCurrentIndex(self.cbCamIndex)
+            self.preview.cb_PresetLook.setCurrentIndex(self.cbLookIndex)
+            self.preview.cb_PresetLight.setCurrentIndex(self.cbLightIndex)
+
         else:
             # Helmet Style.
             # Add the styles to the comboBox.
@@ -1356,6 +1374,10 @@ class TTT3(QMainWindow):
             self.preview.lbl_LightY.setText(self.convertIntToFloatStr(self.lightYHelm, 100))
             self.preview.vs_LightZ.setValue(self.lightZHelm)
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZHelm, 100))
+            # Combo Boxes
+            self.preview.cb_PresetCam.setCurrentIndex(self.cbCamHelmIndex)
+            self.preview.cb_PresetLook.setCurrentIndex(self.cbLookHelmIndex)
+            self.preview.cb_PresetLight.setCurrentIndex(self.cbLightHelmIndex)
 
             # Decorations.
             # Helmet Text.
@@ -1364,6 +1386,7 @@ class TTT3(QMainWindow):
                     self.nameHelm = self.callsign[:12].rstrip(" ")
             self.preview.le_helmText.setText(self.nameHelm)
             self.preview.fcb_helmFont.setCurrentFont(self.fontHelmQFront)
+            self.preview.le_fontSize.setText(str(self.helmFontSize))
 
             # Logo options.
             widgets = [self.preview.cb_hemlLogo1Type, self.preview.cb_hemlLogo2Type]
@@ -5833,14 +5856,14 @@ color_map
             self.preview.lbl_CamX.setText(self.convertIntToFloatStr(value, 10))
 
             if value != self.camXDefault:
-                self.preview.cb_PresetCam.setCurrentIndex(12)
+                self.preview.cb_PresetCam.setCurrentIndex(self.cbCamIndex)
 
         else:
             self.camXHelm = value
             self.preview.lbl_CamX.setText(self.convertIntToFloatStr(value, 100))
 
             if value != self.camXHelmDefault:
-                self.preview.cb_PresetCam.setCurrentIndex(10)
+                self.preview.cb_PresetCam.setCurrentIndex(self.cbCamHelmIndex)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewCamYFunc(self, value):
@@ -5851,14 +5874,14 @@ color_map
             self.preview.lbl_CamY.setText(self.convertIntToFloatStr(value, 10))
 
             if value != self.camYDefault:
-                self.preview.cb_PresetCam.setCurrentIndex(12)
+                self.preview.cb_PresetCam.setCurrentIndex(self.cbCamIndex)
 
         else:
             self.camYHelm = value
             self.preview.lbl_CamY.setText(self.convertIntToFloatStr(value, 100))
 
             if value != self.camYHelmDefault:
-                self.preview.cb_PresetCam.setCurrentIndex(10)
+                self.preview.cb_PresetCam.setCurrentIndex(self.cbCamHelmIndex)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewCamZFunc(self, value):
@@ -5869,14 +5892,14 @@ color_map
             self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(value, 10))
 
             if value != self.camZDefault:
-                self.preview.cb_PresetCam.setCurrentIndex(12)
+                self.preview.cb_PresetCam.setCurrentIndex(self.cbCamIndex)
 
         else:
             self.camZHelm = value
             self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(value, 100))
 
             if value != self.camZHelmDefault:
-                self.preview.cb_PresetCam.setCurrentIndex(10)
+                self.preview.cb_PresetCam.setCurrentIndex(self.cbCamHelmIndex)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookXFunc(self, value):
@@ -5887,14 +5910,14 @@ color_map
             self.preview.lbl_LookX.setText(self.convertIntToFloatStr(value, 10))
 
             if value != self.lookXDefault:
-                self.preview.cb_PresetLook.setCurrentIndex(12)
+                self.preview.cb_PresetLook.setCurrentIndex(self.cbLookIndex)
 
         else:
             self.lookXHelm = value
             self.preview.lbl_LookX.setText(self.convertIntToFloatStr(value, 100))
 
             if value != self.lookXHelmDefault:
-                self.preview.cb_PresetLook.setCurrentIndex(10)
+                self.preview.cb_PresetLook.setCurrentIndex(self.cbLookHelmIndex)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookYFunc(self, value):
@@ -5905,14 +5928,14 @@ color_map
             self.preview.lbl_LookY.setText(self.convertIntToFloatStr(value, 10))
 
             if value != self.lookYDefault:
-                self.preview.cb_PresetLook.setCurrentIndex(12)
+                self.preview.cb_PresetLook.setCurrentIndex(self.cbLookIndex)
 
         else:
             self.lookYHelm = value
             self.preview.lbl_LookY.setText(self.convertIntToFloatStr(value, 100))
 
             if value != self.lookYHelmDefault:
-                self.preview.cb_PresetLook.setCurrentIndex(10)
+                self.preview.cb_PresetLook.setCurrentIndex(self.cbLookHelmIndex)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookZFunc(self, value):
@@ -5923,14 +5946,14 @@ color_map
             self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(value, 10))
 
             if value != self.lookZDefault:
-                self.preview.cb_PresetLook.setCurrentIndex(12)
+                self.preview.cb_PresetLook.setCurrentIndex(self.cbLookIndex)
 
         else:
             self.lookZHelm = value
             self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(value, 100))
 
             if value != self.lookZHelmDefault:
-                self.preview.cb_PresetLook.setCurrentIndex(10)
+                self.preview.cb_PresetLook.setCurrentIndex(self.cbLookHelmIndex)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetCameraFunc(self):
@@ -5957,6 +5980,8 @@ color_map
                 self.preview.vs_LookZ.setValue(self.lookZ)
                 self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(self.lookZ, 10))
                 self.medalsOnly = "No"
+                self.cbCamIndex = 0
+                self.cbLookIndex = 0
             else:
                 self.camXHelm = self.camXHelmDefault
                 self.camYHelm = self.camYHelmDefault
@@ -5977,6 +6002,9 @@ color_map
                 self.preview.lbl_LookY.setText(self.convertIntToFloatStr(self.lookYHelm, 100))
                 self.preview.vs_LookZ.setValue(self.lookZHelm)
                 self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(self.lookZHelm, 100))
+                self.cbCamHelmIndex = 0
+                self.cbLookHelmIndex = 0
+                self.helmetPresetSelected = False
 
             self.preview.cb_PresetCam.setCurrentIndex(0)
             self.preview.cb_PresetLook.setCurrentIndex(0)
@@ -5990,11 +6018,11 @@ color_map
         if self.uniform != "helmet":
             self.lightX = value
             self.preview.lbl_LightX.setText(self.convertIntToFloatStr(value, 10))
-            self.preview.cb_PresetLight.setCurrentIndex(11)
+            self.preview.cb_PresetLight.setCurrentIndex(self.cbLightIndex)
         else:
             self.lightXHelm = value
             self.preview.lbl_LightX.setText(self.convertIntToFloatStr(value, 100))
-            self.preview.cb_PresetLight.setCurrentIndex(10)
+            self.preview.cb_PresetLight.setCurrentIndex(self.cbLightHelmIndex)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLightYFunc(self, value):
@@ -6003,11 +6031,11 @@ color_map
         if self.uniform != "helmet":
             self.lightY = value
             self.preview.lbl_LightY.setText(self.convertIntToFloatStr(value, 10))
-            self.preview.cb_PresetLight.setCurrentIndex(11)
+            self.preview.cb_PresetLight.setCurrentIndex(self.cbLightIndex)
         else:
             self.lightYHelm = value
             self.preview.lbl_LightY.setText(self.convertIntToFloatStr(value, 100))
-            self.preview.cb_PresetLight.setCurrentIndex(10)
+            self.preview.cb_PresetLight.setCurrentIndex(self.cbLightHelmIndex)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLightZFunc(self, value):
@@ -6016,11 +6044,11 @@ color_map
         if self.uniform != "helmet":
             self.lightZ = value
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(value, 10))
-            self.preview.cb_PresetLight.setCurrentIndex(11)
+            self.preview.cb_PresetLight.setCurrentIndex(self.cbLightIndex)
         else:
             self.lightZHelm = value
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(value, 100))
-            self.preview.cb_PresetLight.setCurrentIndex(10)
+            self.preview.cb_PresetLight.setCurrentIndex(self.cbLightHelmIndex)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetLightFunc(self):
@@ -6037,6 +6065,7 @@ color_map
                 self.lightZ = 13000
                 self.preview.vs_LightZ.setValue(self.lightZ)
                 self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZ, 10))
+                self.cbLightIndex = 0
             else:
                 self.lightXHelm = 2244
                 self.preview.vs_LightX.setValue(self.lightXHelm)
@@ -6047,6 +6076,8 @@ color_map
                 self.lightZHelm = 5282
                 self.preview.vs_LightZ.setValue(self.lightZHelm)
                 self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZHelm, 100))
+                self.cbLightHelmIndex = 0
+                self.helmetPresetSelected = False
 
             self.preview.cb_PresetLight.setCurrentIndex(0)
         except Exception as e:
@@ -6082,9 +6113,31 @@ color_map
 
         if self.uniform != "helmet":
             # Collect the data to be saved into a list.
-            saveData = (self.spotColour, self.envColour, self.bgColour, self.transparentBG, self.camX, self.camY, self.camZ,
-                        self.lookX, self.lookY, self.lookZ, self.width, self.height, self.quality, self.clothDetail, self.antiAliasing,
-                        self.shadowless, self.mosaicPreview, self.lightX, self.lightY, self.lightZ, self.medalsOnly)
+            saveData = (
+                self.spotColour,
+                self.envColour,
+                self.bgColour,
+                self.transparentBG,
+                self.camX,
+                self.camY,
+                self.camZ,
+                self.lookX,
+                self.lookY,
+                self.lookZ,
+                self.width,
+                self.height,
+                self.quality,
+                self.clothDetail,
+                self.antiAliasing,
+                self.shadowless,
+                self.mosaicPreview,
+                self.lightX,
+                self.lightY,
+                self.lightZ,
+                self.medalsOnly,
+                self.cbCamIndex,
+                self.cbLookIndex,
+                self.cbLightIndex)
 
         else:
             saveData = (self.helmColour, self.decColour, self.bgColourHelm, self.lightColour, self.transparentBGHelm, self.ambientHelm,
@@ -6093,7 +6146,8 @@ color_map
                         self.fontHelmQFront.family(), self.nameHelm, self.logo1FilepathHelm, self.logo1TypeHelm,
                         self.logo2FilepathHelm, self.logo2TypeHelm, self.mosaicPreviewHelm, self.homoHelm, self.shadowlessHelm,
                         self.antiAliasingHelm, self.qualityHelm, self.widthHelm, self.heightHelm, self.rank, self.position, self.sqn,
-                        self.logo1Mirrored, self.logo2Mirrored, self.helmetStyle)
+                        self.logo1Mirrored, self.logo2Mirrored, self.helmetStyle, self.cbCamHelmIndex, self.cbLookHelmIndex, self.cbLightHelmIndex,
+                        self.helmFontSize)
 
         return saveData
         # --------------------------------------------------------------------------------------------------------------------------------------------#
@@ -6177,6 +6231,18 @@ color_map
                         self.medalsOnly = saveData[20]
                     except BaseException:
                         self.medalsOnly = "No"
+                    try:
+                        self.cbCamIndex = saveData[21]
+                    except BaseException:
+                        self.cbCamIndex = 0
+                    try:
+                        self.cbLookIndex = saveData[22]
+                    except BaseException:
+                        self.cbLookIndex = 0
+                    try:
+                        self.cbLightIndex = saveData[23]
+                    except BaseException:
+                        self.cbLightIndex = 0
 
                 else:
                     self.helmColour = saveData[0]
@@ -6222,6 +6288,22 @@ color_map
                         self.helmetStyle = saveData[36].title()
                     except BaseException:
                         self.helmetStyle = "Imperial"
+                    try:
+                        self.cbCamHelmIndex = saveData[37]
+                    except BaseException:
+                        self.cbCamHelmIndex = 0
+                    try:
+                        self.cbLookHelmIndex = saveData[38]
+                    except BaseException:
+                        self.cbLookHelmIndex = 0
+                    try:
+                        self.cbLightHelmIndex = saveData[39]
+                    except BaseException:
+                        self.cbLightHelmIndex = 0
+                    try:
+                        self.helmFontSize = saveData[40]
+                    except BaseException:
+                        self.helmFontSize = 110
 
                 oldRefreshSetting = self.preview.cb_Refresh.isChecked()
                 # Turn off auto refresh to prevent applying the loaded settings to trigger multiple refreshes.
@@ -6272,35 +6354,7 @@ color_map
         self.painter.setBrush(QBrush(Qt.green))
         self.painter.fillRect(QRectF(0, 0, width, height), Qt.black)
         self.painter.setPen(QPen(Qt.white))
-        self.painter.setFont(QFont(self.preview.fcb_helmFont.currentFont().family(), fontsize))
-
-        # Determine the maximim width the text can be to fit in the image.
-        try:
-            factor = width / self.painter.fontMetrics().width(text)
-            while factor > 1.06:
-                fontsize += 1
-                self.painter.setFont(QFont(self.preview.fcb_helmFont.currentFont().family(), fontsize))
-                factor = width / self.painter.fontMetrics().width(text)
-            maxWidthSize = fontsize
-        except ZeroDivisionError:  # Some fonts don't return a width.
-            maxWidthSize = 220
-
-        # Determine the maximim height the text can be to fit in the image.
-        fontsize = 1  # Reset to 1 for height calculation.
-        self.painter.setFont(QFont(self.preview.fcb_helmFont.currentFont().family(), fontsize))
-        factor = height / self.painter.fontMetrics().height()
-        while factor > 1:
-            fontsize += 1
-            self.painter.setFont(QFont(self.preview.fcb_helmFont.currentFont().family(), fontsize))
-            factor = height / self.painter.fontMetrics().height()
-        maxHeightFontSize = fontsize
-
-        # Determine which is the largest font size to use based on max height and max width.
-        if maxWidthSize < maxHeightFontSize:
-            fontsize = maxWidthSize
-        else:
-            fontsize = maxHeightFontSize
-        self.painter.setFont(QFont(self.preview.fcb_helmFont.currentFont().family(), fontsize))
+        self.painter.setFont(QFont(self.preview.fcb_helmFont.currentFont().family(), self.helmFontSize))
 
         # Draw the text and save the image.
         self.painter.drawText(self.image.rect(), Qt.AlignCenter | Qt.AlignVCenter, text)
@@ -6420,6 +6474,13 @@ color_map
         '''Method for handling helmet font selection'''
 
         self.fontHelmQFront = font
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def fcb_previewHelmFontSizeFunc(self, text):
+        '''Method for handling helmet font selection'''
+
+        self.helmFontSize = int(self.preview.le_fontSize.text())
+        self.preview.le_fontSize.setText(str(self.helmFontSize))
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def checkForAlpha(self, filepath):
@@ -6578,6 +6639,8 @@ color_map
 
         self.fontHelmQFront = QFont("impact")
         self.preview.fcb_helmFont.setCurrentFont(self.fontHelmQFront)
+        self.helmFontSize = 110
+        self.preview.le_fontSize.setText("110")
 
         self.logo1TypeHelm = "Image - stencil mask"
         self.logo1FilepathHelm = os.getcwd() + "\\data\\misc\\Helmet Stencils\\tclogo.gif"
@@ -6609,6 +6672,8 @@ color_map
 
     def cb_previewPresetCamFunc(self, intIndex):
         '''Method for preview camera presets.'''
+
+        self.cbCamIndex = intIndex
 
         if intIndex == 0:
             self.camX = -2500
@@ -6690,6 +6755,7 @@ color_map
             self.medalsOnly = "Medals"
             self.preview.cb_PresetLook.currentIndexChanged.disconnect()
             self.preview.cb_PresetLook.setCurrentIndex(intIndex)
+            self.cbLookIndex = intIndex
             self.preview.cb_PresetLook.currentIndexChanged.connect(self.cb_previewPresetLookFunc)
 
         # Medal Rank.
@@ -6703,8 +6769,10 @@ color_map
             self.medalsOnly = "MedalsRank"
             self.preview.cb_PresetLook.currentIndexChanged.disconnect()
             self.preview.cb_PresetLook.setCurrentIndex(intIndex)
+            self.cbLookIndex = intIndex
             self.preview.cb_PresetLook.currentIndexChanged.connect(self.cb_previewPresetLookFunc)
 
+        # Set the sliders and combo boxes to the preset settings. Ignore if custom is selected.
         if intIndex != 12:
             self.renderPreview()
             self.preview.vs_CamX.setValue(self.camX)
@@ -6720,6 +6788,9 @@ color_map
 
     def cb_previewPresetCamHelmFunc(self, intIndex):
         '''Method for preview camera presets.'''
+
+        self.cbCamHelmIndex = intIndex
+        self.helmetPresetSelected = True
 
         if intIndex == 0:
             self.camXHelm = self.camXHelmDefault
@@ -6780,6 +6851,7 @@ color_map
             self.camYHelm = -6510
             self.camZHelm = -2000
 
+        # Set the sliders and combo boxes to the preset settings. Ignore if custom is selected.
         if intIndex != 10:
             self.renderPreview()
             self.preview.vs_CamX.setValue(self.camXHelm)
@@ -6795,6 +6867,8 @@ color_map
 
     def cb_previewPresetLookFunc(self, intIndex):
         '''Method for preview look presets.'''
+
+        self.cbLookIndex = intIndex
 
         if intIndex == 0:
             self.lookX = 0
@@ -6876,6 +6950,7 @@ color_map
             self.medalsOnly = "Medals"
             self.preview.cb_PresetCam.currentIndexChanged.disconnect()
             self.preview.cb_PresetCam.setCurrentIndex(intIndex)
+            self.cbCamIndex = intIndex
             self.preview.cb_PresetCam.currentIndexChanged.connect(self.cb_previewPresetCamFunc)
         # Medal Rank.
 
@@ -6889,8 +6964,10 @@ color_map
             self.medalsOnly = "MedalsRank"
             self.preview.cb_PresetCam.currentIndexChanged.disconnect()
             self.preview.cb_PresetCam.setCurrentIndex(intIndex)
+            self.cbCamIndex = intIndex
             self.preview.cb_PresetCam.currentIndexChanged.connect(self.cb_previewPresetCamFunc)
 
+        # Set the sliders and combo boxes to the preset settings. Ignore if custom is selected.
         if intIndex != 12:
             self.renderPreview()
             self.preview.vs_LookX.setValue(self.lookX)
@@ -6906,6 +6983,9 @@ color_map
 
     def cb_previewPresetLookHelmFunc(self, intIndex):
         '''Method for preview look presets.'''
+
+        self.cbLookHelmIndex = intIndex
+        self.helmetPresetSelected = True
 
         if intIndex == 0:
             self.lookXHelm = self.lookXHelmDefault
@@ -6966,6 +7046,7 @@ color_map
             self.lookYHelm = -445
             self.lookZHelm = -2500
 
+        # Set the sliders and combo boxes to the preset settings. Ignore if custom is selected.
         if intIndex != 10:
             self.renderPreview()
             self.preview.vs_LookX.setValue(self.lookXHelm)
@@ -6981,6 +7062,8 @@ color_map
 
     def cb_previewPresetLightFunc(self, intIndex):
         '''Method for preview light presets.'''
+
+        self.cbLightIndex = intIndex
 
         if intIndex == 0:
             self.lightX = 13000
@@ -7047,6 +7130,7 @@ color_map
             self.lightY = -6474
             self.lightZ = -17501
 
+        # Set the sliders and combo boxes to the preset settings. Ignore if custom is selected.
         if intIndex != 11:
             self.renderPreview()
             self.preview.vs_LightX.setValue(self.lightX)
@@ -7299,39 +7383,44 @@ color_map
                     self.logo2FilepathHelm = os.getcwd() + "\\data\\misc\\Helmet Stencils\\tiecorps_logo_new.png"
                 self.preview.le_helmLogo1Filepath.setText(self.logo1FilepathHelm)
                 self.preview.le_helmLogo2Filepath.setText(self.logo2FilepathHelm)
-                self.queingAllowed = True
 
                 # Cameras.
-                self.camXHelm = self.helmetConfig.getint(self.helmetStyle, "camX")
-                self.camXHelmDefault = self.camXHelm
-                self.preview.vs_CamX.setValue(self.camXHelm)
-                self.camYHelm = self.helmetConfig.getint(self.helmetStyle, "camY")
-                self.camYHelmDefault = self.camYHelm
-                self.preview.vs_CamY.setValue(self.camYHelm)
-                self.camZHelm = self.helmetConfig.getint(self.helmetStyle, "camZ")
-                self.camZHelmDefault = self.camZHelm
-                self.preview.vs_CamZ.setValue(self.camZHelm)
-                self.lookXHelm = self.helmetConfig.getint(self.helmetStyle, "lookX")
-                self.lookXHelmDefault = self.lookXHelm
-                self.preview.vs_LookX.setValue(self.lookXHelm)
-                self.lookYHelm = self.helmetConfig.getint(self.helmetStyle, "lookY")
-                self.lookYHelmDefault = self.lookYHelm
-                self.preview.vs_LookY.setValue(self.lookYHelm)
-                self.lookZHelm = self.helmetConfig.getint(self.helmetStyle, "lookZ")
-                self.lookZHelmDefault = self.lookZHelm
-                self.preview.vs_LookZ.setValue(self.lookZHelm)
-                self.lightXHelm = self.helmetConfig.getint(self.helmetStyle, "lightX")
-                self.preview.vs_LightX.setValue(self.lightXHelm)
-                self.lightYHelm = self.helmetConfig.getint(self.helmetStyle, "lightY")
-                self.preview.vs_LightY.setValue(self.lightYHelm)
-                self.lightZHelm = self.helmetConfig.getint(self.helmetStyle, "lightZ")
-                self.preview.vs_LightZ.setValue(self.lightZHelm)
+                if not self.helmetPresetSelected:
+                    self.camXHelm = self.helmetConfig.getint(self.helmetStyle, "camX")
+                    self.camXHelmDefault = self.camXHelm
+                    self.preview.vs_CamX.setValue(self.camXHelm)
+                    self.camYHelm = self.helmetConfig.getint(self.helmetStyle, "camY")
+                    self.camYHelmDefault = self.camYHelm
+                    self.preview.vs_CamY.setValue(self.camYHelm)
+                    self.camZHelm = self.helmetConfig.getint(self.helmetStyle, "camZ")
+                    self.camZHelmDefault = self.camZHelm
+                    self.preview.vs_CamZ.setValue(self.camZHelm)
+                    self.lookXHelm = self.helmetConfig.getint(self.helmetStyle, "lookX")
+                    self.lookXHelmDefault = self.lookXHelm
+                    self.preview.vs_LookX.setValue(self.lookXHelm)
+                    self.lookYHelm = self.helmetConfig.getint(self.helmetStyle, "lookY")
+                    self.lookYHelmDefault = self.lookYHelm
+                    self.preview.vs_LookY.setValue(self.lookYHelm)
+                    self.lookZHelm = self.helmetConfig.getint(self.helmetStyle, "lookZ")
+                    self.lookZHelmDefault = self.lookZHelm
+                    self.preview.vs_LookZ.setValue(self.lookZHelm)
+                    self.lightXHelm = self.helmetConfig.getint(self.helmetStyle, "lightX")
+                    self.preview.vs_LightX.setValue(self.lightXHelm)
+                    self.lightYHelm = self.helmetConfig.getint(self.helmetStyle, "lightY")
+                    self.preview.vs_LightY.setValue(self.lightYHelm)
+                    self.lightZHelm = self.helmetConfig.getint(self.helmetStyle, "lightZ")
+                    self.preview.vs_LightZ.setValue(self.lightZHelm)
+
+                self.queingAllowed = True
         except Exception as e:
             handleException(e)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewPresetLightHelmFunc(self, intIndex):
         '''Method for preview light presets.'''
+
+        self.cbLightHelmIndex = intIndex
+        self.helmetPresetSelected = True
 
         if intIndex == 0:
             self.lightXHelm = 2244
@@ -7392,6 +7481,7 @@ color_map
             self.lightYHelm = -5089
             self.lightZHelm = -5000
 
+        # Set the sliders and combo boxes to the preset settings. Ignore if custom is selected.
         if intIndex != 10:
             self.renderPreview()
             self.preview.vs_LightX.setValue(self.lightXHelm)
