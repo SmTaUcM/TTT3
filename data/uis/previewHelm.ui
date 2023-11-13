@@ -3453,7 +3453,7 @@ QLineEdit:!enabled
       <rect>
        <x>36</x>
        <y>150</y>
-       <width>90</width>
+       <width>129</width>
        <height>20</height>
       </rect>
      </property>
@@ -3465,36 +3465,6 @@ QLineEdit:!enabled
      </property>
      <property name="fontFilters">
       <set>QFontComboBox::ScalableFonts</set>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="le_fontSize">
-     <property name="geometry">
-      <rect>
-       <x>129</x>
-       <y>150</y>
-       <width>36</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QLineEdit
-{
-    background-color: rgb(255, 255, 252);
-}
-
-QLineEdit:!enabled
-{
-	background-color: darkgray;
-}
-
-
-</string>
-     </property>
-     <property name="text">
-      <string>110</string>
-     </property>
-     <property name="maxLength">
-      <number>12</number>
      </property>
     </widget>
    </widget>

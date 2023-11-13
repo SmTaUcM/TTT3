@@ -289,7 +289,6 @@ class TTT3(QMainWindow):
             self.homoHelm = False
             self.mosaicPreviewHelm = False
             self.nameHelm = "EH TC"
-            self.helmFontSize = 110
             self.fontHelmQFront = QFont("impact")
             self.logo1TypeHelm = "Image - stencil mask"
             self.logo2TypeHelm = "Squadron Patch"
@@ -1158,7 +1157,6 @@ class TTT3(QMainWindow):
         self.preview.cb_Mosaic.stateChanged.connect(self.cb_previewMosaicFunc)
         self.preview.btn_resetOptions.clicked.connect(self.btn_previewResetOptionsFunc)
         self.preview.le_helmText.textChanged.connect(self.le_previewHelmTextFunc)
-        self.preview.le_fontSize.textChanged.connect(self.fcb_previewHelmFontSizeFunc)
         self.preview.fcb_helmFont.currentFontChanged.connect(self.fcb_previewHelmFontFunc)
         self.preview.cb_hemlLogo1Type.currentIndexChanged.connect(self.cb_previewHemlLogo1TypeFunc)
         self.preview.cb_hemlLogo2Type.currentIndexChanged.connect(self.cb_previewHemlLogo2TypeFunc)
@@ -1219,7 +1217,6 @@ class TTT3(QMainWindow):
         self.preview.le_helmLogo1Filepath.textChanged.connect(self.previewAutoRefresh)
         self.preview.le_helmLogo2Filepath.textChanged.connect(self.previewAutoRefresh)
         self.preview.le_helmText.editingFinished.connect(self.previewAutoRefresh)
-        self.preview.le_fontSize.editingFinished.connect(self.previewAutoRefresh)
         self.preview.cb_Logo1Mirrored.stateChanged.connect(self.previewAutoRefresh)
         self.preview.cb_Logo2Mirrored.stateChanged.connect(self.previewAutoRefresh)
         self.preview.cb_helmStyle.currentIndexChanged.connect(self.previewAutoRefresh)
@@ -1386,7 +1383,6 @@ class TTT3(QMainWindow):
                     self.nameHelm = self.callsign[:12].rstrip(" ")
             self.preview.le_helmText.setText(self.nameHelm)
             self.preview.fcb_helmFont.setCurrentFont(self.fontHelmQFront)
-            self.preview.le_fontSize.setText(str(self.helmFontSize))
 
             # Logo options.
             widgets = [self.preview.cb_hemlLogo1Type, self.preview.cb_hemlLogo2Type]
@@ -1428,18 +1424,6 @@ class TTT3(QMainWindow):
             if self.getUniformData() != self.lastRenderData:
                 if self.previewLoaded:
                     self.preview.lbl_wait.setHidden(False)
-                if self.uniform == "dress":
-                    if self.fastPreview:
-                        self.createDressPov(fastPreview=True)
-                    else:
-                        self.createDressPov()
-                elif self.uniform == "duty":
-                    if self.fastPreview:
-                        self.createDutyPov(fastPreview=True)
-                    else:
-                        self.createDutyPov()
-                elif self.uniform == "helmet":
-                    self.createHelmetPov()
                 self.queue.put(None)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -6146,8 +6130,7 @@ color_map
                         self.fontHelmQFront.family(), self.nameHelm, self.logo1FilepathHelm, self.logo1TypeHelm,
                         self.logo2FilepathHelm, self.logo2TypeHelm, self.mosaicPreviewHelm, self.homoHelm, self.shadowlessHelm,
                         self.antiAliasingHelm, self.qualityHelm, self.widthHelm, self.heightHelm, self.rank, self.position, self.sqn,
-                        self.logo1Mirrored, self.logo2Mirrored, self.helmetStyle, self.cbCamHelmIndex, self.cbLookHelmIndex, self.cbLightHelmIndex,
-                        self.helmFontSize)
+                        self.logo1Mirrored, self.logo2Mirrored, self.helmetStyle, self.cbCamHelmIndex, self.cbLookHelmIndex, self.cbLightHelmIndex)
 
         return saveData
         # --------------------------------------------------------------------------------------------------------------------------------------------#
@@ -6300,10 +6283,6 @@ color_map
                         self.cbLightHelmIndex = saveData[39]
                     except BaseException:
                         self.cbLightHelmIndex = 0
-                    try:
-                        self.helmFontSize = saveData[40]
-                    except BaseException:
-                        self.helmFontSize = 110
 
                 oldRefreshSetting = self.preview.cb_Refresh.isChecked()
                 # Turn off auto refresh to prevent applying the loaded settings to trigger multiple refreshes.
@@ -6340,26 +6319,35 @@ color_map
     def createHelmetNameTag(self):
         '''Method for creating nametag.png which is used to diasply the name on the pilot helmet.'''
 
-        # Set the helmet's text.
-        text = self.nameHelm
-
         # Local variables.
         width, height = 720, 264
-        fontsize = 1  # Starting font size.
 
-        # QT Method - Image creation.
         # Create the black image.
-        self.image = QImage(QSize(width, height), QImage.Format_RGB32)
-        self.painter = QPainter(self.image)
-        self.painter.setBrush(QBrush(Qt.green))
-        self.painter.fillRect(QRectF(0, 0, width, height), Qt.black)
-        self.painter.setPen(QPen(Qt.white))
-        self.painter.setFont(QFont(self.preview.fcb_helmFont.currentFont().family(), self.helmFontSize))
+        rect = QRectF(0, 0, width, height)
+        image = QImage(QSize(width, height), QImage.Format_RGB32)
+        painter = QPainter(image)
+        painter.fillRect(rect, Qt.black)
+        painter.setPen(QPen(Qt.white))
+        painter.setFont(QFont(self.preview.fcb_helmFont.currentFont().family()))
+
+        # Automatically Scale the text font to fit the helmet.
+        factorWidth = rect.width() / painter.fontMetrics().width(self.nameHelm)
+        factorHeight = rect.height() / painter.fontMetrics().height()
+
+        if factorWidth < factorHeight:
+            factor = factorWidth * 0.9  # 0.9 as some font sizes are slightly too wide.
+        else:
+            factor = factorHeight
+
+        # Set the font.
+        font = QFont(painter.font())
+        font.setPointSizeF(font.pointSizeF() * factor)
+        painter.setFont(font)
 
         # Draw the text and save the image.
-        self.painter.drawText(self.image.rect(), Qt.AlignCenter | Qt.AlignVCenter, text)
-        self.painter.end()
-        self.image.save(os.getcwd() + "\\data\\helmet\\" + "nametag.png")
+        painter.drawText(image.rect(), Qt.AlignCenter | Qt.AlignVCenter, self.nameHelm)
+        painter.end()
+        image.save(os.getcwd() + "\\data\\helmet\\" + "nametag.png")
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_PaletteHelmFunc(self):
@@ -6474,13 +6462,6 @@ color_map
         '''Method for handling helmet font selection'''
 
         self.fontHelmQFront = font
-        # --------------------------------------------------------------------------------------------------------------------------------------------#
-
-    def fcb_previewHelmFontSizeFunc(self, text):
-        '''Method for handling helmet font selection'''
-
-        self.helmFontSize = int(self.preview.le_fontSize.text())
-        self.preview.le_fontSize.setText(str(self.helmFontSize))
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def checkForAlpha(self, filepath):
@@ -6639,8 +6620,6 @@ color_map
 
         self.fontHelmQFront = QFont("impact")
         self.preview.fcb_helmFont.setCurrentFont(self.fontHelmQFront)
-        self.helmFontSize = 110
-        self.preview.le_fontSize.setText("110")
 
         self.logo1TypeHelm = "Image - stencil mask"
         self.logo1FilepathHelm = os.getcwd() + "\\data\\misc\\Helmet Stencils\\tclogo.gif"
