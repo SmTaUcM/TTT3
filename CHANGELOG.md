@@ -23,7 +23,7 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 ### Added
 - 3D ribbon devices added in place of static 2D images. (@6958/@55859)
 - Dress Uniform preview now has two new camera presets - 'Medals' and 'Medal Rank', which will present 
-  the user with a plan view of all uniform merit medals and ribbons with or without the rank badge. (@6958)
+  the user with a plain view of all uniform merit medals and ribbons with or without the rank badge. (@6958)
 - Font size selector for helmet text. (@6958)
 
 ### Changed
