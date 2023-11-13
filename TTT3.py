@@ -2035,12 +2035,10 @@ class TTT3(QMainWindow):
         if fastPreview:
             template = r"data\fastPreview.tpt"
         else:
-            template = r"data\dress.tpt"
-
-        if self.medalsOnly == "No":
-            template = r"data\dress.tpt"
-        else:
-            template = r"data\medals.tpt"
+            if self.medalsOnly == "No":
+                template = r"data\dress.tpt"
+            else:
+                template = r"data\medals.tpt"
 
         quantity = 1
 
@@ -6763,6 +6761,16 @@ color_map
             self.preview.cb_PresetCam.currentIndexChanged.disconnect()
             self.preview.cb_PresetCam.setCurrentIndex(intIndex)
             self.preview.cb_PresetCam.currentIndexChanged.connect(self.cb_previewPresetCamFunc)
+
+        # Deconflict with fast preview setting.
+        if self.medalsOnly != "No":
+            self.fastPreview = False
+            self.preview.cb_fastPreview.stateChanged.disconnect(self.fastPreviewFunc)
+            self.preview.cb_fastPreview.setChecked(False)
+            self.preview.cb_fastPreview.stateChanged.connect(self.fastPreviewFunc)
+            self.preview.cb_fastPreview.setEnabled(False)
+        else:
+            self.preview.cb_fastPreview.setEnabled(True)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewPresetCamHelmFunc(self, intIndex):
@@ -6958,6 +6966,16 @@ color_map
             self.preview.cb_PresetLook.currentIndexChanged.disconnect()
             self.preview.cb_PresetLook.setCurrentIndex(intIndex)
             self.preview.cb_PresetLook.currentIndexChanged.connect(self.cb_previewPresetLookFunc)
+
+        # Deconflict with fast preview setting.
+        if self.medalsOnly != "No":
+            self.fastPreview = False
+            self.preview.cb_fastPreview.stateChanged.disconnect(self.fastPreviewFunc)
+            self.preview.cb_fastPreview.setChecked(False)
+            self.preview.cb_fastPreview.stateChanged.connect(self.fastPreviewFunc)
+            self.preview.cb_fastPreview.setEnabled(False)
+        else:
+            self.preview.cb_fastPreview.setEnabled(True)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewPresetLookHelmFunc(self, intIndex):
