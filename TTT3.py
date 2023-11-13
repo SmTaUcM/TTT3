@@ -259,7 +259,7 @@ class TTT3(QMainWindow):
             self.lightColour = self.lightColourDEFAULT
             self.apiLightColour = self.lightColourDEFAULT
             self.transparentBGHelm = ""
-            self.camXHelmDefault = 217
+            self.camXHelmDefault = 2170
             self.camXHelm = self.camXHelmDefault
             self.camYHelmDefault = -6510
             self.camYHelm = self.camYHelmDefault
