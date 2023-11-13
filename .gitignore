@@ -8,13 +8,7 @@ data/helmet/nametag.png
 
 data/helmet/helmtex.bmp
 
-data/squads/Firebird_mask.png
-
-data/squads/Hyperion Flight.png
-
-data/squads/Sin_mask.png
-
-data/squads/Typhoon_mask.png
+data/squads/*_mask.png
 
 data/dress.png
 
@@ -26,9 +20,13 @@ data/duty.png
 
 data/duty.pov
 
+data/duty.pov.bak
+
 data/helmet.png
 
 data/helmet.pov
+
+data/helmet.pov.bak
 
 *.pro
 
