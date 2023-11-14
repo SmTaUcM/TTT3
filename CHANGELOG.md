@@ -18,7 +18,7 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 
 ## ------------------------------------------------------------------------------------------------##
 
-## [v3.1.0] 2023-11-12
+## [v3.1.0] 2023-11-14
 
 ### Added
 - 3D ribbon devices added in place of static 2D images. (@6958/@55859)

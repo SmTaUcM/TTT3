@@ -66,7 +66,7 @@ class TTT3(QMainWindow):
             # Version info.
             version = "3.1.0"
             devVersion = ""
-            date = "12 November 2023"
+            date = "14 November 2023"
             self.saveFileVersion = 3  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
@@ -300,6 +300,7 @@ class TTT3(QMainWindow):
             self.unitType = None
             self.unitProperty = None
             self.fastPreview = False
+            self.fastPreviewOld = False
             self.medalsOnly = "No"
 
             # PovRay Template Constants.
@@ -6734,8 +6735,6 @@ color_map
             self.preview.cb_PresetLook.setCurrentIndex(intIndex)
             self.cbLookIndex = intIndex
             self.preview.cb_PresetLook.currentIndexChanged.connect(self.cb_previewPresetLookFunc)
-            if self.preview.cb_fastPreview.isChecked():
-                self.preview.cb_fastPreview.setChecked(False)
 
         # Medal Rank.
         elif intIndex == 11:
@@ -6750,8 +6749,6 @@ color_map
             self.preview.cb_PresetLook.setCurrentIndex(intIndex)
             self.cbLookIndex = intIndex
             self.preview.cb_PresetLook.currentIndexChanged.connect(self.cb_previewPresetLookFunc)
-            if self.preview.cb_fastPreview.isChecked():
-                self.preview.cb_fastPreview.setChecked(False)
 
         # Set the sliders and combo boxes to the preset settings. Ignore if custom is selected.
         if intIndex != 12:
@@ -6765,6 +6762,9 @@ color_map
             self.preview.cb_PresetCam.currentIndexChanged.disconnect()
             self.preview.cb_PresetCam.setCurrentIndex(intIndex)
             self.preview.cb_PresetCam.currentIndexChanged.connect(self.cb_previewPresetCamFunc)
+
+        # Deconflict with Fast Preview.
+        self.deconflictMedalsOnlyAndFastPreview()
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewPresetCamHelmFunc(self, intIndex):
@@ -6933,8 +6933,6 @@ color_map
             self.preview.cb_PresetCam.setCurrentIndex(intIndex)
             self.cbCamIndex = intIndex
             self.preview.cb_PresetCam.currentIndexChanged.connect(self.cb_previewPresetCamFunc)
-            if self.preview.cb_fastPreview.isChecked():
-                self.preview.cb_fastPreview.setChecked(False)
 
         # Medal Rank.
         elif intIndex == 11:
@@ -6949,8 +6947,6 @@ color_map
             self.preview.cb_PresetCam.setCurrentIndex(intIndex)
             self.cbCamIndex = intIndex
             self.preview.cb_PresetCam.currentIndexChanged.connect(self.cb_previewPresetCamFunc)
-            if self.preview.cb_fastPreview.isChecked():
-                self.preview.cb_fastPreview.setChecked(False)
 
         # Set the sliders and combo boxes to the preset settings. Ignore if custom is selected.
         if intIndex != 12:
@@ -6964,6 +6960,9 @@ color_map
             self.preview.cb_PresetLook.currentIndexChanged.disconnect()
             self.preview.cb_PresetLook.setCurrentIndex(intIndex)
             self.preview.cb_PresetLook.currentIndexChanged.connect(self.cb_previewPresetLookFunc)
+
+        # Deconflict with Fast Preview.
+        self.deconflictMedalsOnlyAndFastPreview()
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewPresetLookHelmFunc(self, intIndex):
@@ -7127,6 +7126,19 @@ color_map
             self.preview.cb_PresetLight.currentIndexChanged.disconnect()
             self.preview.cb_PresetLight.setCurrentIndex(intIndex)
             self.preview.cb_PresetLight.currentIndexChanged.connect(self.cb_previewPresetLightFunc)
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def deconflictMedalsOnlyAndFastPreview(self):
+        '''Deconflicts the Fast Preview setting with Medals Only mode as this hides the medals stack.'''
+
+        if "Medals" in self.medalsOnly:
+            self.fastPreviewOld = self.fastPreview
+            if self.preview.cb_fastPreview.isChecked():
+                self.preview.cb_fastPreview.setChecked(False)
+            self.preview.cb_fastPreview.setEnabled(False)
+        else:
+            self.preview.cb_fastPreview.setEnabled(True)
+            self.preview.cb_fastPreview.setChecked(self.fastPreviewOld)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_CamXFunc(self, sender):
