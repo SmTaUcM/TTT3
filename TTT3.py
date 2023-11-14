@@ -300,6 +300,7 @@ class TTT3(QMainWindow):
             self.unitType = None
             self.unitProperty = None
             self.fastPreview = False
+            self.fastPreviewOld = False
             self.medalsOnly = "No"
 
             # PovRay Template Constants.
@@ -6764,6 +6765,8 @@ color_map
 
         # Deconflict with fast preview setting.
         if self.medalsOnly != "No":
+            if self.fastPreview:
+                self.fastPreviewOld = True
             self.fastPreview = False
             self.preview.cb_fastPreview.stateChanged.disconnect(self.fastPreviewFunc)
             self.preview.cb_fastPreview.setChecked(False)
@@ -6771,6 +6774,10 @@ color_map
             self.preview.cb_fastPreview.setEnabled(False)
         else:
             self.preview.cb_fastPreview.setEnabled(True)
+            if self.fastPreviewOld:
+                self.fastPreview = True
+                self.preview.cb_fastPreview.setChecked(True)
+                self.fastPreviewOld = False
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewPresetCamHelmFunc(self, intIndex):
@@ -6939,8 +6946,8 @@ color_map
             self.preview.cb_PresetCam.setCurrentIndex(intIndex)
             self.cbCamIndex = intIndex
             self.preview.cb_PresetCam.currentIndexChanged.connect(self.cb_previewPresetCamFunc)
-        # Medal Rank.
 
+        # Medal Rank.
         elif intIndex == 11:
             self.camX = 505
             self.camY = -4450
