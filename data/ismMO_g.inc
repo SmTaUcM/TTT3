@@ -96,7 +96,7 @@ union
   object
   {
     P_ism
-    translate <86.15,-141.78,116.25>
+    translate <86.0,-141.78,116.25>
   }
 }   
 
