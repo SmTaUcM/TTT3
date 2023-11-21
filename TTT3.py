@@ -377,9 +377,9 @@ class TTT3(QMainWindow):
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def tcpmLink(self, event):
-        '''Method event for when 'TIE Corps Pilot Manual' is clicked on the 'Info' tab.'''
+        '''Method event for when 'Emperors Hammer Wiki' is clicked on the 'Info' tab.'''
 
-        subprocess.Popen("start https://wiki.emperorshammer.org/TIE_Corps_Uniform", shell=True)
+        subprocess.Popen("start https://wiki.emperorshammer.org/Emperor's_Hammer_Uniform", shell=True)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def uniformsLink(self, event):
