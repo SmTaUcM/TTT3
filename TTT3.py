@@ -13,7 +13,7 @@
 # ----------------------------------------------------------------------------------------------------------------------------------------------------#
 #                                                                      Imports.                                                                      #
 # ----------------------------------------------------------------------------------------------------------------------------------------------------#
-# Developed using Python v3.8.7 32-bit.
+# Developed using Python v3.10.6 32-bit.
 # External dependencies are commented. Imports with no comments are included with the regular Python installation.
 # Alternatively run "TTT3\Useful Info\Dependency Installer.bat"
 import logging
@@ -43,7 +43,7 @@ import threading
 import queue
 import Slider
 import ftfy  # python -m pip install ftfy
-import certifi # python -m pip install certifi
+import certifi  # python -m pip install certifi
 import ssl
 # python -m pip install pyinstaller - for compiler.
 # ----------------------------------------------------------------------------------------------------------------------------------------------------#
@@ -59,19 +59,19 @@ class TTT3(QMainWindow):
 
     updateProgressBar = pyqtSignal(str, int)
 
-    def __init__(self):
+    def __init__(self, parent=None):
         '''Class constructor.'''
 
         try:
             # Version info.
-            version = "3.0.4"
+            version = "3.1.0"
             devVersion = ""
-            date = "16 April 2023"
+            date = "14 November 2023"
             self.saveFileVersion = 3  # Used for save file compatibility. Bump if any changes are made to self.btn_saveProfMethod()
             self.version = "{v} {a}".format(v=version, a=devVersion)
 
             # Initialise an instance of a QT Main Window and load our GUI file 'data\uis\ttt.ui'.
-            QMainWindow.__init__(self)
+            QMainWindow.__init__(self, parent=None)
             self.gui = uic.loadUi(r"data\uis\ttt.ui")
             self.gui.pb_update.hide()
             self.gui.lbl_update.hide()
@@ -82,7 +82,6 @@ class TTT3(QMainWindow):
 
             # Set the version number.
             self.gui.lblVersion.setText("<p align=\"center\">Version: {v} {a}&nbsp;&nbsp;&nbsp;Date: {d}</p>".format(v=version, a=devVersion, d=date))
-            #self.gui.lblDate.setText("Date: " + date)
 
             # ---------- Initialise instance variables and connections. ----------
 
@@ -117,43 +116,11 @@ class TTT3(QMainWindow):
             self.cb_rank_systemFunc(0)
 
             # Radio Button Connections.
+            for posBtn in self.positionRadioButtons:
+                posBtn.clicked.connect(self.posRBLogic)
 
-            # Positions.
-            self.gui.rb_pos_1.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_2.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_3.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_4.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_5.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_6.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_7.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_8.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_9.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_10.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_11.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_12.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_13.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_14.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_lr.clicked.connect(self.posRBLogic)
-            self.gui.rb_pos_fr.clicked.connect(self.posRBLogic)
-
-            # Ranks.
-            self.gui.rb_rank_ct.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_sl.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_lt.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_lcm.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_cm.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_cpt.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_maj.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_lc.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_col.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_gn.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_ra.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_va.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_ad.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_fa.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_ha.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_sa.clicked.connect(self.rankRBLogic)
-            self.gui.rb_rank_ga.clicked.connect(self.rankRBLogic)
+            for rankBtn in self.rankRadioButtons:
+                rankBtn.clicked.connect(self.rankRBLogic)
 
             # ----- 'Wing and Squadron' Tab. -----
 
@@ -260,15 +227,24 @@ class TTT3(QMainWindow):
             self.specularHelm = 50
             self.roughHelm = 1
             self.reflectionHelm = 10
-            self.camX = -2500
-            self.camY = -13300
-            self.camZ = 2100
-            self.lookX = 0
-            self.lookY = -128
-            self.lookZ = 28
+            self.camXDefault = -2500
+            self.camYDefault = -13300
+            self.camZDefault = 2100
+            self.lookXDefault = 0
+            self.lookYDefault = -128
+            self.lookZDefault = 28
+            self.camX = self.camXDefault
+            self.camY = self.camYDefault
+            self.camZ = self.camZDefault
+            self.cbCamIndex = 0
+            self.lookX = self.lookXDefault
+            self.lookY = self.lookYDefault
+            self.lookZ = self.lookZDefault
+            self.cbLookIndex = 0
             self.lightX = 13000
             self.lightY = -15000
             self.lightZ = 13000
+            self.cbLightIndex = 0
             self.loadingHelm = False
             self.helmColourDEFAULT = QColor(33, 33, 33)
             self.helmColour = self.helmColourDEFAULT
@@ -283,21 +259,28 @@ class TTT3(QMainWindow):
             self.lightColour = self.lightColourDEFAULT
             self.apiLightColour = self.lightColourDEFAULT
             self.transparentBGHelm = ""
-            self.camXHelmDefault = 0
+            self.camXHelmDefault = 2170
             self.camXHelm = self.camXHelmDefault
-            self.camYHelmDefault = 0
+            self.camYHelmDefault = -6510
             self.camYHelm = self.camYHelmDefault
-            self.camZHelmDefault = 0
+            self.camZHelmDefault = 3146
             self.camZHelm = self.camZHelmDefault
-            self.lookXHelmDefault = 0
+            self.cbCamHelmIndex = 0
+            self.lookXHelmDefault = -568
             self.lookXHelm = self.lookXHelmDefault
-            self.lookYHelmDefault = 0
+            self.lookYHelmDefault = -445
             self.lookYHelm = self.lookYHelmDefault
-            self.lookZHelmDefault = 0
+            self.lookZHelmDefault = 1052
             self.lookZHelm = self.lookZHelmDefault
-            self.lightXHelm = 0
-            self.lightYHelm = 0
-            self.lightZHelm = 0
+            self.cbLookHelmIndex = 0
+            self.lightXHelmDefault = 2244
+            self.lightXHelm = self.lightXHelmDefault
+            self.lightYHelmDefault = -5089
+            self.lightYHelm = self.lightYHelmDefault
+            self.lightZHelmDefault = 5282
+            self.lightZHelm = self.lightZHelmDefault
+            self.cbLightHelmIndex = 0
+            self.helmetPresetSelected = False
             self.widthHelm = 640
             self.heightHelm = 548
             self.qualityHelm = 9
@@ -317,6 +300,8 @@ class TTT3(QMainWindow):
             self.unitType = None
             self.unitProperty = None
             self.fastPreview = False
+            self.fastPreviewOld = False
+            self.medalsOnly = "No"
 
             # PovRay Template Constants.
             self.RANK_OFFSET_RIBBONS_00_TO_08 = ["-18.8939990997314,0.351000010967255,7.92899990081787",  # Rotate
@@ -348,8 +333,8 @@ class TTT3(QMainWindow):
             self.pinData = []
 
             # ----- GUI variables. -----
-            self.positions_EH = ["NULL", "NULL", "NULL", "NULL", "NULL", "NULL", "NULL", "NULL",  "IA",   "CA",  "GCO",   "CS",   "XO",   "FC"]
-            self.positions_TC = ["TRN",  "FM",   "FL",   "SQXO", "CMDR", "WC",   "COM",  "BGCOM", "COO",  "SOO", "TCCOM", "NULL", "NULL", "NULL"]
+            self.positions_EH = ["NULL", "NULL", "NULL", "NULL", "NULL", "NULL", "NULL", "NULL", "IA", "CA", "GCO", "CS", "XO", "FC"]
+            self.positions_TC = ["TRN", "FM", "FL", "SQXO", "CMDR", "WC", "COM", "BGCOM", "COO", "SOO", "TCCOM", "NULL", "NULL", "NULL"]
             self.subRibbonAwards = []
             self.cb_singleMedalConnected = False
             self.combo_topConnected = False
@@ -392,9 +377,9 @@ class TTT3(QMainWindow):
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def tcpmLink(self, event):
-        '''Method event for when 'TIE Corps Pilot Manual' is clicked on the 'Info' tab.'''
+        '''Method event for when 'Emperors Hammer Wiki' is clicked on the 'Info' tab.'''
 
-        subprocess.Popen("start https://wiki.emperorshammer.org/TIE_Corps_Uniform", shell=True)
+        subprocess.Popen("start https://wiki.emperorshammer.org/Emperor's_Hammer_Uniform", shell=True)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def uniformsLink(self, event):
@@ -482,7 +467,8 @@ class TTT3(QMainWindow):
             pass  # Will cause update to trigger if fleet.json is corrupted.
 
         except FileNotFoundError:
-            self.fleetConfig = json.loads('{"squadrons" : [{"name" : "NULL"}], "wings" : [{"name" : "NULL"}], "ships" : [{"nameShort" : "NULL"}], "battlegroups" : [{"nameShort" : "NULL"}]}')
+            self.fleetConfig = json.loads(
+                '{"squadrons" : [{"name" : "NULL"}], "wings" : [{"name" : "NULL"}], "ships" : [{"nameShort" : "NULL"}], "battlegroups" : [{"nameShort" : "NULL"}]}')
             with open("settings\\fleet.json", "w") as fleetConfigFile:
                 fleetConfigFile.write(json.dumps(self.fleetConfig))
         # --------------------------------------------------------------------------------------------------------------------------------------------#
@@ -1293,6 +1279,11 @@ class TTT3(QMainWindow):
             self.preview.vs_LightZ.setValue(self.lightZ)
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZ, 10))
             self.preview.cb_fastPreview.setChecked(self.fastPreview)
+            # Combo Boxes
+            self.preview.cb_PresetCam.setCurrentIndex(self.cbCamIndex)
+            self.preview.cb_PresetLook.setCurrentIndex(self.cbLookIndex)
+            self.preview.cb_PresetLight.setCurrentIndex(self.cbLightIndex)
+
         else:
             # Helmet Style.
             # Add the styles to the comboBox.
@@ -1381,6 +1372,10 @@ class TTT3(QMainWindow):
             self.preview.lbl_LightY.setText(self.convertIntToFloatStr(self.lightYHelm, 100))
             self.preview.vs_LightZ.setValue(self.lightZHelm)
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZHelm, 100))
+            # Combo Boxes
+            self.preview.cb_PresetCam.setCurrentIndex(self.cbCamHelmIndex)
+            self.preview.cb_PresetLook.setCurrentIndex(self.cbLookHelmIndex)
+            self.preview.cb_PresetLight.setCurrentIndex(self.cbLightHelmIndex)
 
             # Decorations.
             # Helmet Text.
@@ -1430,18 +1425,6 @@ class TTT3(QMainWindow):
             if self.getUniformData() != self.lastRenderData:
                 if self.previewLoaded:
                     self.preview.lbl_wait.setHidden(False)
-                if self.uniform == "dress":
-                    if self.fastPreview:
-                        self.createDressPov(fastPreview=True)
-                    else:
-                        self.createDressPov()
-                elif self.uniform == "duty":
-                    if self.fastPreview:
-                        self.createDutyPov(fastPreview=True)
-                    else:
-                        self.createDutyPov()
-                elif self.uniform == "helmet":
-                    self.createHelmetPov()
                 self.queue.put(None)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -2053,7 +2036,10 @@ class TTT3(QMainWindow):
         if fastPreview:
             template = r"data\fastPreview.tpt"
         else:
-            template = r"data\dress.tpt"
+            if self.medalsOnly == "No":
+                template = r"data\dress.tpt"
+            else:
+                template = r"data\medals.tpt"
 
         quantity = 1
 
@@ -2181,10 +2167,16 @@ class TTT3(QMainWindow):
                 povData.append(line.replace("&RANK&", self.rank))
 
             elif "&RANKROTATE&" in line:
-                povData.append(line.replace("&RANKROTATE&", self.getRankRotateOffset()))
+                if self.medalsOnly == "No":
+                    povData.append(line.replace("&RANKROTATE&", self.getRankRotateOffset()))
+                else:
+                    povData.append(line.replace("&RANKROTATE&", "0,0,0"))
 
             elif "&RANKTRANSLATE&" in line:
-                povData.append(line.replace("&RANKTRANSLATE&", self.getRankTranslateOffset()))
+                if self.medalsOnly == "No":
+                    povData.append(line.replace("&RANKTRANSLATE&", self.getRankTranslateOffset()))
+                else:
+                    povData.append(line.replace("&RANKTRANSLATE&", self.getRankTranslateOffsetMedalsOnly()))
 
             # ----- Assignment. -----
             elif "&CATEGORY&" in line:
@@ -2314,7 +2306,35 @@ color_map
                     povData.append(line.replace("&SABERINCLUDE&", include))
 
             elif "&MEDALSINCLUDE&" in line:
-                for includeRef in self.buildMedalIncludes():
+                includes = self.buildMedalIncludes()
+
+                if "Medals" in self.medalsOnly:
+                    try:
+                        includes.remove("ic_goe_g.inc")
+                    except ValueError:
+                        pass
+                    try:
+                        includes.remove("ic_g.inc")
+                    except ValueError:
+                        pass
+                    try:
+                        includes.remove("goe_g.inc")
+                    except ValueError:
+                        pass
+                    try:
+                        includes.remove("moh_g.inc")
+                    except ValueError:
+                        pass
+                    try:
+                        includes.remove("ic_g.inc")
+                    except ValueError:
+                        pass
+                    try:
+                        includes.remove("oor_g.inc")
+                    except ValueError:
+                        pass
+
+                for includeRef in includes:
                     povData.append('#include "%s"\n' % includeRef)
 
             # ----- Scene. -----
@@ -2414,7 +2434,23 @@ color_map
                     povData.append(line.replace("&PADTRIM&", "object { P_pad_left texture { T_pad_left } }  "))
 
             elif "&MEDALS&" in line:
-                for objectRef in self.buildMedalObjects():
+                medalObjects = self.buildMedalObjects()
+
+                if "Medals" in self.medalsOnly:
+                    try:
+                        medalObjects.remove("P_goe")
+                    except ValueError:
+                        pass
+                    try:
+                        medalObjects.remove("dagger_left")
+                    except ValueError:
+                        pass
+                    try:
+                        medalObjects.remove("dagger_right")
+                    except ValueError:
+                        pass
+
+                for objectRef in medalObjects:
                     povData.append('object { %s }\n' % objectRef)
 
             elif "&RIBBONS&" in line:
@@ -2961,7 +2997,7 @@ color_map
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getRankTranslateOffset(self):
-        '''Method that returns the correct rank rotate value for the user's medal and ribbon selections.'''
+        '''Method that returns the correct rank translate value for the user's medal and ribbon selections.'''
 
         ribbonCount = self.getRibbonAwardCount()
 
@@ -2977,6 +3013,43 @@ color_map
             return self.RANK_OFFSET_RIBBONS_21_TO_28[1]
         else:
             return self.RANK_OFFSET_RIBBONS_21_TO_28[1]
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def getRankTranslateOffsetMedalsOnly(self):
+        '''Method that returns the correct rank translate value for the user's medal and ribbon selections in Medals Only Mode.'''
+
+        translate = self.getRankTranslateOffset().split(",")
+
+        ribbonCount = self.getRibbonAwardCount()
+        if ribbonCount == 0:
+            rankOffset = 190.5
+        elif ribbonCount > 0 and ribbonCount <= 4:
+            rankOffset = 205.25
+        elif ribbonCount > 4 and ribbonCount <= 8:
+            rankOffset = 210.75
+        elif ribbonCount > 8 and ribbonCount <= 12:
+            rankOffset = 216.25
+        elif ribbonCount > 12 and ribbonCount <= 16:
+            rankOffset = 221.75
+        elif ribbonCount > 16 and ribbonCount <= 20:
+            rankOffset = 226.75
+        elif ribbonCount > 20 and ribbonCount <= 24:
+            rankOffset = 232.25
+        elif ribbonCount > 24 and ribbonCount <= 28:
+            rankOffset = 232.25
+        else:
+            rankOffset = 232.25
+
+        newTranslate = []
+        for i in translate:
+            newTranslate.append(float(i))
+
+        if "Rank" in self.medalsOnly:
+            newTranslate[1] = -145.351
+        else:
+            newTranslate[1] = -5000
+        newTranslate[2] = rankOffset
+        return str(newTranslate).replace("[", "").replace("]", "")
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getRibbonAwardCount(self):
@@ -3123,7 +3196,6 @@ color_map
             handleException(e)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
-
     def shipSelectionLogic(self, value):
         '''Method that handles the actions once a ship is selected from the 'Ship' section in the 'Wing and Squadron' tab.'''
 
@@ -3251,7 +3323,6 @@ color_map
         except Exception as e:
             handleException(e)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     def wingIsNoneSelectionLogic(self):
         '''Method that handles the actions once a Wing is selected from the 'Wing' section in the 'Wing and Squadron' tab.'''
@@ -3424,23 +3495,6 @@ color_map
         '''Method that reads in data from 'settings\ribbons.ini' adds the ribbons to the 'Medals, Ribbons and FCHG' tab
            and then dynamically writes ribbons_g.inc ready for use.'''
 
-        ribbons_g = """ ////////////////////////////////////////////////////
-//                                                 //
-//  TIE Corps Dress Uniform                        //
-//  Service Award Ribbons                          //
-//                                                 //
-//  Settings in this file are generated by TTT     //
-//                                                 //
-////////////////////////////////////////////////////
-
-
-#include "ribbons_o.inc";
-
-
-// RIBBONS
-
-
-"""
         # Read in the data from 'settings\ribbons.ini'.
         self.ribbonConfig = configparser.ConfigParser()
         self.ribbonConfig.read(r"settings\ribbons.ini")
@@ -3463,15 +3517,6 @@ color_map
                 rangeMin = int(self.ribbonConfig.get(ribbon, "rangeMin"))
                 rangeMax = int(self.ribbonConfig.get(ribbon, "rangeMax"))
 
-                if self.ribbonConfig.get(ribbon, "baseAward") == "True":
-                    filename = ribbon + "." + self.ribbonConfig.get(ribbon, "filename").split(".")[1]
-                    ribbons_g += self.addToRibbonIncludes(filename)
-
-                for i in range(rangeMin, rangeMax + 1):  # + 1 as Python omits the last number in a range.
-
-                    filename = self.ribbonConfig.get(ribbon, "filename").replace("&RANGE&", str(i))
-                    ribbons_g += self.addToRibbonIncludes(filename)
-
                 # Store the ribbon data to the 'self.awards' dictionary.
                 self.awards[name]["upgrades"] = [self.ribbonConfig.get(ribbon, "incrementName"), -1]
                 self.awards[name]["ranges"] = [rangeMin, rangeMax]
@@ -3490,37 +3535,12 @@ color_map
                     if "type" not in option and "name" not in option.lower():
                         self.awards[name]["upgrades"].append([self.ribbonConfig.get(ribbon, option), 0])
 
-                    # Create the required include declarations for 'ribbons_g.inc'
-                    if option != "name" and option != "type":
-                        # Add the ribbon to ribbons_g.inc
-                        if "upgrade" in option:
-                            ribbons_g += self.addToRibbonIncludes(self.getFilename(self.ribbonConfig.get(ribbon, option)))
-
         setLWPixelSizes(self.gui.lw_medals)
-
-        with open("data\\ribbons_g.inc", "w") as ribbonFile:
-            ribbonFile.write(ribbons_g)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def getFilename(self, award):
         '''Method that determines an award's filename from it's abbreviation.'''
         return award.replace("(s)", "").split("(")[1].replace(")", "").lower() + ".gif"
-        # --------------------------------------------------------------------------------------------------------------------------------------------#
-
-    def addToRibbonIncludes(self, filename):
-        '''Method that creates the include data for a single ribbon. This include data goes on to build ribbons_g.inc'''
-
-        ribbonName = filename.replace("-", "_").replace(".gif", "")
-
-        includeTemplate = """#declare T_r_%s =
-texture
-{
-  pigment { image_map { gif "ribbons/%s" } }
-  finish  { fin_T_uni }
-}
-texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
-
-        return includeTemplate
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def hideMedalOptions(self):
@@ -3999,7 +4019,15 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     if incFile == "goe_g.inc" or incFile == "ic_g.inc":
                         medalIncludes.insert(0, incFile)  # Must be first for all other medals to render properly.
                     else:
-                        medalIncludes.append(self.awards.get(award)["includeFile"])
+                        if self.medalsOnly == "No":
+                            medalIncludes.append(self.awards.get(award)["includeFile"])
+                        else:
+                            include = self.awards.get(award)["includeFile"]
+                            if "moh" not in include and "oor" not in include:
+                                include = include.replace("_g.inc", "MO_g.inc")
+                                medalIncludes.append(include)
+                            else:
+                                medalIncludes.append(self.awards.get(award)["includeFile"])
 
         # Special handling of IC and GOE combination.
         if "ic_g.inc" in medalIncludes and "goe_g.inc" in medalIncludes and not self.deconflictNeckRibbons:
@@ -4120,34 +4148,42 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
                 for upgrade in upgrades:  # Medals that don't require reversing.
                     if upgrade[quantity] != 0:
-                        awardName = "T_r_" + self.getFilename(upgrade[name]).split(".")[0].lower().replace("-", "_")
-                        ribbonObjects.append("P_r&NUM& translate <0,0,%s> texture { %s }" % (yOffset, awardName))
+                        awardName = self.getFilename(upgrade[name]).split(".")[0].lower().replace("-", "_")
+                        ribbonObjects.append(
+                            "P_ribbon_{ribbon} transform device_trans_&NUM& translate <0,0,{offset}>".format(
+                                ribbon=awardName, offset=yOffset))
 
             # Ranged type awards.
             elif self.awards.get(award)["type"] == "ranged":
                 if self.awards.get(award)["upgrades"][quantity] > 0:
                     for section in self.ribbonConfig.sections():
                         if self.ribbonConfig.get(section, "name") == award:
-                            awardName = "T_r_" + self.ribbonConfig.get(section, "filename").split(".")[0].lower().replace("-", "_")
+                            awardName = self.ribbonConfig.get(section, "filename").split(".")[0].lower().replace("-", "_")
                             amount = self.awards.get(award)["upgrades"][quantity]
                             maxAmount = self.awards.get(award)["ranges"][1]
                             if amount > maxAmount:
                                 amount = maxAmount
                             awardName = awardName.replace("&range&", str(amount))
-                            ribbonObjects.append("P_r&NUM& translate <0,0,%s> texture { %s }" % (yOffset, awardName))
+                            ribbonObjects.append(
+                                "P_ribbon_{ribbon} transform device_trans_&NUM& translate <0,0,{offset}>".format(
+                                    ribbon=awardName, offset=yOffset))
                 elif self.awards.get(award)["upgrades"][quantity] == 0 and self.awards.get(award)["baseAward"] == "True":
                     for section in self.ribbonConfig.sections():
                         if self.ribbonConfig.get(section, "name") == award:
-                            awardName = "T_r_" + self.ribbonConfig.get(section,
-                                                                       "filename").split(".")[0].lower().replace("-",
-                                                                                                                 "_").split("&range&")[0][:-1]
-                            ribbonObjects.append("P_r&NUM& translate <0,0,%s> texture { %s }" % (yOffset, awardName))
+                            awardName = self.ribbonConfig.get(section,
+                                                              "filename").split(".")[0].lower().replace("-",
+                                                                                                        "_").split("&range&")[0][:-1]
+                            ribbonObjects.append(
+                                "P_ribbon_{ribbon} transform device_trans_&NUM& translate <0,0,{offset}>".format(
+                                    ribbon=awardName, offset=yOffset))
 
             # Multi type awards.
             elif self.awards.get(award)["type"] == "multiRibbon":
                 if self.awards.get(award)["upgrades"][quantity] > 0:
-                    awardName = "T_r_" + self.getFilename(award).split(".")[0].lower().replace("-", "_")
-                    ribbonObjects.append("P_r&NUM& translate <0,0,%s> texture { %s }" % (yOffset, awardName))
+                    awardName = self.getFilename(award).split(".")[0].lower().replace("-", "_")
+                    ribbonObjects.append(
+                        "P_ribbon_{ribbon} transform device_trans_&NUM& translate <0,0,{offset}>".format(
+                            ribbon=awardName, offset=yOffset))
 
         return self.ribbonNumberOrdering(ribbonObjects)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4468,7 +4504,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     if self.position:
                         for position_group in [self.positions_EH, self.positions_TC]:
                             for position in position_group:
-                                if position != None:
+                                if position is not None:
                                     if position == self.position:
                                         btn_index = position_group.index(position)
                                         self.gui.cb_rank_system.setCurrentIndex([self.positions_EH, self.positions_TC].index(position_group))
@@ -4843,7 +4879,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                             else:
                                                 self.awards.get(award)["upgrades"][1] = 0
                                         else:
-                                            self.awards.get(award)["upgrades"][1] = apiMedalData.get(medal)
+                                            self.awards.get(award)["upgrades"][1] = int(apiMedalData.get(medal))
 
                                     # Upgradeable and SubRibbons type awards.
                                     elif self.awards.get(award)["type"] == "upgradeable" or \
@@ -4858,7 +4894,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
                                             if medal == upgradeShort:
                                                 index = self.awards.get(award)["upgrades"].index(upgrade)
-                                                self.awards.get(award)["upgrades"][index][quantity] = apiMedalData.get(medal)
+                                                self.awards.get(award)["upgrades"][index][quantity] = int(apiMedalData.get(medal))
                     except AttributeError:
                         pass  # User has no medals.
 
@@ -5801,12 +5837,16 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         if self.uniform != "helmet":
             self.camX = value
             self.preview.lbl_CamX.setText(self.convertIntToFloatStr(value, 10))
+
+            if value != self.camXDefault:
+                self.preview.cb_PresetCam.setCurrentIndex(self.cbCamIndex)
+
         else:
             self.camXHelm = value
             self.preview.lbl_CamX.setText(self.convertIntToFloatStr(value, 100))
 
-        if value != self.camXHelmDefault:
-            self.preview.cb_PresetCam.setCurrentIndex(10)
+            if value != self.camXHelmDefault:
+                self.preview.cb_PresetCam.setCurrentIndex(self.cbCamHelmIndex)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewCamYFunc(self, value):
@@ -5815,12 +5855,16 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         if self.uniform != "helmet":
             self.camY = value
             self.preview.lbl_CamY.setText(self.convertIntToFloatStr(value, 10))
+
+            if value != self.camYDefault:
+                self.preview.cb_PresetCam.setCurrentIndex(self.cbCamIndex)
+
         else:
             self.camYHelm = value
             self.preview.lbl_CamY.setText(self.convertIntToFloatStr(value, 100))
 
-        if value != self.camYHelmDefault:
-            self.preview.cb_PresetCam.setCurrentIndex(10)
+            if value != self.camYHelmDefault:
+                self.preview.cb_PresetCam.setCurrentIndex(self.cbCamHelmIndex)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewCamZFunc(self, value):
@@ -5829,12 +5873,16 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         if self.uniform != "helmet":
             self.camZ = value
             self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(value, 10))
+
+            if value != self.camZDefault:
+                self.preview.cb_PresetCam.setCurrentIndex(self.cbCamIndex)
+
         else:
             self.camZHelm = value
             self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(value, 100))
 
-        if value != self.camZHelmDefault:
-            self.preview.cb_PresetCam.setCurrentIndex(10)
+            if value != self.camZHelmDefault:
+                self.preview.cb_PresetCam.setCurrentIndex(self.cbCamHelmIndex)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookXFunc(self, value):
@@ -5843,12 +5891,16 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         if self.uniform != "helmet":
             self.lookX = value
             self.preview.lbl_LookX.setText(self.convertIntToFloatStr(value, 10))
+
+            if value != self.lookXDefault:
+                self.preview.cb_PresetLook.setCurrentIndex(self.cbLookIndex)
+
         else:
             self.lookXHelm = value
             self.preview.lbl_LookX.setText(self.convertIntToFloatStr(value, 100))
 
-        if value != self.lookXHelmDefault:
-            self.preview.cb_PresetLook.setCurrentIndex(10)
+            if value != self.lookXHelmDefault:
+                self.preview.cb_PresetLook.setCurrentIndex(self.cbLookHelmIndex)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookYFunc(self, value):
@@ -5857,12 +5909,16 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         if self.uniform != "helmet":
             self.lookY = value
             self.preview.lbl_LookY.setText(self.convertIntToFloatStr(value, 10))
+
+            if value != self.lookYDefault:
+                self.preview.cb_PresetLook.setCurrentIndex(self.cbLookIndex)
+
         else:
             self.lookYHelm = value
             self.preview.lbl_LookY.setText(self.convertIntToFloatStr(value, 100))
 
-        if value != self.lookYHelmDefault:
-            self.preview.cb_PresetLook.setCurrentIndex(10)
+            if value != self.lookYHelmDefault:
+                self.preview.cb_PresetLook.setCurrentIndex(self.cbLookHelmIndex)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLookZFunc(self, value):
@@ -5871,12 +5927,16 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         if self.uniform != "helmet":
             self.lookZ = value
             self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(value, 10))
+
+            if value != self.lookZDefault:
+                self.preview.cb_PresetLook.setCurrentIndex(self.cbLookIndex)
+
         else:
             self.lookZHelm = value
             self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(value, 100))
 
-        if value != self.lookZHelmDefault:
-            self.preview.cb_PresetLook.setCurrentIndex(10)
+            if value != self.lookZHelmDefault:
+                self.preview.cb_PresetLook.setCurrentIndex(self.cbLookHelmIndex)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetCameraFunc(self):
@@ -5902,6 +5962,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.lookZ = 28
                 self.preview.vs_LookZ.setValue(self.lookZ)
                 self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(self.lookZ, 10))
+                self.medalsOnly = "No"
+                self.cbCamIndex = 0
+                self.cbLookIndex = 0
             else:
                 self.camXHelm = self.camXHelmDefault
                 self.camYHelm = self.camYHelmDefault
@@ -5922,6 +5985,9 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.preview.lbl_LookY.setText(self.convertIntToFloatStr(self.lookYHelm, 100))
                 self.preview.vs_LookZ.setValue(self.lookZHelm)
                 self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(self.lookZHelm, 100))
+                self.cbCamHelmIndex = 0
+                self.cbLookHelmIndex = 0
+                self.helmetPresetSelected = False
 
             self.preview.cb_PresetCam.setCurrentIndex(0)
             self.preview.cb_PresetLook.setCurrentIndex(0)
@@ -5935,11 +6001,11 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         if self.uniform != "helmet":
             self.lightX = value
             self.preview.lbl_LightX.setText(self.convertIntToFloatStr(value, 10))
-            self.preview.cb_PresetLight.setCurrentIndex(11)
+            self.preview.cb_PresetLight.setCurrentIndex(self.cbLightIndex)
         else:
             self.lightXHelm = value
             self.preview.lbl_LightX.setText(self.convertIntToFloatStr(value, 100))
-            self.preview.cb_PresetLight.setCurrentIndex(10)
+            self.preview.cb_PresetLight.setCurrentIndex(self.cbLightHelmIndex)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLightYFunc(self, value):
@@ -5948,11 +6014,11 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         if self.uniform != "helmet":
             self.lightY = value
             self.preview.lbl_LightY.setText(self.convertIntToFloatStr(value, 10))
-            self.preview.cb_PresetLight.setCurrentIndex(11)
+            self.preview.cb_PresetLight.setCurrentIndex(self.cbLightIndex)
         else:
             self.lightYHelm = value
             self.preview.lbl_LightY.setText(self.convertIntToFloatStr(value, 100))
-            self.preview.cb_PresetLight.setCurrentIndex(10)
+            self.preview.cb_PresetLight.setCurrentIndex(self.cbLightHelmIndex)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def vs_previewLightZFunc(self, value):
@@ -5961,11 +6027,11 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
         if self.uniform != "helmet":
             self.lightZ = value
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(value, 10))
-            self.preview.cb_PresetLight.setCurrentIndex(11)
+            self.preview.cb_PresetLight.setCurrentIndex(self.cbLightIndex)
         else:
             self.lightZHelm = value
             self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(value, 100))
-            self.preview.cb_PresetLight.setCurrentIndex(10)
+            self.preview.cb_PresetLight.setCurrentIndex(self.cbLightHelmIndex)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_previewResetLightFunc(self):
@@ -5982,6 +6048,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.lightZ = 13000
                 self.preview.vs_LightZ.setValue(self.lightZ)
                 self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZ, 10))
+                self.cbLightIndex = 0
             else:
                 self.lightXHelm = 2244
                 self.preview.vs_LightX.setValue(self.lightXHelm)
@@ -5992,6 +6059,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                 self.lightZHelm = 5282
                 self.preview.vs_LightZ.setValue(self.lightZHelm)
                 self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZHelm, 100))
+                self.cbLightHelmIndex = 0
+                self.helmetPresetSelected = False
 
             self.preview.cb_PresetLight.setCurrentIndex(0)
         except Exception as e:
@@ -6027,9 +6096,31 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
         if self.uniform != "helmet":
             # Collect the data to be saved into a list.
-            saveData = (self.spotColour, self.envColour, self.bgColour, self.transparentBG, self.camX, self.camY, self.camZ,
-                        self.lookX, self.lookY, self.lookZ, self.width, self.height, self.quality, self.clothDetail, self.antiAliasing,
-                        self.shadowless, self.mosaicPreview, self.lightX, self.lightY, self.lightZ)
+            saveData = (
+                self.spotColour,
+                self.envColour,
+                self.bgColour,
+                self.transparentBG,
+                self.camX,
+                self.camY,
+                self.camZ,
+                self.lookX,
+                self.lookY,
+                self.lookZ,
+                self.width,
+                self.height,
+                self.quality,
+                self.clothDetail,
+                self.antiAliasing,
+                self.shadowless,
+                self.mosaicPreview,
+                self.lightX,
+                self.lightY,
+                self.lightZ,
+                self.medalsOnly,
+                self.cbCamIndex,
+                self.cbLookIndex,
+                self.cbLightIndex)
 
         else:
             saveData = (self.helmColour, self.decColour, self.bgColourHelm, self.lightColour, self.transparentBGHelm, self.ambientHelm,
@@ -6038,7 +6129,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         self.fontHelmQFront.family(), self.nameHelm, self.logo1FilepathHelm, self.logo1TypeHelm,
                         self.logo2FilepathHelm, self.logo2TypeHelm, self.mosaicPreviewHelm, self.homoHelm, self.shadowlessHelm,
                         self.antiAliasingHelm, self.qualityHelm, self.widthHelm, self.heightHelm, self.rank, self.position, self.sqn,
-                        self.logo1Mirrored, self.logo2Mirrored, self.helmetStyle)
+                        self.logo1Mirrored, self.logo2Mirrored, self.helmetStyle, self.cbCamHelmIndex, self.cbLookHelmIndex, self.cbLightHelmIndex)
 
         return saveData
         # --------------------------------------------------------------------------------------------------------------------------------------------#
@@ -6118,6 +6209,22 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.lightX = saveData[17]
                     self.lightY = saveData[18]
                     self.lightZ = saveData[19]
+                    try:
+                        self.medalsOnly = saveData[20]
+                    except BaseException:
+                        self.medalsOnly = "No"
+                    try:
+                        self.cbCamIndex = saveData[21]
+                    except BaseException:
+                        self.cbCamIndex = 0
+                    try:
+                        self.cbLookIndex = saveData[22]
+                    except BaseException:
+                        self.cbLookIndex = 0
+                    try:
+                        self.cbLightIndex = saveData[23]
+                    except BaseException:
+                        self.cbLightIndex = 0
 
                 else:
                     self.helmColour = saveData[0]
@@ -6151,9 +6258,6 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.qualityHelm = saveData[28]
                     self.widthHelm = saveData[29]
                     self.heightHelm = saveData[30]
-##                    self.rank = saveData[31]
-##                    self.position = saveData[32]
-##                    self.sqn = saveData[33]
                     try:
                         self.logo1Mirrored = saveData[34]
                     except BaseException:
@@ -6166,6 +6270,18 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                         self.helmetStyle = saveData[36].title()
                     except BaseException:
                         self.helmetStyle = "Imperial"
+                    try:
+                        self.cbCamHelmIndex = saveData[37]
+                    except BaseException:
+                        self.cbCamHelmIndex = 0
+                    try:
+                        self.cbLookHelmIndex = saveData[38]
+                    except BaseException:
+                        self.cbLookHelmIndex = 0
+                    try:
+                        self.cbLightHelmIndex = saveData[39]
+                    except BaseException:
+                        self.cbLightHelmIndex = 0
 
                 oldRefreshSetting = self.preview.cb_Refresh.isChecked()
                 # Turn off auto refresh to prevent applying the loaded settings to trigger multiple refreshes.
@@ -6202,54 +6318,35 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def createHelmetNameTag(self):
         '''Method for creating nametag.png which is used to diasply the name on the pilot helmet.'''
 
-        # Set the helmet's text.
-        text = self.nameHelm
-
         # Local variables.
         width, height = 720, 264
-        fontsize = 1  # Starting font size.
 
-        # QT Method - Image creation.
         # Create the black image.
-        self.image = QImage(QSize(width, height), QImage.Format_RGB32)
-        self.painter = QPainter(self.image)
-        self.painter.setBrush(QBrush(Qt.green))
-        self.painter.fillRect(QRectF(0, 0, width, height), Qt.black)
-        self.painter.setPen(QPen(Qt.white))
-        self.painter.setFont(QFont(self.preview.fcb_helmFont.currentFont().family(), fontsize))
+        rect = QRectF(0, 0, width, height)
+        image = QImage(QSize(width, height), QImage.Format_RGB32)
+        painter = QPainter(image)
+        painter.fillRect(rect, Qt.black)
+        painter.setPen(QPen(Qt.white))
+        painter.setFont(QFont(self.preview.fcb_helmFont.currentFont().family()))
 
-        # Determine the maximim width the text can be to fit in the image.
-        try:
-            factor = width / self.painter.fontMetrics().width(text)
-            while factor > 1.06:
-                fontsize += 1
-                self.painter.setFont(QFont(self.preview.fcb_helmFont.currentFont().family(), fontsize))
-                factor = width / self.painter.fontMetrics().width(text)
-            maxWidthSize = fontsize
-        except ZeroDivisionError:  # Some fonts don't return a width.
-            maxWidthSize = 220
+        # Automatically Scale the text font to fit the helmet.
+        factorWidth = rect.width() / painter.fontMetrics().width(self.nameHelm)
+        factorHeight = rect.height() / painter.fontMetrics().height()
 
-        # Determine the maximim height the text can be to fit in the image.
-        fontsize = 1  # Reset to 1 for height calculation.
-        self.painter.setFont(QFont(self.preview.fcb_helmFont.currentFont().family(), fontsize))
-        factor = height / self.painter.fontMetrics().height()
-        while factor > 1:
-            fontsize += 1
-            self.painter.setFont(QFont(self.preview.fcb_helmFont.currentFont().family(), fontsize))
-            factor = height / self.painter.fontMetrics().height()
-        maxHeightFontSize = fontsize
-
-        # Determine which is the largest font size to use based on max height and max width.
-        if maxWidthSize < maxHeightFontSize:
-            fontsize = maxWidthSize
+        if factorWidth < factorHeight:
+            factor = factorWidth * 0.9  # 0.9 as some font sizes are slightly too wide.
         else:
-            fontsize = maxHeightFontSize
-        self.painter.setFont(QFont(self.preview.fcb_helmFont.currentFont().family(), fontsize))
+            factor = factorHeight
+
+        # Set the font.
+        font = QFont(painter.font())
+        font.setPointSizeF(font.pointSizeF() * factor)
+        painter.setFont(font)
 
         # Draw the text and save the image.
-        self.painter.drawText(self.image.rect(), Qt.AlignCenter | Qt.AlignVCenter, text)
-        self.painter.end()
-        self.image.save(os.getcwd() + "\\data\\helmet\\" + "nametag.png")
+        painter.drawText(image.rect(), Qt.AlignCenter | Qt.AlignVCenter, self.nameHelm)
+        painter.end()
+        image.save(os.getcwd() + "\\data\\helmet\\" + "nametag.png")
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_PaletteHelmFunc(self):
@@ -6554,66 +6651,107 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def cb_previewPresetCamFunc(self, intIndex):
         '''Method for preview camera presets.'''
 
+        self.cbCamIndex = intIndex
+
         if intIndex == 0:
             self.camX = -2500
             self.camY = -13300
             self.camZ = 2100
+            self.medalsOnly = "No"
 
         # Top Left.
         elif intIndex == 1:
             self.camX = -10000
             self.camY = -8000
             self.camZ = 8000
+            self.medalsOnly = "No"
 
         # Top Centre.
         elif intIndex == 2:
             self.camX = 0
             self.camY = -11000
             self.camZ = 8000
+            self.medalsOnly = "No"
 
         # Top Right.
         elif intIndex == 3:
             self.camX = 10000
             self.camY = -8000
             self.camZ = 8000
+            self.medalsOnly = "No"
 
         # Middle Left.
         elif intIndex == 4:
             self.camX = -9000
             self.camY = -11000
             self.camZ = 0
+            self.medalsOnly = "No"
 
         # Middle Centre.
         elif intIndex == 5:
             self.camX = 0
             self.camY = -13300
             self.camZ = 0
+            self.medalsOnly = "No"
 
         # Middle Right.
         elif intIndex == 6:
             self.camX = 9000
             self.camY = -11000
             self.camZ = 0
+            self.medalsOnly = "No"
 
         # Bottom Left.
         elif intIndex == 7:
             self.camX = -8000
             self.camY = -11000
             self.camZ = -8000
+            self.medalsOnly = "No"
 
         # Bottom Centre.
         elif intIndex == 8:
             self.camX = 0
             self.camY = -12000
             self.camZ = -8000
+            self.medalsOnly = "No"
 
         # Bottom Right.
         elif intIndex == 9:
             self.camX = 8000
             self.camY = -11000
             self.camZ = -8000
+            self.medalsOnly = "No"
 
-        if intIndex != 10:
+        # Medals.
+        elif intIndex == 10:
+            self.camX = 505
+            self.camY = -3600
+            self.camZ = 1425
+            self.lookX = 505
+            self.lookY = 0
+            self.lookZ = 1425
+            self.medalsOnly = "Medals"
+            self.preview.cb_PresetLook.currentIndexChanged.disconnect()
+            self.preview.cb_PresetLook.setCurrentIndex(intIndex)
+            self.cbLookIndex = intIndex
+            self.preview.cb_PresetLook.currentIndexChanged.connect(self.cb_previewPresetLookFunc)
+
+        # Medal Rank.
+        elif intIndex == 11:
+            self.camX = 505
+            self.camY = -4450
+            self.camZ = 1665
+            self.lookX = 505
+            self.lookY = 0
+            self.lookZ = 1665
+            self.medalsOnly = "MedalsRank"
+            self.preview.cb_PresetLook.currentIndexChanged.disconnect()
+            self.preview.cb_PresetLook.setCurrentIndex(intIndex)
+            self.cbLookIndex = intIndex
+            self.preview.cb_PresetLook.currentIndexChanged.connect(self.cb_previewPresetLookFunc)
+
+        # Set the sliders and combo boxes to the preset settings. Ignore if custom is selected.
+        if intIndex != 12:
             self.renderPreview()
             self.preview.vs_CamX.setValue(self.camX)
             self.preview.lbl_CamX.setText(self.convertIntToFloatStr(self.camX, 10))
@@ -6624,10 +6762,16 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.cb_PresetCam.currentIndexChanged.disconnect()
             self.preview.cb_PresetCam.setCurrentIndex(intIndex)
             self.preview.cb_PresetCam.currentIndexChanged.connect(self.cb_previewPresetCamFunc)
+
+        # Deconflict with Fast Preview.
+        self.deconflictMedalsOnlyAndFastPreview()
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewPresetCamHelmFunc(self, intIndex):
         '''Method for preview camera presets.'''
+
+        self.cbCamHelmIndex = intIndex
+        self.helmetPresetSelected = True
 
         if intIndex == 0:
             self.camXHelm = self.camXHelmDefault
@@ -6688,6 +6832,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.camYHelm = -6510
             self.camZHelm = -2000
 
+        # Set the sliders and combo boxes to the preset settings. Ignore if custom is selected.
         if intIndex != 10:
             self.renderPreview()
             self.preview.vs_CamX.setValue(self.camXHelm)
@@ -6704,66 +6849,107 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
     def cb_previewPresetLookFunc(self, intIndex):
         '''Method for preview look presets.'''
 
+        self.cbLookIndex = intIndex
+
         if intIndex == 0:
             self.lookX = 0
             self.lookY = -128
             self.lookZ = 28
+            self.medalsOnly = "No"
 
         # Top Left.
         elif intIndex == 1:
             self.lookX = -2500
             self.lookY = -128
             self.lookZ = 2500
+            self.medalsOnly = "No"
 
         # Top Centre.
         elif intIndex == 2:
             self.lookX = 0
             self.lookY = -128
             self.lookZ = 2500
+            self.medalsOnly = "No"
 
         # Top Right.
         elif intIndex == 3:
             self.lookX = 2500
             self.lookY = -128
             self.lookZ = 2500
+            self.medalsOnly = "No"
 
         # Middle Left.
         elif intIndex == 4:
             self.lookX = -2500
             self.lookY = -128
             self.lookZ = 0
+            self.medalsOnly = "No"
 
         # Middle Centre.
         elif intIndex == 5:
             self.lookX = 0
             self.lookY = -128
             self.lookZ = 0
+            self.medalsOnly = "No"
 
         # Middle Right.
         elif intIndex == 6:
             self.lookX = 2500
             self.lookY = -128
             self.lookZ = 0
+            self.medalsOnly = "No"
 
         # Bottom Left.
         elif intIndex == 7:
             self.lookX = -2500
             self.lookY = -128
             self.lookZ = -2500
+            self.medalsOnly = "No"
 
         # Bottom Centre.
         elif intIndex == 8:
             self.lookX = 0
             self.lookY = -128
             self.lookZ = -2500
+            self.medalsOnly = "No"
 
         # Bottom Right.
         elif intIndex == 9:
             self.lookX = 2500
             self.lookY = -128
             self.lookZ = -2500
+            self.medalsOnly = "No"
 
-        if intIndex != 10:
+        # Medals.
+        elif intIndex == 10:
+            self.camX = 505
+            self.camY = -3600
+            self.camZ = 1425
+            self.lookX = 505
+            self.lookY = 0
+            self.lookZ = 1425
+            self.medalsOnly = "Medals"
+            self.preview.cb_PresetCam.currentIndexChanged.disconnect()
+            self.preview.cb_PresetCam.setCurrentIndex(intIndex)
+            self.cbCamIndex = intIndex
+            self.preview.cb_PresetCam.currentIndexChanged.connect(self.cb_previewPresetCamFunc)
+
+        # Medal Rank.
+        elif intIndex == 11:
+            self.camX = 505
+            self.camY = -4450
+            self.camZ = 1665
+            self.lookX = 505
+            self.lookY = 0
+            self.lookZ = 1665
+            self.medalsOnly = "MedalsRank"
+            self.preview.cb_PresetCam.currentIndexChanged.disconnect()
+            self.preview.cb_PresetCam.setCurrentIndex(intIndex)
+            self.cbCamIndex = intIndex
+            self.preview.cb_PresetCam.currentIndexChanged.connect(self.cb_previewPresetCamFunc)
+
+        # Set the sliders and combo boxes to the preset settings. Ignore if custom is selected.
+        if intIndex != 12:
             self.renderPreview()
             self.preview.vs_LookX.setValue(self.lookX)
             self.preview.lbl_LookX.setText(self.convertIntToFloatStr(self.lookX, 10))
@@ -6774,10 +6960,16 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.cb_PresetLook.currentIndexChanged.disconnect()
             self.preview.cb_PresetLook.setCurrentIndex(intIndex)
             self.preview.cb_PresetLook.currentIndexChanged.connect(self.cb_previewPresetLookFunc)
+
+        # Deconflict with Fast Preview.
+        self.deconflictMedalsOnlyAndFastPreview()
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewPresetLookHelmFunc(self, intIndex):
         '''Method for preview look presets.'''
+
+        self.cbLookHelmIndex = intIndex
+        self.helmetPresetSelected = True
 
         if intIndex == 0:
             self.lookXHelm = self.lookXHelmDefault
@@ -6838,6 +7030,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lookYHelm = -445
             self.lookZHelm = -2500
 
+        # Set the sliders and combo boxes to the preset settings. Ignore if custom is selected.
         if intIndex != 10:
             self.renderPreview()
             self.preview.vs_LookX.setValue(self.lookXHelm)
@@ -6853,6 +7046,8 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
 
     def cb_previewPresetLightFunc(self, intIndex):
         '''Method for preview light presets.'''
+
+        self.cbLightIndex = intIndex
 
         if intIndex == 0:
             self.lightX = 13000
@@ -6919,6 +7114,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lightY = -6474
             self.lightZ = -17501
 
+        # Set the sliders and combo boxes to the preset settings. Ignore if custom is selected.
         if intIndex != 11:
             self.renderPreview()
             self.preview.vs_LightX.setValue(self.lightX)
@@ -6930,6 +7126,19 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.preview.cb_PresetLight.currentIndexChanged.disconnect()
             self.preview.cb_PresetLight.setCurrentIndex(intIndex)
             self.preview.cb_PresetLight.currentIndexChanged.connect(self.cb_previewPresetLightFunc)
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def deconflictMedalsOnlyAndFastPreview(self):
+        '''Deconflicts the Fast Preview setting with Medals Only mode as this hides the medals stack.'''
+
+        if "Medals" in self.medalsOnly:
+            self.fastPreviewOld = self.fastPreview
+            if self.preview.cb_fastPreview.isChecked():
+                self.preview.cb_fastPreview.setChecked(False)
+            self.preview.cb_fastPreview.setEnabled(False)
+        else:
+            self.preview.cb_fastPreview.setEnabled(True)
+            self.preview.cb_fastPreview.setChecked(self.fastPreviewOld)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def lbl_CamXFunc(self, sender):
@@ -7071,6 +7280,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                                            float(label.text()), min, max, decimals, Qt.WindowFlags(), step)
         if ok:
             slider.setValue(int(value * scale))
+            self.previewAutoRefresh()
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def fastPreviewFunc(self):
@@ -7170,39 +7380,44 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
                     self.logo2FilepathHelm = os.getcwd() + "\\data\\misc\\Helmet Stencils\\tiecorps_logo_new.png"
                 self.preview.le_helmLogo1Filepath.setText(self.logo1FilepathHelm)
                 self.preview.le_helmLogo2Filepath.setText(self.logo2FilepathHelm)
-                self.queingAllowed = True
 
                 # Cameras.
-                self.camXHelm = self.helmetConfig.getint(self.helmetStyle, "camX")
-                self.camXHelmDefault = self.camXHelm
-                self.preview.vs_CamX.setValue(self.camXHelm)
-                self.camYHelm = self.helmetConfig.getint(self.helmetStyle, "camY")
-                self.camYHelmDefault = self.camYHelm
-                self.preview.vs_CamY.setValue(self.camYHelm)
-                self.camZHelm = self.helmetConfig.getint(self.helmetStyle, "camZ")
-                self.camZHelmDefault = self.camZHelm
-                self.preview.vs_CamZ.setValue(self.camZHelm)
-                self.lookXHelm = self.helmetConfig.getint(self.helmetStyle, "lookX")
-                self.lookXHelmDefault = self.lookXHelm
-                self.preview.vs_LookX.setValue(self.lookXHelm)
-                self.lookYHelm = self.helmetConfig.getint(self.helmetStyle, "lookY")
-                self.lookYHelmDefault = self.lookYHelm
-                self.preview.vs_LookY.setValue(self.lookYHelm)
-                self.lookZHelm = self.helmetConfig.getint(self.helmetStyle, "lookZ")
-                self.lookZHelmDefault = self.lookZHelm
-                self.preview.vs_LookZ.setValue(self.lookZHelm)
-                self.lightXHelm = self.helmetConfig.getint(self.helmetStyle, "lightX")
-                self.preview.vs_LightX.setValue(self.lightXHelm)
-                self.lightYHelm = self.helmetConfig.getint(self.helmetStyle, "lightY")
-                self.preview.vs_LightY.setValue(self.lightYHelm)
-                self.lightZHelm = self.helmetConfig.getint(self.helmetStyle, "lightZ")
-                self.preview.vs_LightZ.setValue(self.lightZHelm)
+                if not self.helmetPresetSelected:
+                    self.camXHelm = self.helmetConfig.getint(self.helmetStyle, "camX")
+                    self.camXHelmDefault = self.camXHelm
+                    self.preview.vs_CamX.setValue(self.camXHelm)
+                    self.camYHelm = self.helmetConfig.getint(self.helmetStyle, "camY")
+                    self.camYHelmDefault = self.camYHelm
+                    self.preview.vs_CamY.setValue(self.camYHelm)
+                    self.camZHelm = self.helmetConfig.getint(self.helmetStyle, "camZ")
+                    self.camZHelmDefault = self.camZHelm
+                    self.preview.vs_CamZ.setValue(self.camZHelm)
+                    self.lookXHelm = self.helmetConfig.getint(self.helmetStyle, "lookX")
+                    self.lookXHelmDefault = self.lookXHelm
+                    self.preview.vs_LookX.setValue(self.lookXHelm)
+                    self.lookYHelm = self.helmetConfig.getint(self.helmetStyle, "lookY")
+                    self.lookYHelmDefault = self.lookYHelm
+                    self.preview.vs_LookY.setValue(self.lookYHelm)
+                    self.lookZHelm = self.helmetConfig.getint(self.helmetStyle, "lookZ")
+                    self.lookZHelmDefault = self.lookZHelm
+                    self.preview.vs_LookZ.setValue(self.lookZHelm)
+                    self.lightXHelm = self.helmetConfig.getint(self.helmetStyle, "lightX")
+                    self.preview.vs_LightX.setValue(self.lightXHelm)
+                    self.lightYHelm = self.helmetConfig.getint(self.helmetStyle, "lightY")
+                    self.preview.vs_LightY.setValue(self.lightYHelm)
+                    self.lightZHelm = self.helmetConfig.getint(self.helmetStyle, "lightZ")
+                    self.preview.vs_LightZ.setValue(self.lightZHelm)
+
+                self.queingAllowed = True
         except Exception as e:
             handleException(e)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def cb_previewPresetLightHelmFunc(self, intIndex):
         '''Method for preview light presets.'''
+
+        self.cbLightHelmIndex = intIndex
+        self.helmetPresetSelected = True
 
         if intIndex == 0:
             self.lightXHelm = 2244
@@ -7263,6 +7478,7 @@ texture { T_unilayer scale 2}\n\n""" % (ribbonName, filename)
             self.lightYHelm = -5089
             self.lightZHelm = -5000
 
+        # Set the sliders and combo boxes to the preset settings. Ignore if custom is selected.
         if intIndex != 10:
             self.renderPreview()
             self.preview.vs_LightX.setValue(self.lightXHelm)

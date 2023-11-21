@@ -76,5 +76,6 @@ with ZipFile('_Compiler\\TTT3.zip', 'w', compression=ZIP_DEFLATED, compresslevel
 print("\nTTT3.zip created.")
 bits = sys.version[ : sys.version.index(" bit")][-3:]
 version = platform.platform().split("-")[0] + bits + "-bit"
-print("\n\n----------- Compile for %s Complete -----------\n\n" % version)
+print("\n\n----------- Compile for %s Complete -----------" % version)
+print("-----------        Using: Python v" + sys.version.split(" (")[0] + "        -----------\n\n")
 #----------------------------------------------------------------------------------------------------------------------------------------------------#

@@ -18,6 +18,24 @@ at https://github.com/emperorshammer/issues-incoming-queue.
 
 ## ------------------------------------------------------------------------------------------------##
 
+## [v3.1.0] 2023-11-14
+
+### Added
+- 3D ribbon devices added in place of static 2D images. (@6958/@55859)
+- Dress Uniform preview now has two new camera presets - 'Medals' and 'Medal Rank', which will present 
+  the user with a plain view of all uniform merit medals and ribbons with or without the rank badge. (@6958)
+- Font size selector for helmet text. (@6958)
+
+### Changed
+- Updated dependency to lock Numpy at version 1.23.5. (@6958)
+- TTT3 now reads in awards values as integer type from pilot API. (@6958)
+
+### Fixed
+- Preview window fails to render using slider manual value entry. (@6958)
+- Camera Position, Camera Look and Light drop-down boxes now memorize their positions. (@6958)
+
+## ------------------------------------------------------------------------------------------------##
+
 ## [v3.0.4] 2023-04-16
 
 ### Added
