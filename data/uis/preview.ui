@@ -319,7 +319,6 @@ QPushButton:!enabled
      <property name="font">
       <font>
        <pointsize>10</pointsize>
-       <weight>75</weight>
        <italic>true</italic>
        <bold>true</bold>
       </font>
@@ -1904,6 +1903,16 @@ QSlider::handle:vertical:hover
      </item>
      <item>
       <property name="text">
+       <string>Medals</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Medal Rank</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
        <string>Custom</string>
       </property>
      </item>
@@ -1973,6 +1982,16 @@ QSlider::handle:vertical:hover
      <item>
       <property name="text">
        <string>Btm. Right</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Medals</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Medal Rank</string>
       </property>
      </item>
      <item>

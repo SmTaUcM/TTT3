@@ -354,7 +354,6 @@ QPushButton:!enabled
      <property name="font">
       <font>
        <pointsize>10</pointsize>
-       <weight>75</weight>
        <italic>true</italic>
        <bold>true</bold>
       </font>
