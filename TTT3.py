@@ -2458,6 +2458,13 @@ color_map
                 for objectRef in objectRefs:
                     povData.append('object { %s }\n' % objectRef)
 
+            # Medals Only Mode.                           -------------------------------
+
+            elif "&BGBOX&" in line:
+                if not self.preview.cb_TransparentBG.isChecked():
+                    povData.append('object { P_bg_box texture { T_uniform } }')
+
+
             # ----- Non-Editable Data. -----
             else:
                 povData.append(line)

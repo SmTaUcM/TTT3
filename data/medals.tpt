@@ -125,6 +125,14 @@ camera
 &FCHGINCLUDE&
 &SABERINCLUDE&
 &MEDALSINCLUDE&
+
+// BACKGROUND BOX
+
+#declare P_bg_box = box {
+<-20, -141.5, 70>,  // Near lower left corner     x, z, y
+< 121, -142.5, 263>   // Far upper right corner   x, z, y 
+uv_mapping
+}
   
 // SCENE
 
@@ -136,8 +144,9 @@ object { P_light_3 }
 object { P_light_4 }
 object { P_light_5 }
 object { P_light_6 }
+&BGBOX&
 &MEDALS&
 &RIBBONS& 
-                
-   
+  
+  
 //TTT3DRESSPOVEOF
