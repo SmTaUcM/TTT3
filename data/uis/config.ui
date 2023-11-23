@@ -10,19 +10,19 @@
     <x>0</x>
     <y>0</y>
     <width>530</width>
-    <height>325</height>
+    <height>350</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>530</width>
-    <height>325</height>
+    <height>350</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>530</width>
-    <height>325</height>
+    <height>350</height>
    </size>
   </property>
   <property name="contextMenuPolicy">
@@ -47,7 +47,7 @@
     <property name="geometry">
      <rect>
       <x>164</x>
-      <y>295</y>
+      <y>318</y>
       <width>91</width>
       <height>23</height>
      </rect>
@@ -94,7 +94,7 @@ QPushButton:!enabled
     <property name="geometry">
      <rect>
       <x>274</x>
-      <y>295</y>
+      <y>318</y>
       <width>91</width>
       <height>23</height>
      </rect>
@@ -150,7 +150,6 @@ QPushButton:!enabled
      <font>
       <family>Arial</family>
       <pointsize>9</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
       <underline>false</underline>
      </font>
@@ -321,14 +320,13 @@ QPushButton:!enabled
       <x>10</x>
       <y>154</y>
       <width>511</width>
-      <height>135</height>
+      <height>156</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Arial</family>
       <pointsize>9</pointsize>
-      <weight>50</weight>
       <bold>false</bold>
       <underline>false</underline>
      </font>
@@ -518,6 +516,52 @@ QLineEdit:!enabled
      </property>
      <property name="text">
       <string/>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="le_apiKey">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>127</y>
+       <width>380</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit
+{
+    background-color: rgb(255, 255, 252);
+}
+
+QLineEdit:!enabled
+{
+	background-color: darkgray;
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_11">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>127</y>
+       <width>101</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Uniform API key:</string>
      </property>
     </widget>
    </widget>

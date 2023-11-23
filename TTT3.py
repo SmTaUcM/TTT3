@@ -1843,6 +1843,7 @@ class TTT3(QMainWindow):
         self.config_gui.le_fleetAPI.setText(self.config.get("TCDB", "fleetapi"))
         self.config_gui.le_roster.setText(self.config.get("TCDB", "roster"))
         self.config_gui.le_search.setText(self.config.get("TCDB", "search"))
+        self.config_gui.le_apiKey.setText(self.config.get("TCDB", "apiKey"))
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
     def saveSettings(self):
@@ -1939,6 +1940,7 @@ class TTT3(QMainWindow):
             self.config.set("TCDB", "fleetapi", str(self.config_gui.le_fleetAPI.text()))
             self.config.set("TCDB", "roster", str(self.config_gui.le_roster.text()))
             self.config.set("TCDB", "search", str(self.config_gui.le_search.text()))
+            self.config.set("TCDB", "apiKey", str(self.config_gui.le_apiKey.text()))
 
             # Save and close.
             self.saveSettings()
