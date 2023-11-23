@@ -45,6 +45,7 @@ import Slider
 import ftfy  # python -m pip install ftfy
 import certifi  # python -m pip install certifi
 import ssl
+import medals_case
 # python -m pip install pyinstaller - for compiler.
 # ----------------------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -91,6 +92,7 @@ class TTT3(QMainWindow):
             self.gui.btn_dress.clicked.connect(self.btn_dressMethod)
             self.gui.btn_duty.clicked.connect(self.btn_dutyMethod)
             self.gui.btn_helmet.clicked.connect(self.btn_helmetMethod)
+            self.gui.btn_medals.clicked.connect(self.btn_medalsMethod)
             self.gui.btn_newProf.clicked.connect(self.btn_newProfMethod)
             self.gui.btn_openProf.clicked.connect(self.btn_openProfMethod)
             self.gui.btn_saveProf.clicked.connect(self.btn_saveProfMethod)
@@ -302,6 +304,7 @@ class TTT3(QMainWindow):
             self.fastPreview = False
             self.fastPreviewOld = False
             self.medalsOnly = "No"
+            self.medalsCase = medals_case.MedalsCase(self)
 
             # PovRay Template Constants.
             self.RANK_OFFSET_RIBBONS_00_TO_08 = ["-18.8939990997314,0.351000010967255,7.92899990081787",  # Rotate
@@ -1458,6 +1461,15 @@ class TTT3(QMainWindow):
         try:
             self.uniform = "helmet"
             self.showPreviewHelmDialog()
+        except Exception as e:
+            handleException(e)
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def btn_medalsMethod(self):
+        '''Method that is triggered when the 'Medals Case' button is clicked.'''
+
+        try:
+            self.medalsCase.showPreviewDialog()
         except Exception as e:
             handleException(e)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
@@ -7546,7 +7558,7 @@ color_map
 
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------#
-#                                                                      Functions.                                                                    #
+#                                                                      Functions.                                                                     #
 # ----------------------------------------------------------------------------------------------------------------------------------------------------#
 def getYHelm(x):
     '''Function to return an aspect ratio locked value for any given x.'''
@@ -7683,7 +7695,7 @@ def handleException(exception):
 
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------#
-#                                                                     Main Program.                                                                  #
+#                                                                     Main Program.                                                                   #
 # ----------------------------------------------------------------------------------------------------------------------------------------------------#
 if __name__ == "__main__":
 

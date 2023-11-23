@@ -1,0 +1,152 @@
+
+     
+// GLOBAL
+
+
+#version 3.7;
+&BGCOLOUR&
+global_settings
+{ 
+  assumed_gamma 2  
+  ambient_light color rgb <0.5, 0.5, 0.5>
+}
+
+
+// LIGHT
+
+
+#declare P_light =
+light_source // main light
+{
+  <&LIGHT&>
+  colour rgb <&SPOTLIGHTCOLOUR&>
+  area_light <20, 0, 0>, <0, 0, 20>, 5, 5
+  adaptive 1
+  jitter
+  &SHADOWLESS&
+}
+
+#declare env_light = <&ENVLIGHTCOLOUR&>;
+
+#declare P_light_1 =
+light_source // environmental 1
+{
+  <-2600, 2271.51, 873.55>
+  colour rgb env_light
+  &SHADOWLESS&
+}
+
+#declare P_light_2 =
+light_source // environmental 2
+{
+  <-2600.0, -391.369, 873.55>
+  colour rgb env_light
+  &SHADOWLESS&
+}
+
+#declare P_light_3 =           
+light_source // environmental 3
+{
+  <-2000.0, -2856.398, 874.013>
+  colour rgb env_light
+  &SHADOWLESS&
+}
+
+#declare P_light_4 =
+light_source // environmental 4
+{
+  <2600.0, -2856.398, 874.013>
+  colour rgb env_light
+  &SHADOWLESS&
+}
+
+#declare P_light_5 =
+light_source // environmental 5
+{
+  <2600.0, -214.673, 873.55>
+  colour rgb env_light
+  &SHADOWLESS&
+}
+
+#declare P_light_6 =
+light_source // environmental 6
+{
+  <2600.0, 2271.51, 873.55>
+  colour rgb env_light
+  &SHADOWLESS&
+}
+  
+  
+// CAMERA
+
+
+#declare locus = <&CAMERA&>;
+#declare lookat = <&TARGET&>;
+#declare P_cam =
+camera
+{
+  sky <0, 0, 1>
+  up y
+  right x*-3/4
+  location locus
+  look_at lookat
+  angle 26
+}
+
+
+// INCLUDES
+
+
+&EE&
+#declare cloth = &CLOTH&;
+#declare position = "&POSITION&";
+#declare rank = "&RANK&";
+#declare rankrotate = <&RANKROTATE&>;
+#declare ranktranslate = <&RANKTRANSLATE&>;
+
+#declare category = "&CATEGORY&";
+#declare ship = "&SHIP&";
+#declare wing = "&WING&";
+#declare squad = "&SQUAD&";
+&TRIMCOLOUR&
+  
+#declare mab_gs = &MABGS&;
+#declare mab_ss = &MABSS&;
+#declare mab_bs = &MABBS&;
+#declare mab_pc = &MABPC&;
+#declare mab_ism = &MABISM&;
+    
+#include "dress_o.inc"
+#include "dress_g.inc" 
+&PADINCLUDE&
+#include concat("rank", rank, "_g.inc")
+#include "collar_g.inc"
+#include "ribbonsMO_g.inc"
+&FCHGINCLUDE&
+&SABERINCLUDE&
+&MEDALSINCLUDE&
+
+// BACKGROUND BOX
+
+#declare P_bg_box = box {
+<-20, -141.5, 70>,  // Near lower left corner     x, z, y
+< 121, -142.5, 263>   // Far upper right corner   x, z, y 
+uv_mapping
+}
+  
+// SCENE
+
+camera { P_cam }
+object { P_light }
+object { P_light_1 }
+object { P_light_2 }
+object { P_light_3 }
+object { P_light_4 }
+object { P_light_5 }
+object { P_light_6 }
+&BGBOX&
+&MEDALS&
+&RIBBONS& 
+  
+  
+//TTT3DRESSPOVEOF
