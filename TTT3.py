@@ -3859,6 +3859,8 @@ color_map
             if award.get("type") != "single" and award.get("type") != "multi":
                 self.checkRibbonCount()
 
+            self.getAwardTotalCount()
+
         except Exception as e:
             handleException(e)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4296,6 +4298,8 @@ color_map
             if award.get("type") != "multi":
                 self.checkRibbonCount()
 
+            self.getAwardTotalCount()
+
         except Exception as e:
             handleException(e)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
@@ -4459,6 +4463,7 @@ color_map
             # Disable render buttons.
             self.gui.btn_dress.setEnabled(False)
             self.gui.btn_duty.setEnabled(False)
+            self.gui.btn_medals.setEnabled(False)
 
             # Reset Helmet Colours.
             self.unitType = None
@@ -4568,6 +4573,7 @@ color_map
                     self.deconflictNeckRibbons = saveData[8]
                     if self.gui.lw_medals.currentItem():
                         self.medalSelectionLogic(self.gui.lw_medals.currentItem())
+                    self.getAwardTotalCount()
 
                         # FCHG.
                     self.gui.cbFCHG.setCurrentText(saveData[9])
@@ -4895,6 +4901,9 @@ color_map
                                             if medal == upgradeShort:
                                                 index = self.awards.get(award)["upgrades"].index(upgrade)
                                                 self.awards.get(award)["upgrades"][index][quantity] = int(apiMedalData.get(medal))
+
+                        self.getAwardTotalCount()
+
                     except AttributeError:
                         pass  # User has no medals.
 
@@ -7507,6 +7516,31 @@ color_map
             self.renderPreview()
         else:
             self.preview.btn_preview.setEnabled(True)
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def getAwardTotalCount(self):
+        '''Method that returns the number of award the user has selected.'''
+
+        quantity = 1
+        count = self.getRibbonAwardCount()
+
+        # Merit medals.
+        for award in self.awards:
+            # Single type awards.
+            if self.awards.get(award)["type"] == "single" or self.awards.get(award)["type"] == "multi":
+                if self.awards.get(award)["upgrades"][quantity] >= 1:
+                    count += 1
+
+        if count > 0:
+            self.enableMedalsCase()
+        else:
+            self.enableMedalsCase(False)
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def enableMedalsCase(self, boolSetting=True):
+        '''Method that enables or diables the Medals Case option..'''
+
+        self.gui.btn_medals.setEnabled(boolSetting)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 # ----------------------------------------------------------------------------------------------------------------------------------------------------#
 
