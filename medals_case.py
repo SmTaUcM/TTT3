@@ -82,7 +82,7 @@ class MedalsCase(object): # Bookmark.
         self.ttt3.preview.btn_PaletteSpot.clicked.connect(self.btn_PaletteSpotFunc)
         self.ttt3.preview.btn_PaletteEnv.clicked.connect(self.btn_PaletteEnvFunc)
         self.ttt3.preview.btn_PaletteBack.clicked.connect(self.btn_PaletteBackFunc)
-        self.ttt3.preview.btn_resetColours.clicked.connect(self.ttt3.btn_previewResetColoursFunc)
+        self.ttt3.preview.btn_resetColours.clicked.connect(self.btn_previewResetColoursFunc)
         self.ttt3.preview.sb_Width.valueChanged.connect(self.ttt3.sb_previewWidthFunc)
         self.ttt3.preview.btn_resetOptions.clicked.connect(self.ttt3.btn_previewResetOptionsFunc)
         self.ttt3.preview.sb_Quality.valueChanged.connect(self.ttt3.sb_previewQualityFunc)
@@ -90,7 +90,7 @@ class MedalsCase(object): # Bookmark.
         self.ttt3.preview.cb_AA.stateChanged.connect(self.ttt3.cb_previewAAFunc)
         self.ttt3.preview.cb_Shadowless.stateChanged.connect(self.ttt3.cb_previewShadowlessFunc)
         self.ttt3.preview.cb_Mosaic.stateChanged.connect(self.ttt3.cb_previewMosaicFunc)
-        self.ttt3.preview.cb_TransparentBG.stateChanged.connect(self.ttt3.cb_previewTransparentFunc)
+        self.ttt3.preview.cb_TransparentBG.stateChanged.connect(self.cb_previewTransparentFunc)
         self.ttt3.preview.vs_CamX.valueChanged.connect(self.ttt3.vs_previewCamXFunc)
         self.ttt3.preview.vs_CamY.valueChanged.connect(self.ttt3.vs_previewCamYFunc)
         self.ttt3.preview.vs_CamZ.valueChanged.connect(self.ttt3.vs_previewCamZFunc)
@@ -222,7 +222,7 @@ class MedalsCase(object): # Bookmark.
             self.ttt3.openColourPicker(self, self.spotColour, "spotColour", self.ttt3.preview.lbl_PaletteSpot, self.ttt3.preview.le_PaletteSpot)
         except Exception as e:
             handleException(e)
-        # --------------------------------------------------------------------------------------------------------------------------------------------#
+        #---------------------------------------------------------------------------------------------------------------------------------------------#
 
     def btn_PaletteEnvFunc(self):
         '''Method for opening a colour palette dialog.'''
@@ -231,7 +231,7 @@ class MedalsCase(object): # Bookmark.
             self.ttt3.openColourPicker(self, self.envColour, "envColour", self.ttt3.preview.lbl_PaletteEnv, self.ttt3.preview.le_PaletteEnv)
         except Exception as e:
             handleException(e)
-        # --------------------------------------------------------------------------------------------------------------------------------------------#
+        #---------------------------------------------------------------------------------------------------------------------------------------------#
 
 
     def btn_PaletteBackFunc(self):
@@ -241,7 +241,49 @@ class MedalsCase(object): # Bookmark.
             self.ttt3.openColourPicker(self, self.bgColour, "bgColour", self.ttt3.preview.lbl_PaletteBack, self.ttt3.preview.le_PaletteBack)
         except Exception as e:
             handleException(e)
-        # --------------------------------------------------------------------------------------------------------------------------------------------#
+        #---------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def cb_previewTransparentFunc(self, value):
+        '''Method for applying the transparent background setting setting within the preview window.'''
+
+        try:
+            bgWidgets = [self.ttt3.preview.lbl_Back, self.ttt3.preview.lbl_PaletteBack, self.ttt3.preview.le_PaletteBack, self.ttt3.preview.btn_PaletteBack]
+
+            if value == 2:
+                self.ttt3.transparentBG = " +UA"
+                for widget in bgWidgets:
+                    widget.setEnabled(False)
+
+            else:
+                self.ttt3.transparentBG = ""
+                self.ttt3.colourSelected(self, self.bgColour, "bgColour", self.ttt3.preview.lbl_PaletteBack, self.ttt3.preview.le_PaletteBack)
+                for widget in bgWidgets:
+                    widget.setEnabled(True)
+
+        except Exception as e:
+            handleException(e)
+        #---------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def btn_previewResetColoursFunc(self):
+        '''Method for reseting the preview window colour options.'''
+
+        try:
+            self.spotColour = QColor(255, 255, 255)
+            self.envColour = QColor(128, 118, 108)
+            self.bgColour = QColor(0, 0, 0)
+            # Spotlight Colour.
+            self.ttt3.colourSelected(self, self.spotColour, "spotColour", self.ttt3.preview.lbl_PaletteSpot, self.ttt3.preview.le_PaletteSpot)
+            # Environment Colour.
+            self.ttt3.colourSelected(self, self.envColour, "envColour", self.ttt3.preview.lbl_PaletteEnv, self.ttt3.preview.le_PaletteEnv)
+            # Background Colour.
+            self.ttt3.colourSelected(self, self.bgColour, "bgColour", self.ttt3.preview.lbl_PaletteBack, self.ttt3.preview.le_PaletteBack)
+            self.ttt3.transparentBG = ""
+            self.ttt3.preview.cb_TransparentBG.setChecked(False)
+
+            self.ttt3.renderPreview()
+        except Exception as e:
+            handleException(e)
+        #-------------------------------------------------------------------------------------------------------------------------------------------#
 #---------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
