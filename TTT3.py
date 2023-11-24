@@ -1239,11 +1239,11 @@ class TTT3(QMainWindow):
         if self.uniform != "helmet":
             # Colours.
             # Spotlight Colour.
-            self.colourSelected(self.spotColour, "spotColour", self.preview.lbl_PaletteSpot, self.preview.le_PaletteSpot)
+            self.colourSelected(self, self.spotColour, "spotColour", self.preview.lbl_PaletteSpot, self.preview.le_PaletteSpot)
             # Environment Colour.
-            self.colourSelected(self.envColour, "envColour", self.preview.lbl_PaletteEnv, self.preview.le_PaletteEnv)
+            self.colourSelected(self, self.envColour, "envColour", self.preview.lbl_PaletteEnv, self.preview.le_PaletteEnv)
             # Background Colour.
-            self.colourSelected(self.bgColour, "bgColour", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
+            self.colourSelected(self, self.bgColour, "bgColour", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
             # POV-Ray Options.
             # Resolution.
             self.preview.sb_Width.setValue(self.width)
@@ -1323,13 +1323,13 @@ class TTT3(QMainWindow):
 
             # Colours.
             # Helmet Colour.
-            self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
+            self.colourSelected(self, self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
             # Decoration Colour.
-            self.colourSelected(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
+            self.colourSelected(self, self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
             # Background Colour.
-            self.colourSelected(self.bgColourHelm, "bgColourHelm", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
+            self.colourSelected(self, self.bgColourHelm, "bgColourHelm", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
             # Light Colour.
-            self.colourSelected(self.lightColour, "lightColour", self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
+            self.colourSelected(self, self.lightColour, "lightColour", self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
 
             # POV-Ray Options.
             # Resolution.
@@ -5525,7 +5525,7 @@ color_map
         '''Method for opening a colour palette dialog.'''
 
         try:
-            self.openColourPicker(self.spotColour, "spotColour", self.preview.lbl_PaletteSpot, self.preview.le_PaletteSpot)
+            self.openColourPicker(self, self.spotColour, "spotColour", self.preview.lbl_PaletteSpot, self.preview.le_PaletteSpot)
         except Exception as e:
             handleException(e)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
@@ -5534,7 +5534,7 @@ color_map
         '''Method for opening a colour palette dialog.'''
 
         try:
-            self.openColourPicker(self.envColour, "envColour", self.preview.lbl_PaletteEnv, self.preview.le_PaletteEnv)
+            self.openColourPicker(self, self.envColour, "envColour", self.preview.lbl_PaletteEnv, self.preview.le_PaletteEnv)
         except Exception as e:
             handleException(e)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
@@ -5544,15 +5544,15 @@ color_map
 
         try:
             if self.uniform != "helmet":
-                self.openColourPicker(self.bgColour, "bgColour", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
+                self.openColourPicker(self, self.bgColour, "bgColour", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
             else:
-                self.openColourPicker(self.bgColourHelm, ["bgColourHelm", "apiBgColourHelm"],
+                self.openColourPicker(self, self.bgColourHelm, ["bgColourHelm", "apiBgColourHelm"],
                                       self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
         except Exception as e:
             handleException(e)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def openColourPicker(self, colourOption, optionStr, label, lineEdit):
+    def openColourPicker(self, objClass, colourOption, optionStr, label, lineEdit):
         '''Method to open the QColorDialog.'''
 
         try:
@@ -5566,7 +5566,7 @@ color_map
             self.colourDlg.setCurrentColor(colourOption)
             self.colourDlg.show()
             # Connections.
-            self.colourDlg.accepted.connect(lambda: self.colourSelected(self.colourDlg.currentColor(), optionStr, label, lineEdit))
+            self.colourDlg.accepted.connect(lambda: self.colourSelected(objClass, self.colourDlg.currentColor(), optionStr, label, lineEdit))
             self.colourDlg.rejected.connect(lambda: self.cancelColourPicker(oldColourOption, optionStr, label, lineEdit))
             self.colourDlg.finished.connect(lambda: self.closeColourPicker(oldRefreshSetting))
         except Exception as e:
@@ -5582,22 +5582,22 @@ color_map
     def cancelColourPicker(self, oldColourOption, optionStr, label, lineEdit):
         '''Method for closing the colour picker.'''
 
-        self.colourSelected(oldColourOption, optionStr, label, lineEdit)
+        self.colourSelected(self, oldColourOption, optionStr, label, lineEdit)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
 
-    def colourSelected(self, colour, optionStr, label, lineEdit):
+    def colourSelected(self, objClass, colour, optionStr, label, lineEdit):
         '''Method for handling colour selection from within the ColourPicker.'''
 
         # Set the class member.
         if isinstance(optionStr, str):
-            setattr(self, optionStr, colour)
+            setattr(objClass, optionStr, colour)
         elif isinstance(optionStr, list):
             for option in optionStr:
-                setattr(self, option, colour)
+                setattr(objClass, option, colour)
                 optionStr = option
 
         # Convert values.
-        realRGB = getattr(self, optionStr).getRgb()
+        realRGB = getattr(objClass, optionStr).getRgb()
         hexRGB = "#%02x%02x%02x" % (realRGB[0], realRGB[1], realRGB[2])
 
         # Apply values to GUI.
@@ -5643,11 +5643,11 @@ color_map
                 self.envColour = QColor(128, 118, 108)
                 self.bgColour = QColor(0, 0, 0)
                 # Spotlight Colour.
-                self.colourSelected(self.spotColour, "spotColour", self.preview.lbl_PaletteSpot, self.preview.le_PaletteSpot)
+                self.colourSelected(self, self.spotColour, "spotColour", self.preview.lbl_PaletteSpot, self.preview.le_PaletteSpot)
                 # Environment Colour.
-                self.colourSelected(self.envColour, "envColour", self.preview.lbl_PaletteEnv, self.preview.le_PaletteEnv)
+                self.colourSelected(self, self.envColour, "envColour", self.preview.lbl_PaletteEnv, self.preview.le_PaletteEnv)
                 # Background Colour.
-                self.colourSelected(self.bgColour, "bgColour", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
+                self.colourSelected(self, self.bgColour, "bgColour", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
                 self.transparentBG = ""
                 self.preview.cb_TransparentBG.setChecked(False)
             else:
@@ -5685,13 +5685,13 @@ color_map
                     self.lightColour = self.apiLightColour
 
                 # Helmet Colour.
-                self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
+                self.colourSelected(self, self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
                 # Decoration Colour.
-                self.colourSelected(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
+                self.colourSelected(self, self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
                 # Background Colour.
-                self.colourSelected(self.bgColourHelm, "bgColourHelm", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
+                self.colourSelected(self, self.bgColourHelm, "bgColourHelm", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
                 # Light Colour.
-                self.colourSelected(self.lightColour, "lightColour", self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
+                self.colourSelected(self, self.lightColour, "lightColour", self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
                 self.transparentBGHelm = ""
                 self.preview.cb_TransparentBG.setChecked(False)
 
@@ -5840,10 +5840,10 @@ color_map
             else:
                 if self.uniform != "helmet":
                     self.transparentBG = ""
-                    self.colourSelected(self.bgColour, "bgColour", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
+                    self.colourSelected(self, self.bgColour, "bgColour", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
                 else:
                     self.transparentBGHelm = ""
-                    self.colourSelected(self.bgColourHelm, "bgColourHelm", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
+                    self.colourSelected(self, self.bgColourHelm, "bgColourHelm", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
                     self.preview.cb_Homo.setEnabled(True)
                 for widget in bgWidgets:
                     widget.setEnabled(True)
@@ -6374,7 +6374,7 @@ color_map
         '''Method for opening a colour palette dialog.'''
 
         try:
-            self.openColourPicker(self.helmColour, ["helmColour", "apiHelmColour"], self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
+            self.openColourPicker(self, self.helmColour, ["helmColour", "apiHelmColour"], self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
         except Exception as e:
             handleException(e)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
@@ -6403,7 +6403,7 @@ color_map
         '''Method for opening a colour palette dialog.'''
 
         try:
-            self.openColourPicker(self.decColour, ["decColour", "apiDecColour"], self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
+            self.openColourPicker(self, self.decColour, ["decColour", "apiDecColour"], self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
         except Exception as e:
             handleException(e)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
@@ -6412,7 +6412,7 @@ color_map
         '''Method for opening a colour palette dialog.'''
 
         try:
-            self.openColourPicker(self.lightColour, ["lightColour", "apiLightColour"], self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
+            self.openColourPicker(self, self.lightColour, ["lightColour", "apiLightColour"], self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
         except Exception as e:
             handleException(e)
         # --------------------------------------------------------------------------------------------------------------------------------------------#
@@ -7354,14 +7354,14 @@ color_map
                     self.lightColour = self.apiLightColour
 
                 # Set the colouring within the GUI.
-                self.colourSelected(self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
-                self.colourSelected(self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
+                self.colourSelected(self, self.helmColour, "helmColour", self.preview.lbl_PaletteHelm, self.preview.le_PaletteHelm)
+                self.colourSelected(self, self.decColour, "decColour", self.preview.lbl_PaletteDec, self.preview.le_PaletteDec)
 
                 # Background Colour.
-                self.colourSelected(self.bgColourHelm, "bgColourHelm", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
+                self.colourSelected(self, self.bgColourHelm, "bgColourHelm", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
 
                 # Light Colour.
-                self.colourSelected(self.lightColour, "lightColour", self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
+                self.colourSelected(self, self.lightColour, "lightColour", self.preview.lbl_PaletteLight, self.preview.le_PaletteLight)
 
                 # Decorations.
                 self.queingAllowed = False

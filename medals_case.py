@@ -18,6 +18,7 @@ import ctypes
 import platform
 from PyQt5 import uic  # python -m pip install pyqt5
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QColor
 # --------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
@@ -32,6 +33,29 @@ class MedalsCase(object): # Bookmark.
 
         try:
             self.ttt3 = TTT3Object
+            self.spotColour = QColor(255, 255, 255)
+            self.envColour = QColor(128, 118, 108)
+            self.bgColour = QColor(0, 0, 0)
+            self.width = 640 #TODO width
+            self.height = 853 #TODO height
+            self.camXDefault = -2500
+            self.camYDefault = -13300
+            self.camZDefault = 2100
+            self.camX = self.camXDefault
+            self.camY = self.camYDefault
+            self.camZ = self.camZDefault
+            self.cbCamIndex = 0
+            self.lookXDefault = 0
+            self.lookYDefault = -128
+            self.lookZDefault = 28
+            self.lookX = self.lookXDefault
+            self.lookY = self.lookYDefault
+            self.lookZ = self.lookZDefault
+            self.cbLookIndex = 0
+            self.lightX = 13000
+            self.lightY = -15000
+            self.lightZ = 13000
+            self.cbLightIndex = 0
         except Exception as e:
             handleException(e)
         #-------------------------------------------------------------------------------------------------------------------------------------------#
@@ -39,161 +63,185 @@ class MedalsCase(object): # Bookmark.
     def showPreviewDialog(self):
         '''Method to open the render preview / options GUI.'''
 
-        self.previewLoaded = False
-        # Load our GUI file 'data\uis\preview.ui'.
-        self.preview = uic.loadUi(r"data\uis\preview.ui")
-
-        # Set the correct window title.
-        self.preview.setWindowTitle("TTT3 Rendering Options - Medals Case")
-
-        # Show the preview GUI.
-        self.preview.show()
-        setPixelSizes(self.preview)
-        self.preview.closeEvent = self.previewCloseEvent
+        self.ttt3.uniform = "medalsCase"
+        self.ttt3.previewLoaded = False
+        self.ttt3.preview = uic.loadUi(r"data\uis\preview.ui")
+        self.ttt3.preview.setWindowTitle("TTT3 Rendering Options - Medals Case")
+        self.ttt3.preview.show()
+        setPixelSizes(self.ttt3.preview)
+        self.ttt3.preview.closeEvent = self.previewCloseEvent
         self.ttt3.gui.hide()
-        self.preview.lbl_wait.setAttribute(Qt.WA_TranslucentBackground)
-        self.preview.lbl_wait.setHidden(True)
-
-        # Apply setttings.
+        self.ttt3.preview.lbl_wait.setAttribute(Qt.WA_TranslucentBackground)
+        self.ttt3.preview.lbl_wait.setHidden(True)
         self.applyPreviewSettings()
 
         # Connections.
-##        self.preview.btn_raytrace.clicked.connect(self.launchPOVRay)
-##        self.preview.btn_preview.clicked.connect(self.renderPreview)
-##        self.preview.btn_PaletteSpot.clicked.connect(self.btn_PaletteSpotFunc)
-##        self.preview.btn_PaletteEnv.clicked.connect(self.btn_PaletteEnvFunc)
-##        self.preview.btn_PaletteBack.clicked.connect(self.btn_PaletteBackFunc)
-##        self.preview.btn_resetColours.clicked.connect(self.btn_previewResetColoursFunc)
-##        self.preview.sb_Width.valueChanged.connect(self.sb_previewWidthFunc)
-##        self.preview.btn_resetOptions.clicked.connect(self.btn_previewResetOptionsFunc)
-##        self.preview.sb_Quality.valueChanged.connect(self.sb_previewQualityFunc)
-##        self.preview.cb_Detail.currentIndexChanged.connect(self.cb_previewDetailFunc)
-##        self.preview.cb_AA.stateChanged.connect(self.cb_previewAAFunc)
-##        self.preview.cb_Shadowless.stateChanged.connect(self.cb_previewShadowlessFunc)
-##        self.preview.cb_Mosaic.stateChanged.connect(self.cb_previewMosaicFunc)
-##        self.preview.cb_TransparentBG.stateChanged.connect(self.cb_previewTransparentFunc)
-##        self.preview.vs_CamX.valueChanged.connect(self.vs_previewCamXFunc)
-##        self.preview.vs_CamY.valueChanged.connect(self.vs_previewCamYFunc)
-##        self.preview.vs_CamZ.valueChanged.connect(self.vs_previewCamZFunc)
-##        self.preview.vs_LookX.valueChanged.connect(self.vs_previewLookXFunc)
-##        self.preview.vs_LookY.valueChanged.connect(self.vs_previewLookYFunc)
-##        self.preview.vs_LookZ.valueChanged.connect(self.vs_previewLookZFunc)
-##        self.preview.btn_resetCamera.clicked.connect(self.btn_previewResetCameraFunc)
-##        self.preview.vs_LightX.valueChanged.connect(self.vs_previewLightXFunc)
-##        self.preview.vs_LightY.valueChanged.connect(self.vs_previewLightYFunc)
-##        self.preview.vs_LightZ.valueChanged.connect(self.vs_previewLightZFunc)
-##        self.preview.btn_resetLight.clicked.connect(self.btn_previewResetLightFunc)
-##        self.preview.btn_Reset.clicked.connect(self.btn_previewResetFunc)
-##        self.preview.btn_Save.clicked.connect(self.btn_previewSaveFunc)
-##        self.preview.btn_Load.clicked.connect(self.btn_previewLoadFunc)
-##        self.preview.cb_PresetCam.currentIndexChanged.connect(self.cb_previewPresetCamFunc)
-##        self.preview.cb_PresetLook.currentIndexChanged.connect(self.cb_previewPresetLookFunc)
-##        self.preview.cb_PresetLight.currentIndexChanged.connect(self.cb_previewPresetLightFunc)
-##        self.preview.lbl_CamX.mouseReleaseEvent = self.lbl_CamXFunc
-##        self.preview.lbl_CamY.mouseReleaseEvent = self.lbl_CamYFunc
-##        self.preview.lbl_CamZ.mouseReleaseEvent = self.lbl_CamZFunc
-##        self.preview.lbl_LookX.mouseReleaseEvent = self.lbl_LookXFunc
-##        self.preview.lbl_LookY.mouseReleaseEvent = self.lbl_LookYFunc
-##        self.preview.lbl_LookZ.mouseReleaseEvent = self.lbl_LookZFunc
-##        self.preview.lbl_LightX.mouseReleaseEvent = self.lbl_LightXFunc
-##        self.preview.lbl_LightY.mouseReleaseEvent = self.lbl_LightYFunc
-##        self.preview.lbl_LightZ.mouseReleaseEvent = self.lbl_LightZFunc
-##        self.preview.cb_fastPreview.stateChanged.connect(self.fastPreviewFunc)
-##
-##        # Set widgets to auto update on their mouseReleaseEvent.
-##        self.preview.cb_Refresh.stateChanged.connect(self.cb_previewRefreshFunc)
-##
-##        # Checkboxes.
-##        for checkbox in [self.preview.cb_TransparentBG, self.preview.cb_Shadowless]:
-##            checkbox.stateChanged.connect(self.previewAutoRefresh)
-##
-##        # Buttons.
-##        for button in [self.preview.btn_resetCamera, self.preview.btn_resetLight]:
-##            button.clicked.connect(self.previewAutoRefresh)
-##
-##        # Spinboxes.
-##        for spinbox in [self.preview.sb_Quality]:
-##            spinbox.valueChanged.connect(self.previewAutoRefresh)
-##
-##        # Sliders.
-##        for slider in [self.preview.vs_CamX, self.preview.vs_CamY, self.preview.vs_CamZ,
-##                       self.preview.vs_LookX, self.preview.vs_LookY, self.preview.vs_LookZ,
-##                       self.preview.vs_LightX, self.preview.vs_LightY, self.preview.vs_LightZ]:
-##            slider.mouseReleaseEvent = self.previewAutoRefresh
-##
-##        # ComboBoxes.
-##        self.preview.cb_Detail.currentIndexChanged.connect(self.previewAutoRefresh)
-##
-##        # Get a preview uniform render.
-##        self.renderPreview()
-##        self.previewLoaded = True
+        self.ttt3.uniform = "dress" # TODO remove me
+        self.ttt3.preview.btn_raytrace.clicked.connect(self.ttt3.launchPOVRay)
+        self.ttt3.preview.btn_preview.clicked.connect(self.ttt3.renderPreview)
+        self.ttt3.preview.btn_PaletteSpot.clicked.connect(self.btn_PaletteSpotFunc)
+        self.ttt3.preview.btn_PaletteEnv.clicked.connect(self.btn_PaletteEnvFunc)
+        self.ttt3.preview.btn_PaletteBack.clicked.connect(self.btn_PaletteBackFunc)
+        self.ttt3.preview.btn_resetColours.clicked.connect(self.ttt3.btn_previewResetColoursFunc)
+        self.ttt3.preview.sb_Width.valueChanged.connect(self.ttt3.sb_previewWidthFunc)
+        self.ttt3.preview.btn_resetOptions.clicked.connect(self.ttt3.btn_previewResetOptionsFunc)
+        self.ttt3.preview.sb_Quality.valueChanged.connect(self.ttt3.sb_previewQualityFunc)
+        self.ttt3.preview.cb_Detail.currentIndexChanged.connect(self.ttt3.cb_previewDetailFunc)
+        self.ttt3.preview.cb_AA.stateChanged.connect(self.ttt3.cb_previewAAFunc)
+        self.ttt3.preview.cb_Shadowless.stateChanged.connect(self.ttt3.cb_previewShadowlessFunc)
+        self.ttt3.preview.cb_Mosaic.stateChanged.connect(self.ttt3.cb_previewMosaicFunc)
+        self.ttt3.preview.cb_TransparentBG.stateChanged.connect(self.ttt3.cb_previewTransparentFunc)
+        self.ttt3.preview.vs_CamX.valueChanged.connect(self.ttt3.vs_previewCamXFunc)
+        self.ttt3.preview.vs_CamY.valueChanged.connect(self.ttt3.vs_previewCamYFunc)
+        self.ttt3.preview.vs_CamZ.valueChanged.connect(self.ttt3.vs_previewCamZFunc)
+        self.ttt3.preview.vs_LookX.valueChanged.connect(self.ttt3.vs_previewLookXFunc)
+        self.ttt3.preview.vs_LookY.valueChanged.connect(self.ttt3.vs_previewLookYFunc)
+        self.ttt3.preview.vs_LookZ.valueChanged.connect(self.ttt3.vs_previewLookZFunc)
+        self.ttt3.preview.btn_resetCamera.clicked.connect(self.ttt3.btn_previewResetCameraFunc)
+        self.ttt3.preview.vs_LightX.valueChanged.connect(self.ttt3.vs_previewLightXFunc)
+        self.ttt3.preview.vs_LightY.valueChanged.connect(self.ttt3.vs_previewLightYFunc)
+        self.ttt3.preview.vs_LightZ.valueChanged.connect(self.ttt3.vs_previewLightZFunc)
+        self.ttt3.preview.btn_resetLight.clicked.connect(self.ttt3.btn_previewResetLightFunc)
+        self.ttt3.preview.btn_Reset.clicked.connect(self.ttt3.btn_previewResetFunc)
+        self.ttt3.preview.btn_Save.clicked.connect(self.ttt3.btn_previewSaveFunc)
+        self.ttt3.preview.btn_Load.clicked.connect(self.ttt3.btn_previewLoadFunc)
+        self.ttt3.preview.cb_PresetCam.currentIndexChanged.connect(self.ttt3.cb_previewPresetCamFunc)
+        self.ttt3.preview.cb_PresetLook.currentIndexChanged.connect(self.ttt3.cb_previewPresetLookFunc)
+        self.ttt3.preview.cb_PresetLight.currentIndexChanged.connect(self.ttt3.cb_previewPresetLightFunc)
+        self.ttt3.preview.lbl_CamX.mouseReleaseEvent = self.ttt3.lbl_CamXFunc
+        self.ttt3.preview.lbl_CamY.mouseReleaseEvent = self.ttt3.lbl_CamYFunc
+        self.ttt3.preview.lbl_CamZ.mouseReleaseEvent = self.ttt3.lbl_CamZFunc
+        self.ttt3.preview.lbl_LookX.mouseReleaseEvent = self.ttt3.lbl_LookXFunc
+        self.ttt3.preview.lbl_LookY.mouseReleaseEvent = self.ttt3.lbl_LookYFunc
+        self.ttt3.preview.lbl_LookZ.mouseReleaseEvent = self.ttt3.lbl_LookZFunc
+        self.ttt3.preview.lbl_LightX.mouseReleaseEvent = self.ttt3.lbl_LightXFunc
+        self.ttt3.preview.lbl_LightY.mouseReleaseEvent = self.ttt3.lbl_LightYFunc
+        self.ttt3.preview.lbl_LightZ.mouseReleaseEvent = self.ttt3.lbl_LightZFunc
+        self.ttt3.preview.cb_fastPreview.stateChanged.connect(self.ttt3.fastPreviewFunc)
+
+        # Set widgets to auto update on their mouseReleaseEvent.
+        self.ttt3.preview.cb_Refresh.stateChanged.connect(self.ttt3.cb_previewRefreshFunc)
+
+        # Checkboxes.
+        for checkbox in [self.ttt3.preview.cb_TransparentBG, self.ttt3.preview.cb_Shadowless]:
+            checkbox.stateChanged.connect(self.ttt3.previewAutoRefresh)
+
+        # Buttons.
+        for button in [self.ttt3.preview.btn_resetCamera, self.ttt3.preview.btn_resetLight]:
+            button.clicked.connect(self.ttt3.previewAutoRefresh)
+
+        # Spinboxes.
+        for spinbox in [self.ttt3.preview.sb_Quality]:
+            spinbox.valueChanged.connect(self.ttt3.previewAutoRefresh)
+
+        # Sliders.
+        for slider in [self.ttt3.preview.vs_CamX, self.ttt3.preview.vs_CamY, self.ttt3.preview.vs_CamZ,
+                       self.ttt3.preview.vs_LookX, self.ttt3.preview.vs_LookY, self.ttt3.preview.vs_LookZ,
+                       self.ttt3.preview.vs_LightX, self.ttt3.preview.vs_LightY, self.ttt3.preview.vs_LightZ]:
+            slider.mouseReleaseEvent = self.ttt3.previewAutoRefresh
+
+        # ComboBoxes.
+        self.ttt3.preview.cb_Detail.currentIndexChanged.connect(self.ttt3.previewAutoRefresh)
+
+        # Get a preview uniform render.
+        self.ttt3.renderPreview()
+        self.ttt3.previewLoaded = True
         #-------------------------------------------------------------------------------------------------------------------------------------------#
 
     def previewCloseEvent(self, event):
         '''Method that overloads the self.output_gui close event and the application.'''
 
         self.ttt3.gui.show()
-        self.preview.close()
+        self.ttt3.preview.close()
         #-------------------------------------------------------------------------------------------------------------------------------------------#
 
     def applyPreviewSettings(self):
         '''Method to apply the currently loaded preview settings.'''
 
-        pass
-##        # Reset the last cut of the renderData to allow the uniform to be drawn.
-##        self.lastRenderData = ()
-##
-##        if self.uniform != "helmet":
-##            # Colours.
-##            # Spotlight Colour.
-##            self.colourSelected(self.spotColour, "spotColour", self.preview.lbl_PaletteSpot, self.preview.le_PaletteSpot)
-##            # Environment Colour.
-##            self.colourSelected(self.envColour, "envColour", self.preview.lbl_PaletteEnv, self.preview.le_PaletteEnv)
-##            # Background Colour.
-##            self.colourSelected(self.bgColour, "bgColour", self.preview.lbl_PaletteBack, self.preview.le_PaletteBack)
-##            # POV-Ray Options.
-##            # Resolution.
-##            self.preview.sb_Width.setValue(self.width)
-##            self.preview.le_Height.setText(str(self.height))
-##            # Quality.
-##            self.preview.sb_Quality.setValue(self.quality)
-##            # Cloth.
-##            self.preview.cb_Detail.setCurrentIndex(self.clothDetail)
-##            # Checkboxes.
-##            self.preview.cb_AA.setChecked(self.antiAliasing)
-##            self.preview.cb_Shadowless.setChecked(self.shadowless)
-##            self.preview.cb_Mosaic.setChecked(self.mosaicPreview)
-##            if self.transparentBG == " +UA":
-##                self.preview.cb_TransparentBG.setChecked(True)
-##                self.cb_previewTransparentFunc(2)
-##            else:
-##                self.preview.cb_TransparentBG.setChecked(False)
-##                self.cb_previewTransparentFunc(0)
-##            # Slider Bars
-##            self.preview.vs_CamX.setValue(self.camX)
-##            self.preview.lbl_CamX.setText(self.convertIntToFloatStr(self.camX, 10))
-##            self.preview.vs_CamY.setValue(self.camY)
-##            self.preview.lbl_CamY.setText(self.convertIntToFloatStr(self.camY, 10))
-##            self.preview.vs_CamZ.setValue(self.camZ)
-##            self.preview.lbl_CamZ.setText(self.convertIntToFloatStr(self.camZ, 10))
-##            self.preview.vs_LookX.setValue(self.lookX)
-##            self.preview.lbl_LookX.setText(self.convertIntToFloatStr(self.lookX, 10))
-##            self.preview.vs_LookY.setValue(self.lookY)
-##            self.preview.lbl_LookY.setText(self.convertIntToFloatStr(self.lookY, 10))
-##            self.preview.vs_LookZ.setValue(self.lookZ)
-##            self.preview.lbl_LookZ.setText(self.convertIntToFloatStr(self.lookZ, 10))
-##            self.preview.vs_LightX.setValue(self.lightX)
-##            self.preview.lbl_LightX.setText(self.convertIntToFloatStr(self.lightX, 10))
-##            self.preview.vs_LightY.setValue(self.lightY)
-##            self.preview.lbl_LightY.setText(self.convertIntToFloatStr(self.lightY, 10))
-##            self.preview.vs_LightZ.setValue(self.lightZ)
-##            self.preview.lbl_LightZ.setText(self.convertIntToFloatStr(self.lightZ, 10))
-##            self.preview.cb_fastPreview.setChecked(self.fastPreview)
-##            # Combo Boxes
-##            self.preview.cb_PresetCam.setCurrentIndex(self.cbCamIndex)
-##            self.preview.cb_PresetLook.setCurrentIndex(self.cbLookIndex)
-##            self.preview.cb_PresetLight.setCurrentIndex(self.cbLightIndex)
+        # Reset the last cut of the renderData to allow the uniform to be drawn.
+        self.ttt3.lastRenderData = ()
+
+        # POV-Ray Options.
+
+        # Checkboxes.
+        self.ttt3.preview.cb_AA.setChecked(self.ttt3.antiAliasing)
+        self.ttt3.preview.cb_Shadowless.setChecked(self.ttt3.shadowless)
+        self.ttt3.preview.cb_Mosaic.setChecked(self.ttt3.mosaicPreview)
+        if self.ttt3.transparentBG == " +UA":
+            self.ttt3.preview.cb_TransparentBG.setChecked(True)
+            self.ttt3.cb_previewTransparentFunc(2)
+        else:
+            self.ttt3.preview.cb_TransparentBG.setChecked(False)
+            self.ttt3.cb_previewTransparentFunc(0)
+
+        # Colours.
+        # Spotlight Colour.
+        self.ttt3.colourSelected(self, self.spotColour, "spotColour", self.ttt3.preview.lbl_PaletteSpot, self.ttt3.preview.le_PaletteSpot)
+        # Environment Colour.
+        self.ttt3.colourSelected(self, self.envColour, "envColour", self.ttt3.preview.lbl_PaletteEnv, self.ttt3.preview.le_PaletteEnv)
+        # Background Colour.
+        self.ttt3.colourSelected(self, self.bgColour, "bgColour", self.ttt3.preview.lbl_PaletteBack, self.ttt3.preview.le_PaletteBack)
+
+        # Resolution.
+        self.ttt3.preview.sb_Width.setValue(self.width)
+        self.ttt3.preview.le_Height.setText(str(self.height))
+        # Quality.
+        self.ttt3.preview.sb_Quality.setValue(self.ttt3.quality)
+        # Cloth.
+        self.ttt3.preview.cb_Detail.setCurrentIndex(self.ttt3.clothDetail)
+        # Slider Bars
+        self.ttt3.preview.vs_CamX.setValue(self.camX)
+        self.ttt3.preview.lbl_CamX.setText(self.ttt3.convertIntToFloatStr(self.camX, 10))
+        self.ttt3.preview.vs_CamY.setValue(self.camY)
+        self.ttt3.preview.lbl_CamY.setText(self.ttt3.convertIntToFloatStr(self.camY, 10))
+        self.ttt3.preview.vs_CamZ.setValue(self.camZ)
+        self.ttt3.preview.lbl_CamZ.setText(self.ttt3.convertIntToFloatStr(self.camZ, 10))
+        self.ttt3.preview.vs_LookX.setValue(self.lookX)
+        self.ttt3.preview.lbl_LookX.setText(self.ttt3.convertIntToFloatStr(self.lookX, 10))
+        self.ttt3.preview.vs_LookY.setValue(self.lookY)
+        self.ttt3.preview.lbl_LookY.setText(self.ttt3.convertIntToFloatStr(self.lookY, 10))
+        self.ttt3.preview.vs_LookZ.setValue(self.lookZ)
+        self.ttt3.preview.lbl_LookZ.setText(self.ttt3.convertIntToFloatStr(self.lookZ, 10))
+        self.ttt3.preview.vs_LightX.setValue(self.lightX)
+        self.ttt3.preview.lbl_LightX.setText(self.ttt3.convertIntToFloatStr(self.lightX, 10))
+        self.ttt3.preview.vs_LightY.setValue(self.lightY)
+        self.ttt3.preview.lbl_LightY.setText(self.ttt3.convertIntToFloatStr(self.lightY, 10))
+        self.ttt3.preview.vs_LightZ.setValue(self.lightZ)
+        self.ttt3.preview.lbl_LightZ.setText(self.ttt3.convertIntToFloatStr(self.lightZ, 10))
+        self.ttt3.preview.cb_fastPreview.setChecked(self.ttt3.fastPreview)
+        # Combo Boxes
+        self.ttt3.preview.cb_PresetCam.setCurrentIndex(self.cbCamIndex)
+        self.ttt3.preview.cb_PresetLook.setCurrentIndex(self.cbLookIndex)
+        self.ttt3.preview.cb_PresetLight.setCurrentIndex(self.cbLightIndex)
         #-------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def btn_PaletteSpotFunc(self):
+        '''Method for opening a colour palette dialog.'''
+
+        try:
+            self.ttt3.openColourPicker(self, self.spotColour, "spotColour", self.ttt3.preview.lbl_PaletteSpot, self.ttt3.preview.le_PaletteSpot)
+        except Exception as e:
+            handleException(e)
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
+
+    def btn_PaletteEnvFunc(self):
+        '''Method for opening a colour palette dialog.'''
+
+        try:
+            self.ttt3.openColourPicker(self, self.envColour, "envColour", self.ttt3.preview.lbl_PaletteEnv, self.ttt3.preview.le_PaletteEnv)
+        except Exception as e:
+            handleException(e)
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
+
+
+    def btn_PaletteBackFunc(self):
+        '''Method for opening a colour palette dialog.'''
+
+        try:
+            self.ttt3.openColourPicker(self, self.bgColour, "bgColour", self.ttt3.preview.lbl_PaletteBack, self.ttt3.preview.le_PaletteBack)
+        except Exception as e:
+            handleException(e)
+        # --------------------------------------------------------------------------------------------------------------------------------------------#
 #---------------------------------------------------------------------------------------------------------------------------------------------------#
 
 
